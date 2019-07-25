@@ -22,6 +22,8 @@ const mapDispatchtoProps = dispatch => {
 };
 
 const AvailableConnections = props => {
+  const possibleConnections = ['OpenScienceFoundation', 'NotreDame'];
+
   return (
     <div
       css={{
@@ -29,11 +31,17 @@ const AvailableConnections = props => {
         paddingLeft: 50
       }}
     >
-      <img
-        src={availableConnections}
-        alt="Available Connections"
-        onClick={() => props.onConnectionSelected('notreDame')}
-      />
+      <img src={availableConnections} alt="Available Connections" />
+      <div css={{ display: 'flex' }}>
+        {possibleConnections.map(connection => (
+          <img
+            css={{ paddingRight: 15 }}
+            src={require(`../images/icons/${connection}.png`)}
+            alt="Available Connections"
+            onClick={() => props.onConnectionSelected(connection)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
