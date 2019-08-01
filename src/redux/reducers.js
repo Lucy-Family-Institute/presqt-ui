@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions';
+import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from './actionCreators';
 
@@ -10,28 +10,6 @@ const initialState = {
   targetToken: null,
   targets: []
 };
-
-// export default (state = initialState, { type, payload }) => {
-//   switch (type) {
-//     case actionCreators.targets.switchSource.toString():
-//       return {
-//         ...state,
-//         source: payload.sourceTarget,
-//         sourceToken: payload.sourceTargetToken
-//       };
-
-//     case actionCreators.targets.loadSuccess.toString():
-//       return { ...state, targets: payload };
-
-//     // Resources
-//     case actionCreators.resources.loadSuccess.toString():
-//       console.log(payload);
-//       return { ...state, sourceResources: payload };
-
-//     default:
-//       return state;
-//   }
-// };
 
 export default handleActions(
   {
@@ -47,134 +25,145 @@ export default handleActions(
     }),
     // Resources
     [actionCreators.resources.loadSuccess]: (state, action) => {
-      /** StackOverflow Code 
-       * 
-       * const flat = [
-          { id: 'a2', name: 'Item 1', parentId: 'a' },
-          { id: 'b2-2-1', name: 'Item 2-2-1', parentId: 'b2-2'},
-          { id: 'a1', name: 'Item 1', parentId: 'a' },
-          { id: 'a', name: 'Root 1', parentId: null },
-          { id: 'b', name: 'Root 2', parentId: null },
-          { id: 'c', name: 'Root 3', parentId: null },
-          { id: 'b1', name: 'Item 1', parentId: 'b' },
-          { id: 'b2', name: 'Item 2', parentId: 'b' },
-          { id: 'b2-1', name: 'Item 2-1', parentId: 'b2' },
-          { id: 'b2-2', name: 'Item 2-2', parentId: 'b2' },
-          { id: 'b3', name: 'Item 3', parentId: 'b' },
-          { id: 'c1', name: 'Item 1', parentId: 'c' },
-          { id: 'c2', name: 'Item 2', parentId: 'c' }
-      ];
-
-      
-
-      
-
-      */
-
-      function checkLeftOvers(leftOvers, possibleParent) {
-        leftOvers.forEach((value, index) => {
-          if (value.container === possibleParent.id) {
-            // delete value.container;
+      /**
+       * Augment a `possibleParent` object with it's children
+       * in `unsortedChildren`.
+       *
+       * @param {Array} unsortedChildren
+       * @param {Object} possibleParent
+       */
+      function findUnsortedChildren(unsortedChildren, possibleParent) {
+        unsortedChildren.forEach((possibleChild, index) => {
+          if (possibleChild.container === possibleParent.id) {
+            if (possibleChild.kind === 'container') {
+              possibleChild.open = false;
+            }
 
             possibleParent.children
-              ? possibleParent.children.push(value)
-              : (possibleParent.children = [value]);
+              ? possibleParent.children.push(possibleChild)
+              : (possibleParent.children = [possibleChild]);
 
             possibleParent.count = possibleParent.children.length;
-            const addedObj = leftOvers.splice(index, 1);
-            checkLeftOvers(leftOvers, addedObj[0]);
+            const addedObj = unsortedChildren.splice(index, 1);
+            findUnsortedChildren(unsortedChildren, addedObj[0]);
           }
         });
       }
 
-      function findParent(possibleParents, possibleChild) {
+      /**
+       * Attempt to find a resource's parent, and if found, augment the parent
+       * resource's `children` array with `child`.
+       *
+       * @param {Array} possibleParents
+       * @param {Object} child
+       */
+      function associateWithParentResource(possibleParents, child) {
         let found = false;
 
         possibleParents.forEach(possibleParent => {
-          if (possibleParent.id === possibleChild.container) {
+          if (possibleParent.id === child.container) {
             found = true;
-            // delete possibleChild.container;
 
-            if (possibleParent.children) {
-              possibleParent.children.push(possibleChild);
-            } else {
-              possibleParent.children = [possibleChild];
+            if (child.kind === 'container') {
+              child.open = false;
             }
 
-            // This is probably unnecessary...
-            possibleParent.count = possibleParent.children.length;
+            if (possibleParent.children) {
+              possibleParent.children.push(child);
+            } else {
+              possibleParent.children = [child];
+            }
 
+            possibleParent.count = possibleParent.children.length;
             return true;
           } else if (possibleParent.children)
             // Invoke Recursion
-            found = findParent(possibleParent.children, possibleChild);
+            found = associateWithParentResource(possibleParent.children, child);
         });
 
         return found;
       }
 
-      const nested = action.payload.reduce(
-        (initial, value, index, original) => {
-          // If the item has no parent...
-          if (value.container === null) {
+      const resourceHierarchy = action.payload.reduce(
+        (initial, resource, index, original) => {
+          if (resource.container === null) {
+            /* Root Level Containers */
+
             // Check if there is anything already in the
             // unsorted array that should be attached
             // to this container.
-            if (initial.unsorted.length) {
-              checkLeftOvers(initial.unsorted, value);
-            }
+            findUnsortedChildren(initial.unsorted, resource);
 
-            // Not sure if these are necessary.
-            // delete value.container;
-            // value.root = true;
+            resource.open = false;
 
             // Push onto the hierarchy object
-            initial.sorted.push(value);
+            initial.sorted.push(resource);
           } else {
-            let parentFound = findParent(initial.sorted, value);
+            const parentFound = associateWithParentResource(
+              initial.sorted,
+              resource
+            );
             if (parentFound) {
-              checkLeftOvers(initial.unsorted, value);
-            } else initial.unsorted.push(value);
+              findUnsortedChildren(initial.unsorted, resource);
+            } else {
+              // Add the resource to the unsorted array
+              // where it will be considered in each future
+              // iteration of the loop.
+              initial.unsorted.push(resource);
+            }
           }
           return index < original.length - 1 ? initial : initial.sorted;
         },
         { sorted: [], unsorted: [] }
       );
 
-      console.log(nested);
+      return {
+        ...state,
+        sourceResources: resourceHierarchy
+      };
+    },
+    // Open/Close Container Resources in UX
+    [combineActions(
+      actionCreators.resources.openContainer,
+      actionCreators.resources.closeContainer
+    )]: (state, action) => {
+      const searchForResourceInArray = (
+        desiredContainer,
+        openContainer,
+        possibleMatches
+      ) => {
+        const updatedNode = possibleMatches;
 
-      // const resourceHierarchy = {};
+        if (updatedNode.id === desiredContainer.id) {
+          return {
+            ...updatedNode,
+            open: openContainer
+          };
+        } else if (updatedNode.children) {
+          // Somehow we need to consider each of the children...
+          const updatedChildren = updatedNode.children.map(childNode =>
+            searchForResourceInArray(desiredContainer, openContainer, childNode)
+          );
+          updatedNode.children = updatedChildren;
+        }
 
-      // // Identify Top Level Containers
-      // action.payload
-      //   .filter(element => {
-      //     return element.kind === 'container' && element.container === null
-      //       ? true
-      //       : false;
-      //   })
-      //   .forEach(
-      //     container =>
-      //       (resourceHierarchy[container.id] = {
-      //         members: [],
-      //         name: container.title
-      //       })
-      //   );
+        return updatedNode;
+      };
 
-      // const remainingContainers = action.payload.filter(element => {
-      //   return element.kind === 'container' && element.container !== null;
-      // });
-
-      // console.log(remainingContainers.length);
-      // Object.keys();
-      // remainingContainers.forEach(container => {
-      //   // if Object.keys(resourceHierarchy)
-      // });
+      const updatedSourceResources = state.sourceResources.map(topLevelNode => {
+        return searchForResourceInArray(
+          action.payload.container,
+          action.payload.open,
+          topLevelNode
+        );
+      });
 
       return {
         ...state,
-        sourceResources: action.payload
+        sourceResources: updatedSourceResources
       };
     }
   },
+
   initialState
 );
