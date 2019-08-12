@@ -1,21 +1,36 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import PropTypes from 'prop-types';
 
 import developmentPartners from '../images/headers/developmentPartners.png';
 
-const DevelopmentPartners = props => {
+const DevelopmentPartners = () => {
   return (
     <div
       css={{
         gridArea: 'developmentPartners'
       }}
     >
-      <img src={developmentPartners} alt="Available Connections" />
+      <img
+        src={developmentPartners}
+        alt="Available Connections"
+        css={{ paddingBottom: 10 }}
+      />
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'row',
+          paddingTop: 5
+        }}
+      >
+        <img
+          src={require('../images/icons/notreDameAcademicMark.png')}
+          alt="Notre Dame Academic Mark"
+          css={{ paddingRight: 25 }}
+        />
+        <img src={require('../images/icons/IMLS.png')} alt="IMLS Logo" />
+      </div>
     </div>
   );
 };
-
-DevelopmentPartners.propTypes = {};
 
 export default DevelopmentPartners;
