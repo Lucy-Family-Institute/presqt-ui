@@ -24,7 +24,7 @@ function* loadSourceTargetResources(action) {
   const response = yield call(
     getSourceTargetResources,
     action.payload.sourceTarget,
-    action.payload.sourceTargetToken // TODO: Convert to object destructuring.
+    action.payload.sourceTargetToken
   );
   yield put(actionCreators.resources.loadSuccess(response.data));
 }

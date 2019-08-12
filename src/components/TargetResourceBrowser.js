@@ -4,12 +4,9 @@ import { jsx } from '@emotion/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import textStyles from '../styles/text';
 import { actionCreators } from '../redux/actionCreators';
-
-const closedFolderIcon = require('../images/icons/closedFolder.png');
-const openFolderIcon = require('../images/icons/openFolder.png');
-const fileIcon = require('../images/icons/file.png');
+import ResourceButton from './widgets/ResourceButton';
+import TargetResourcesHeader from './widgets/TargetResourcesHeader';
 
 const bounce = keyframes`
   0% {
@@ -62,30 +59,10 @@ const resourceHierarchy = (actionCreator, resources, level = 0) => {
   return resources.map(resource => {
     return (
       <div key={resource.id}>
-        <div
-          css={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 10,
-            paddingLeft: 10 * level
-          }}
-          onClick={() => onClick(resource)}
-        >
-          <img
-            src={
-              resource.kind === 'container'
-                ? resource.open
-                  ? openFolderIcon
-                  : closedFolderIcon
-                : fileIcon
-            }
-            alt="Resource Icon"
-            css={{ paddingRight: 10, height: 25 }}
-          />
-          <span className={textStyles.body}>{resource.title}</span>
-        </div>
-        {resource.kind === 'container' && resource.open === true
+        <ResourceButton resource={resource} level={level} onClick={onClick} />
+        {resource.kind === 'container' &&
+        resource.open === true &&
+        resource.children
           ? resourceHierarchy(actionCreator, resource.children, level + 1)
           : null}
       </div>
@@ -94,13 +71,14 @@ const resourceHierarchy = (actionCreator, resources, level = 0) => {
 };
 
 const TargetResourceBrowser = props => {
-  const { sourceResources, onContainerClicked } = props;
+  const { sourceResources, onContainerClicked, source } = props;
 
   return (
     <div
       css={{
         gridArea: 'targetResources',
         paddingLeft: 50,
+        paddingBottom: 50,
         minHeight: '25vh',
         animation: `${bounce} 2s ease`
       }}
@@ -109,11 +87,7 @@ const TargetResourceBrowser = props => {
         NoSourceSelected()
       ) : (
         <div>
-          <img
-            css={{ animation: `${bounce} 1s ease` }}
-            src={require(`../images/headers/resources/${props.source}.png`)}
-            alt="resourcesNotreDame"
-          />
+          <TargetResourcesHeader source={source} />
           {resourceHierarchy(onContainerClicked, sourceResources, 0)}
         </div>
       )}
