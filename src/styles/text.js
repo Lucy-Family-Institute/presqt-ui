@@ -1,8 +1,8 @@
-import { css } from 'emotion';
+import { css } from '@emotion/core';
 
 export default {
   body: css({
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Roboto'
   }),
   listItem: css({
@@ -22,6 +22,12 @@ export default {
   }),
   presqtLogo: css({
     fontSize: 68,
+    fontFamily: 'Raleway',
+    fontWeight: 800,
+    color: 'white'
+  }),
+  modalTitle: css({
+    fontSize: 24,
     fontFamily: 'Raleway',
     fontWeight: 800,
     color: 'white'

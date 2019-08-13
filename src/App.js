@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { css } from 'emotion';
-import { jsx } from '@emotion/core';
+import { jsx, css } from '@emotion/core';
 
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
@@ -31,7 +30,7 @@ const styles = {
 
 function App() {
   return (
-    <div className={styles.app}>
+    <div css={styles.app}>
       <HeaderBackground />
       <PresQTHeader />
       <HeaderMenu />

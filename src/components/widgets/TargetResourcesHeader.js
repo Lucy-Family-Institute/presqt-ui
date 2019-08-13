@@ -23,7 +23,7 @@ function TargetResourcesHeader(props) {
         src={require(`../../images/icons/${props.source}.png`)}
         alt={`${props.source} Resources Header`}
       />
-      <span className={textStyles.largeHeader}>Resources</span>
+      <span css={textStyles.largeHeader}>Resources</span>
     </div>
   );
 }

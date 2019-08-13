@@ -13,7 +13,7 @@ const PresQTHeader = () => {
         paddingLeft: 50
       }}
     >
-      <header className={textStyles.presqtLogo}>PresQT</header>
+      <header css={textStyles.presqtLogo}>PresQT</header>
     </div>
   );
 };

@@ -10,8 +10,6 @@ const fileIcon = require('../../images/icons/file.png');
 export default function ResourceButton(props) {
   const { resource, level, onClick } = props;
 
-  console.log(props);
-
   return (
     <button
       css={{
@@ -38,7 +36,7 @@ export default function ResourceButton(props) {
         alt="Resource Icon"
         css={{ paddingRight: 10, height: 25 }}
       />
-      <span className={textStyles.listItem}>{resource.title}</span>
+      <span css={textStyles.listItem}>{resource.title}</span>
     </button>
   );
 }

@@ -16,13 +16,15 @@ const TargetActions = props => {
       }}
     >
       <span
-        className={textStyles.largeHeader}
-        css={{
-          display: 'flex',
-          flexDirection: 'row',
-          minHeight: 50,
-          alignItems: 'center'
-        }}
+        css={[
+          {
+            display: 'flex',
+            flexDirection: 'row',
+            minHeight: 50,
+            alignItems: 'center'
+          },
+          textStyles.largeHeader
+        ]}
       >
         Available Actions
       </span>

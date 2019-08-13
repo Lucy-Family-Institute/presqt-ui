@@ -15,7 +15,7 @@ const HeaderMenu = () => {
         paddingRight: 50
       }}
     >
-      <span className={textStyles.globalNav}>About PresQT</span>
+      <span css={textStyles.globalNav}>About PresQT</span>
     </div>
   );
 };
