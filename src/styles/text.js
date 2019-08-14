@@ -31,5 +31,12 @@ export default {
     fontFamily: 'Raleway',
     fontWeight: 800,
     color: 'white'
+  }),
+  buttonText: css({
+    fontFamily: 'Roboto',
+    color: 'white',
+    fontWeight: 500,
+    fontSize: 14,
+    textTransform: 'uppercase'
   })
 };
