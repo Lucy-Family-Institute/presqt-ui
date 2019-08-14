@@ -20,8 +20,8 @@ const bounce = keyframes`
 
 const mapStateToProps = state => {
   return {
-    source: state.source,
-    sourceResources: state.sourceResources
+    source: state.targets.source,
+    sourceResources: state.resources.inSourceTarget
   };
 };
 
