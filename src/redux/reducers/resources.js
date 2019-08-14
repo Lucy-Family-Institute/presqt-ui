@@ -1,29 +1,17 @@
 import { handleActions, combineActions } from 'redux-actions';
 
-import { actionCreators } from './actionCreators';
+import { actionCreators } from '../actionCreators';
 
 const initialState = {
-  source: null,
-  sourceToken: null,
-  sourceResources: [],
-  target: null,
-  targetToken: null,
-  targets: []
+  inSourceTarget: [],
+  inDestinationTarget: [],
+  selectedInSource: null,
+  selectedInTarget: null
 };
 
 export default handleActions(
   {
-    // Targets
-    [actionCreators.targets.switchSource]: (state, action) => ({
-      ...state,
-      source: action.payload.sourceTarget,
-      sourceToken: action.payload.sourceTargetToken
-    }),
-    [actionCreators.targets.loadSuccess]: (state, action) => ({
-      ...state,
-      targets: action.payload
-    }),
-    // Resources
+    // Resources Actions
     [actionCreators.resources.loadSuccess]: (state, action) => {
       /**
        * Augment a `possibleParent` object with it's children
@@ -119,7 +107,7 @@ export default handleActions(
 
       return {
         ...state,
-        sourceResources: resourceHierarchy
+        inSourceTarget: resourceHierarchy
       };
     },
     // Open/Close Container Resources in UX
@@ -150,7 +138,7 @@ export default handleActions(
         return updatedNode;
       };
 
-      const updatedSourceResources = state.sourceResources.map(topLevelNode => {
+      const updatedSourceResources = state.inSourceTarget.map(topLevelNode => {
         return searchForResourceInArray(
           action.payload.container,
           action.payload.open,
@@ -160,7 +148,7 @@ export default handleActions(
 
       return {
         ...state,
-        sourceResources: updatedSourceResources
+        inSourceTarget: updatedSourceResources
       };
     }
   },
