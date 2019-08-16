@@ -68,7 +68,7 @@ const Modal = ({ connection, isShowing, hide, onSubmit }) => {
             <div css={styles.modal}>
               <div css={styles.modalHeader}>
                 <span css={textStyles.modalTitle}>{`Access Token for ${
-                  connection.name
+                  connection.readable_name
                 }`}</span>
                 <div onClick={hide}>
                   <FontAwesomeIcon icon={faWindowClose} inverse size="lg" />
@@ -78,10 +78,10 @@ const Modal = ({ connection, isShowing, hide, onSubmit }) => {
                 css={{ padding: 20, display: 'flex', flexDirection: 'column' }}
               >
                 <p css={textStyles.body}>
-                  In order to connect to {connection.name} you will need to
-                  supply your API token. This will not be saved, so if you come
-                  back to this website, you will need to provide your token
-                  again.
+                  In order to connect to {connection.readable_name} you will
+                  need to supply your API token. This will not be saved, so if
+                  you come back to this website, you will need to provide your
+                  token again.
                 </p>
 
                 <div
@@ -92,7 +92,6 @@ const Modal = ({ connection, isShowing, hide, onSubmit }) => {
                     flexBasis: 35
                   }}
                 >
-                  {/* <input type="text" value={this.state.value} onChange={this.handleChange}  */}
                   <input
                     type="text"
                     placeholder="Paste API Token Here"

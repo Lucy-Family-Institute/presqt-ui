@@ -19,5 +19,3 @@ export default handleActions(
   },
   initialState
 );
-
-console.log(handleActions);

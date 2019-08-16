@@ -92,7 +92,7 @@ const AvailableConnections = props => {
             <img
               css={{ paddingRight: 15 }}
               src={require(`../images/icons/${connection.name}.png`)}
-              alt={connection.name}
+              alt={connection.readable_name}
               onClick={() => {
                 displayModalOrSwitchSourceTarget(connection);
               }}
