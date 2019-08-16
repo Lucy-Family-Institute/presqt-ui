@@ -5,13 +5,11 @@ export const actionCreators = createActions({
     SAVE_TOKEN: (targetID, token) => ({ targetID, token })
   },
   RESOURCES: {
-    LOAD: (sourceTarget, sourceTokenTarget) => ({
-      sourceTarget,
-      sourceTokenTarget
-    }),
-    LOAD_SUCCESS: undefined,
+    LOAD_FROM_SOURCE_TARGET: undefined,
+    LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
     OPEN_CONTAINER: container => ({ container, open: true }),
-    CLOSE_CONTAINER: container => ({ container, open: false })
+    CLOSE_CONTAINER: container => ({ container, open: false }),
+    SELECT_SOURCE_RESOURCE: undefined
   },
   TARGETS: {
     LOAD: undefined,

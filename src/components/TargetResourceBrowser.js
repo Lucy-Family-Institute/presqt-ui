@@ -3,12 +3,15 @@ import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { actionCreators } from '../redux/actionCreators';
 import ResourceButton from './widgets/ResourceButton';
 import TargetResourcesHeader from './widgets/TargetResourcesHeader';
+import textStyles from '../styles/text';
 
-const bounce = keyframes`
+const fadeIn = keyframes`
   0% {
     opacity: 0;
   }
@@ -21,49 +24,44 @@ const bounce = keyframes`
 const mapStateToProps = state => {
   return {
     source: state.targets.source,
-    sourceResources: state.resources.inSourceTarget
+    sourceResources: state.resources.inSourceTarget,
+    pendingAPIResponse: state.resources.pendingAPIResponse
   };
 };
 
 const mapDispatchtoProps = dispatch => {
   return {
-    onContainerClicked: container => {
-      container.open
-        ? dispatch(actionCreators.resources.closeContainer(container))
-        : dispatch(actionCreators.resources.openContainer(container));
+    onResourceClicked: resource => {
+      resource.kind === 'container' && resource.open
+        ? dispatch(actionCreators.resources.closeContainer(resource))
+        : dispatch(actionCreators.resources.openContainer(resource));
+
+      dispatch(actionCreators.resources.selectSourceResource(resource));
     }
   };
 };
 
 const NoSourceSelected = () => {
-  return (
-    <div>
-      <p css={{ fontSize: 18 }}>Please select a source system below. </p>
-    </div>
-  );
+  return <div css={textStyles.largeHeader}>Select an Available Connection</div>;
 };
 
-const resourceHierarchy = (actionCreator, resources, level = 0) => {
-  /**
-   * Need to figure out a way to iterate through
-   * the resources array, which can have an arbitary number
-   * of nested levels.
-   */
-
-  const onClick = resource => {
-    if (resource.kind === 'container') {
-      actionCreator(resource);
-    }
-  };
-
+/**
+ * Recursively called function which is used to display the resource
+ * hierarchy of a given target.
+ */
+const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
   return resources.map(resource => {
     return (
-      <div key={resource.id}>
-        <ResourceButton resource={resource} level={level} onClick={onClick} />
+      <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
+        <ResourceButton
+          resource={resource}
+          level={level}
+          onClick={onResourceClicked}
+        />
         {resource.kind === 'container' &&
         resource.open === true &&
         resource.children
-          ? resourceHierarchy(actionCreator, resource.children, level + 1)
+          ? resourceHierarchy(onResourceClicked, resource.children, level + 1)
           : null}
       </div>
     );
@@ -71,7 +69,12 @@ const resourceHierarchy = (actionCreator, resources, level = 0) => {
 };
 
 const TargetResourceBrowser = props => {
-  const { sourceResources, onContainerClicked, source } = props;
+  const {
+    sourceResources,
+    onResourceClicked,
+    source,
+    pendingAPIResponse
+  } = props;
 
   return (
     <div
@@ -80,15 +83,37 @@ const TargetResourceBrowser = props => {
         paddingLeft: 50,
         paddingBottom: 50,
         minHeight: '25vh',
-        animation: `${bounce} 2s ease`
+        flex: 1,
+        display: 'flex'
       }}
     >
-      {!props.source ? (
+      {!source ? (
         NoSourceSelected()
       ) : (
-        <div>
+        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <TargetResourcesHeader source={source} />
-          {resourceHierarchy(onContainerClicked, sourceResources, 0)}
+          {pendingAPIResponse ? (
+            <div
+              css={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                animation: `${fadeIn} 3s ease`
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faSpinner}
+                size="2x"
+                spin
+                color={'#4E4E4E'}
+              />
+              <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
+            </div>
+          ) : (
+            resourceHierarchy(onResourceClicked, sourceResources, 0)
+          )}
         </div>
       )}
     </div>

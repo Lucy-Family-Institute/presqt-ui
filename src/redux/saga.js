@@ -21,12 +21,15 @@ function* watchSwitchSource() {
 }
 
 function* loadSourceTargetResources(action) {
+  yield put(actionCreators.resources.loadFromSourceTarget());
   const response = yield call(
     getSourceTargetResources,
     action.payload.sourceTarget,
     action.payload.sourceTargetToken
   );
-  yield put(actionCreators.resources.loadSuccess(response.data));
+  yield put(
+    actionCreators.resources.loadFromSourceTargetSuccess(response.data)
+  );
 }
 
 // notice how we now only export the rootSaga

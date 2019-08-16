@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import textStyles from '../../styles/text';
 
-const bounce = keyframes`
+const fadeIn = keyframes`
   0% {
     opacity: 0;
   }
@@ -19,11 +19,13 @@ function TargetResourcesHeader(props) {
   return (
     <div css={{ display: 'flex', alignItems: 'center' }}>
       <img
-        css={{ animation: `${bounce} 1s ease`, paddingRight: 10 }}
+        css={{ animation: `${fadeIn} 1s ease`, paddingRight: 10 }}
         src={require(`../../images/icons/${props.source}.png`)}
         alt={`${props.source} Resources Header`}
       />
-      <span css={textStyles.largeHeader}>Resources</span>
+      <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
+        Resources
+      </span>
     </div>
   );
 }
