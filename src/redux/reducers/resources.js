@@ -3,6 +3,7 @@ import { handleActions, combineActions } from 'redux-actions';
 import { actionCreators } from '../actionCreators';
 
 const initialState = {
+  pendingAPIResponse: false,
   inSourceTarget: [],
   inDestinationTarget: [],
   selectedInSource: null,
@@ -12,7 +13,11 @@ const initialState = {
 export default handleActions(
   {
     // Resources Actions
-    [actionCreators.resources.loadSuccess]: (state, action) => {
+    [actionCreators.resources.loadFromSourceTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true
+    }),
+    [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
       /**
        * Augment a `possibleParent` object with it's children
        * in `unsortedChildren`.
@@ -107,6 +112,7 @@ export default handleActions(
 
       return {
         ...state,
+        pendingAPIResponse: false,
         inSourceTarget: resourceHierarchy
       };
     },
@@ -150,7 +156,11 @@ export default handleActions(
         ...state,
         inSourceTarget: updatedSourceResources
       };
-    }
+    },
+    [actionCreators.resources.selectSourceResource]: (state, action) => ({
+      ...state,
+      selectedInSource: action.payload
+    })
   },
 
   initialState
