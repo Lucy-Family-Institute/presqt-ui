@@ -34,9 +34,8 @@ export default {
   }),
   buttonText: css({
     fontFamily: 'Roboto',
-    color: 'white',
     fontWeight: 500,
-    fontSize: 14,
+    fontSize: 12,
     textTransform: 'uppercase'
   })
 };
