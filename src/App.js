@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { css } from 'emotion';
-import { jsx } from '@emotion/core';
+import { jsx, css } from '@emotion/core';
 
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
@@ -10,10 +9,14 @@ import TargetActionDetail from './components/TargetActionDetail';
 import TargetActions from './components/TargetActions';
 import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
+import HeaderBackground from './components/HeaderBackground';
 
 const styles = {
   app: css({
     display: 'grid',
+    minHeight: '75vh',
+    paddingBottom: 50,
+    gridRowGap: 20,
     gridTemplateRows: '200px 125px 1fr 100px',
     gridTemplateColumns: '450px 150px 1fr',
     gridTemplateAreas: `
@@ -27,7 +30,8 @@ const styles = {
 
 function App() {
   return (
-    <div className={styles.app}>
+    <div css={styles.app}>
+      <HeaderBackground />
       <PresQTHeader />
       <HeaderMenu />
       <TargetResourceBrowser />

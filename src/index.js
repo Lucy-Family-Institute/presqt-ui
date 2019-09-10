@@ -1,17 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import reducer from './redux/reducers';
+import createSagaMiddleware from 'redux-saga';
+import resourcesReducer from './redux/reducers/resources';
+import authorizationReducer from './redux/reducers/authorization';
+import targetsReducer from './redux/reducers/targets';
 
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import rootSaga from './redux/saga';
+
+const rootReducer = combineReducers({
+  authorization: authorizationReducer,
+  targets: targetsReducer,
+  resources: resourcesReducer
+});
+
+const sagaMiddleware = createSagaMiddleware();
+
+const composeEnhancers =
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
+    : compose;
 
 const store = createStore(
-  reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  rootReducer,
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
