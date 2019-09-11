@@ -39,7 +39,10 @@ export default function TargetResourceBrowser() {
 
   const NoSourceSelected = () => {
     return (
-      <div css={textStyles.largeHeader}>Select an Available Connection</div>
+      <div>
+        <p css={textStyles.largeHeader}>Resources</p>
+        <p css={textStyles.body}>Select an available connection...</p>
+      </div>
     );
   };
 
