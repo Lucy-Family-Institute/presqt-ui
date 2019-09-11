@@ -1,34 +1,14 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import textStyles from '../styles/text';
 import ActionButton from './widgets/ActionButton';
 
-const mapStateToProps = state => {
-  return {
-    selectedSourceResource: state.resources.selectedInSource
-  };
-};
-
-const mapDispatchtoProps = (dispatch, ownProps) => {
-  return {
-    // saveToken: (targetID, token) =>
-    //   dispatch(actionCreators.authorization.saveToken(targetID, token)),
-    // switchSourceTarget: (sourceTarget, sourceTargetToken) => {
-    //   dispatch(
-    //     actionCreators.targets.switchSource(sourceTarget, sourceTargetToken)
-    //   );
-    // },
-    // onComponentMount: () => dispatch(actionCreators.targets.load()),
-    dispatch
-  };
-};
-
-const TargetActions = props => {
-  const { selectedSourceResource } = props;
-  console.log(selectedSourceResource);
+export default function TargetActions() {
+  const selectedSourceResource = useSelector(
+    state => state.resources.selectedInSource
+  );
 
   return (
     <div
@@ -51,7 +31,7 @@ const TargetActions = props => {
           textStyles.largeHeader
         ]}
       >
-        Available Actions
+        {selectedSourceResource ? selectedSourceResource.title : null}
       </span>
       <div css={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
         {selectedSourceResource &&
@@ -61,11 +41,4 @@ const TargetActions = props => {
       </div>
     </div>
   );
-};
-
-TargetActions.propTypes = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchtoProps
-)(TargetActions);
+}
