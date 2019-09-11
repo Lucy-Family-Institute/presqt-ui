@@ -20,6 +20,12 @@ export default {
     fontWeight: 300,
     color: '#4E4E4E'
   }),
+  mediumHeader: css({
+    fontSize: 24,
+    fontFamily: 'Raleway',
+    fontWeight: 300,
+    color: '#4E4E4E'
+  }),
   presqtLogo: css({
     fontSize: 68,
     fontFamily: 'Raleway',
