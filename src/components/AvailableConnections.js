@@ -8,11 +8,9 @@
  */
 
 /** @jsx jsx */
-import React from 'react';
 import { jsx } from '@emotion/core';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import availableConnections from '../images/headers/availableConnections.png';
 import { actionCreators } from '../redux/actionCreators';
@@ -24,55 +22,41 @@ import Modal from './widgets/Modal';
 // UPLOAD_TEST_USER_TOKEN = 'E9luKQU9Ywe5QFG2HpgupjBqqSeH4fZKG6IxUMVP8fa242dSyECYuB5lhFvekbmjhxq1zT'
 // PRESQT_FORK_TOKEN = 'Airlov2nBOb41T1d3FkTIbzC8ahq3nBWDxMbGyrUYvWDinKWJgrPO52uuS6KJIBXKXFtlv'
 
-const mapStateToProps = state => {
-  return {
-    apiTokens: state.authorization.apiTokens,
-    targets: state.targets.available
-  };
-};
-
-const mapDispatchtoProps = (dispatch, ownProps) => {
-  return {
-    saveToken: (targetID, token) =>
-      dispatch(actionCreators.authorization.saveToken(targetID, token)),
-    switchSourceTarget: (sourceTarget, sourceTargetToken) => {
-      dispatch(
-        actionCreators.targets.switchSource(sourceTarget, sourceTargetToken)
-      );
-    },
-    onComponentMount: () => dispatch(actionCreators.targets.load()),
-    dispatch
-  };
-};
-
-const AvailableConnections = props => {
-  const {
-    onComponentMount,
-    saveToken,
-    switchSourceTarget,
-    apiTokens,
-    targets
-  } = props;
+export default function AvailableConnections() {
+  const dispatch = useDispatch();
+  const pendingAPIResponse = useSelector(
+    state => state.resources.pendingAPIResponse
+  );
+  const apiTokens = useSelector(state => state.authorization.apiTokens);
+  const sourceTarget = useSelector(state => state.targets.source);
+  const availableTargets = useSelector(state => state.targets.available);
 
   useEffect(() => {
-    onComponentMount();
-  }, [onComponentMount]);
+    dispatch(actionCreators.targets.load());
+  }, [dispatch]);
 
   const { modalVisible, toggleModalVisibility } = useModal();
 
-  const onTokenSubmission = async (targetID, token) => {
+  const onTokenSubmission = (connection, token) => {
     toggleModalVisibility();
-    saveToken(targetID, token);
-    switchSourceTarget(targetID, token);
+    dispatch(actionCreators.authorization.saveToken(connection.name, token));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
   };
 
-  function displayModalOrSwitchSourceTarget(connection) {
+  const handleSwitchSourceTarget = connection => {
+    dispatch(actionCreators.targets.switchSource(connection));
+
     if (connection.name in apiTokens) {
-      console.log('Already have a token from the user.');
+      dispatch(
+        actionCreators.resources.loadFromSourceTarget(
+          connection,
+          apiTokens[connection.name]
+        )
+      );
     } else {
       toggleModalVisibility();
     }
-  }
+  };
 
   return (
     <div
@@ -83,39 +67,33 @@ const AvailableConnections = props => {
     >
       <img
         src={availableConnections}
-        alt="Available Connections"
+        alt='Available Connections'
         css={{ paddingBottom: 10 }}
       />
       <div css={{ display: 'flex', flexDirection: 'row' }}>
-        {targets.map(connection => (
-          <React.Fragment key={connect.name}>
+        {availableTargets.map(connection => (
+          <button
+            key={connection.name}
+            css={[
+              { backgroundColor: 'white', border: 'none' },
+              pendingAPIResponse ? { opacity: 0.5 } : null
+            ]}
+            onClick={() => handleSwitchSourceTarget(connection)}
+            disabled={pendingAPIResponse}
+          >
             <img
-              css={{ paddingRight: 15 }}
               src={require(`../images/icons/${connection.name}.png`)}
               alt={connection.readable_name}
-              onClick={() => {
-                displayModalOrSwitchSourceTarget(connection);
-              }}
             />
-            <Modal
-              connection={connection}
-              isShowing={modalVisible}
-              hide={toggleModalVisibility}
-              onSubmit={onTokenSubmission}
-            />
-          </React.Fragment>
+          </button>
         ))}
       </div>
+      <Modal
+        connection={sourceTarget}
+        isShowing={modalVisible}
+        hide={toggleModalVisibility}
+        onSubmit={onTokenSubmission}
+      />
     </div>
   );
-};
-
-AvailableConnections.propTypes = {
-  apiTokens: PropTypes.object.isRequired,
-  targets: PropTypes.array.isRequired
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchtoProps
-)(AvailableConnections);
+}
