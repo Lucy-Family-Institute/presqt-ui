@@ -15,13 +15,13 @@ const fadeIn = keyframes`
   }
 `;
 
-function TargetResourcesHeader(props) {
+function TargetResourcesHeader({targetName}) {
   return (
     <div css={{ display: 'flex', alignItems: 'center' }}>
       <img
         css={{ animation: `${fadeIn} 1s ease`, paddingRight: 10 }}
-        src={require(`../../images/icons/${props.source}.png`)}
-        alt={`${props.source} Resources Header`}
+        src={require(`../../images/icons/${targetName}.png`)}
+        alt={`${targetName} Resources Header`}
       />
       <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
         Resources
@@ -31,7 +31,7 @@ function TargetResourcesHeader(props) {
 }
 
 TargetResourcesHeader.propTypes = {
-  source: PropTypes.string.isRequired
+  targetName: PropTypes.string.isRequired
 };
 
 export default TargetResourcesHeader;
