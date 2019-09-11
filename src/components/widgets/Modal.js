@@ -54,6 +54,12 @@ const styles = {
     color: 'white',
     border: 'none',
     borderRadius: 5
+  }),
+  disabledButton: css({
+    backgroundColor: 'rgba(108, 133, 163, 1)',
+    color: 'white',
+    border: 'none',
+    borderRadius: 5
   })
 };
 
@@ -67,11 +73,11 @@ const Modal = ({ connection, isShowing, hide, onSubmit }) => {
           <div css={styles.modalContainer} aria-modal aria-hidden>
             <div css={styles.modal}>
               <div css={styles.modalHeader}>
-                <span css={textStyles.modalTitle}>{`Access Token for ${
-                  connection.readable_name
-                }`}</span>
+                <span
+                  css={textStyles.modalTitle}
+                >{`Access Token for ${connection.readable_name}`}</span>
                 <div onClick={hide}>
-                  <FontAwesomeIcon icon={faWindowClose} inverse size="lg" />
+                  <FontAwesomeIcon icon={faWindowClose} inverse size='lg' />
                 </div>
               </div>
               <div
@@ -93,14 +99,21 @@ const Modal = ({ connection, isShowing, hide, onSubmit }) => {
                   }}
                 >
                   <input
-                    type="text"
-                    placeholder="Paste API Token Here"
+                    type='text'
+                    placeholder='Paste API Token Here'
                     value={token}
                     onChange={event => setToken(event.target.value)}
                   />
                   <button
-                    css={[styles.button, textStyles.buttonText]}
-                    onClick={() => onSubmit(connection.name, token)}
+                    css={[
+                      token ? styles.button : styles.disabledButton,
+                      textStyles.buttonText
+                    ]}
+                    onClick={() => {
+                      onSubmit(connection, token);
+                      setToken('');
+                    }}
+                    disabled={!token}
                   >
                     Connect
                   </button>
