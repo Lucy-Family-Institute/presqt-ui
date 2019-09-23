@@ -37,15 +37,6 @@ export default function TargetResourceBrowser() {
 
   const dispatch = useDispatch();
 
-  const NoSourceSelected = () => {
-    return (
-      <div>
-        <p css={textStyles.largeHeader}>Resources</p>
-        <p css={textStyles.body}>Select an available connection...</p>
-      </div>
-    );
-  };
-
   /**
    * Recursively called function which is used to display the resource
    * hierarchy of a given target.
@@ -90,41 +81,37 @@ export default function TargetResourceBrowser() {
         display: 'flex'
       }}
     >
-      {!sourceTarget ? (
-        NoSourceSelected()
-      ) : (
-        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <TargetResourcesHeader targetName={sourceTarget.name} />
-          {pendingAPIOperations.includes(
-            actionCreators.resources.loadFromSourceTarget.toString()
-          ) ? (
-            <div
-              css={{
-                display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-                animation: `${fadeIn} 3s ease`
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faSpinner}
-                size='2x'
-                spin
-                color={'#4E4E4E'}
-              />
-              <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
-            </div>
-          ) : (
-            resourceHierarchy(
-              resource => onResourceClicked(resource, sourceTargetToken),
-              sourceTargetResources,
-              0
-            )
-          )}
-        </div>
-      )}
+      <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <TargetResourcesHeader />
+        {pendingAPIOperations.includes(
+          actionCreators.resources.loadFromSourceTarget.toString()
+        ) ? (
+          <div
+            css={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+              animation: `${fadeIn} 3s ease`
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faSpinner}
+              size='2x'
+              spin
+              color={'#4E4E4E'}
+            />
+            <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
+          </div>
+        ) : (
+          resourceHierarchy(
+            resource => onResourceClicked(resource, sourceTargetToken),
+            sourceTargetResources,
+            0
+          )
+        )}
+      </div>
     </div>
   );
 }
