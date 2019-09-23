@@ -12,10 +12,12 @@ import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
-import availableConnections from '../images/headers/availableConnections.png';
 import { actionCreators } from '../redux/actionCreators';
 import useModal from '../hooks/useModal';
-import Modal from './widgets/Modal';
+import Modal from './modals/tokenModal';
+import text from '../styles/text';
+import colors from '../styles/colors';
+import { basicFadeIn } from '../styles/animations';
 
 // TEST_USER_TOKEN = '3f5ULLSX3OaJcNVmj6N6cTomvcmlZf5YQYYKl6ek6c6SKXMG7V0R63ueMB0uiiGwrkXQi8'
 // PRIVATE_USER_TOKEN = '0UAX3rbdd59OUXkGIu19gY0BMQODAbtGimcLNAfAie6dUQGGPig93mpFOpJQ8ceynlGScp'
@@ -54,7 +56,7 @@ export default function AvailableConnections() {
         )
       );
     } else {
-      toggleModalVisibility();
+      setTimeout(() => toggleModalVisibility(), 500);
     }
   };
 
@@ -65,17 +67,18 @@ export default function AvailableConnections() {
         paddingLeft: 50
       }}
     >
-      <img
-        src={availableConnections}
-        alt='Available Connections'
-        css={{ paddingBottom: 10 }}
-      />
-      <div css={{ display: 'flex', flexDirection: 'row' }}>
+      <span css={text.mediumHeader}>Available Connections</span>
+      <div css={{ display: 'flex', flexDirection: 'row', paddingTop: 10 }}>
         {availableTargets.map(connection => (
           <button
             key={connection.name}
             css={[
-              { backgroundColor: 'white', border: 'none' },
+              {
+                backgroundColor: 'white',
+                border: 'none',
+                paddingLeft: 0,
+                paddingRight: 10
+              },
               pendingAPIResponse ? { opacity: 0.5 } : null
             ]}
             onClick={() => handleSwitchSourceTarget(connection)}
@@ -85,13 +88,23 @@ export default function AvailableConnections() {
               src={require(`../images/icons/${connection.name}.png`)}
               alt={connection.readable_name}
             />
+            {sourceTarget && sourceTarget.name === connection.name ? (
+              <div
+                css={{
+                  minHeight: 5,
+                  marginTop: 5,
+                  backgroundColor: colors.ripeOrange,
+                  animation: `${basicFadeIn} 1s`
+                }}
+              ></div>
+            ) : null}
           </button>
         ))}
       </div>
       <Modal
         connection={sourceTarget}
-        isShowing={modalVisible}
-        hide={toggleModalVisibility}
+        modalActive={modalVisible}
+        onHide={toggleModalVisibility}
         onSubmit={onTokenSubmission}
       />
     </div>

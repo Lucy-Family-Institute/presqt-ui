@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,7 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 import textStyles from '../../styles/text';
 import { basicFadeIn, basicFadeOut } from '../../styles/animations';
+import useAnimatedState from '../../hooks/useAnimatedState';
 
 const styles = {
   darkenBackground: css({
@@ -75,83 +76,22 @@ const styles = {
   })
 };
 
-const animationReducer = (state, action) => {
-  console.log('Reducer Invoked with: ', action);
-
-  switch (action.type) {
-    case 'inTransitionStart':
-      return {
-        animating: true,
-        desiredVisibility: true,
-        currentVisibility: false,
-        endAnimationCallback: action.callback
-      };
-    case 'inTransitionEnd':
-      return {
-        animating: false,
-        desiredVisibility: true,
-        currentVisibility: true,
-        endAnimationCallback: null
-      };
-    case 'outTransitionStart':
-      return {
-        animating: true,
-        desiredVisibility: false,
-        currentVisibility: true,
-        endAnimationCallback: action.callback
-      };
-    case 'outTransitionEnd':
-      return {
-        animating: false,
-        desiredVisibility: false,
-        currentVisibility: false
-      };
-    default:
-      throw new Error();
-  }
-};
-
-/**
- * The goal is to make the logic for the modal to control it's own
- * animation effects.
- *
- *
- */
-
-export default function Modal({ connection, isShowing, hide, onSubmit }) {
+export default function Modal({ connection, modalActive, onHide, onSubmit }) {
   const [token, setToken] = useState('');
+  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
 
-  const [state, dispatch] = useReducer(animationReducer, {
-    animating: false,
-    desiredVisibility: false,
-    currentVisibility: false,
-    endAnimationCallback: null
-  });
-
-  // Catch the signal and begin animation.
   useEffect(() => {
-    console.log('USE EFFECT');
-
-    if (isShowing && !state.desiredVisibility && !state.animating) {
-      dispatch({
-        type: 'inTransitionStart',
-        callback: () => dispatch({ type: 'inTransitionEnd' })
-      });
+    if (modalActive && !state.desiredVisibility && !state.animating) {
+      transitionIn();
     }
-    // else if (!isShowing && state.desiredVisibility) {
-    //   dispatch({
-    //     type: 'outTransitionStart',
-    //     callback: () => console.log('Out Transition Callback')
-    //   });
-    // }
-  }, [isShowing, state.animating, state.desiredVisibility]);
+  }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
 
   const submitModalData = () => {
     onSubmit(connection, token);
     setToken('');
   };
 
-  return isShowing
+  return modalActive
     ? ReactDOM.createPortal(
         <div
           css={
@@ -163,7 +103,6 @@ export default function Modal({ connection, isShowing, hide, onSubmit }) {
           <div
             css={state.desiredVisibility ? styles.fadeIn : styles.fadeOut}
             onAnimationEnd={() => {
-              console.log('onAnimationEndHook');
               state.endAnimationCallback();
             }}
           >
@@ -176,12 +115,8 @@ export default function Modal({ connection, isShowing, hide, onSubmit }) {
                   >{`Access Token for ${connection.readable_name}`}</span>
                   <div
                     onClick={() =>
-                      dispatch({
-                        type: 'outTransitionStart',
-                        callback: () => {
-                          dispatch({ type: 'outTransitionEnd' });
-                          hide();
-                        }
+                      transitionOut(() => {
+                        onHide();
                       })
                     }
                   >
@@ -221,15 +156,7 @@ export default function Modal({ connection, isShowing, hide, onSubmit }) {
                         token ? styles.button : styles.disabledButton,
                         textStyles.buttonText
                       ]}
-                      onClick={() => {
-                        dispatch({
-                          type: 'outTransitionStart',
-                          callback: () => {
-                            dispatch({ type: 'outTransitionEnd' });
-                            submitModalData();
-                          }
-                        });
-                      }}
+                      onClick={() => transitionOut(() => submitModalData())}
                       disabled={!token}
                     >
                       Connect
