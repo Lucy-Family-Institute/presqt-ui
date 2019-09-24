@@ -5,6 +5,12 @@ export default {
     fontSize: 14,
     fontFamily: 'Roboto'
   }),
+  footerTitle: css({
+    fontSize: 24,
+    fontFamily: 'Raleway',
+    fontWeight: 300,
+    color: '#4E4E4E'
+  }),
   listItem: css({
     fontSize: 14,
     fontFamily: 'Roboto'
@@ -20,10 +26,23 @@ export default {
     fontWeight: 300,
     color: '#4E4E4E'
   }),
+  mediumHeader: css({
+    fontSize: 24,
+    fontFamily: 'Raleway',
+    fontWeight: 400,
+    color: '#4E4E4E'
+  }),
   presqtLogo: css({
     fontSize: 68,
     fontFamily: 'Raleway',
     fontWeight: 800,
+    color: 'white',
+    marginBottom: -10
+  }),
+  presqtLogoSubtext: css({
+    fontSize: 14,
+    fontFamily: 'Raleway',
+    fontWeight: 400,
     color: 'white'
   }),
   modalTitle: css({

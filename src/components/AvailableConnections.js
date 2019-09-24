@@ -8,71 +8,57 @@
  */
 
 /** @jsx jsx */
-import React from 'react';
 import { jsx } from '@emotion/core';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-import availableConnections from '../images/headers/availableConnections.png';
 import { actionCreators } from '../redux/actionCreators';
 import useModal from '../hooks/useModal';
-import Modal from './widgets/Modal';
+import Modal from './modals/tokenModal';
+import text from '../styles/text';
+import colors from '../styles/colors';
+import { basicFadeIn } from '../styles/animations';
 
 // TEST_USER_TOKEN = '3f5ULLSX3OaJcNVmj6N6cTomvcmlZf5YQYYKl6ek6c6SKXMG7V0R63ueMB0uiiGwrkXQi8'
 // PRIVATE_USER_TOKEN = '0UAX3rbdd59OUXkGIu19gY0BMQODAbtGimcLNAfAie6dUQGGPig93mpFOpJQ8ceynlGScp'
 // UPLOAD_TEST_USER_TOKEN = 'E9luKQU9Ywe5QFG2HpgupjBqqSeH4fZKG6IxUMVP8fa242dSyECYuB5lhFvekbmjhxq1zT'
 // PRESQT_FORK_TOKEN = 'Airlov2nBOb41T1d3FkTIbzC8ahq3nBWDxMbGyrUYvWDinKWJgrPO52uuS6KJIBXKXFtlv'
 
-const mapStateToProps = state => {
-  return {
-    apiTokens: state.authorization.apiTokens,
-    targets: state.targets.available
-  };
-};
-
-const mapDispatchtoProps = (dispatch, ownProps) => {
-  return {
-    saveToken: (targetID, token) =>
-      dispatch(actionCreators.authorization.saveToken(targetID, token)),
-    switchSourceTarget: (sourceTarget, sourceTargetToken) => {
-      dispatch(
-        actionCreators.targets.switchSource(sourceTarget, sourceTargetToken)
-      );
-    },
-    onComponentMount: () => dispatch(actionCreators.targets.load()),
-    dispatch
-  };
-};
-
-const AvailableConnections = props => {
-  const {
-    onComponentMount,
-    saveToken,
-    switchSourceTarget,
-    apiTokens,
-    targets
-  } = props;
+export default function AvailableConnections() {
+  const dispatch = useDispatch();
+  const pendingAPIResponse = useSelector(
+    state => state.resources.pendingAPIResponse
+  );
+  const apiTokens = useSelector(state => state.authorization.apiTokens);
+  const sourceTarget = useSelector(state => state.targets.source);
+  const availableTargets = useSelector(state => state.targets.available);
 
   useEffect(() => {
-    onComponentMount();
-  }, [onComponentMount]);
+    dispatch(actionCreators.targets.load());
+  }, [dispatch]);
 
   const { modalVisible, toggleModalVisibility } = useModal();
 
-  const onTokenSubmission = async (targetID, token) => {
+  const onTokenSubmission = (connection, token) => {
     toggleModalVisibility();
-    saveToken(targetID, token);
-    switchSourceTarget(targetID, token);
+    dispatch(actionCreators.authorization.saveToken(connection.name, token));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
   };
 
-  function displayModalOrSwitchSourceTarget(connection) {
+  const handleSwitchSourceTarget = connection => {
+    dispatch(actionCreators.targets.switchSource(connection));
+
     if (connection.name in apiTokens) {
-      console.log('Already have a token from the user.');
+      dispatch(
+        actionCreators.resources.loadFromSourceTarget(
+          connection,
+          apiTokens[connection.name]
+        )
+      );
     } else {
-      toggleModalVisibility();
+      setTimeout(() => toggleModalVisibility(), 500);
     }
-  }
+  };
 
   return (
     <div
@@ -81,41 +67,46 @@ const AvailableConnections = props => {
         paddingLeft: 50
       }}
     >
-      <img
-        src={availableConnections}
-        alt="Available Connections"
-        css={{ paddingBottom: 10 }}
-      />
-      <div css={{ display: 'flex', flexDirection: 'row' }}>
-        {targets.map(connection => (
-          <React.Fragment key={connect.name}>
+      <span css={text.mediumHeader}>Available Connections</span>
+      <div css={{ display: 'flex', flexDirection: 'row', paddingTop: 10 }}>
+        {availableTargets.map(connection => (
+          <button
+            key={connection.name}
+            css={[
+              {
+                backgroundColor: 'white',
+                border: 'none',
+                paddingLeft: 0,
+                paddingRight: 10
+              },
+              pendingAPIResponse ? { opacity: 0.5 } : null
+            ]}
+            onClick={() => handleSwitchSourceTarget(connection)}
+            disabled={pendingAPIResponse}
+          >
             <img
-              css={{ paddingRight: 15 }}
               src={require(`../images/icons/${connection.name}.png`)}
               alt={connection.readable_name}
-              onClick={() => {
-                displayModalOrSwitchSourceTarget(connection);
-              }}
             />
-            <Modal
-              connection={connection}
-              isShowing={modalVisible}
-              hide={toggleModalVisibility}
-              onSubmit={onTokenSubmission}
-            />
-          </React.Fragment>
+            {sourceTarget && sourceTarget.name === connection.name ? (
+              <div
+                css={{
+                  minHeight: 5,
+                  marginTop: 5,
+                  backgroundColor: colors.ripeOrange,
+                  animation: `${basicFadeIn} 1s`
+                }}
+              ></div>
+            ) : null}
+          </button>
         ))}
       </div>
+      <Modal
+        connection={sourceTarget}
+        modalActive={modalVisible}
+        onHide={toggleModalVisibility}
+        onSubmit={onTokenSubmission}
+      />
     </div>
   );
-};
-
-AvailableConnections.propTypes = {
-  apiTokens: PropTypes.object.isRequired,
-  targets: PropTypes.array.isRequired
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchtoProps
-)(AvailableConnections);
+}

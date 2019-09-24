@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
+import PropTypes from 'prop-types';
 
 import textStyles from '../../styles/text';
 
@@ -14,14 +15,18 @@ const fadeIn = keyframes`
   }
 `;
 
-function TargetResourcesHeader() {
+function MediumHeader({ text }) {
   return (
     <div css={{ display: 'flex', alignItems: 'center' }}>
-      <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
-        Resources
+      <span css={[textStyles.mediumHeader, { animation: `${fadeIn} 1s ease` }]}>
+        {text}
       </span>
     </div>
   );
 }
 
-export default TargetResourcesHeader;
+MediumHeader.propTypes = {
+  text: PropTypes.string.isRequired
+};
+
+export default MediumHeader;

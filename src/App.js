@@ -16,8 +16,8 @@ const styles = {
     display: 'grid',
     minHeight: '75vh',
     paddingBottom: 50,
-    gridRowGap: 20,
-    gridTemplateRows: '200px 125px 1fr 100px',
+    gridRowGap: 25,
+    gridTemplateRows: '150px 125px 1fr 100px',
     gridTemplateColumns: '450px 150px 1fr',
     gridTemplateAreas: `
         "headerLogo headerMenu headerMenu"

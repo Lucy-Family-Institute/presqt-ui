@@ -5,7 +5,7 @@ import textStyles from '../styles/text';
 const PresQTHeader = () => {
   return (
     <div
-      id="headerBackground"
+      id='headerBackground'
       css={{
         gridArea: 'headerLogo',
         display: 'flex',
@@ -13,7 +13,19 @@ const PresQTHeader = () => {
         paddingLeft: 50
       }}
     >
-      <header css={textStyles.presqtLogo}>PresQT</header>
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-start'
+        }}
+      >
+        <span css={textStyles.presqtLogo}>PresQT</span>
+        <span css={textStyles.presqtLogoSubtext}>
+          Preservation Quality Tools
+        </span>
+      </div>
     </div>
   );
 };
