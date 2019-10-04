@@ -34,7 +34,7 @@ const animationReducer = (state, action) => {
   }
 };
 
-const useAnimatedState = () => {
+function useAnimatedState() {
   const [state, dispatch] = useReducer(animationReducer, {
     animating: false,
     desiredVisibility: false,
@@ -67,6 +67,6 @@ const useAnimatedState = () => {
   };
 
   return [state, transitionIn, transitionOut];
-};
+}
 
 export default useAnimatedState;

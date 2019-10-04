@@ -44,7 +44,10 @@ export default function ActionButton(props) {
               color: textColor
             }
       ]}
-      onClick={() => setActive(!active)}
+      onClick={() => {
+        setActive(!active);
+        onClick();
+      }}
     >
       <span css={textStyles.buttonText}>{text}</span>
     </button>
