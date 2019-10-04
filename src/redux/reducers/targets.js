@@ -4,7 +4,7 @@ import { actionCreators } from '../actionCreators';
 
 const initialState = {
   source: null,
-  target: null,
+  destination: null,
   available: []
 };
 
@@ -13,7 +13,7 @@ export default handleActions(
     // Targets Actions
     [actionCreators.targets.switchSource]: (state, action) => ({
       ...state,
-      source: action.payload.sourceTarget
+      source: action.payload
     }),
     [actionCreators.targets.loadSuccess]: (state, action) => ({
       ...state,

@@ -1,11 +1,27 @@
+// TODO: Start to break this apart!
+// TODO: Load Resource Details when resource is selected.
 import { put, takeEvery, all, call } from 'redux-saga/effects';
 
 import { getTargets } from '../api/target';
-import { getSourceTargetResources } from '../api/resources';
+import { getTargetResources, getResourceDetail } from '../api/resources';
 import { actionCreators } from './actionCreators';
 
 function* watchLoadTargets() {
   yield takeEvery(actionCreators.targets.load, loadTargets);
+}
+
+function* watchSwitchSource() {
+  yield takeEvery(
+    actionCreators.resources.loadFromSourceTarget,
+    loadSourceTargetResources
+  );
+}
+
+function* watchSelectSourceResource() {
+  yield takeEvery(
+    actionCreators.resources.selectSourceResource,
+    loadResourceDetail
+  );
 }
 
 function* loadTargets() {
@@ -13,18 +29,24 @@ function* loadTargets() {
   yield put(actionCreators.targets.loadSuccess(response.data));
 }
 
-function* watchSwitchSource() {
-  yield takeEvery(
-    actionCreators.targets.switchSource,
-    loadSourceTargetResources
+function* loadResourceDetail(action) {
+  const response = yield call(
+    getResourceDetail,
+    action.payload.resource,
+    action.payload.sourceTargetToken
+  );
+
+  yield put(
+    actionCreators.resources.selectSourceResourceSuccess(response.data)
   );
 }
 
 function* loadSourceTargetResources(action) {
-  yield put(actionCreators.resources.loadFromSourceTarget());
+  console.log(action);
+
   const response = yield call(
-    getSourceTargetResources,
-    action.payload.sourceTarget,
+    getTargetResources,
+    action.payload.sourceTarget.name,
     action.payload.sourceTargetToken
   );
   yield put(
@@ -35,5 +57,9 @@ function* loadSourceTargetResources(action) {
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* rootSaga() {
-  yield all([watchLoadTargets(), watchSwitchSource()]);
+  yield all([
+    watchSelectSourceResource(),
+    watchLoadTargets(),
+    watchSwitchSource()
+  ]);
 }

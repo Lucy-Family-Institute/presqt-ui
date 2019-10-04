@@ -1,9 +1,11 @@
 import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
+import { trackAction, untrackAction } from '../utils';
 
 const initialState = {
   pendingAPIResponse: false,
+  pendingAPIOperations: [],
   inSourceTarget: [],
   inDestinationTarget: [],
   selectedInSource: null,
@@ -12,10 +14,13 @@ const initialState = {
 
 export default handleActions(
   {
-    // Resources Actions
     [actionCreators.resources.loadFromSourceTarget]: state => ({
       ...state,
-      pendingAPIResponse: true
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromSourceTarget,
+        state.pendingAPIOperations
+      )
     }),
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
       /**
@@ -113,6 +118,10 @@ export default handleActions(
       return {
         ...state,
         pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromSourceTarget,
+          state.pendingAPIOperations
+        ),
         inSourceTarget: resourceHierarchy
       };
     },
@@ -157,10 +166,27 @@ export default handleActions(
         inSourceTarget: updatedSourceResources
       };
     },
-    [actionCreators.resources.selectSourceResource]: (state, action) => ({
-      ...state,
-      selectedInSource: action.payload
-    })
+    [actionCreators.resources.selectSourceResource]: (state, action) => {
+      return {
+        ...state,
+        pendingAPIResponse: true,
+        pendingAPIOperations: trackAction(
+          actionCreators.resources.selectSourceResource,
+          state.pendingAPIOperations
+        )
+      };
+    },
+    [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
+      return {
+        ...state,
+        selectedInSource: action.payload,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.selectSourceResource,
+          state.pendingAPIOperations
+        )
+      };
+    }
   },
 
   initialState
