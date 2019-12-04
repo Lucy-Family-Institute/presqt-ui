@@ -65,7 +65,6 @@ export default function TargetActionDetail() {
   const renderObject = value => {
     return Object.entries(value).map(resourceDetailElement => {
       const [key, value] = resourceDetailElement;
-      console.log(key, value);
       return (
         <div css={{ display: 'flex', flexDirection: 'row' }}>
           <span

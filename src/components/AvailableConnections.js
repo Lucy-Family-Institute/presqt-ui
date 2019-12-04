@@ -1,12 +1,3 @@
-/**
- * AvailableConnections
- *
- * This component displays the various targets that a user can connect with
- * to. It is also one place through which a user can submit an API token for
- * targets. Finally, it is responsible for broadcasting (via Redux) what the
- * currently selected "sourceTarget" is.
- */
-
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,45 +10,66 @@ import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
 
-// TEST_USER_TOKEN = '3f5ULLSX3OaJcNVmj6N6cTomvcmlZf5YQYYKl6ek6c6SKXMG7V0R63ueMB0uiiGwrkXQi8'
-// PRIVATE_USER_TOKEN = '0UAX3rbdd59OUXkGIu19gY0BMQODAbtGimcLNAfAie6dUQGGPig93mpFOpJQ8ceynlGScp'
-// UPLOAD_TEST_USER_TOKEN = 'E9luKQU9Ywe5QFG2HpgupjBqqSeH4fZKG6IxUMVP8fa242dSyECYuB5lhFvekbmjhxq1zT'
-// PRESQT_FORK_TOKEN = 'Airlov2nBOb41T1d3FkTIbzC8ahq3nBWDxMbGyrUYvWDinKWJgrPO52uuS6KJIBXKXFtlv'
-
+/**
+ * This component displays the various targets that a user can connect with
+ * to. It is also one place through which a user can submit an API token for
+ * targets. Finally, it is responsible for broadcasting (via Redux) what the
+ * currently selected "sourceTarget" is.
+ */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
-  const pendingAPIResponse = useSelector(
-    state => state.resources.pendingAPIResponse
-  );
+
+  /**
+   * pendingAPIResponse : Boolean representing if the API request is in progress
+   * apiTokens          : Object of <targets: tokens> submitted in the current session
+   * sourceTarget       : Object of the current source selected
+   * availableTargets   : List of objects of available targets
+   */
+  const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
 
-  useEffect(() => {
-    dispatch(actionCreators.targets.load());
-  }, [dispatch]);
+  /**
+   * Dispatch load action on page-load
+   * Saga call to Target-Collection occurs with this action.
+   *    -> Saga function dispatches loadSuccess action when finished.
+   */
+  useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
 
+  // Custom modal hook
   const { modalVisible, toggleModalVisibility } = useModal();
 
-  const onTokenSubmission = (connection, token) => {
-    toggleModalVisibility();
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
-  };
-
+  /**
+   * Set the selected target as the source target.
+   * If a connection already exists with the target then dispatch loadFromSourceTarget action.
+   *    -> Saga call to Resource-Collection occurs with this action.
+   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   * Else display the modal.
+   */
   const handleSwitchSourceTarget = connection => {
     dispatch(actionCreators.targets.switchSource(connection));
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromSourceTarget(
-          connection,
-          apiTokens[connection.name]
-        )
+        actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
       );
     } else {
       setTimeout(() => toggleModalVisibility(), 500);
     }
+  };
+
+  /**
+   * Close the modal.
+   * Dispatch saveToken action to save target token to apiTokens
+   * Dispatch loadFromSourceTarget action.
+   *    -> Saga call to Resource-Collection occurs with this action.
+   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   */
+  const onTokenSubmission = (connection, token) => {
+    toggleModalVisibility();
+    dispatch(actionCreators.authorization.saveToken(connection.name, token));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
   };
 
   return (

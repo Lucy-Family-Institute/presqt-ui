@@ -3,20 +3,27 @@ import FileSaver from 'file-saver';
 
 import { apiURLBase } from '../config';
 
+/**
+ * Resource Collection Endpoint
+ */
 export function getTargetResources(sourceTarget, sourceTargetToken) {
   return axios.get(`${apiURLBase}targets/${sourceTarget}/resources/`, {
     headers: { 'presqt-source-token': sourceTargetToken }
   });
 }
 
+/**
+ * Resource Detail Endpoint
+ */
 export function getResourceDetail(resource, sourceTargetToken) {
-  const resourceDetailURL = resource.links.find(link => link.name === 'Detail')
-    .link;
-  return axios.get(resourceDetailURL, {
-    headers: { 'presqt-source-token': sourceTargetToken }
+  const resourceDetailURL = resource.links.find(link => link.name === 'Detail').link;
+  return axios.get(resourceDetailURL, {headers: { 'presqt-source-token': sourceTargetToken }
   });
 }
 
+/**
+ * Resource Download Endpoint
+ */
 export function initiateResourceDownload(
   resourceDownloadURL,
   sourceTargetToken

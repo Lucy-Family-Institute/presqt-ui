@@ -20,22 +20,40 @@ const fadeIn = keyframes`
   }
 `;
 
+/**
+ * This component handles actions within the resource browser. It will open/close containers,
+ * display resource details, as well as sort the hierarchy of resources.
+*/
 export default function TargetResourceBrowser() {
-  const [
-    sourceTarget,
-    sourceTargetToken,
-    sourceTargetResources,
-    pendingAPIOperations
-  ] = useSelector(state => [
-    state.targets.source,
-    state.targets.source
-      ? state.authorization.apiTokens[state.targets.source.name]
-      : null,
-    state.resources.inSourceTarget,
-    state.resources.pendingAPIOperations
-  ]);
-
   const dispatch = useDispatch();
+
+ /**
+  * sourceTargetToken     : String user token if a source exists else null
+  * sourceTargetResources : Array containing source target resources in hierarchical order
+  * pendingAPIOperations  : Boolean representing if a pending API operation exists
+  */
+  const sourceTargetToken = useSelector(state => state.targets.source
+      ? state.authorization.apiTokens[state.targets.source.name]
+      : null,);
+  const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+
+  /**
+  * If clicked container is open then dispatch the closeContainer action to minimize the container
+  * Else dispatch the openContainer action to expand the container
+  * After the container action completes, dispatch selectSourceResource to fetch resource details
+  *   -> Saga call to Resource Detail occurs here
+  *      -> On complete saga dispatches the selectSourceResourceSuccess action
+  */
+  const onResourceClicked = (resource, sourceTargetToken) => {
+    resource.kind === 'container' && resource.open
+      ? dispatch(actionCreators.resources.closeContainer(resource))
+      : dispatch(actionCreators.resources.openContainer(resource));
+
+    dispatch(
+      actionCreators.resources.selectSourceResource(resource, sourceTargetToken)
+    );
+  };
 
   /**
    * Recursively called function which is used to display the resource
@@ -58,16 +76,6 @@ export default function TargetResourceBrowser() {
         </div>
       );
     });
-  };
-
-  const onResourceClicked = (resource, sourceTargetToken) => {
-    resource.kind === 'container' && resource.open
-      ? dispatch(actionCreators.resources.closeContainer(resource))
-      : dispatch(actionCreators.resources.openContainer(resource));
-
-    dispatch(
-      actionCreators.resources.selectSourceResource(resource, sourceTargetToken)
-    );
   };
 
   return (
