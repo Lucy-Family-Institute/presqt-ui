@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 
 import textStyles from '../styles/text';
 
-const HeaderMenu = () => {
+export default function HeaderMenu() {
   return (
     <div
       css={{
@@ -19,5 +19,3 @@ const HeaderMenu = () => {
     </div>
   );
 };
-
-export default HeaderMenu;

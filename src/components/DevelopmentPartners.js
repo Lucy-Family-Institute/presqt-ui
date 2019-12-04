@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 
 import developmentPartners from '../images/headers/developmentPartners.png';
 
-const DevelopmentPartners = () => {
+export default function DevelopmentPartners() {
   return (
     <div
       css={{
@@ -32,5 +32,3 @@ const DevelopmentPartners = () => {
     </div>
   );
 };
-
-export default DevelopmentPartners;
