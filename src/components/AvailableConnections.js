@@ -11,19 +11,20 @@ import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
 
 /**
- * This component displays the various targets that a user can connect with
- * to. It is also one place through which a user can submit an API token for
- * targets. Finally, it is responsible for broadcasting (via Redux) what the
- * currently selected "sourceTarget" is.
+ * This component displays the various targets that a user can connect with.
+ * It's responsible for switching targets, handing off resource loading, and handing off modal work
+ * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
 
-  /**
+  /** SELECTOR DEFINITIONS
+   *
    * pendingAPIResponse : Boolean representing if the API request is in progress
    * apiTokens          : Object of <targets: tokens> submitted in the current session
    * sourceTarget       : Object of the current source selected
    * availableTargets   : List of objects of available targets
+   * apiOperationErrors : List of objects of current api errors
    */
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
@@ -31,11 +32,11 @@ export default function AvailableConnections() {
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
-  // Custom modal hook
+  /**  Custom modal hook **/
   const { modalVisible, toggleModalVisibility } = useModal();
 
   /**
-   * Dispatch load action on page-load
+   * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
    *    -> Saga function dispatches loadSuccess action when finished.
    */
@@ -58,7 +59,8 @@ export default function AvailableConnections() {
    * Set the selected target as the source target.
    * If a connection already exists with the target then dispatch loadFromSourceTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatches loadFromSourceTargetSuccess action is if successful.
+   *        -> Saga function dispatches loadFromSourceTargetFailure action if not successful.
    * Else display the modal.
    */
   const handleSwitchSourceTarget = connection => {

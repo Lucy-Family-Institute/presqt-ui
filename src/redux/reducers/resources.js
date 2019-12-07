@@ -15,6 +15,10 @@ const initialState = {
 
 export default handleActions(
   {
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
     [actionCreators.resources.loadFromSourceTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
@@ -23,6 +27,10 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection call.
+     **/
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
       /**
        * Augment a `possibleParent` object with it's children
@@ -126,6 +134,10 @@ export default handleActions(
         inSourceTarget: resourceHierarchy
       };
     },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection call.
+     **/
     [actionCreators.resources.loadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -139,8 +151,10 @@ export default handleActions(
         'data': action.payload.data,
       }]
     }),
-    // Open/Close Container Resources in UX
     [combineActions(
+      /**
+       * Open/Close Container Resources in UX.
+       **/
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
@@ -180,6 +194,10 @@ export default handleActions(
         inSourceTarget: updatedSourceResources
       };
     },
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Detail occurs with this action.
+     **/
     [actionCreators.resources.selectSourceResource]: (state, action) => {
       return {
         ...state,
@@ -190,6 +208,11 @@ export default handleActions(
         )
       };
     },
+    /***
+     * Untrack API call and track failure that occurred.
+     * Add resource details to selectedInSource.
+     * Dispatched via Saga call on successful Resource Detail call.
+     **/
     [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
       return {
         ...state,
@@ -201,10 +224,14 @@ export default handleActions(
         )
       };
     },
+    /**
+     * Remove the error from apiOperationErrors
+     **/
     [actionCreators.resources.removeFromErrorList]: (state, action) => {
       return {
         ...state,
-        apiOperationErrors: state.apiOperationErrors.filter(item => item.action !== 'source_resource_collection')
+        apiOperationErrors: state.apiOperationErrors.filter(item =>
+          item.action !== 'source_resource_collection')
       }
     },
   },

@@ -78,15 +78,31 @@ const styles = {
   })
 };
 
+/**
+ * This component handles the API connection modal.
+ * It is responsible for initializing the modal, submitting the token, saving the inputted token,
+ * setting any errors into the modal.
+ **/
 export default function Modal({ connection, modalActive, toggleModal }) {
   const dispatch = useDispatch();
+
+  /** SELECTOR DEFINITIONS
+   * apiTokens          : Object of <targets: tokens> submitted in the current session
+   * apiOperationErrors : List of objects of current api errors
+   * sourceTarget       :List of objects of current api errors
+   **/
   const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
+
+  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [token, setToken] = useState('');
   const error = apiOperationErrors.find(element => element.action === 'source_resource_collection');
 
+  /**
+   * Watch for the modal states to change and open modal. Also add errors to the token state if
+   * they exist.
+   **/
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {
       transitionIn();
@@ -112,6 +128,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
     }
   };
 
+  /**
+   * Close the modal and remove any errors and bad tokens that exist.
+   **/
   const onModalClose = () => {
     toggleModal();
     if (apiOperationErrors.length > 0 && error) {
@@ -120,6 +139,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
     }
   };
 
+  /**
+   * Submit the token and reset the token state.
+   **/
   const submitModalData = () => {
     onTokenSubmission(connection, token);
     setToken('');
