@@ -8,13 +8,26 @@ export function* watchSwitchSource() {
   yield takeEvery(actionCreators.resources.loadFromSourceTarget, loadSourceTargetResources);
 }
 
+ /**
+ * Make an Axios request to Resource Collection.
+ * Dispatch either the success or failure actions accordingly.
+ **/
 function* loadSourceTargetResources(action) {
-  const response = yield call(
+  try {
+    const response = yield call(
     getTargetResources,
     action.payload.sourceTarget.name,
     action.payload.sourceTargetToken
-  );
-  yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
+    );
+    yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
+  }
+  catch (error) {
+    yield put(actionCreators.resources.loadFromSourceTargetFailure(
+      error.response.status,
+      error.response.data.error)
+    );
+  }
+
 }
 
 /** Resource Detail **/

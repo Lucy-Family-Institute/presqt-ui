@@ -9,7 +9,8 @@ const initialState = {
   inSourceTarget: [],
   inDestinationTarget: [],
   selectedInSource: null,
-  selectedInTarget: null
+  selectedInTarget: null,
+  apiOperationErrors: []
 };
 
 export default handleActions(
@@ -125,6 +126,19 @@ export default handleActions(
         inSourceTarget: resourceHierarchy
       };
     },
+    [actionCreators.resources.loadFromSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.loadFromSourceTarget,
+        state.pendingAPIOperations,
+      ),
+      apiOperationErrors: [...state.apiOperationErrors, {
+        'action': 'source_resource_collection',
+        'status': action.payload.status,
+        'data': action.payload.data,
+      }]
+    }),
     // Open/Close Container Resources in UX
     [combineActions(
       actionCreators.resources.openContainer,
@@ -186,7 +200,13 @@ export default handleActions(
           state.pendingAPIOperations
         )
       };
-    }
+    },
+    [actionCreators.resources.removeFromErrorList]: (state, action) => {
+      return {
+        ...state,
+        apiOperationErrors: state.apiOperationErrors.filter(item => item.action !== 'source_resource_collection')
+      }
+    },
   },
 
   initialState

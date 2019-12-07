@@ -29,6 +29,10 @@ export default function AvailableConnections() {
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+
+  // Custom modal hook
+  const { modalVisible, toggleModalVisibility } = useModal();
 
   /**
    * Dispatch load action on page-load
@@ -37,8 +41,18 @@ export default function AvailableConnections() {
    */
   useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
 
-  // Custom modal hook
-  const { modalVisible, toggleModalVisibility } = useModal();
+  /**
+   * Watch for a change in apiOperationErrors.
+   * If a source_resource_collection exists in apiOperationErrors then display the modal.
+   **/
+  useEffect(() => {
+    if (
+      apiOperationErrors.length > 0 &&
+      apiOperationErrors.find(element => element.action === 'source_resource_collection')
+    ) {
+      toggleModalVisibility();
+    }
+  }, [apiOperationErrors]);
 
   /**
    * Set the selected target as the source target.
@@ -57,19 +71,6 @@ export default function AvailableConnections() {
     } else {
       setTimeout(() => toggleModalVisibility(), 500);
     }
-  };
-
-  /**
-   * Close the modal.
-   * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
-   *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
-   */
-  const onTokenSubmission = (connection, token) => {
-    toggleModalVisibility();
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
   };
 
   return (
@@ -116,8 +117,7 @@ export default function AvailableConnections() {
       <Modal
         connection={sourceTarget}
         modalActive={modalVisible}
-        onHide={toggleModalVisibility}
-        onSubmit={onTokenSubmission}
+        toggleModal={toggleModalVisibility}
       />
     </div>
   );
