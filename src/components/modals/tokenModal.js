@@ -97,7 +97,8 @@ export default function Modal({ connection, modalActive, toggleModal }) {
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [token, setToken] = useState('');
-  const error = apiOperationErrors.find(element => element.action === 'source_resource_collection');
+  const error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
 
   /**
    * Watch for the modal states to change and open modal. Also add errors to the token state if
@@ -122,9 +123,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
     toggleModal();
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
     dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
-    if (
-      apiOperationErrors.length > 0 && error){
-        dispatch(actionCreators.resources.removeFromErrorList('source_resource_collection'));
+    if (apiOperationErrors.length > 0 && error){
+        dispatch(actionCreators.resources.removeFromErrorList(
+          actionCreators.resources.loadFromSourceTarget.toString()));
     }
   };
 
@@ -134,8 +135,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
   const onModalClose = () => {
     toggleModal();
     if (apiOperationErrors.length > 0 && error) {
-      dispatch(actionCreators.resources.removeFromErrorList('source_resource_collection'));
-      dispatch(actionCreators.authorization.removeBadToken(sourceTarget.name));
+      dispatch(actionCreators.resources.removeFromErrorList(
+        actionCreators.resources.loadFromSourceTarget.toString()));
+      dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
   };
 
@@ -218,7 +220,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     Connect
                   </button>
                 </div>
-                <p css={textStyles.bodyError}>{error ? error.data: ''}
+                <p css={[textStyles.body, textStyles.cubsRed]}>{error ? error.data: ''}
                 </p>
               </div>
             </div>

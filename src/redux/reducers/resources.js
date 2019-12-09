@@ -1,7 +1,7 @@
 import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
-import { trackAction, untrackAction } from '../utils';
+import {trackAction, trackError, untrackAction} from '../utils';
 
 const initialState = {
   pendingAPIResponse: false,
@@ -145,11 +145,11 @@ export default handleActions(
         actionCreators.resources.loadFromSourceTarget,
         state.pendingAPIOperations,
       ),
-      apiOperationErrors: [...state.apiOperationErrors, {
-        'action': 'source_resource_collection',
-        'status': action.payload.status,
-        'data': action.payload.data,
-      }]
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.loadFromSourceTarget.toString(),
+        state.apiOperationErrors
+      )
     }),
     [combineActions(
       /**
@@ -231,7 +231,7 @@ export default handleActions(
       return {
         ...state,
         apiOperationErrors: state.apiOperationErrors.filter(item =>
-          item.action !== 'source_resource_collection')
+          item.action !== actionCreators.resources.loadFromSourceTarget.toString())
       }
     },
   },

@@ -4,7 +4,7 @@ import {createActions} from 'redux-actions';
 export const actionCreators = createActions({
     AUTHORIZATION: {
         SAVE_TOKEN: (targetID, token) => ({targetID, token}),
-        REMOVE_BAD_TOKEN: (target) => ({target: target}),
+        REMOVE_TOKEN: (target) => ({target: target}),
     },
     RESOURCES: {
         LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
