@@ -23,10 +23,11 @@ export default handleActions(
     /**
      * Remove the bad token from apiTokens.
      **/
-    [actionCreators.authorization.removeBadToken]: (state, action) => {
+    [actionCreators.authorization.removeToken]: (state, action) => {
       return {
         ...state,
-        apiTokens: pick(state.apiTokens, Object.keys(state.apiTokens).filter(targetName => targetName !== action.payload.target))
+        apiTokens: pick(state.apiTokens,
+          Object.keys(state.apiTokens).filter(targetName => targetName !== action.payload.target))
       }
     }
   },

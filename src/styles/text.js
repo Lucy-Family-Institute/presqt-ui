@@ -5,9 +5,7 @@ export default {
     fontSize: 14,
     fontFamily: 'Roboto'
   }),
-  bodyError: css({
-    fontSize: 14,
-    fontFamily: 'Roboto',
+  cubsRed: css({
     color: '#CC3433' //gocubsgo
   }),
   footerTitle: css({

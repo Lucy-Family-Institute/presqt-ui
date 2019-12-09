@@ -44,12 +44,13 @@ export default function AvailableConnections() {
 
   /**
    * Watch for a change in apiOperationErrors.
-   * If a source_resource_collection exists in apiOperationErrors then display the modal.
+   * If a  exists in apiOperationErrors then display the modal.
    **/
   useEffect(() => {
     if (
       apiOperationErrors.length > 0 &&
-      apiOperationErrors.find(element => element.action === 'source_resource_collection')
+      apiOperationErrors.find(
+        element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
     ) {
       toggleModalVisibility();
     }
