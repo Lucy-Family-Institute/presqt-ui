@@ -5,6 +5,9 @@ export default {
     fontSize: 14,
     fontFamily: 'Roboto'
   }),
+  cubsRed: css({
+    color: '#CC3433' //gocubsgo
+  }),
   footerTitle: css({
     fontSize: 24,
     fontFamily: 'Raleway',

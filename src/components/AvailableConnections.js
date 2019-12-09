@@ -11,40 +11,57 @@ import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
 
 /**
- * This component displays the various targets that a user can connect with
- * to. It is also one place through which a user can submit an API token for
- * targets. Finally, it is responsible for broadcasting (via Redux) what the
- * currently selected "sourceTarget" is.
+ * This component displays the various targets that a user can connect with.
+ * It's responsible for switching targets, handing off resource loading, and handing off modal work
+ * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
 
-  /**
+  /** SELECTOR DEFINITIONS
+   *
    * pendingAPIResponse : Boolean representing if the API request is in progress
    * apiTokens          : Object of <targets: tokens> submitted in the current session
    * sourceTarget       : Object of the current source selected
    * availableTargets   : List of objects of available targets
+   * apiOperationErrors : List of objects of current api errors
    */
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+
+  /**  Custom modal hook **/
+  const { modalVisible, toggleModalVisibility } = useModal();
 
   /**
-   * Dispatch load action on page-load
+   * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
    *    -> Saga function dispatches loadSuccess action when finished.
    */
   useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
 
-  // Custom modal hook
-  const { modalVisible, toggleModalVisibility } = useModal();
+  /**
+   * Watch for a change in apiOperationErrors.
+   * If a  exists in apiOperationErrors then display the modal.
+   **/
+  useEffect(() => {
+    if (
+      apiOperationErrors.length > 0 &&
+      apiOperationErrors.find(
+        element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
+    ) {
+      toggleModalVisibility();
+    }
+  }, [apiOperationErrors]);
 
   /**
    * Set the selected target as the source target.
    * If a connection already exists with the target then dispatch loadFromSourceTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatches loadFromSourceTargetSuccess action is if successful.
+   *        -> Saga function dispatches loadFromSourceTargetFailure action if not successful.
    * Else display the modal.
    */
   const handleSwitchSourceTarget = connection => {
@@ -57,19 +74,6 @@ export default function AvailableConnections() {
     } else {
       setTimeout(() => toggleModalVisibility(), 500);
     }
-  };
-
-  /**
-   * Close the modal.
-   * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
-   *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
-   */
-  const onTokenSubmission = (connection, token) => {
-    toggleModalVisibility();
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
   };
 
   return (
@@ -116,8 +120,7 @@ export default function AvailableConnections() {
       <Modal
         connection={sourceTarget}
         modalActive={modalVisible}
-        onHide={toggleModalVisibility}
-        onSubmit={onTokenSubmission}
+        toggleModal={toggleModalVisibility}
       />
     </div>
   );
