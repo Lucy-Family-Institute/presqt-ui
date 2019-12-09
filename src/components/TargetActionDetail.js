@@ -5,26 +5,24 @@ import { useSelector } from 'react-redux';
 import textStyles from '../styles/text';
 import MediumHeader from './widgets/MediumHeader';
 
+/**
+ * This component is responsible for displaying the details of a selected resource.
+ **/
 export default function TargetActionDetail() {
-  const selectedSourceResource = useSelector(
-    state => state.resources.selectedInSource
-  );
+  /** SELECTOR DEFINITIONS
+   *  selectedSourceResource : Object of the resource details of the selected resource to display.
+   **/
+  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
 
   /**
-   * Filter out resource data points that we don't want to
-   * display in the detail panel.
-   *
+   * Filter out resource data points that we don't want to display in the detail panel.
    * We exclude the following keys: ['links', 'open', 'children', 'count']
    */
   const detailsToRender = resource => {
     return Object.entries(resource)
       .filter(resourceDetail => {
         const [key, value] = resourceDetail;
-        const isKeyWanted = ['links', 'open', 'children', 'count'].includes(key)
-          ? false
-          : true;
-
-        return isKeyWanted;
+        return !['links', 'open', 'children', 'count'].includes(key);
       })
       .map(resourceDetail => {
         const [key, value] = resourceDetail;
@@ -38,9 +36,16 @@ export default function TargetActionDetail() {
       });
   };
 
+  /**
+   * Render the detail item provided. A 'detail item' is a single detail of the resource such as
+   * 'kind' or 'kind_name'.
+   *
+   * Create the proper element based on the type of item (scalar, object, or null).
+   **/
   const renderDetailItem = item => {
     const [key, value] = item;
     let renderer;
+
     if (['string', 'number'].includes(typeof value)) {
       renderer = renderScalarItem;
     } else if (['object'].includes(typeof value)) {
@@ -58,10 +63,16 @@ export default function TargetActionDetail() {
     );
   };
 
+  /**
+   * Define the html of a scalar item to be rendered.
+   **/
   const renderScalarItem = value => (
     <span css={[textStyles.body, { fontSize: 12 }]}>{value}</span>
   );
 
+  /**
+   * Define the html of an object item to be rendered.
+   **/
   const renderObject = value => {
     return Object.entries(value).map(resourceDetailElement => {
       const [key, value] = resourceDetailElement;
@@ -81,6 +92,9 @@ export default function TargetActionDetail() {
     });
   };
 
+  /**
+   * Define the html of an null item to be rendered.
+   **/
   const renderNull = () => (
     <span css={[textStyles.body, { fontSize: 12 }]}>null</span>
   );

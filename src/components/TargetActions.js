@@ -13,33 +13,40 @@ const temporaryLinktoFunctionMap = {
   Download: initiateResourceDownload
 };
 
+/**
+ * Mapping object for each target action component. Gets dynamically used for each button.
+ **/
 const actionLinkToComponent = {
   Download: DownloadModal
 };
 
+/**
+ * Component for target action buttons on the detail page. It is responsible for the rendering of
+ * the html element, and rendering the correct component for each action.
+ **/
 export default function TargetActions() {
-  const [
-    selectedSourceResource,
-    sourceTargetToken,
-    pendingAPIOperations
-  ] = useSelector(state => [
-    state.resources.selectedInSource,
-    state.targets.source
-      ? state.authorization.apiTokens[state.targets.source.name]
-      : null,
-    state.resources.pendingAPIOperations
-  ]);
+  /** SELECTOR DEFINITIONS
+   *  selectedSourceResource : Object of the resource details of the selected resource to display.
+   **/
+  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
 
-  const { modalVisible, toggleModalVisibility } = useModal();
+  /** STATE DEFINITIONS
+   * [modalType, setModalType] : Action modal state of which action button has been clicked on.
+   **/
   const [modalType, setModalType] = useState(null);
   const [link, setLink] = useState(null);
 
-  useEffect(() => {
-    if (link) {
-      setModalType(() => actionLinkToComponent[link.name]);
-      toggleModalVisibility();
-    }
-  }, [link, toggleModalVisibility]);
+  const { modalVisible, toggleModalVisibility } = useModal();
+
+
+  // THIS IS CAUSING AN INFINITE LOOP. COMMENTING OUT UNTIL DOWNLOAD GETS WORKED ON AGAIN.
+  // useEffect(() => {
+  //   console.log(link);
+  //   if (link) {
+  //     setModalType(() => actionLinkToComponent[link.name]);
+  //     toggleModalVisibility();
+  //   }
+  // }, [link, toggleModalVisibility]);
 
   return (
     <div
