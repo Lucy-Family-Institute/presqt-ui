@@ -1,7 +1,7 @@
 import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
-import {trackAction, trackError, untrackAction} from '../utils';
+import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
 
 const initialState = {
   pendingAPIResponse: false,
@@ -10,7 +10,8 @@ const initialState = {
   inDestinationTarget: [],
   selectedInSource: null,
   selectedInTarget: null,
-  apiOperationErrors: []
+  apiOperationErrors: [],
+  sourceSearchValue: null
 };
 
 export default handleActions(
@@ -19,13 +20,16 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: state => ({
+    [actionCreators.resources.loadFromSourceTarget]: (state, action)=> ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.resources.loadFromSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      sourceSearchValue: action.payload.searchValue
+        ? deformatSearch(action.payload.searchValue)
+        : action.payload.searchValue
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -33,8 +37,7 @@ export default handleActions(
      **/
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
       /**
-       * Augment a `possibleParent` object with it's children
-       * in `unsortedChildren`.
+       * Augment a `possibleParent` object with it's children in `unsortedChildren`.
        *
        * @param {Array} unsortedChildren
        * @param {Object} possibleParent
@@ -91,38 +94,41 @@ export default handleActions(
         return found;
       }
 
-      const resourceHierarchy = action.payload.reduce(
-        (initial, resource, index, original) => {
-          if (resource.container === null) {
-            /* Root Level Containers */
+      let resourceHierarchy = [];
+      if (action.payload.length > 0) {
+        resourceHierarchy = action.payload.reduce(
+          (initial, resource, index, original) => {
+            if (resource.container === null) {
+              /* Root Level Containers */
 
-            // Check if there is anything already in the
-            // unsorted array that should be attached
-            // to this container.
-            findUnsortedChildren(initial.unsorted, resource);
-
-            resource.open = false;
-
-            // Push onto the hierarchy object
-            initial.sorted.push(resource);
-          } else {
-            const parentFound = associateWithParentResource(
-              initial.sorted,
-              resource
-            );
-            if (parentFound) {
+              // Check if there is anything already in the
+              // unsorted array that should be attached
+              // to this container.
               findUnsortedChildren(initial.unsorted, resource);
+
+              resource.open = false;
+
+              // Push onto the hierarchy object
+              initial.sorted.push(resource);
             } else {
-              // Add the resource to the unsorted array
-              // where it will be considered in each future
-              // iteration of the loop.
-              initial.unsorted.push(resource);
+              const parentFound = associateWithParentResource(
+                initial.sorted,
+                resource
+              );
+              if (parentFound) {
+                findUnsortedChildren(initial.unsorted, resource);
+              } else {
+                // Add the resource to the unsorted array
+                // where it will be considered in each future
+                // iteration of the loop.
+                initial.unsorted.push(resource);
+              }
             }
-          }
-          return index < original.length - 1 ? initial : initial.sorted;
-        },
-        { sorted: [], unsorted: [] }
-      );
+            return index < original.length - 1 ? initial : initial.sorted;
+          },
+          { sorted: [], unsorted: [] }
+        );
+      }
 
       return {
         ...state,

@@ -33,6 +33,8 @@ export default function TargetResourceBrowser() {
   * sourceTargetResources : Array containing source target resources in hierarchical order
   * pendingAPIOperations  : Boolean representing if a pending API operation exists
   * apiOperationErrors    : List of objects of current api errors
+  * sourceTarget          : Object of the current source selected
+  * sourceSearchValue     : Search term last submitted in the source search input
   */
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
@@ -40,6 +42,9 @@ export default function TargetResourceBrowser() {
   const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const sourceTarget = useSelector(state => state.targets.source);
+  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
+
 
   /**
   * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -64,22 +69,36 @@ export default function TargetResourceBrowser() {
    */
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return (
-    resources.map(resource => {
-      return (
-        <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
-          <ResourceButton
-            resource={resource}
-            level={level}
-            onClick={onResourceClicked}
-          />
-          {resource.kind === 'container' &&
-          resource.open === true &&
-          resource.children
-            ? resourceHierarchy(onResourceClicked, resource.children, level + 1)
-            : null}
-        </div>
-      );
-    }));
+      resources.map(resource => {
+        return (
+          <div key={resource.id} css={{animation: `${fadeIn} .5s ease`}}>
+            <ResourceButton
+              resource={resource}
+              level={level}
+              onClick={onResourceClicked}
+            />
+            {resource.kind === 'container' &&
+            resource.open === true &&
+            resource.children
+              ? resourceHierarchy(onResourceClicked, resource.children, level + 1)
+              : null}
+          </div>
+        );
+      }));
+  };
+
+  /**
+   * Display a message that no resources are found.
+   **/
+  const NoResourcesFound = () => {
+    return (
+      <div css={[textStyles.body, textStyles.noResourcesFound]}>
+        {
+          sourceSearchValue
+            ? "No " + sourceTarget.readable_name + " resources found for search term '" + sourceSearchValue + "'."
+            : "No " + sourceTarget.readable_name + " resources found for this user."
+        }
+      </div>)
   };
 
   return (
@@ -119,12 +138,21 @@ export default function TargetResourceBrowser() {
           </div>
         ) : (
           <div>
-            {sourceTargetToken && !apiOperationErrors.find(element => element.action === actionCreators.resources.loadFromSourceTarget.toString()) ? <TargetSearch />: ''}
-            {resourceHierarchy(
-              resource => onResourceClicked(resource, sourceTargetToken),
-              sourceTargetResources,
-              0
-            )}
+            {
+              sourceTargetToken &&
+              !apiOperationErrors.find(element =>
+                element.action === actionCreators.resources.loadFromSourceTarget.toString()
+              )
+                ? <TargetSearch />
+                : ''
+            }
+            {
+              sourceTargetResources.length > 0
+                ? resourceHierarchy(resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
+                : sourceTargetToken
+                ?  <NoResourcesFound />
+                  : ''
+            }
           </div>
         )}
       </div>

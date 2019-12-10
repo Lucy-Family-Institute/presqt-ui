@@ -6,7 +6,7 @@ export default {
     fontFamily: 'Roboto'
   }),
   cubsRed: css({
-    color: '#CC3433' //gocubsgo
+    color: '#CC3433' //GoCubsGo
   }),
   footerTitle: css({
     fontSize: 24,
@@ -59,5 +59,8 @@ export default {
     fontWeight: 500,
     fontSize: 12,
     textTransform: 'uppercase'
+  }),
+  noResourcesFound: css({
+    marginTop: 10
   })
 };

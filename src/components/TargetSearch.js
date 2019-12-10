@@ -3,6 +3,7 @@ import {jsx} from '@emotion/core';
 import { useState } from 'react';
 import {actionCreators} from "../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
+import {formatSearch} from "../redux/utils";
 
 export default function TargetSearch() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function TargetSearch() {
   const token = apiTokens[sourceTarget.name];
 
   const submitSearch = () => {
-    const searchValueNoSpaces = searchValue.replace(/ /g, "+");
+    const searchValueNoSpaces = formatSearch(searchValue);
     dispatch(actionCreators.resources.loadFromSourceTarget(
       sourceTarget, token, searchValueNoSpaces)
     )
