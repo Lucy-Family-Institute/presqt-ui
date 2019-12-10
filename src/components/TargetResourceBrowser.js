@@ -9,6 +9,7 @@ import { actionCreators } from '../redux/actionCreators';
 import ResourceButton from './widgets/ResourceButton';
 import TargetResourcesHeader from './widgets/TargetResourcesHeader';
 import textStyles from '../styles/text';
+import TargetSearch from "./TargetSearch";
 
 const fadeIn = keyframes`
   0% {
@@ -31,12 +32,14 @@ export default function TargetResourceBrowser() {
   * sourceTargetToken     : String user token if a source exists else null
   * sourceTargetResources : Array containing source target resources in hierarchical order
   * pendingAPIOperations  : Boolean representing if a pending API operation exists
+  * apiOperationErrors    : List of objects of current api errors
   */
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
       : null,);
   const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
   /**
   * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -60,7 +63,8 @@ export default function TargetResourceBrowser() {
    * hierarchy of a given target.
    */
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
-    return resources.map(resource => {
+    return (
+    resources.map(resource => {
       return (
         <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
           <ResourceButton
@@ -75,7 +79,7 @@ export default function TargetResourceBrowser() {
             : null}
         </div>
       );
-    });
+    }));
   };
 
   return (
@@ -91,8 +95,10 @@ export default function TargetResourceBrowser() {
     >
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
+
         {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTarget.toString()
+          actionCreators.resources.loadFromSourceTarget.toString() ||
+          actionCreators.resources.loadFromSourceTargetSearch.toString()
         ) ? (
           <div
             css={{
@@ -113,11 +119,14 @@ export default function TargetResourceBrowser() {
             <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
           </div>
         ) : (
-          resourceHierarchy(
-            resource => onResourceClicked(resource, sourceTargetToken),
-            sourceTargetResources,
-            0
-          )
+          <div>
+            {sourceTargetToken && !apiOperationErrors.find(element => element.action === actionCreators.resources.loadFromSourceTarget.toString()) ? <TargetSearch />: ''}
+            {resourceHierarchy(
+              resource => onResourceClicked(resource, sourceTargetToken),
+              sourceTargetResources,
+              0
+            )}
+          </div>
         )}
       </div>
     </div>

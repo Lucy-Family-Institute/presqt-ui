@@ -17,7 +17,9 @@ export const actionCreators = createActions({
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
         SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
-        SELECT_SOURCE_RESOURCE_SUCCESS: undefined
+        SELECT_SOURCE_RESOURCE_SUCCESS: undefined,
+        LOAD_FROM_SOURCE_TARGET_SEARCH: (sourceTarget, sourceTargetToken, searchValue) => (
+          {sourceTarget, sourceTargetToken, searchValue})
     },
     TARGETS: {
         LOAD: undefined,

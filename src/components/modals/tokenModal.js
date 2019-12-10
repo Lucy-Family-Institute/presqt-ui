@@ -89,7 +89,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
   /** SELECTOR DEFINITIONS
    * apiTokens          : Object of <targets: tokens> submitted in the current session
    * apiOperationErrors : List of objects of current api errors
-   * sourceTarget       :List of objects of current api errors
+   * sourceTarget       : Object of the current source selected
    **/
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
