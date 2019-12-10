@@ -122,7 +122,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
   const onTokenSubmission = (connection, token) => {
     toggleModal();
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token, null));
     if (apiOperationErrors.length > 0 && error){
         dispatch(actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromSourceTarget.toString()));

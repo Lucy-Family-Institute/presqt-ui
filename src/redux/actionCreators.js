@@ -7,9 +7,10 @@ export const actionCreators = createActions({
         REMOVE_TOKEN: (target) => ({target: target}),
     },
     RESOURCES: {
-        LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
+        LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken, searchValue) => ({
             sourceTarget,
-            sourceTargetToken
+            sourceTargetToken,
+            searchValue
         }),
         LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
         LOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
@@ -18,8 +19,6 @@ export const actionCreators = createActions({
         CLOSE_CONTAINER: container => ({container, open: false}),
         SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
         SELECT_SOURCE_RESOURCE_SUCCESS: undefined,
-        LOAD_FROM_SOURCE_TARGET_SEARCH: (sourceTarget, sourceTargetToken, searchValue) => (
-          {sourceTarget, sourceTargetToken, searchValue})
     },
     TARGETS: {
         LOAD: undefined,

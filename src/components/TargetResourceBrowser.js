@@ -97,8 +97,7 @@ export default function TargetResourceBrowser() {
         <TargetResourcesHeader />
 
         {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTarget.toString() ||
-          actionCreators.resources.loadFromSourceTargetSearch.toString()
+          actionCreators.resources.loadFromSourceTarget.toString()
         ) ? (
           <div
             css={{

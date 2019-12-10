@@ -6,20 +6,17 @@ import { apiURLBase } from '../config';
 /**
  * Resource Collection Endpoint
  **/
-export function getTargetResources(sourceTarget, sourceTargetToken) {
-  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources/`, {
-    headers: { 'presqt-source-token': sourceTargetToken }
-  });
-}
-
-/**
- * Resource Collection Endpoint With Search Parameter
- **/
-export function getTargetResourcesSearch(sourceTarget, sourceTargetToken, search) {
-  console.log(`${apiURLBase}targets/${sourceTarget}/resources?title=${search}`);
-  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${search}`, {
-    headers: { 'presqt-source-token': sourceTargetToken }
-  });
+export function getTargetResources(sourceTarget, sourceTargetToken, searchValue) {
+  if (searchValue) {
+    return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${searchValue}`, {
+      headers: { 'presqt-source-token': sourceTargetToken }
+    });
+  }
+  else {
+    return axios.get(`${apiURLBase}targets/${sourceTarget}/resources/`, {
+      headers: {'presqt-source-token': sourceTargetToken}
+    });
+  }
 }
 
 /**

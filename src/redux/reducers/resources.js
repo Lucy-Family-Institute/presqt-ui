@@ -234,19 +234,6 @@ export default handleActions(
           item.action !== actionCreators.resources.loadFromSourceTarget.toString())
       }
     },
-    /**
-     * Add API call to trackers.
-     * Saga call to Resource-Collection with search parameter occurs with this action.
-     **/
-    [actionCreators.resources.loadFromSourceTargetSearch]: state => ({
-      ...state,
-      pendingAPIResponse: true,
-      pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromSourceTargetSearch,
-        state.pendingAPIOperations
-      ),
-      inSourceTarget: []
-    })
   },
   initialState
 );
