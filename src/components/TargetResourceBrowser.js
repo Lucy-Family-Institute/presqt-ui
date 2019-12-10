@@ -45,6 +45,8 @@ export default function TargetResourceBrowser() {
   const sourceTarget = useSelector(state => state.targets.source);
   const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
 
+  const search_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
 
   /**
   * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -98,7 +100,16 @@ export default function TargetResourceBrowser() {
             ? "No " + sourceTarget.readable_name + " resources found for search term '" + sourceSearchValue + "'."
             : "No " + sourceTarget.readable_name + " resources found for this user."
         }
-      </div>)
+      </div>
+    )
+  };
+
+  const SearchError = () => {
+    return (
+      <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
+        {search_error.data}
+      </div>
+    )
   };
 
   return (
@@ -115,46 +126,52 @@ export default function TargetResourceBrowser() {
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
 
-        {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTarget.toString()
-        ) ? (
-          <div
-            css={{
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-              animation: `${fadeIn} 3s ease`
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faSpinner}
-              size='2x'
-              spin
-              color={'#4E4E4E'}
-            />
-            <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
-          </div>
-        ) : (
-          <div>
-            {
-              sourceTargetToken &&
-              !apiOperationErrors.find(element =>
-                element.action === actionCreators.resources.loadFromSourceTarget.toString()
-              )
-                ? <TargetSearch />
-                : ''
-            }
-            {
-              sourceTargetResources.length > 0
-                ? resourceHierarchy(resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
-                : sourceTargetToken
-                ?  <NoResourcesFound />
+        {
+          pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
+          || pendingAPIOperations.includes(
+            actionCreators.resources.loadFromSourceTargetSearch.toString())
+          ? (
+            <div
+              css={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                animation: `${fadeIn} 3s ease`
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faSpinner}
+                size='2x'
+                spin
+                color={'#4E4E4E'}
+              />
+              <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
+            </div>
+          ) : (
+            <div>
+              {
+                sourceTargetToken &&
+                !apiOperationErrors.find(element =>
+                  element.action === actionCreators.resources.loadFromSourceTarget.toString()
+                )
+                  ? <TargetSearch />
                   : ''
-            }
-          </div>
-        )}
+              }
+
+              {
+                sourceTargetResources.length > 0
+                  ? resourceHierarchy(resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
+                  : search_error
+                    ? <SearchError />
+                  : sourceTargetToken
+                    ?  <NoResourcesFound />
+                    : ''
+              }
+            </div>
+          )
+        }
       </div>
     </div>
   );

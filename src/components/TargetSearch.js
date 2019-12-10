@@ -24,8 +24,11 @@ export default function TargetSearch() {
 
   const submitSearch = () => {
     const searchValueNoSpaces = formatSearch(searchValue);
-    dispatch(actionCreators.resources.loadFromSourceTarget(
-      sourceTarget, token, searchValueNoSpaces)
+    dispatch(actionCreators.resources.loadFromSourceTargetSearch(
+      sourceTarget.name, token, searchValueNoSpaces)
+    );
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.loadFromSourceTargetSearch.toString())
     )
   };
 

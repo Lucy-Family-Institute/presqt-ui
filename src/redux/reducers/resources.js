@@ -20,16 +20,29 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: (state, action)=> ({
+    [actionCreators.resources.loadFromSourceTarget]: state=> ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.resources.loadFromSourceTarget,
         state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action with search parameter.
+     **/
+    [actionCreators.resources.loadFromSourceTargetSearch]: (state, action)=> ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromSourceTargetSearch,
+        state.pendingAPIOperations
       ),
       sourceSearchValue: action.payload.searchValue
         ? deformatSearch(action.payload.searchValue)
-        : action.payload.searchValue
+        : action.payload.searchValue,
+      inSourceTarget: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -130,13 +143,15 @@ export default handleActions(
         );
       }
 
+      let new_ops = untrackAction(actionCreators.resources.loadFromSourceTarget,
+        state.pendingAPIOperations);
+      new_ops = untrackAction(actionCreators.resources.loadFromSourceTargetSearch,
+        new_ops);
+
       return {
         ...state,
         pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromSourceTarget,
-          state.pendingAPIOperations
-        ),
+        pendingAPIOperations: new_ops,
         inSourceTarget: resourceHierarchy
       };
     },
@@ -157,6 +172,20 @@ export default handleActions(
         state.apiOperationErrors
       )
     }),
+    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.loadFromSourceTargetSearch,
+        state.pendingAPIOperations,
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.loadFromSourceTargetSearch.toString(),
+        state.apiOperationErrors
+      )
+    }),
+
     [combineActions(
       /**
        * Open/Close Container Resources in UX.

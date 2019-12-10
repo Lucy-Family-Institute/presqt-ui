@@ -7,13 +7,18 @@ export const actionCreators = createActions({
         REMOVE_TOKEN: (target) => ({target: target}),
     },
     RESOURCES: {
-        LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken, searchValue) => ({
+        LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
+            sourceTarget,
+            sourceTargetToken,
+        }),
+        LOAD_FROM_SOURCE_TARGET_SEARCH: (sourceTarget, sourceTargetToken, searchValue) => ({
             sourceTarget,
             sourceTargetToken,
             searchValue
         }),
         LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
         LOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
+        LOAD_FROM_SOURCE_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
         REMOVE_FROM_ERROR_LIST: action => ({action: action}),
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
