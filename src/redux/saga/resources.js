@@ -48,7 +48,6 @@ function* loadSourceTargetResourcesSearch(action) {
     yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
   }
   catch (error) {
-    console.log(1);
     yield put(actionCreators.resources.loadFromSourceTargetSearchFailure(
       error.response.status,
       error.response.data.error)

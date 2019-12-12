@@ -6,10 +6,9 @@ import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
-  inSourceTarget: [],
+  inSourceTarget: null,
   inDestinationTarget: [],
   selectedInSource: null,
-  selectedInTarget: null,
   apiOperationErrors: [],
   sourceSearchValue: null
 };
@@ -26,7 +25,8 @@ export default handleActions(
       pendingAPIOperations: trackAction(
         actionCreators.resources.loadFromSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      inSourceTarget: null
     }),
     /**
      * Add API call to trackers.
@@ -42,7 +42,6 @@ export default handleActions(
       sourceSearchValue: action.payload.searchValue
         ? deformatSearch(action.payload.searchValue)
         : action.payload.searchValue,
-      inSourceTarget: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -170,7 +169,8 @@ export default handleActions(
         action,
         actionCreators.resources.loadFromSourceTarget.toString(),
         state.apiOperationErrors
-      )
+      ),
+      inSourceTarget: null
     }),
     [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
       ...state,
@@ -182,8 +182,9 @@ export default handleActions(
       apiOperationErrors: trackError(
         action,
         actionCreators.resources.loadFromSourceTargetSearch.toString(),
-        state.apiOperationErrors
-      )
+        state.apiOperationErrors,
+      ),
+      inSourceTarget: null
     }),
 
     [combineActions(

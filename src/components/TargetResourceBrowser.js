@@ -89,31 +89,41 @@ export default function TargetResourceBrowser() {
       }));
   };
 
+  /**
+   * If a valid resource collection connection has been made or a search is being performed
+   * then display the search input.
+   **/
   const search = () => {
-    if (sourceTargetToken && !apiOperationErrors.find(element =>
-                    element.action === actionCreators.resources.loadFromSourceTarget.toString())) {
+    if (sourceTargetResources || sourceSearchValue) {
       return <TargetSearch />
     }
   };
 
+  /**
+   * Control what to display in the Target Resource Browser.
+   */
   const targetResources = () => {
     return (
-      sourceTargetResources.length > 0
+      // If resources exist for the user then display them
+      sourceTargetResources && sourceTargetResources.length > 0
         ? resourceHierarchy(resource =>
           onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
-        : search_error
-          ? <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
-              {search_error.data}
-            </div>
-        : sourceSearchValue
-          ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
-              No {sourceTarget.readable_name} resources found for search term {sourceSearchValue}.
-            </div>
-        : sourceTarget && sourceTargetToken && !token_error
-          ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
-              No {sourceTarget.readable_name} resources found for this user.
-            </div>
-        : null
+      // No resources exist with the given search term
+      : sourceTargetResources && sourceTargetResources.length === 0 && sourceSearchValue
+        ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+          No {sourceTarget.readable_name} resources found for search term {sourceSearchValue}.
+        </div>
+      // No resources exist for the user
+      : sourceTargetResources && sourceTargetResources.length === 0
+        ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+            No {sourceTarget.readable_name} resources found for this user.
+          </div>
+      // An error was returned when searching the target
+      : sourceTargetResources && search_error
+        ? <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
+            {search_error.data}
+          </div>
+      : null
     )
   };
 
@@ -130,6 +140,7 @@ export default function TargetResourceBrowser() {
     >
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
+        {search()}
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||
@@ -138,7 +149,7 @@ export default function TargetResourceBrowser() {
           ? <Spinner />
           : (
               <div>
-                {search()}
+
                 {targetResources()}
               </div>
             )
