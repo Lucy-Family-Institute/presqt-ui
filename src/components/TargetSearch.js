@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {actionCreators} from "../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 import {formatSearch} from "../redux/utils";
+import { SearchInput } from '@bit/segmentio.evergreen.search-input';
+import textStyles from "../styles/text";
 
 export default function TargetSearch() {
   const dispatch = useDispatch();
@@ -33,11 +35,11 @@ export default function TargetSearch() {
   };
 
   return (
-    <div>
-      <input
+    <div css={textStyles.marginTop10}>
+      <SearchInput
         type="text"
-        value={searchValue}
         placeholder={"Search all " + sourceTarget.readable_name + " resources"}
+        value={searchValue}
         onChange={event => updateSearch(event.target.value)}
       />
       <button type="submit" onClick={submitSearch}>

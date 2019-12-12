@@ -60,7 +60,7 @@ export default {
     fontSize: 12,
     textTransform: 'uppercase'
   }),
-  noResourcesFound: css({
+  marginTop10: css({
     marginTop: 10
   })
 };

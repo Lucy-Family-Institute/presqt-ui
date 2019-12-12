@@ -7,7 +7,7 @@ const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
   inSourceTarget: null,
-  inDestinationTarget: [],
+  inDestinationTarget: null,
   selectedInSource: null,
   apiOperationErrors: [],
   sourceSearchValue: null

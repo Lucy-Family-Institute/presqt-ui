@@ -45,8 +45,6 @@ export default function TargetResourceBrowser() {
 
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
-  const token_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
 
   /**
   * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -110,17 +108,17 @@ export default function TargetResourceBrowser() {
           onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
       // No resources exist with the given search term
       : sourceTargetResources && sourceTargetResources.length === 0 && sourceSearchValue
-        ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+        ? <div css={[textStyles.body, textStyles.marginTop10]}>
           No {sourceTarget.readable_name} resources found for search term {sourceSearchValue}.
         </div>
       // No resources exist for the user
       : sourceTargetResources && sourceTargetResources.length === 0
-        ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+        ? <div css={[textStyles.body, textStyles.marginTop10]}>
             No {sourceTarget.readable_name} resources found for this user.
           </div>
       // An error was returned when searching the target
       : sourceTargetResources && search_error
-        ? <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
+        ? <div css={[textStyles.body, textStyles.marginTop10, textStyles.cubsRed]}>
             {search_error.data}
           </div>
       : null
