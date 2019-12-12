@@ -2,20 +2,18 @@
 import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
 import { actionCreators } from '../redux/actionCreators';
 import ResourceButton from './widgets/ResourceButton';
 import TargetResourcesHeader from './widgets/TargetResourcesHeader';
 import textStyles from '../styles/text';
 import TargetSearch from "./TargetSearch";
+import Spinner from "./widgets/spinner";
 
 const fadeIn = keyframes`
   0% {
     opacity: 0;
   }
-
+  
   100% {
     opacity: 100;
   }
@@ -47,6 +45,8 @@ export default function TargetResourceBrowser() {
 
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
+  const token_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
 
   /**
   * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -89,26 +89,31 @@ export default function TargetResourceBrowser() {
       }));
   };
 
-  /**
-   * Display a message that no resources are found.
-   **/
-  const NoResourcesFound = () => {
-    return (
-      <div css={[textStyles.body, textStyles.noResourcesFound]}>
-        {
-          sourceSearchValue
-            ? "No " + sourceTarget.readable_name + " resources found for search term '" + sourceSearchValue + "'."
-            : "No " + sourceTarget.readable_name + " resources found for this user."
-        }
-      </div>
-    )
+  const search = () => {
+    if (sourceTargetToken && !apiOperationErrors.find(element =>
+                    element.action === actionCreators.resources.loadFromSourceTarget.toString())) {
+      return <TargetSearch />
+    }
   };
 
-  const SearchError = () => {
+  const targetResources = () => {
     return (
-      <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
-        {search_error.data}
-      </div>
+      sourceTargetResources.length > 0
+        ? resourceHierarchy(resource =>
+          onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
+        : search_error
+          ? <div css={[textStyles.body, textStyles.noResourcesFound, textStyles.cubsRed]}>
+              {search_error.data}
+            </div>
+        : sourceSearchValue
+          ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+              No {sourceTarget.readable_name} resources found for search term {sourceSearchValue}.
+            </div>
+        : sourceTarget && sourceTargetToken && !token_error
+          ? <div css={[textStyles.body, textStyles.noResourcesFound]}>
+              No {sourceTarget.readable_name} resources found for this user.
+            </div>
+        : null
     )
   };
 
@@ -125,52 +130,18 @@ export default function TargetResourceBrowser() {
     >
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
-
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
-          || pendingAPIOperations.includes(
+          ||
+          pendingAPIOperations.includes(
             actionCreators.resources.loadFromSourceTargetSearch.toString())
-          ? (
-            <div
-              css={{
-                display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-                animation: `${fadeIn} 3s ease`
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faSpinner}
-                size='2x'
-                spin
-                color={'#4E4E4E'}
-              />
-              <span css={[textStyles.body, { paddingLeft: 10 }]}>Loading</span>
-            </div>
-          ) : (
-            <div>
-              {
-                sourceTargetToken &&
-                !apiOperationErrors.find(element =>
-                  element.action === actionCreators.resources.loadFromSourceTarget.toString()
-                )
-                  ? <TargetSearch />
-                  : ''
-              }
-
-              {
-                sourceTargetResources.length > 0
-                  ? resourceHierarchy(resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
-                  : search_error
-                    ? <SearchError />
-                  : sourceTargetToken
-                    ?  <NoResourcesFound />
-                    : ''
-              }
-            </div>
-          )
+          ? <Spinner />
+          : (
+              <div>
+                {search()}
+                {targetResources()}
+              </div>
+            )
         }
       </div>
     </div>
