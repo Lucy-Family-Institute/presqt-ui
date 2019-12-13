@@ -89,7 +89,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
   /** SELECTOR DEFINITIONS
    * apiTokens          : Object of <targets: tokens> submitted in the current session
    * apiOperationErrors : List of objects of current api errors
-   * sourceTarget       :List of objects of current api errors
+   * sourceTarget       : Object of the current source selected
    **/
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
@@ -122,7 +122,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
   const onTokenSubmission = (connection, token) => {
     toggleModal();
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token, null));
     if (apiOperationErrors.length > 0 && error){
         dispatch(actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromSourceTarget.toString()));

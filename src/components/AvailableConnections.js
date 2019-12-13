@@ -65,6 +65,7 @@ export default function AvailableConnections() {
    * Else display the modal.
    */
   const handleSwitchSourceTarget = connection => {
+    dispatch(actionCreators.resources.clearSourceResources());
     dispatch(actionCreators.targets.switchSource(connection));
 
     if (connection.name in apiTokens) {

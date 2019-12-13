@@ -1,16 +1,18 @@
 import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
-import {trackAction, trackError, untrackAction} from '../utils';
+import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
+import {pick} from "lodash";
+import buildResourceHierarchy from "./helpers/resources";
 
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
-  inSourceTarget: [],
-  inDestinationTarget: [],
+  inSourceTarget: null,
+  inDestinationTarget: null,
   selectedInSource: null,
-  selectedInTarget: null,
-  apiOperationErrors: []
+  apiOperationErrors: [],
+  sourceSearchValue: null
 };
 
 export default handleActions(
@@ -19,118 +21,53 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: state => ({
+    [actionCreators.resources.loadFromSourceTarget]: state=> ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.resources.loadFromSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      inSourceTarget: null
+    }),
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action with search parameter.
+     **/
+    [actionCreators.resources.loadFromSourceTargetSearch]: (state, action)=> ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromSourceTargetSearch,
+        state.pendingAPIOperations
+      ),
+      sourceSearchValue: action.payload.searchValue
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
-      /**
-       * Augment a `possibleParent` object with it's children
-       * in `unsortedChildren`.
-       *
-       * @param {Array} unsortedChildren
-       * @param {Object} possibleParent
-       */
-      function findUnsortedChildren(unsortedChildren, possibleParent) {
-        unsortedChildren.forEach((possibleChild, index) => {
-          if (possibleChild.container === possibleParent.id) {
-            if (possibleChild.kind === 'container') {
-              possibleChild.open = false;
-            }
-
-            possibleParent.children
-              ? possibleParent.children.push(possibleChild)
-              : (possibleParent.children = [possibleChild]);
-
-            possibleParent.count = possibleParent.children.length;
-            const addedObj = unsortedChildren.splice(index, 1);
-            findUnsortedChildren(unsortedChildren, addedObj[0]);
-          }
-        });
-      }
-
-      /**
-       * Attempt to find a resource's parent, and if found, augment the parent
-       * resource's `children` array with `child`.
-       *
-       * @param {Array} possibleParents
-       * @param {Object} child
-       */
-      function associateWithParentResource(possibleParents, child) {
-        let found = false;
-
-        possibleParents.forEach(possibleParent => {
-          if (possibleParent.id === child.container) {
-            found = true;
-
-            if (child.kind === 'container') {
-              child.open = false;
-            }
-
-            if (possibleParent.children) {
-              possibleParent.children.push(child);
-            } else {
-              possibleParent.children = [child];
-            }
-
-            possibleParent.count = possibleParent.children.length;
-            return true;
-          } else if (possibleParent.children)
-            // Invoke Recursion
-            found = associateWithParentResource(possibleParent.children, child);
-        });
-
-        return found;
-      }
-
-      const resourceHierarchy = action.payload.reduce(
-        (initial, resource, index, original) => {
-          if (resource.container === null) {
-            /* Root Level Containers */
-
-            // Check if there is anything already in the
-            // unsorted array that should be attached
-            // to this container.
-            findUnsortedChildren(initial.unsorted, resource);
-
-            resource.open = false;
-
-            // Push onto the hierarchy object
-            initial.sorted.push(resource);
-          } else {
-            const parentFound = associateWithParentResource(
-              initial.sorted,
-              resource
-            );
-            if (parentFound) {
-              findUnsortedChildren(initial.unsorted, resource);
-            } else {
-              // Add the resource to the unsorted array
-              // where it will be considered in each future
-              // iteration of the loop.
-              initial.unsorted.push(resource);
-            }
-          }
-          return index < original.length - 1 ? initial : initial.sorted;
-        },
-        { sorted: [], unsorted: [] }
-      );
-
+      const resourceHierarchy = buildResourceHierarchy(action);
       return {
         ...state,
         pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromSourceTarget,
-          state.pendingAPIOperations
-        ),
+        pendingAPIOperations: untrackAction(actionCreators.resources.loadFromSourceTarget,
+          state.pendingAPIOperations),
+        inSourceTarget: resourceHierarchy
+      };
+    },
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection with search call.
+     **/
+    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(actionCreators.resources.loadFromSourceTargetSearch,
+          state.pendingAPIOperations),
         inSourceTarget: resourceHierarchy
       };
     },
@@ -149,7 +86,26 @@ export default handleActions(
         action,
         actionCreators.resources.loadFromSourceTarget.toString(),
         state.apiOperationErrors
-      )
+      ),
+      inSourceTarget: null
+    }),
+    /**
+     * Untrack API search call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection search call.
+     **/
+    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.loadFromSourceTargetSearch,
+        state.pendingAPIOperations,
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.loadFromSourceTargetSearch,
+        state.apiOperationErrors,
+      ),
+      inSourceTarget: null
     }),
     [combineActions(
       /**
@@ -231,10 +187,20 @@ export default handleActions(
       return {
         ...state,
         apiOperationErrors: state.apiOperationErrors.filter(item =>
-          item.action !== actionCreators.resources.loadFromSourceTarget.toString())
+          item.action !== action.payload.actionToRemove)
       }
     },
+    /**
+     * Clear source list and detail data
+     **/
+    [actionCreators.resources.clearSourceResources]: state => {
+      return {
+        ...state,
+        inSourceTarget: null,
+        selectedInSource: null,
+        sourceSearchValue: null
+      }
+    }
   },
-
   initialState
 );
