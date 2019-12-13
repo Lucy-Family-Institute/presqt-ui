@@ -59,8 +59,5 @@ export default {
     fontWeight: 500,
     fontSize: 12,
     textTransform: 'uppercase'
-  }),
-  marginTop10: css({
-    marginTop: 10
   })
 };
