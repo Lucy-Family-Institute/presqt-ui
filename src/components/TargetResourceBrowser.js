@@ -117,7 +117,7 @@ export default function TargetResourceBrowser() {
             No {sourceTarget.readable_name} resources found for this user.
           </div>
       // An error was returned when searching the target
-      : sourceTargetResources && search_error
+      : search_error
         ? <div css={[textStyles.body, textStyles.marginTop10, textStyles.cubsRed]}>
             {search_error.data}
           </div>
