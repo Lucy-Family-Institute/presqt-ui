@@ -2,6 +2,7 @@ import axios from 'axios';
 import FileSaver from 'file-saver';
 
 import { apiURLBase } from '../config';
+import {formatSearch} from "../redux/utils";
 
 /**
  * Resource Collection Endpoint
@@ -16,7 +17,9 @@ export function getTargetResources(sourceTarget, sourceTargetToken) {
  * Resource Collection Endpoint With Search Parameter
  **/
 export function getTargetResourcesSearch(sourceTarget, sourceTargetToken, search) {
-  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${search}`, {
+  const searchValueNoSpaces = search.replace(/ /g, "+");
+
+  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${searchValueNoSpaces}`, {
     headers: { 'presqt-source-token': sourceTargetToken }
   });
 }

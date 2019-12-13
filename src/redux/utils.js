@@ -27,11 +27,5 @@ export function trackError(actionCreator, actionName, array) {
       }]
 }
 
-export function formatSearch(searchValue) {
-  return searchValue.replace(/ /g, "+")
-}
 
-export function deformatSearch(searchValue) {
-  return searchValue.replace(/\+/g, " ")
-}
 

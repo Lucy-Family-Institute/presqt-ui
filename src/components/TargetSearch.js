@@ -25,13 +25,11 @@ export default function TargetSearch() {
   const token = apiTokens[sourceTarget.name];
 
   const submitSearch = () => {
-    const searchValueNoSpaces = formatSearch(searchValue);
-
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.resources.loadFromSourceTargetSearch.toString())
     );
     dispatch(actionCreators.resources.loadFromSourceTargetSearch(
-      sourceTarget.name, token, searchValueNoSpaces)
+      sourceTarget.name, token, searchValue)
     );
   };
 

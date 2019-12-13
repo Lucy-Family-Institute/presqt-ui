@@ -41,8 +41,6 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       sourceSearchValue: action.payload.searchValue
-        ? deformatSearch(action.payload.searchValue)
-        : action.payload.searchValue,
     }),
     /**
      * Sort the resources into the correct hierarchy.
