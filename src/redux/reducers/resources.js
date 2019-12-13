@@ -172,6 +172,10 @@ export default handleActions(
       ),
       inSourceTarget: null
     }),
+    /**
+     * Untrack API search call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection search call.
+     **/
     [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -186,7 +190,6 @@ export default handleActions(
       ),
       inSourceTarget: null
     }),
-
     [combineActions(
       /**
        * Open/Close Container Resources in UX.
@@ -270,6 +273,14 @@ export default handleActions(
           item.action !== actionCreators.resources.loadFromSourceTarget.toString())
       }
     },
+    [actionCreators.resources.clearSourceResources]: state => {
+      return {
+        ...state,
+        inSourceTarget: null,
+        selectedInSource: null,
+        sourceSearchValue: null
+      }
+    }
   },
   initialState
 );
