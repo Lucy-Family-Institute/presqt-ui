@@ -2,6 +2,7 @@ import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
 import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
+import {pick} from "lodash";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -42,6 +43,7 @@ export default handleActions(
       sourceSearchValue: action.payload.searchValue
         ? deformatSearch(action.payload.searchValue)
         : action.payload.searchValue,
+
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -267,7 +269,7 @@ export default handleActions(
       return {
         ...state,
         apiOperationErrors: state.apiOperationErrors.filter(item =>
-          item.action !== actionCreators.resources.loadFromSourceTarget.toString())
+          item.action !== action.payload.actionToRemove)
       }
     },
   },

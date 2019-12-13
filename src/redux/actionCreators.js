@@ -19,7 +19,7 @@ export const actionCreators = createActions({
         LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
         LOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
         LOAD_FROM_SOURCE_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
-        REMOVE_FROM_ERROR_LIST: action => ({action: action}),
+        REMOVE_FROM_ERROR_LIST: (actionToRemove) => ({actionToRemove}),
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
         SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
