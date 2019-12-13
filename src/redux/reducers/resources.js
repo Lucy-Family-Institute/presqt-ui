@@ -102,7 +102,7 @@ export default handleActions(
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromSourceTargetSearch.toString(),
+        actionCreators.resources.loadFromSourceTargetSearch,
         state.apiOperationErrors,
       ),
       inSourceTarget: null
