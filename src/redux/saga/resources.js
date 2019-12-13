@@ -45,7 +45,7 @@ function* loadSourceTargetResourcesSearch(action) {
     action.payload.sourceTargetToken,
     action.payload.searchValue
     );
-    yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.loadFromSourceTargetSearchSuccess(response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromSourceTargetSearchFailure(

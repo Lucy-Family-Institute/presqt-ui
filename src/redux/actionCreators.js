@@ -17,6 +17,7 @@ export const actionCreators = createActions({
             searchValue
         }),
         LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
+        LOAD_FROM_SOURCE_TARGET_SEARCH_SUCCESS: undefined,
         LOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
         LOAD_FROM_SOURCE_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
         REMOVE_FROM_ERROR_LIST: (actionToRemove) => ({actionToRemove}),
