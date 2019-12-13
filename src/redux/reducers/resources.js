@@ -2,6 +2,7 @@ import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
 import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
+import {pick} from "lodash";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -270,7 +271,7 @@ export default handleActions(
       return {
         ...state,
         apiOperationErrors: state.apiOperationErrors.filter(item =>
-          item.action !== actionCreators.resources.loadFromSourceTarget.toString())
+          item.action !== action.payload.actionToRemove)
       }
     },
     [actionCreators.resources.clearSourceResources]: state => {

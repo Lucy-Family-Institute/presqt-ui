@@ -20,12 +20,13 @@ export default function TargetSearch() {
   /** STATE DEFINITIONS
    * [searchValue, updateSearch] : Search value state
    **/
-  const [searchValue, updateSearch] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   const token = apiTokens[sourceTarget.name];
 
   const submitSearch = () => {
     const searchValueNoSpaces = formatSearch(searchValue);
+
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.resources.loadFromSourceTargetSearch.toString())
     );
@@ -35,12 +36,12 @@ export default function TargetSearch() {
   };
 
   return (
-    <div css={textStyles.marginTop10}>
+    <div css={{marginBottom: 10}}>
       <SearchInput
         type="text"
         placeholder={"Search all " + sourceTarget.readable_name + " resources"}
         value={searchValue}
-        onChange={event => updateSearch(event.target.value)}
+        onChange={event => setSearchValue(event.target.value)}
       />
       <button type="submit" onClick={submitSearch}>
         Search

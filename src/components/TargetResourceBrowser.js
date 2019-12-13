@@ -106,19 +106,22 @@ export default function TargetResourceBrowser() {
       sourceTargetResources && sourceTargetResources.length > 0
         ? resourceHierarchy(resource =>
           onResourceClicked(resource, sourceTargetToken), sourceTargetResources)
+
       // No resources exist with the given search term
       : sourceTargetResources && sourceTargetResources.length === 0 && sourceSearchValue
-        ? <div css={[textStyles.body, textStyles.marginTop10]}>
+        ? <div css={[textStyles.body, {marginTop: 10}]}>
           No {sourceTarget.readable_name} resources found for search term {sourceSearchValue}.
         </div>
+
       // No resources exist for the user
       : sourceTargetResources && sourceTargetResources.length === 0
-        ? <div css={[textStyles.body, textStyles.marginTop10]}>
+        ? <div css={[textStyles.body, {marginTop: 10}]}>
             No {sourceTarget.readable_name} resources found for this user.
           </div>
+
       // An error was returned when searching the target
-      : sourceTargetResources && search_error
-        ? <div css={[textStyles.body, textStyles.marginTop10, textStyles.cubsRed]}>
+      : search_error
+        ? <div css={[textStyles.body, {marginTop: 10}, textStyles.cubsRed]}>
             {search_error.data}
           </div>
       : null
@@ -142,12 +145,10 @@ export default function TargetResourceBrowser() {
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||
-          pendingAPIOperations.includes(
-            actionCreators.resources.loadFromSourceTargetSearch.toString())
+          pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
           ? <Spinner />
           : (
               <div>
-
                 {targetResources()}
               </div>
             )
