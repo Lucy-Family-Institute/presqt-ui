@@ -10,6 +10,8 @@ import { basicFadeIn, basicFadeOut } from '../../styles/animations';
 import useAnimatedState from '../../hooks/useAnimatedState';
 import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import TextField from "@material-ui/core/TextField/TextField";
 
 const styles = {
   darkenBackground: css({
@@ -78,12 +80,22 @@ const styles = {
   })
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: 200,
+    },
+  },
+}));
+
 /**
  * This component handles the API connection modal.
  * It is responsible for initializing the modal, submitting the token, saving the inputted token,
  * setting any errors into the modal.
  **/
 export default function Modal({ connection, modalActive, toggleModal }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -205,7 +217,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                 >
                   <input
                     type='text'
-                    placeholder='Paste API Token Here'
+                    placeholder='Insert API Token Here'
                     value={token}
                     onChange={event => setToken(event.target.value)}
                   />
