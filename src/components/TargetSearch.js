@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,6 +17,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const CssTextField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#0C52A7"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#0C52A7"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#0C52A7"
+      }
+    }
+  }
+})(TextField);
+
 export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -31,11 +47,12 @@ export default function TargetSearch() {
   /** STATE DEFINITIONS
    * [searchValue, updateSearch] : Search value state
    **/
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   const token = apiTokens[sourceTarget.name];
 
-  const submitSearch = () => {
+  const submitSearch = (event) => {
+    event.preventDefault();
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromSourceTargetSearch.toString()
@@ -50,27 +67,15 @@ export default function TargetSearch() {
     );
   };
 
-  const CssTextField = withStyles({
-    root: {
-      "& label.Mui-focused": {
-        color: "#0C52A7"
-      },
-      "& .MuiInput-underline:after": {
-        borderBottomColor: "#0C52A7"
-      },
-      "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": {
-          borderColor: "#0C52A7"
-        }
-      }
-    }
-  })(TextField);
-
   return (
     <div css={{ marginBottom: 10 }}>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form
+        onSubmit={event => submitSearch(event)}
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+      >
         <CssTextField
-          color="success"
           size="small"
           type="text"
           id="outlined-basic"
@@ -80,20 +85,6 @@ export default function TargetSearch() {
           onChange={event => setSearchValue(event.target.value)}
         />
       </form>
-      <Button
-        variant="contained"
-        color="secondary"
-        type="submit"
-        onClick={submitSearch}
-      >
-        Search
-      </Button>
-      {/* <TextField
-        type="text"
-        placeholder={"Search all " + sourceTarget.readable_name + " resources"}
-        value={searchValue}
-        onChange={event => setSearchValue(event.target.value)}
-      />*/}
     </div>
   );
 }
