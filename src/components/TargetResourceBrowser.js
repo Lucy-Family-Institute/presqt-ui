@@ -26,7 +26,7 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
- /**
+ /** SELECTOR DEFINITIONS
   * sourceTargetToken     : String user token if a source exists else null
   * sourceTargetResources : Array containing source target resources in hierarchical order
   * pendingAPIOperations  : Boolean representing if a pending API operation exists
