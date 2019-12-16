@@ -12,6 +12,8 @@ import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import TextField from "@material-ui/core/TextField/TextField";
+import {makeStyles} from "@material-ui/core/styles";
 
 const styles = {
   darkenBackground: css({
@@ -94,12 +96,22 @@ const ColorButton = withStyles(theme => ({
   },
 }))(Button);
 
+const useStyles = makeStyles({
+  root: {
+    "& > *": {
+      marginTop: 10,
+      width: 250
+    }
+  }
+});
+
 /**
  * This component handles the API connection modal.
  * It is responsible for initializing the modal, submitting the token, saving the inputted token,
  * setting any errors into the modal.
  **/
 export default function Modal({ connection, modalActive, toggleModal }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -184,9 +196,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
           <div css={styles.modalContainer} aria-modal aria-hidden>
             <div css={styles.modal}>
               <div css={styles.modalHeader}>
-                <span
-                  css={textStyles.modalTitle}
-                >{`Access Token for ${connection.readable_name}`}</span>
+                <span css={textStyles.modalTitle}>
+                  {`Access Token for ${connection.readable_name}`}
+                </span>
                 <div
                   onClick={() =>
                     transitionOut(() => {
@@ -219,12 +231,23 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <input
-                    type='text'
-                    placeholder='Insert API Token Here'
-                    value={token}
-                    onChange={event => setToken(event.target.value)}
-                  />
+                  <form
+                    onsubmit={event => {event.preventDefault()}}
+                    className={classes.root}
+                    novalidate
+                    autocomplete="off"
+                  >
+                    <TextField
+                      id="outlined-basic"
+                      type='text'
+                      placeholder='Insert API Token Here'
+                      value={token}
+                      onChange={event => setToken(event.target.value)}
+                      onAnimationEnd={(event) => {
+                        event.stopPropagation();
+                      }}
+                    />
+                  </form>
                   <ColorButton
                     variant="contained"
                     css={[
@@ -237,7 +260,8 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     Connect
                   </ColorButton>
                 </div>
-                <p css={[textStyles.body, textStyles.cubsRed]}>{error ? error.data: ''}
+                <p css={[textStyles.body, textStyles.cubsRed]}>
+                  {error ? error.data: ''}
                 </p>
               </div>
             </div>

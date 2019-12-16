@@ -7,14 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     "& > *": {
       marginTop: 10,
       width: 250
     }
   }
-}));
+});
 
 /**
  * Create a new component that inherits the Material TextField component so we can update the colors

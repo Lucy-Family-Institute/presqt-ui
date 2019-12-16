@@ -78,10 +78,10 @@ export default function TargetActionDetail() {
    * Define the html of an object item to be rendered.
    **/
   const renderObject = value => {
-    return Object.entries(value).map(resourceDetailElement => {
+    return Object.entries(value).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
       return (
-        <div css={{ display: 'flex', flexDirection: 'row' }}>
+        <div key={index} css={{ display: 'flex', flexDirection: 'row' }}>
           <span
             css={[
               textStyles.body,
