@@ -9,7 +9,7 @@ const imageHoverStyle = css({
 });
 
 const imageHoverOrFocus = css({
-  ":hover,:focus": imageHoverStyle
+  ":hover": imageHoverStyle
 });
 
 export default function HeaderMenu() {
