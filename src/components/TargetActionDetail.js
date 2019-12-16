@@ -16,8 +16,12 @@ export default function TargetActionDetail() {
    *  selectedSourceResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations  : Boolean representing if a pending API operation exists
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const selectedSourceResource = useSelector(
+    state => state.resources.selectedInSource
+  );
+  const pendingAPIOperations = useSelector(
+    state => state.resources.pendingAPIOperations
+  );
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
@@ -56,7 +60,7 @@ export default function TargetActionDetail() {
     } else if (["object"].includes(typeof value)) {
       value !== null ? (renderer = renderObject) : (renderer = renderNull);
     }
-
+    console.log(value);
     return (
       <div
         css={{ display: "flex", flexDirection: "column", paddingBottom: 10 }}
@@ -81,33 +85,23 @@ export default function TargetActionDetail() {
   const renderObject = value => {
     return Object.entries(value).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
-      let renderer;
-      console.log(value);
-      if (["string", "number"].includes(typeof value)) {
-        console.log("WHAT");
-        renderer = renderScalarItem;
-      } else if (["object"].includes(typeof value)) {
-        console.log("WE HERE");
-        value !== null ? (renderer = renderObject) : (renderer = renderNull);
-      }
-      // if (typeof value === "object") {
-      //   console.log("WE IN");
-      //   // value = "egg";
-      // }
       return (
-        <div key={index} css={{ display: 'flex', flexDirection: 'row' }}>
-        <div css={{ display: "flex", flexDirection: "row" }}>
-          <span
-            css={[
-              textStyles.body,
-              { fontSize: 12, paddingLeft: 5, fontWeight: 500 }
-            ]}
-          >
-            {`${key}:\u00a0`}
-          </span>
-          <span css={[textStyles.body, { fontSize: 12 }]}>
-            {renderer(value)}
-          </span>
+        <div key={index} css={{ display: "flex", flexDirection: "row" }}>
+          <div css={{ display: "flex", flexDirection: "row" }}>
+            <span
+              css={[
+                textStyles.body,
+                {
+                  fontSize: 12,
+                  paddingLeft: 5,
+                  fontWeight: 500
+                }
+              ]}
+            >
+              {`${key}:\u00a0`}
+            </span>
+            <span css={[textStyles.body, { fontSize: 12 }]}>{`${value}`}</span>
+          </div>
         </div>
       );
     });
