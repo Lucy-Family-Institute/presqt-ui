@@ -91,11 +91,7 @@ export default function TargetActionDetail() {
             <span
               css={[
                 textStyles.body,
-                {
-                  fontSize: 12,
-                  paddingLeft: 5,
-                  fontWeight: 500
-                }
+                { fontSize: 12, paddingLeft: 5, fontWeight: 500 }
               ]}
             >
               {`${key}:\u00a0`}
@@ -128,6 +124,9 @@ export default function TargetActionDetail() {
     >
       {pendingAPIOperations.includes(
         actionCreators.resources.selectSourceResource.toString()
+      ) ||
+      pendingAPIOperations.includes(
+        actionCreators.resources.loadFromSourceTargetSearch.toString()
       ) ? (
         <Spinner />
       ) : selectedSourceResource ? (

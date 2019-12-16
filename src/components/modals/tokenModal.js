@@ -13,7 +13,6 @@ import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField/TextField";
-import {makeStyles} from "@material-ui/core/styles";
 
 const styles = {
   darkenBackground: css({
@@ -83,6 +82,26 @@ const styles = {
 };
 
 /**
+ * Create a new component that inherits the Material TextField component so we can update the colors
+ */
+const CssTextField = withStyles({
+  root: {
+    width: 500,
+    "& label.Mui-focused": {
+      color: "#0C52A7"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#0C52A7"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#0C52A7"
+      }
+    }
+  }
+})(TextField);
+
+/**
  * Create a new component that inherits the Material Button component so we can update the colors
  */
 const ColorButton = withStyles(theme => ({
@@ -96,22 +115,12 @@ const ColorButton = withStyles(theme => ({
   },
 }))(Button);
 
-const useStyles = makeStyles({
-  root: {
-    "& > *": {
-      marginTop: 10,
-      width: 250
-    }
-  }
-});
-
 /**
  * This component handles the API connection modal.
  * It is responsible for initializing the modal, submitting the token, saving the inputted token,
  * setting any errors into the modal.
  **/
 export default function Modal({ connection, modalActive, toggleModal }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -231,23 +240,14 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <form
-                    onsubmit={event => {event.preventDefault()}}
-                    className={classes.root}
-                    novalidate
-                    autocomplete="off"
-                  >
-                    <TextField
-                      id="outlined-basic"
-                      type='text'
-                      placeholder='Insert API Token Here'
-                      value={token}
-                      onChange={event => setToken(event.target.value)}
-                      onAnimationEnd={(event) => {
-                        event.stopPropagation();
-                      }}
-                    />
-                  </form>
+                  <CssTextField
+                    size="small"
+                    type='text'
+                    value={token}
+                    label="Insert API Token Here"
+                    onChange={event => setToken(event.target.value)}
+                    onAnimationEnd={(event) => {event.stopPropagation()}}
+                  />
                   <ColorButton
                     variant="contained"
                     css={[
