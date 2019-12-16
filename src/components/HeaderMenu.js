@@ -31,6 +31,7 @@ export default function HeaderMenu() {
           imageHoverOrFocus
         ]}
         href="https://presqt.crc.nd.edu"
+        target="_blank"
       >
         About PresQT
       </a>
