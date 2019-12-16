@@ -12,6 +12,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import TextField from "@material-ui/core/TextField/TextField";
 
 const styles = {
   darkenBackground: css({
@@ -79,6 +80,26 @@ const styles = {
     animationDuration: '.5s'
   })
 };
+
+/**
+ * Create a new component that inherits the Material TextField component so we can update the colors
+ */
+const CssTextField = withStyles({
+  root: {
+    width: 500,
+    "& label.Mui-focused": {
+      color: "#0C52A7"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#0C52A7"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#0C52A7"
+      }
+    }
+  }
+})(TextField);
 
 /**
  * Create a new component that inherits the Material Button component so we can update the colors
@@ -219,11 +240,13 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <input
+                  <CssTextField
+                    size="small"
                     type='text'
-                    placeholder='Insert API Token Here'
                     value={token}
+                    label="Insert API Token Here"
                     onChange={event => setToken(event.target.value)}
+                    onAnimationEnd={(event) => {event.stopPropagation()}}
                   />
                   <ColorButton
                     variant="contained"
