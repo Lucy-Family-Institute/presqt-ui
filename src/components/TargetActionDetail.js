@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 
 import textStyles from '../styles/text';
 import MediumHeader from './widgets/MediumHeader';
+import {actionCreators} from "../redux/actionCreators";
+import Spinner from "./widgets/spinner";
 
 /**
  * This component is responsible for displaying the details of a selected resource.
@@ -11,8 +13,10 @@ import MediumHeader from './widgets/MediumHeader';
 export default function TargetActionDetail() {
   /** SELECTOR DEFINITIONS
    *  selectedSourceResource : Object of the resource details of the selected resource to display.
+   * pendingAPIOperations  : Boolean representing if a pending API operation exists
    **/
   const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
@@ -111,16 +115,20 @@ export default function TargetActionDetail() {
         })
       ]}
     >
-      {selectedSourceResource ? (
-        <div>
-          <MediumHeader text='Resource Details' />
-          <div css={{ paddingTop: 10 }}>
-            {detailsToRender(selectedSourceResource).map(resourceData =>
-              renderDetailItem(resourceData)
-            )}
-          </div>
-        </div>
-      ) : null}
+      {
+        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        ? <Spinner />
+        : selectedSourceResource
+          ? <div>
+              <MediumHeader text='Resource Details' />
+              <div css={{ paddingTop: 10 }}>
+                {detailsToRender(selectedSourceResource).map(resourceData =>
+                  renderDetailItem(resourceData)
+                )}
+              </div>
+            </div>
+          : null
+      }
     </div>
   );
 }
