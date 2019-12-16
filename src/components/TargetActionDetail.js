@@ -133,20 +133,23 @@ export default function TargetActionDetail() {
         })
       ]}
     >
-      {pendingAPIOperations.includes(
-        actionCreators.resources.selectSourceResource.toString()
-      ) ? (
-        <Spinner />
-      ) : selectedSourceResource ? (
-        <div>
-          <MediumHeader text="Resource Details" />
-          <div css={{ paddingTop: 10 }}>
-            {detailsToRender(selectedSourceResource).map(resourceData =>
-              renderDetailItem(resourceData)
-            )}
+      {
+        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        ||
+        pendingAPIOperations.includes(
+          actionCreators.resources.loadFromSourceTargetSearch.toString())
+        ?
+          <Spinner />
+        : selectedSourceResource ? (
+          <div>
+            <MediumHeader text="Resource Details" />
+            <div css={{ paddingTop: 10 }}>
+              {detailsToRender(selectedSourceResource).map(resourceData =>
+                renderDetailItem(resourceData)
+              )}
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
     </div>
   );
 }
