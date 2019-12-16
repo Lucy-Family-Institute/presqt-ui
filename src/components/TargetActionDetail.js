@@ -91,23 +91,24 @@ export default function TargetActionDetail() {
         value !== null ? (renderer = renderObject) : (renderer = renderNull);
       }
       // if (typeof value === "object") {
-      //   console.log("WE IN");
+      //   consrsole.log("WE IN");
       //   // value = "egg";
       // }
       return (
         <div key={index} css={{ display: 'flex', flexDirection: 'row' }}>
-        <div css={{ display: "flex", flexDirection: "row" }}>
-          <span
-            css={[
-              textStyles.body,
-              { fontSize: 12, paddingLeft: 5, fontWeight: 500 }
-            ]}
-          >
-            {`${key}:\u00a0`}
-          </span>
-          <span css={[textStyles.body, { fontSize: 12 }]}>
-            {renderer(value)}
-          </span>
+          <div css={{ display: "flex", flexDirection: "row" }}>
+            <span
+              css={[
+                textStyles.body,
+                { fontSize: 12, paddingLeft: 5, fontWeight: 500 }
+              ]}
+            >
+              {`${key}:\u00a0`}
+            </span>
+            <span css={[textStyles.body, { fontSize: 12 }]}>
+              {renderer(value)}
+            </span>
+          </div>
         </div>
       );
     });

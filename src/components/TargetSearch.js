@@ -3,9 +3,8 @@ import { jsx } from "@emotion/core";
 import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +32,7 @@ const CssTextField = withStyles({
       }
     }
   }
-})(TextField); // ASK MIKE ABOUT THIS SYNTAX
+})(TextField);
 
 export default function TargetSearch() {
   const classes = useStyles();
@@ -81,8 +80,8 @@ export default function TargetSearch() {
           size="small"
           type="text"
           id="outlined-basic"
-          label={"Search " + sourceTarget.readable_name}
           variant="outlined"
+          label={"Search " + sourceTarget.readable_name}
           value={searchValue}
           onChange={event => setSearchValue(event.target.value)}
         />

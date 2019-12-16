@@ -11,9 +11,7 @@ import useAnimatedState from '../../hooks/useAnimatedState';
 import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button/Button";
-import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField/TextField";
-import {makeStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   darkenBackground: css({
@@ -96,22 +94,12 @@ const ColorButton = withStyles(theme => ({
   },
 }))(Button);
 
-const useStyles = makeStyles({
-  root: {
-    "& > *": {
-      marginTop: 10,
-      width: 250
-    }
-  }
-});
-
 /**
  * This component handles the API connection modal.
  * It is responsible for initializing the modal, submitting the token, saving the inputted token,
  * setting any errors into the modal.
  **/
 export default function Modal({ connection, modalActive, toggleModal }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -231,23 +219,6 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <form
-                    onsubmit={event => {event.preventDefault()}}
-                    className={classes.root}
-                    novalidate
-                    autocomplete="off"
-                  >
-                    <TextField
-                      id="outlined-basic"
-                      type='text'
-                      placeholder='Insert API Token Here'
-                      value={token}
-                      onChange={event => setToken(event.target.value)}
-                      onAnimationEnd={(event) => {
-                        event.stopPropagation();
-                      }}
-                    />
-                  </form>
                   <ColorButton
                     variant="contained"
                     css={[
