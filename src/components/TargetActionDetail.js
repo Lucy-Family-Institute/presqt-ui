@@ -1,9 +1,10 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import { useSelector } from 'react-redux';
+import { jsx, css } from "@emotion/core";
+import { useSelector } from "react-redux";
 
-import textStyles from '../styles/text';
-import MediumHeader from './widgets/MediumHeader';
+import textStyles from "../styles/text";
+import MediumHeader from "./widgets/MediumHeader";
+import { object } from "prop-types";
 
 /**
  * This component is responsible for displaying the details of a selected resource.
@@ -12,7 +13,9 @@ export default function TargetActionDetail() {
   /** SELECTOR DEFINITIONS
    *  selectedSourceResource : Object of the resource details of the selected resource to display.
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const selectedSourceResource = useSelector(
+    state => state.resources.selectedInSource
+  );
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
@@ -22,15 +25,15 @@ export default function TargetActionDetail() {
     return Object.entries(resource)
       .filter(resourceDetail => {
         const [key, value] = resourceDetail;
-        return !['links', 'open', 'children', 'count'].includes(key);
+        return !["links", "open", "children", "count"].includes(key);
       })
       .map(resourceDetail => {
         const [key, value] = resourceDetail;
         return [
           key
-            .split('_')
+            .split("_")
             .map(element => element[0].toUpperCase() + element.slice(1))
-            .join(' '),
+            .join(" "),
           value
         ];
       });
@@ -46,15 +49,15 @@ export default function TargetActionDetail() {
     const [key, value] = item;
     let renderer;
 
-    if (['string', 'number'].includes(typeof value)) {
+    if (["string", "number"].includes(typeof value)) {
       renderer = renderScalarItem;
-    } else if (['object'].includes(typeof value)) {
+    } else if (["object"].includes(typeof value)) {
       value !== null ? (renderer = renderObject) : (renderer = renderNull);
     }
 
     return (
       <div
-        css={{ display: 'flex', flexDirection: 'column', paddingBottom: 10 }}
+        css={{ display: "flex", flexDirection: "column", paddingBottom: 10 }}
         key={key}
       >
         <span css={[textStyles.body, { fontWeight: 500 }]}>{key}</span>
@@ -76,8 +79,21 @@ export default function TargetActionDetail() {
   const renderObject = value => {
     return Object.entries(value).map(resourceDetailElement => {
       const [key, value] = resourceDetailElement;
+      let renderer;
+      console.log(value);
+      if (["string", "number"].includes(typeof value)) {
+        console.log("WHAT");
+        renderer = renderScalarItem;
+      } else if (["object"].includes(typeof value)) {
+        console.log("WE HERE");
+        value !== null ? (renderer = renderObject) : (renderer = renderNull);
+      }
+      // if (typeof value === "object") {
+      //   console.log("WE IN");
+      //   // value = "egg";
+      // }
       return (
-        <div css={{ display: 'flex', flexDirection: 'row' }}>
+        <div css={{ display: "flex", flexDirection: "row" }}>
           <span
             css={[
               textStyles.body,
@@ -86,7 +102,9 @@ export default function TargetActionDetail() {
           >
             {`${key}:\u00a0`}
           </span>
-          <span css={[textStyles.body, { fontSize: 12 }]}>{`${value}`}</span>
+          <span css={[textStyles.body, { fontSize: 12 }]}>
+            {renderer(value)}
+          </span>
         </div>
       );
     });
@@ -103,17 +121,17 @@ export default function TargetActionDetail() {
     <div
       css={[
         css({
-          gridArea: 'targetActionDetail',
-          borderLeftColor: '#C5C5C5',
+          gridArea: "targetActionDetail",
+          borderLeftColor: "#C5C5C5",
           borderLeftWidth: 1,
-          borderLeftStyle: 'solid',
+          borderLeftStyle: "solid",
           paddingLeft: 25
         })
       ]}
     >
       {selectedSourceResource ? (
         <div>
-          <MediumHeader text='Resource Details' />
+          <MediumHeader text="Resource Details" />
           <div css={{ paddingTop: 10 }}>
             {detailsToRender(selectedSourceResource).map(resourceData =>
               renderDetailItem(resourceData)
