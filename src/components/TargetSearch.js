@@ -1,11 +1,10 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +30,7 @@ const CssTextField = withStyles({
       }
     }
   }
-})(TextField);
+})(TextField); // ASK MIKE ABOUT THIS SYNTAX
 
 export default function TargetSearch() {
   const classes = useStyles();
