@@ -10,6 +10,8 @@ import { basicFadeIn, basicFadeOut } from '../../styles/animations';
 import useAnimatedState from '../../hooks/useAnimatedState';
 import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
+import Button from "@material-ui/core/Button/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = {
   darkenBackground: css({
@@ -77,6 +79,20 @@ const styles = {
     animationDuration: '.5s'
   })
 };
+
+/**
+ * Create a new component that inherits the Material Button component so we can update the colors
+ */
+const ColorButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText('#0C52A7'),
+    boxShadow: 'none',
+    backgroundColor: '#0C52A7',
+    '&:hover': {
+      backgroundColor: '#0a4996',
+    },
+  },
+}))(Button);
 
 /**
  * This component handles the API connection modal.
@@ -209,7 +225,8 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     value={token}
                     onChange={event => setToken(event.target.value)}
                   />
-                  <button
+                  <ColorButton
+                    variant="contained"
                     css={[
                       token ? styles.button : styles.disabledButton,
                       textStyles.buttonText
@@ -218,7 +235,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     disabled={!token}
                   >
                     Connect
-                  </button>
+                  </ColorButton>
                 </div>
                 <p css={[textStyles.body, textStyles.cubsRed]}>{error ? error.data: ''}
                 </p>

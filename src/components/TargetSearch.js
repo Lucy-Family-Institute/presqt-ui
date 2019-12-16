@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * Create a new component that inherits the Material TextField component so we can update the colors
+ */
 const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
