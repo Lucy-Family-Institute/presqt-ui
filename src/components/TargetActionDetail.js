@@ -49,7 +49,6 @@ export default function TargetActionDetail() {
   const renderDetailItem = item => {
     const [key, value] = item;
     let renderer;
-
     if (["string", "number"].includes(typeof value)) {
       renderer = renderScalarItem;
     } else if (["object"].includes(typeof value)) {
@@ -79,6 +78,7 @@ export default function TargetActionDetail() {
   const renderObject = obj => {
     return Object.entries(obj).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
+      console.log(value);
       return (
         <div key={index} css={{ display: "flex" }}>
           <div css={{ display: "flex", flexDirection: "row" }}>
@@ -88,7 +88,7 @@ export default function TargetActionDetail() {
             <span css={[textStyles.body, { fontSize: 12 }]}>
               {typeof value === "object"
                 ? <div>{JSON.stringify(value, null, 2)}</div>
-              : value
+              : value.toString()
             }
             </span>
           </div>
