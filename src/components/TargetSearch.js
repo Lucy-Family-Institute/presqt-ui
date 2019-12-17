@@ -4,8 +4,7 @@ import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/styles";
+import SearchTextField from "./widgets/SearchTextField";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,25 +14,6 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-
-/**
- * Create a new component that inherits the Material TextField component so we can update the colors
- */
-const CssTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: "#0C52A7"
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#0C52A7"
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: "#0C52A7"
-      }
-    }
-  }
-})(TextField); // ASK MIKE ABOUT THIS SYNTAX
 
 export default function TargetSearch() {
   const classes = useStyles();
@@ -77,7 +57,7 @@ export default function TargetSearch() {
         noValidate
         autoComplete="off"
       >
-        <CssTextField
+        <SearchTextField
           size="small"
           type="text"
           id="outlined-basic"
