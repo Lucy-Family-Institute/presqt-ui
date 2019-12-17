@@ -58,9 +58,7 @@ export default function TargetResourceBrowser() {
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
-    dispatch(
-      actionCreators.resources.selectSourceResource(resource, sourceTargetToken)
-    );
+    dispatch(actionCreators.resources.selectSourceResource(resource, sourceTargetToken));
   };
 
   /**

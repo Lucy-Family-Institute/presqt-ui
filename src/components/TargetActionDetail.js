@@ -78,7 +78,6 @@ export default function TargetActionDetail() {
   const renderObject = obj => {
     return Object.entries(obj).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
-      console.log(value);
       return (
         <div key={index} css={{ display: "flex" }}>
           <div css={{ display: "flex", flexDirection: "row" }}>

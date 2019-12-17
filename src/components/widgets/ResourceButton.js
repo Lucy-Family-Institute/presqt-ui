@@ -31,10 +31,16 @@ export default function ResourceButton(props) {
       <img
         src={
           resource.kind === "container"
-            ? resource.open
+            ? resource.open && resource.active
+              ? activeOpenFolderIcon
+            : resource.open && !resource.active
               ? openFolderIcon
-              : closedFolderIcon
-            : fileIcon
+            : !resource.open && resource.active
+              ? activeClosedFolderIcon
+            : closedFolderIcon
+          : resource.active
+            ? activeFileIcon
+          : fileIcon
         }
         alt="Resource Icon"
         css={{ paddingRight: 10, height: 25 }}
