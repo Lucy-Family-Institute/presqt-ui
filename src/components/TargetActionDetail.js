@@ -26,7 +26,7 @@ export default function TargetActionDetail() {
     return Object.entries(resource)
       .filter(resourceDetail => {
         const [key, value] = resourceDetail;
-        return !["links", "open", "children", "count"].includes(key);
+        return !["links", "open", "children", "count", "actions"].includes(key);
       })
       .map(resourceDetail => {
         const [key, value] = resourceDetail;
