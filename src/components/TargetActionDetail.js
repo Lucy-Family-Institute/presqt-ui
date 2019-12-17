@@ -57,7 +57,6 @@ export default function TargetActionDetail() {
     } else if (["object"].includes(typeof value)) {
       value !== null ? (renderer = renderObject) : (renderer = renderNull);
     }
-    console.log(value);
     return (
       <div
         css={{ display: "flex", flexDirection: "column", paddingBottom: 10 }}
@@ -79,23 +78,21 @@ export default function TargetActionDetail() {
   /**
    * Define the html of an object item to be rendered.
    **/
-  const renderObject = value => {
-    return Object.entries(value).map((resourceDetailElement, index) => {
+  const renderObject = obj => {
+    // Map the initial object
+    return Object.entries(obj).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
       return (
         <div key={index} css={{ display: "flex" }}>
           <div css={{ display: "flex", flexDirection: "row" }}>
             <span css={[textStyles.body, { fontSize: 12, paddingLeft: 5, fontWeight: 500 }]}>
-              {typeof value === 'object' ? "\n" + `${key}` + ":\u00a0" : `${key}` + ":\u00a0"}
+            {`${key}:\u00a0`}
             </span>
             <span css={[textStyles.body, { fontSize: 12 }]}>
-              {typeof value === "string" ||
-              typeof value === "boolean" ||
-              typeof value === "number"
-                ? value
-                : typeof value === "object"
-                ? renderObject(value)
-                : ""}
+              {typeof value === "object"
+                ? JSON.stringify(value)
+              : value
+            }
             </span>
           </div>
         </div>
