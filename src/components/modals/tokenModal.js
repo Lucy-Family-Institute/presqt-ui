@@ -10,9 +10,8 @@ import { basicFadeIn, basicFadeOut } from '../../styles/animations';
 import useAnimatedState from '../../hooks/useAnimatedState';
 import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
-import Button from "@material-ui/core/Button/Button";
-import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField/TextField";
+import TokenTextField from "../widgets/TokenTextField";
+import ModalSubmitButton from "../widgets/ModalSubmitButton";
 
 const styles = {
   darkenBackground: css({
@@ -80,40 +79,6 @@ const styles = {
     animationDuration: '.5s'
   })
 };
-
-/**
- * Create a new component that inherits the Material TextField component so we can update the colors
- */
-const CssTextField = withStyles({
-  root: {
-    width: 500,
-    "& label.Mui-focused": {
-      color: "#0C52A7"
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#0C52A7"
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: "#0C52A7"
-      }
-    }
-  }
-})(TextField);
-
-/**
- * Create a new component that inherits the Material Button component so we can update the colors
- */
-const ColorButton = withStyles(theme => ({
-  root: {
-    color: theme.palette.getContrastText('#0C52A7'),
-    boxShadow: 'none',
-    backgroundColor: '#0C52A7',
-    '&:hover': {
-      backgroundColor: '#0a4996',
-    },
-  },
-}))(Button);
 
 /**
  * This component handles the API connection modal.
@@ -240,7 +205,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <CssTextField
+                  <TokenTextField
                     size="small"
                     type='text'
                     value={token}
@@ -248,7 +213,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     onChange={event => setToken(event.target.value)}
                     onAnimationEnd={(event) => {event.stopPropagation()}}
                   />
-                  <ColorButton
+                  <ModalSubmitButton
                     variant="contained"
                     css={[
                       token ? styles.button : styles.disabledButton,
@@ -258,7 +223,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     disabled={!token}
                   >
                     Connect
-                  </ColorButton>
+                  </ModalSubmitButton>
                 </div>
                 <p css={[textStyles.body, textStyles.cubsRed]}>
                   {error ? error.data: ''}
