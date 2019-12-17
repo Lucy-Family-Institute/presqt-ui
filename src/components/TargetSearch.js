@@ -3,8 +3,8 @@ import { jsx } from "@emotion/core";
 import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import SearchTextField from "./widgets/SearchTextField";
 
 const useStyles = makeStyles({
   root: {
@@ -14,25 +14,6 @@ const useStyles = makeStyles({
     }
   }
 });
-
-/**
- * Create a new component that inherits the Material TextField component so we can update the colors
- */
-const CssTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: "#0C52A7"
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#0C52A7"
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: "#0C52A7"
-      }
-    }
-  }
-})(TextField);
 
 export default function TargetSearch() {
   const classes = useStyles();
@@ -76,12 +57,12 @@ export default function TargetSearch() {
         noValidate
         autoComplete="off"
       >
-        <CssTextField
+        <SearchTextField
           size="small"
           type="text"
           id="outlined-basic"
-          variant="outlined"
           label={"Search " + sourceTarget.readable_name}
+          variant="outlined"
           value={searchValue}
           onChange={event => setSearchValue(event.target.value)}
         />

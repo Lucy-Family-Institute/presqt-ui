@@ -17,12 +17,8 @@ export default function TargetActionDetail() {
    *  selectedSourceResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations  : Boolean representing if a pending API operation exists
    **/
-  const selectedSourceResource = useSelector(
-    state => state.resources.selectedInSource
-  );
-  const pendingAPIOperations = useSelector(
-    state => state.resources.pendingAPIOperations
-  );
+  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
@@ -126,23 +122,23 @@ export default function TargetActionDetail() {
         })
       ]}
     >
-      {pendingAPIOperations.includes(
-        actionCreators.resources.selectSourceResource.toString()
-      ) ||
-      pendingAPIOperations.includes(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
-      ) ? (
-        <Spinner />
-      ) : selectedSourceResource ? (
-        <div>
-          <MediumHeader text="Resource Details" />
-          <div css={{ paddingTop: 10 }}>
-            {detailsToRender(selectedSourceResource).map(resourceData =>
-              renderDetailItem(resourceData)
-            )}
+      {
+        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        ||
+        pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+        ? <Spinner />
+        : selectedSourceResource ? (
+          <div>
+            <MediumHeader text="Resource Details" />
+            <div css={{ paddingTop: 10 }}>
+              {detailsToRender(selectedSourceResource).map(resourceData =>
+                renderDetailItem(resourceData)
+              )}
+            </div>
           </div>
-        </div>
-      ) : null}
+        )
+        : null
+      }
     </div>
   );
 }
