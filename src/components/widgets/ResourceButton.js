@@ -1,11 +1,14 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from "@emotion/core";
 
-import textStyles from '../../styles/text';
+import textStyles from "../../styles/text";
 
-const closedFolderIcon = require('../../images/icons/closedFolder.png');
-const openFolderIcon = require('../../images/icons/openFolder.png');
-const fileIcon = require('../../images/icons/file.png');
+const closedFolderIcon = require("../../images/icons/closedFolder.png");
+const openFolderIcon = require("../../images/icons/openFolder.png");
+const activeOpenFolderIcon = require("../../images/icons/poozer.png");
+const activeClosedFolderIcon = require("../../images/icons/poozer_beard.png");
+const fileIcon = require("../../images/icons/file.png");
+const activeFileIcon = require("../../images/icons/marty.png");
 
 export default function ResourceButton(props) {
   const { resource, level, onClick } = props;
@@ -13,21 +16,21 @@ export default function ResourceButton(props) {
   return (
     <button
       css={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
         paddingTop: 10,
         paddingLeft: 10 * level,
         borderWidth: 0,
-        backgroundColor: '#FFFFFF',
-        overflowWrap: 'anywhere',
-        textAlign: 'left'
+        backgroundColor: "#FFFFFF",
+        overflowWrap: "anywhere",
+        textAlign: "left"
       }}
       onClick={() => onClick(resource)}
     >
       <img
         src={
-          resource.kind === 'container'
+          resource.kind === "container"
             ? resource.open
               ? openFolderIcon
               : closedFolderIcon

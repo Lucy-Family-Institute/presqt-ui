@@ -87,7 +87,7 @@ export default function TargetActionDetail() {
             </span>
             <span css={[textStyles.body, { fontSize: 12 }]}>
               {typeof value === "object"
-                ? <div><br />{JSON.stringify(value, null, 2)}</div>
+                ? <div>{JSON.stringify(value, null, 2)}</div>
               : value
             }
             </span>
