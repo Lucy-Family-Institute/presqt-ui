@@ -83,10 +83,10 @@ export default function TargetActionDetail() {
     return Object.entries(value).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
       return (
-        <div key={index} css={{ display: "flex", flexDirection: "row" }}>
+        <div key={index} css={{ display: "flex" }}>
           <div css={{ display: "flex", flexDirection: "row" }}>
             <span css={[textStyles.body, { fontSize: 12, paddingLeft: 5, fontWeight: 500 }]}>
-              {`${key}:\u00a0`}
+              {typeof value === 'object' ? "\n" + `${key}` + ":\u00a0" : `${key}` + ":\u00a0"}
             </span>
             <span css={[textStyles.body, { fontSize: 12 }]}>
               {typeof value === "string" ||
