@@ -2,7 +2,6 @@
 import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
-import { object } from "prop-types";
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
@@ -13,8 +12,8 @@ import Spinner from "./widgets/spinner";
  **/
 export default function TargetActionDetail() {
   /** SELECTOR DEFINITIONS
-   *  selectedSourceResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations  : Boolean representing if a pending API operation exists
+   * selectedSourceResource : Object of the resource details of the selected resource to display.
+   * pendingAPIOperations   : List of API operations currently in progress.
    **/
   const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
@@ -120,9 +119,9 @@ export default function TargetActionDetail() {
     >
       {
         pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
-        ||
-        pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
         ? <Spinner />
+        : pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+        ? null
         : selectedSourceResource ? (
           <div>
             <MediumHeader text="Resource Details" />

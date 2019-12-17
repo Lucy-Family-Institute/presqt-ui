@@ -40,6 +40,7 @@ export default handleActions(
         actionCreators.resources.loadFromSourceTargetSearch,
         state.pendingAPIOperations
       ),
+      selectedInSource: null,
       sourceSearchValue: action.payload.searchValue
     }),
     /**

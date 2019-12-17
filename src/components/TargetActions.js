@@ -8,6 +8,7 @@ import ActionButton from './widgets/ActionButton';
 import { initiateResourceDownload } from '../api/resources';
 import useModal from '../hooks/useModal';
 import DownloadModal from './modals/DownloadModal';
+import {actionCreators} from "../redux/actionCreators";
 
 const temporaryLinktoFunctionMap = {
   Download: initiateResourceDownload
@@ -26,9 +27,11 @@ const actionLinkToComponent = {
  **/
 export default function TargetActions() {
   /** SELECTOR DEFINITIONS
-   *  selectedSourceResource : Object of the resource details of the selected resource to display.
+   * selectedSourceResource : Object of the resource details of the selected resource to display.
+   * pendingAPIOperations   : List of API operations currently in progress.
    **/
   const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /** STATE DEFINITIONS
    * [modalType, setModalType] : Action modal state of which action button has been clicked on.
@@ -48,6 +51,42 @@ export default function TargetActions() {
   //   }
   // }, [link, toggleModalVisibility]);
 
+  const DisplayTargetActions = () => {
+    return (
+      <div>
+        <span
+          css={[
+            {
+              display: 'flex',
+              flexDirection: 'row',
+              minHeight: 50,
+              alignItems: 'center'
+            },
+            textStyles.largeHeader
+          ]}
+        >
+          {selectedSourceResource ? selectedSourceResource.title : null}
+        </span>
+
+        <DownloadModal
+          modalActive={modalVisible}
+          onHide={toggleModalVisibility}
+        />
+
+        <div css={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
+        {selectedSourceResource &&
+          selectedSourceResource.links.map(link => (
+            <ActionButton
+              key={link.name}
+              text={link.name}
+              onClick={() => setLink(link)}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  };
+
   return (
     <div
       css={{
@@ -58,35 +97,13 @@ export default function TargetActions() {
         paddingLeft: 25
       }}
     >
-      <span
-        css={[
-          {
-            display: 'flex',
-            flexDirection: 'row',
-            minHeight: 50,
-            alignItems: 'center'
-          },
-          textStyles.largeHeader
-        ]}
-      >
-        {selectedSourceResource ? selectedSourceResource.title : null}
-      </span>
-
-      <DownloadModal
-        modalActive={modalVisible}
-        onHide={toggleModalVisibility}
-      />
-
-      <div css={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
-        {selectedSourceResource &&
-          selectedSourceResource.links.map(link => (
-            <ActionButton
-              key={link.name}
-              text={link.name}
-              onClick={() => setLink(link)}
-            />
-          ))}
-      </div>
+      {
+        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        ||
+        pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+        ? null
+        : DisplayTargetActions()
+      }
     </div>
   );
 }

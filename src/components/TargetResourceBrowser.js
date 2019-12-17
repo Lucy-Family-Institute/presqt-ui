@@ -29,7 +29,7 @@ export default function TargetResourceBrowser() {
  /** SELECTOR DEFINITIONS
   * sourceTargetToken     : String user token if a source exists else null
   * sourceTargetResources : Array containing source target resources in hierarchical order
-  * pendingAPIOperations  : Boolean representing if a pending API operation exists
+  * pendingAPIOperations  : List of API operations currently in progress.
   * apiOperationErrors    : List of objects of current api errors
   * sourceTarget          : Object of the current source selected
   * sourceSearchValue     : Search term last submitted in the source search input
