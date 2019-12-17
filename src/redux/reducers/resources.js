@@ -1,8 +1,7 @@
 import { handleActions, combineActions } from 'redux-actions';
 
 import { actionCreators } from '../actionCreators';
-import {deformatSearch, trackAction, trackError, untrackAction} from '../utils';
-import {pick} from "lodash";
+import {trackAction, trackError, untrackAction} from '../utils';
 import buildResourceHierarchy from "./helpers/resources";
 
 const initialState = {

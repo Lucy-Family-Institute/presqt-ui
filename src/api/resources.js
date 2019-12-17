@@ -2,7 +2,6 @@ import axios from 'axios';
 import FileSaver from 'file-saver';
 
 import { apiURLBase } from '../config';
-import {formatSearch} from "../redux/utils";
 
 /**
  * Resource Collection Endpoint

@@ -10,6 +10,8 @@ import { basicFadeIn, basicFadeOut } from '../../styles/animations';
 import useAnimatedState from '../../hooks/useAnimatedState';
 import {actionCreators} from "../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
+import TokenTextField from "../widgets/TokenTextField";
+import ModalSubmitButton from "../widgets/ModalSubmitButton";
 
 const styles = {
   darkenBackground: css({
@@ -203,13 +205,16 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     flexBasis: 35
                   }}
                 >
-                  <input
+                  <TokenTextField
+                    size="small"
                     type='text'
-                    placeholder='Paste API Token Here'
                     value={token}
+                    label="Insert API Token Here"
                     onChange={event => setToken(event.target.value)}
+                    onAnimationEnd={(event) => {event.stopPropagation()}}
                   />
-                  <button
+                  <ModalSubmitButton
+                    variant="contained"
                     css={[
                       token ? styles.button : styles.disabledButton,
                       textStyles.buttonText
@@ -218,7 +223,7 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     disabled={!token}
                   >
                     Connect
-                  </button>
+                  </ModalSubmitButton>
                 </div>
                 <p css={[textStyles.body, textStyles.cubsRed]}>{error ? error.data: ''}
                 </p>

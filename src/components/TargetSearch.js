@@ -1,13 +1,22 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core';
-import { useState } from 'react';
-import {actionCreators} from "../redux/actionCreators";
-import {useDispatch, useSelector} from "react-redux";
-import {formatSearch} from "../redux/utils";
-import { SearchInput } from '@bit/segmentio.evergreen.search-input';
-import textStyles from "../styles/text";
+import { jsx } from "@emotion/core";
+import {useState} from "react";
+import { actionCreators } from "../redux/actionCreators";
+import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import SearchTextField from "./widgets/SearchTextField";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    "& > *": {
+      marginTop: 10,
+      width: 250
+    }
+  }
+}));
 
 export default function TargetSearch() {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -24,26 +33,40 @@ export default function TargetSearch() {
 
   const token = apiTokens[sourceTarget.name];
 
-  const submitSearch = () => {
-    dispatch(actionCreators.resources.removeFromErrorList(
-      actionCreators.resources.loadFromSourceTargetSearch.toString())
+  const submitSearch = (event) => {
+    event.preventDefault();
+    dispatch(
+      actionCreators.resources.removeFromErrorList(
+        actionCreators.resources.loadFromSourceTargetSearch.toString()
+      )
     );
-    dispatch(actionCreators.resources.loadFromSourceTargetSearch(
-      sourceTarget.name, token, searchValue)
+    dispatch(
+      actionCreators.resources.loadFromSourceTargetSearch(
+        sourceTarget.name,
+        token,
+        searchValue
+      )
     );
   };
 
   return (
-    <div css={{marginBottom: 10}}>
-      <SearchInput
-        type="text"
-        placeholder={"Search all " + sourceTarget.readable_name + " resources"}
-        value={searchValue}
-        onChange={event => setSearchValue(event.target.value)}
-      />
-      <button type="submit" onClick={submitSearch}>
-        Search
-      </button>
+    <div css={{ marginBottom: 10 }}>
+      <form
+        onSubmit={event => submitSearch(event)}
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+      >
+        <SearchTextField
+          size="small"
+          type="text"
+          id="outlined-basic"
+          label={"Search " + sourceTarget.readable_name}
+          variant="outlined"
+          value={searchValue}
+          onChange={event => setSearchValue(event.target.value)}
+        />
+      </form>
     </div>
-  )
-};
+  );
+}

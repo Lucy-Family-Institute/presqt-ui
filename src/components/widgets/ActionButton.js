@@ -2,61 +2,73 @@
 import { useState } from 'react';
 import { jsx } from '@emotion/core';
 import textStyles from '../../styles/text';
+import Button from "@material-ui/core/Button/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+/**
+ * Create a new component sthat inherits the Material Button component so we can update the colors
+ */
+const InactiveButton = withStyles({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 35,
+    marginRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+  }
+})(Button);
+
+const ActiveButton = withStyles({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 35,
+    marginRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    backgroundColor: '#E57B00',
+    border: '1px solid #E57B00',
+    color: 'white',
+    boxShadow: 'none',
+    '&:hover': {
+      boxShadow: 'none',
+      backgroundColor: '#E57B00',
+    },
+  }
+})(Button);
 
 export default function ActionButton(props) {
   const {
     text,
-    textColor,
-    activeBackgroundColor,
-    inactiveBackgroundColor,
-    borderColor,
     onClick
   } = props;
 
   const [active, setActive] = useState(false);
-
   return (
-    <button
-      css={[
-        {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: 35,
-          borderRadius: 10,
-          marginRight: 20,
-          paddingLeft: 15,
-          paddingRight: 15
-        },
-        active
-          ? {
-              borderColor: activeBackgroundColor,
-              borderWidth: 1,
-              borderStyle: 'solid',
-              backgroundColor: activeBackgroundColor,
-              color: 'white'
-            }
-          : {
-              borderColor: borderColor,
-              borderWidth: 1,
-              borderStyle: 'solid',
-              backgroundColor: inactiveBackgroundColor,
-              color: textColor
-            }
-      ]}
-      onClick={() => {
-        setActive(!active);
-        onClick();
-      }}
-    >
-      <span css={textStyles.buttonText}>{text}</span>
-    </button>
+    active
+      ?
+        <ActiveButton
+        elevation={0}
+        variant="contained"
+        onClick={() => {
+          setActive(!active);
+          onClick();
+        }}
+        >
+          <span css={textStyles.buttonText}>{text}</span>
+        </ActiveButton>
+      :
+        <InactiveButton
+        variant="outlined"
+        onClick={() => {
+          setActive(!active);
+          onClick();
+        }}
+        >
+          <span css={textStyles.buttonText}>{text}</span>
+        </InactiveButton>
   );
 }
-
-ActionButton.defaultProps = {
-  textColor: '#404040',
-  inactiveBackgroundColor: 'white',
-  activeBackgroundColor: '#E57B00',
-  borderColor: '#979797'
-};
