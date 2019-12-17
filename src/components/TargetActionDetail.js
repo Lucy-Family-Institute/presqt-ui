@@ -2,12 +2,10 @@
 import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
-import { object, number } from "prop-types";
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
 import Spinner from "./widgets/spinner";
-import { isTSPropertySignature } from "@babel/types";
 
 /**
  * This component is responsible for displaying the details of a selected resource.
@@ -79,7 +77,6 @@ export default function TargetActionDetail() {
    * Define the html of an object item to be rendered.
    **/
   const renderObject = obj => {
-    // Map the initial object
     return Object.entries(obj).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
       return (
