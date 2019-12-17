@@ -2,10 +2,12 @@
 import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
+import { object, number } from "prop-types";
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
 import Spinner from "./widgets/spinner";
+import { isTSPropertySignature } from "@babel/types";
 
 /**
  * This component is responsible for displaying the details of a selected resource.
@@ -81,17 +83,20 @@ export default function TargetActionDetail() {
     return Object.entries(value).map((resourceDetailElement, index) => {
       const [key, value] = resourceDetailElement;
       return (
-        <div key={index} css={{ display: "flex", flexDirection: "row" }}>
+        <div key={index} css={{ display: "flex" }}>
           <div css={{ display: "flex", flexDirection: "row" }}>
-            <span
-              css={[
-                textStyles.body,
-                { fontSize: 12, paddingLeft: 5, fontWeight: 500 }
-              ]}
-            >
-              {`${key}:\u00a0`}
+            <span css={[textStyles.body, { fontSize: 12, paddingLeft: 5, fontWeight: 500 }]}>
+              {typeof value === 'object' ? "\n" + `${key}` + ":\u00a0" : `${key}` + ":\u00a0"}
             </span>
-            <span css={[textStyles.body, { fontSize: 12 }]}>{`${value}`}</span>
+            <span css={[textStyles.body, { fontSize: 12 }]}>
+              {typeof value === "string" ||
+              typeof value === "boolean" ||
+              typeof value === "number"
+                ? value
+                : typeof value === "object"
+                ? renderObject(value)
+                : ""}
+            </span>
           </div>
         </div>
       );
