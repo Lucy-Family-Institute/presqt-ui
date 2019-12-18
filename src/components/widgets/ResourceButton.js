@@ -5,10 +5,10 @@ import textStyles from "../../styles/text";
 
 const closedFolderIcon = require("../../images/icons/closedFolder.png");
 const openFolderIcon = require("../../images/icons/openFolder.png");
-const activeOpenFolderIcon = require("../../images/icons/poozer.png");
-const activeClosedFolderIcon = require("../../images/icons/poozer_beard.png");
+const openFolderSelectedIcon = require("../../images/icons/openFolderSelected.png");
+const closedFolderSelectedIcon = require("../../images/icons/closedFolderSelected.png");
 const fileIcon = require("../../images/icons/file.png");
-const activeFileIcon = require("../../images/icons/marty.png");
+const fileSelectedIcon = require("../../images/icons/fileSelected.png");
 
 export default function ResourceButton(props) {
   const { resource, level, onClick } = props;
@@ -32,14 +32,14 @@ export default function ResourceButton(props) {
         src={
           resource.kind === "container"
             ? resource.open && resource.active
-              ? activeOpenFolderIcon
+              ? openFolderSelectedIcon
             : resource.open && !resource.active
               ? openFolderIcon
             : !resource.open && resource.active
-              ? activeClosedFolderIcon
+              ? closedFolderSelectedIcon
             : closedFolderIcon
           : resource.active
-            ? activeFileIcon
+            ? fileSelectedIcon
           : fileIcon
         }
         alt="Resource Icon"
