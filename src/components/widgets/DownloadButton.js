@@ -1,83 +1,46 @@
 /** @jsx jsx */
-import { useState } from "react";
+import {Fragment} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
-import Button from "@material-ui/core/Button/Button";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { actionCreators } from "../../redux/actionCreators";
+import DownloadModal from "../modals/downloadModal";
+import useModal from "../../hooks/useModal";
+import ActionButton from "./ActionButton";
 
-/**
- * Create a new component sthat inherits the Material Button component so we can update the colors
- */
-const InactiveButton = withStyles({
-  root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 35,
-    marginRight: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  }
-})(Button);
-
-const ActiveButton = withStyles({
-  root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 35,
-    marginRight: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: "#E57B00",
-    border: "1px solid #E57B00",
-    color: "white",
-    boxShadow: "none",
-    "&:hover": {
-      boxShadow: "none",
-      backgroundColor: "#E57B00"
-    }
-  }
-})(Button);
-
-export default function ActionButton(props) {
+export default function DownloadButton({key, text}) {
   const dispatch = useDispatch();
-  const sourceTargetToken = useSelector(
-    state => state.authorization.apiTokens[state.targets.source.name]
-  );
-  const selectedInSource = useSelector(
-    state => state.resources.selectedInSource
-  );
+  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  const selectedInSource = useSelector(state => state.resources.selectedInSource);
 
-    const submitDownload = () => {
-        dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
+  const submitDownload = () => {
+    toggleModalVisibility();
+    dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
+    // Add downloadResource success reducers
+    // Add downloadResource Failure reducers
+    // Look in API operations
+    //   If downloadResource is not in it AND downloadResource is not in API operations errors
+    //       Then start checking in download job
+    //   Else Display errors in Modal
   };
 
-  const { text, onClick } = props;
+  const { modalVisible, toggleModalVisibility } = useModal();
 
-  const [active, setActive] = useState(false);
-  return active ? (
-    <ActiveButton
+  return (
+    <Fragment>
+      <DownloadModal
+        modalActive={modalVisible}
+        toggleModal={toggleModalVisibility}
+      />
+
+      <ActionButton
       elevation={0}
       variant="contained"
-      onClick={() => {
-        setActive(!active);
-        submitDownload();
-      }}
-    >
-      <span css={textStyles.buttonText}>{text}</span>
-    </ActiveButton>
-  ) : (
-    <InactiveButton
-      variant="outlined"
-      onClick={() => {
-        setActive(!active);
-        submitDownload();
-      }}
-    >
-      <span css={textStyles.buttonText}>{text}</span>
-    </InactiveButton>
-  );
+      onClick={submitDownload}
+      >
+        <span css={textStyles.buttonText}>{text}</span>
+      </ActionButton>
+
+    </Fragment>
+  )
 }

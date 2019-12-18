@@ -80,7 +80,6 @@ export default function TargetActions() {
                 <DownloadButton
                   key={link.name}
                   text={link.name}
-                  onClick={() => setLink(link)}
                 />
               ) : link.name === "Upload" ? (
                 <UploadButton
