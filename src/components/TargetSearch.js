@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchTextField from "./widgets/SearchTextField";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     "& > *": {
       marginTop: 10,
       width: 250
     }
   }
-}));
+});
 
 export default function TargetSearch() {
   const classes = useStyles();

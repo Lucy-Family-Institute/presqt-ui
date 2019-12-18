@@ -40,6 +40,7 @@ export default handleActions(
         actionCreators.resources.loadFromSourceTargetSearch,
         state.pendingAPIOperations
       ),
+      selectedInSource: null,
       sourceSearchValue: action.payload.searchValue
     }),
     /**
@@ -154,13 +155,25 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectSourceResource]: (state, action) => {
+      const updateInSourceTarget = inSourceTarget => {
+          let sourceResources = inSourceTarget;
+          sourceResources.map(resource => {
+            resource.active = resource.id === action.payload.resource.id;
+            if (resource.kind === 'container'){
+              updateInSourceTarget(resource.children)
+            }
+          });
+          return sourceResources
+      };
+
       return {
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
           actionCreators.resources.selectSourceResource,
           state.pendingAPIOperations
-        )
+        ),
+        inSourceTarget: updateInSourceTarget(state.inSourceTarget)
       };
     },
     /***
@@ -169,6 +182,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Detail call.
      **/
     [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
+
       return {
         ...state,
         selectedInSource: action.payload,

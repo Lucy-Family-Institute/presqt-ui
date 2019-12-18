@@ -170,9 +170,9 @@ export default function Modal({ connection, modalActive, toggleModal }) {
           <div css={styles.modalContainer} aria-modal aria-hidden>
             <div css={styles.modal}>
               <div css={styles.modalHeader}>
-                <span
-                  css={textStyles.modalTitle}
-                >{`Access Token for ${connection.readable_name}`}</span>
+                <span css={textStyles.modalTitle}>
+                  {`Access Token for ${connection.readable_name}`}
+                </span>
                 <div
                   onClick={() =>
                     transitionOut(() => {
@@ -225,7 +225,8 @@ export default function Modal({ connection, modalActive, toggleModal }) {
                     Connect
                   </ModalSubmitButton>
                 </div>
-                <p css={[textStyles.body, textStyles.cubsRed]}>{error ? error.data: ''}
+                <p css={[textStyles.body, textStyles.cubsRed]}>
+                  {error ? error.data: ''}
                 </p>
               </div>
             </div>

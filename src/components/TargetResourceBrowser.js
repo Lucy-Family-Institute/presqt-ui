@@ -26,10 +26,10 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
- /**
+ /** SELECTOR DEFINITIONS
   * sourceTargetToken     : String user token if a source exists else null
   * sourceTargetResources : Array containing source target resources in hierarchical order
-  * pendingAPIOperations  : Boolean representing if a pending API operation exists
+  * pendingAPIOperations  : List of API operations currently in progress.
   * apiOperationErrors    : List of objects of current api errors
   * sourceTarget          : Object of the current source selected
   * sourceSearchValue     : Search term last submitted in the source search input
@@ -58,9 +58,7 @@ export default function TargetResourceBrowser() {
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
-    dispatch(
-      actionCreators.resources.selectSourceResource(resource, sourceTargetToken)
-    );
+    dispatch(actionCreators.resources.selectSourceResource(resource, sourceTargetToken));
   };
 
   /**

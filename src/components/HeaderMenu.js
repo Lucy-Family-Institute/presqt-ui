@@ -32,6 +32,7 @@ export default function HeaderMenu() {
         ]}
         href="https://presqt.crc.nd.edu"
         target="_blank"
+        rel="noopener noreferrer"
       >
         About PresQT
       </a>
