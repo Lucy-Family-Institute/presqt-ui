@@ -1,25 +1,27 @@
 /** @jsx jsx */
-import { useState, useEffect } from 'react';
-import { jsx } from '@emotion/core';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { jsx } from "@emotion/core";
+import { useSelector } from "react-redux";
 
-import textStyles from '../styles/text';
-import ActionButton from './widgets/ActionButton';
-import { initiateResourceDownload } from '../api/resources';
-import useModal from '../hooks/useModal';
-import DownloadModal from './modals/DownloadModal';
-import {actionCreators} from "../redux/actionCreators";
+import textStyles from "../styles/text";
+import DownloadButton from "./widgets/DownloadButton";
+import UploadButton from "./widgets/UploadButton";
+import TransferButton from "./widgets/TransferButton";
+// import { initiateResourceDownload } from '../api/resources';
+import useModal from "../hooks/useModal";
+// import DownloadModal from './modals/DownloadModal';
+import { actionCreators } from "../redux/actionCreators";
 
-const temporaryLinktoFunctionMap = {
-  Download: initiateResourceDownload
-};
+// const temporaryLinktoFunctionMap = {
+//   Download: initiateResourceDownload
+// };
 
-/**
- * Mapping object for each target action component. Gets dynamically used for each button.
- **/
-const actionLinkToComponent = {
-  Download: DownloadModal
-};
+// /**
+//  * Mapping object for each target action component. Gets dynamically used for each button.
+//  **/
+// const actionLinkToComponent = {
+//   Download: DownloadModal
+// };
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
@@ -30,8 +32,12 @@ export default function TargetActions() {
    * selectedSourceResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const selectedSourceResource = useSelector(
+    state => state.resources.selectedInSource
+  );
+  const pendingAPIOperations = useSelector(
+    state => state.resources.pendingAPIOperations
+  );
 
   /** STATE DEFINITIONS
    * [modalType, setModalType] : Action modal state of which action button has been clicked on.
@@ -40,7 +46,6 @@ export default function TargetActions() {
   const [link, setLink] = useState(null);
 
   const { modalVisible, toggleModalVisibility } = useModal();
-
 
   // THIS IS CAUSING AN INFINITE LOOP. COMMENTING OUT UNTIL DOWNLOAD GETS WORKED ON AGAIN.
   // useEffect(() => {
@@ -57,10 +62,10 @@ export default function TargetActions() {
         <span
           css={[
             {
-              display: 'flex',
-              flexDirection: 'row',
+              display: "flex",
+              flexDirection: "row",
               minHeight: 50,
-              alignItems: 'center'
+              alignItems: "center"
             },
             textStyles.largeHeader
           ]}
@@ -68,42 +73,52 @@ export default function TargetActions() {
           {selectedSourceResource ? selectedSourceResource.title : null}
         </span>
 
-        <DownloadModal
-          modalActive={modalVisible}
-          onHide={toggleModalVisibility}
-        />
-
-        <div css={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
-        {selectedSourceResource &&
-          selectedSourceResource.links.map(link => (
-            <ActionButton
-              key={link.name}
-              text={link.name}
-              onClick={() => setLink(link)}
-            />
-          ))}
+        <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
+          {selectedSourceResource &&
+            selectedSourceResource.links.map(link =>
+              link.name === "Download" ? (
+                <DownloadButton
+                  key={link.name}
+                  text={link.name}
+                  onClick={() => setLink(link)}
+                />
+              ) : link.name === "Upload" ? (
+                <UploadButton
+                  key={link.name}
+                  text={link.name}
+                  onClick={() => setLink(link)}
+                />
+              ) : link.name === "Transfer" ? (
+                <TransferButton
+                  key={link.name}
+                  text={link.name}
+                  onClick={() => setLink(link)}
+                />
+              ) : null
+            )}
         </div>
       </div>
-    )
+    );
   };
 
   return (
     <div
       css={{
-        gridArea: 'targetActions',
-        borderLeftColor: '#979797',
+        gridArea: "targetActions",
+        borderLeftColor: "#979797",
         borderLeftWidth: 1,
-        borderLeftStyle: 'solid',
+        borderLeftStyle: "solid",
         paddingLeft: 25
       }}
     >
-      {
-        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
-        ||
-        pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+      {pendingAPIOperations.includes(
+        actionCreators.resources.selectSourceResource.toString()
+      ) ||
+      pendingAPIOperations.includes(
+        actionCreators.resources.loadFromSourceTargetSearch.toString()
+      )
         ? null
-        : DisplayTargetActions()
-      }
+        : DisplayTargetActions()}
     </div>
   );
 }

@@ -25,7 +25,10 @@ export const actionCreators = createActions({
         CLOSE_CONTAINER: container => ({container, open: false}),
         SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
         SELECT_SOURCE_RESOURCE_SUCCESS: undefined,
-        CLEAR_SOURCE_RESOURCES: undefined
+        CLEAR_SOURCE_RESOURCES: undefined,
+        DOWNLOAD_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
+        DOWNLOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
+        DOWNLOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({status, data})
     },
     TARGETS: {
         LOAD: undefined,

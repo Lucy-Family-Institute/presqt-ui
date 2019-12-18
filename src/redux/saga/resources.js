@@ -1,7 +1,7 @@
 // TODO: Load Resource Details when resource is selected.
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
@@ -71,4 +71,26 @@ function* loadResourceDetail(action) {
   yield put(
     actionCreators.resources.selectSourceResourceSuccess(response.data)
   );
+}
+
+// Resource Download
+export function* watchSourceResourceDownload() {
+  yield takeEvery(actionCreators.resources.downloadResource, downloadSourceTargetResource)
+}
+
+function* downloadSourceTargetResource(action) {
+  try {
+    const response = yield call(
+    getResourceDownload,
+    action.payload.resource,
+    action.payload.sourceTargetToken
+    );
+    yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
+  }
+  catch (error) {
+    yield put(actionCreators.resources.downloadFromSourceTargetFailure(
+      error.response.status,
+      error.response.data.error)
+    );
+  }
 }

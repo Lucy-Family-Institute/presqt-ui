@@ -20,7 +20,7 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: state=> ({
+    [actionCreators.resources.loadFromSourceTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
@@ -33,7 +33,7 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action with search parameter.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearch]: (state, action)=> ({
+    [actionCreators.resources.loadFromSourceTargetSearch]: (state, action) => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
@@ -156,14 +156,14 @@ export default handleActions(
      **/
     [actionCreators.resources.selectSourceResource]: (state, action) => {
       const updateInSourceTarget = inSourceTarget => {
-          let sourceResources = inSourceTarget;
-          sourceResources.map(resource => {
-            resource.active = resource.id === action.payload.resource.id;
-            if (resource.kind === 'container'){
-              updateInSourceTarget(resource.children)
-            }
-          });
-          return sourceResources
+        let sourceResources = inSourceTarget;
+        sourceResources.map(resource => {
+          resource.active = resource.id === action.payload.resource.id;
+          if (resource.kind === 'container') {
+            updateInSourceTarget(resource.children)
+          }
+        });
+        return sourceResources
       };
 
       return {
@@ -213,7 +213,18 @@ export default handleActions(
         selectedInSource: null,
         sourceSearchValue: null
       }
-    }
+    },
+    /**
+     * Register resource download operation
+     **/
+    [actionCreators.resources.downloadResource]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.downloadResource,
+        state.pendingAPIOperations
+      )
+    })
   },
   initialState
 );

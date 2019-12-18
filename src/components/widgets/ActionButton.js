@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { jsx } from '@emotion/core';
 import textStyles from '../../styles/text';
 import Button from "@material-ui/core/Button/Button";
@@ -41,6 +42,9 @@ const ActiveButton = withStyles({
 })(Button);
 
 export default function ActionButton(props) {
+  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  const selectedInSource = useSelector(state => state.resources.selectedInSource)
+  
   const {
     text,
     onClick
