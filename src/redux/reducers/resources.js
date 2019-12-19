@@ -224,6 +224,27 @@ export default handleActions(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
       )
+    }),
+    [actionCreators.resources.downloadFromSourceTargetSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadResource,
+        state.pendingAPIOperations
+      )
+    }),
+    [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIOperations: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadResource,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.downloadFromSourceTargetFailure.toString(),
+        state.apiOperationErrors
+      )
     })
   },
   initialState
