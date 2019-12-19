@@ -160,7 +160,9 @@ export default handleActions(
           sourceResources.map(resource => {
             resource.active = resource.id === action.payload.resource.id;
             if (resource.kind === 'container'){
-              updateInSourceTarget(resource.children)
+              if (resource.children) {
+                updateInSourceTarget(resource.children)
+              }
             }
           });
           return sourceResources
