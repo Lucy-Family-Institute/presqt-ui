@@ -1,7 +1,7 @@
 // TODO: Load Resource Details when resource is selected.
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
@@ -86,6 +86,43 @@ function* downloadSourceTargetResource(action) {
     action.payload.sourceTargetToken
     );
     yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
+    try {
+      console.log('WE IN THE DJ TRY');
+      let done = false;
+      const downloadJobUrl = response.data.download_job;
+      
+      while (!done) {
+        yield put(actionCreators.resources.downloadJob());
+        const downloadJobResponse = yield call(
+          resourceDownloadJob,
+          downloadJobUrl,
+          action.payload.sourceTargetToken);
+        
+        if (downloadJobResponse.status === 200) {
+          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponse.data));
+          console.log('DOWNLOAD SUCCESS');
+          done = true;
+        }
+        else if (downloadJobResponse.data.status_code === null) {
+          yield put(actionCreators.resources.downloadJobPending());
+          console.log('TIMEOUT');
+          setTimeout(1);
+        }
+        else {
+          yield put(actionCreators.resources.downloadJobFailure(downloadJobResponse.data));
+          console.log('IT FAILED MA')
+          done = true;
+        }
+      }
+
+    }
+    catch (error) {
+      console.log(downloadJobResponse);
+      // yield put(actionCreators.resources.downloadFromSourceTargetFailure(
+      //   error.downloadJobResponse.status,
+      //   error.downloadJobResponse.data.error)
+      // );
+    }
   }
   catch (error) {
     yield put(actionCreators.resources.downloadFromSourceTargetFailure(

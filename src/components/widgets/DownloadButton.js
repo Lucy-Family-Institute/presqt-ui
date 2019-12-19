@@ -16,10 +16,6 @@ export default function DownloadButton({key, text}) {
   const submitDownload = () => {
     toggleModalVisibility();
     dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
-    // useEffect somewhere** API operations
-    //   If downloadResource is not in it AND downloadResource is not in API operations errors
-    //       Then start checking in download job
-    //   Else Display errors in Modal
   };
 
   const { modalVisible, toggleModalVisibility } = useModal();

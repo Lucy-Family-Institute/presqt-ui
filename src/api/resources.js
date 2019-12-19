@@ -41,6 +41,10 @@ export function getResourceDownload(resource, sourceTargetToken) {
   return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
 }
 
+export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
+  console.log('MAKING API CALL');
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+}
 
 /**
  * Resource Download Endpoint

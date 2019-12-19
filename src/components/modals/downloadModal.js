@@ -80,14 +80,20 @@ const styles = {
   })
 };
 
-export default function DownloadModal({modalActive, toggleModal }) {
+export default function DownloadModal({ modalActive, toggleModal }) {
+  const sourceDownload = useSelector(state => state.resources.sourceDownload);
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
+  const [downloadMessage, setDownloadMessage] = useState('Downloadin....');
 
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {
       transitionIn();
     }
   }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
+
+  useEffect(() => {
+    setDownloadMessage(sourceDownload);
+  }, [sourceDownload]);
 
   return modalActive
     ? ReactDOM.createPortal(
@@ -129,7 +135,7 @@ export default function DownloadModal({modalActive, toggleModal }) {
                 }}
               >
                 <p css={textStyles.body}>
-                  We Downloadin, Ma!
+                  {downloadMessage}
                 </p>
 
                 <div

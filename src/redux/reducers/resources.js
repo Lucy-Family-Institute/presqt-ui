@@ -11,7 +11,8 @@ const initialState = {
   inDestinationTarget: null,
   selectedInSource: null,
   apiOperationErrors: [],
-  sourceSearchValue: null
+  sourceSearchValue: null,
+  sourceDownload: null
 };
 
 export default handleActions(
@@ -245,7 +246,39 @@ export default handleActions(
         actionCreators.resources.downloadFromSourceTargetFailure.toString(),
         state.apiOperationErrors
       )
-    })
+    }),
+    [actionCreators.resources.downloadJob]: state => ({
+      ...state,
+      pendingAPIOperations: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations
+      )
+    }),
+    [actionCreators.resources.downloadJobPending]: state => ({
+      ...state,
+      pendingAPIOperations: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations
+      )
+    }),
+    [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIOperations: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations),
+      sourceDownload: action.payload.data
+    }),
+    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIOperations: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations),
+        sourceDownload: action.payload.data
+    }),
   },
   initialState
 );
