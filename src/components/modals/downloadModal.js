@@ -112,8 +112,9 @@ export default function DownloadModal({ modalActive, toggleModal }) {
       console.log("Byte Length", bytes.length);
       // var bytes = utf8_to_b64(downloadMessage);
       // var downloadZip = base64ToArrayBuffer(downloadMessage);
-      // var blob = new Blob([bytes], { type: "application/zip" });
-      // console.log("Blob Length", blob.length);
+      var blob = new Blob([bytes]);
+      console.log("Blob Length", blob.size);
+      console.log("Blob Type", blob.type);
       console.log(downloadMessage);
       return "Download Complete......now what?";
       // return saveAs(downloadMessage, "PresQT_Download.zip");
