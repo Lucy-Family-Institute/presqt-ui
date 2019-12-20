@@ -104,7 +104,12 @@ export default function DownloadModal({ modalActive, toggleModal }) {
     if (downloadMessage === null) {
       return "The download is being processed on the server.";
     } else {
-      // console.log("Data Length", downloadMessage.length);
+      console.log("Data Length", downloadMessage.length);
+      var bytes = new Uint8Array(downloadMessage.length);
+      for (var i = 0; i < downloadMessage.length; i++)
+        bytes[i] = downloadMessage.charCodeAt(i);
+      
+      console.log("Byte Length", bytes.length);
       // var bytes = utf8_to_b64(downloadMessage);
       // var downloadZip = base64ToArrayBuffer(downloadMessage);
       // var blob = new Blob([bytes], { type: "application/zip" });
