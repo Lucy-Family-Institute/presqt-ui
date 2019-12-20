@@ -1,7 +1,7 @@
-import { handleActions, combineActions } from 'redux-actions';
+import { handleActions, combineActions } from "redux-actions";
 
-import { actionCreators } from '../actionCreators';
-import {trackAction, trackError, untrackAction} from '../utils';
+import { actionCreators } from "../actionCreators";
+import { trackAction, trackError, untrackAction } from "../utils";
 import buildResourceHierarchy from "./helpers/resources";
 
 const initialState = {
@@ -53,8 +53,10 @@ export default handleActions(
       return {
         ...state,
         pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(actionCreators.resources.loadFromSourceTarget,
-          state.pendingAPIOperations),
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromSourceTarget,
+          state.pendingAPIOperations
+        ),
         inSourceTarget: resourceHierarchy
       };
     },
@@ -62,13 +64,18 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
+    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (
+      state,
+      action
+    ) => {
       const resourceHierarchy = buildResourceHierarchy(action);
       return {
         ...state,
         pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(actionCreators.resources.loadFromSourceTargetSearch,
-          state.pendingAPIOperations),
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromSourceTargetSearch,
+          state.pendingAPIOperations
+        ),
         inSourceTarget: resourceHierarchy
       };
     },
@@ -76,12 +83,15 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection call.
      **/
-    [actionCreators.resources.loadFromSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.loadFromSourceTargetFailure]: (
+      state,
+      action
+    ) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.loadFromSourceTarget,
-        state.pendingAPIOperations,
+        state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
@@ -94,17 +104,20 @@ export default handleActions(
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
+    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (
+      state,
+      action
+    ) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.loadFromSourceTargetSearch,
-        state.pendingAPIOperations,
+        state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
         actionCreators.resources.loadFromSourceTargetSearch,
-        state.apiOperationErrors,
+        state.apiOperationErrors
       ),
       inSourceTarget: null
     }),
@@ -160,11 +173,13 @@ export default handleActions(
         let sourceResources = inSourceTarget;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
-          if (resource.kind === 'container') {
-            updateInSourceTarget(resource.children)
+          if (resource.kind === "container") {
+            if (resource.children) {
+              updateInSourceTarget(resource.children);
+            }
           }
         });
-        return sourceResources
+        return sourceResources;
       };
 
       return {
@@ -183,7 +198,6 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Detail call.
      **/
     [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
-
       return {
         ...state,
         selectedInSource: action.payload,
@@ -200,9 +214,10 @@ export default handleActions(
     [actionCreators.resources.removeFromErrorList]: (state, action) => {
       return {
         ...state,
-        apiOperationErrors: state.apiOperationErrors.filter(item =>
-          item.action !== action.payload.actionToRemove)
-      }
+        apiOperationErrors: state.apiOperationErrors.filter(
+          item => item.action !== action.payload.actionToRemove
+        )
+      };
     },
     /**
      * Clear source list and detail data
@@ -213,7 +228,7 @@ export default handleActions(
         inSourceTarget: null,
         selectedInSource: null,
         sourceSearchValue: null
-      }
+      };
     },
     /**
      * Register resource download operation
@@ -234,7 +249,10 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
-    [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.downloadFromSourceTargetFailure]: (
+      state,
+      action
+    ) => ({
       ...state,
       pendingAPIOperations: false,
       pendingAPIOperations: untrackAction(
@@ -268,7 +286,8 @@ export default handleActions(
       pendingAPIOperations: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
-        state.pendingAPIOperations),
+        state.pendingAPIOperations
+      ),
       sourceDownload: action.payload.data
     }),
     [actionCreators.resources.downloadJobFailure]: (state, action) => ({
@@ -276,9 +295,10 @@ export default handleActions(
       pendingAPIOperations: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
-        state.pendingAPIOperations),
-        sourceDownload: action.payload.data
-    }),
+        state.pendingAPIOperations
+      ),
+      sourceDownload: action.payload.data
+    })
   },
   initialState
 );
