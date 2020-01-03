@@ -74,7 +74,7 @@ export default function TargetActions() {
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedSourceResource &&
+          {selectedSourceResource && // PROBABLY A BETTER WAY TO DO THIS?
             selectedSourceResource.links.map(link =>
               link.name === "Download" ? (
                 <DownloadButton

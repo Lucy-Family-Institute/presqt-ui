@@ -8,7 +8,7 @@ import DownloadModal from "../modals/downloadModal";
 import useModal from "../../hooks/useModal";
 import ActionButton from "./ActionButton";
 
-export default function DownloadButton({key, text}) {
+export default function DownloadButton({text}) {
   const dispatch = useDispatch();
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
@@ -28,13 +28,12 @@ export default function DownloadButton({key, text}) {
       />
 
       <ActionButton
-      elevation={0}
-      variant="contained"
-      onClick={submitDownload}
+        elevation={0}
+        variant="contained"
+        onClick={submitDownload}
       >
         <span css={textStyles.buttonText}>{text}</span>
       </ActionButton>
-
     </Fragment>
   )
 }

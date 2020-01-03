@@ -85,43 +85,53 @@ function* downloadSourceTargetResource(action) {
     action.payload.resource,
     action.payload.sourceTargetToken
     );
+
     yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
+
     try {
-      console.log('WE IN THE DJ TRY');
-      let done = false;
-      const downloadJobUrl = response.data.download_job;
-      
-      while (!done) {
+      let download_finished = false;
+
+      while (!download_finished) {
         yield put(actionCreators.resources.downloadJob());
+
         const downloadJobResponse = yield call(
           resourceDownloadJob,
-          downloadJobUrl,
-          action.payload.sourceTargetToken);
-        
-        if (downloadJobResponse.status === 200) {
-          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponse.data));
-          console.log('DOWNLOAD SUCCESS');
-          done = true;
-        }
-        else if (downloadJobResponse.data.status_code === null) {
-          yield put(actionCreators.resources.downloadJobPending());
-          console.log('TIMEOUT');
-          setTimeout(1);
+          response.data.download_job,
+          action.payload.sourceTargetToken
+        );
+
+        if (downloadJobResponse.headers['content-type'] === 'application/zip') {
+          console.log('done!');
+          const downloadJobResponseData = new Blob(
+            [downloadJobResponse.data],
+            {type : 'application/json'}
+          );
+          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData));
+          download_finished = true;
         }
         else {
-          yield put(actionCreators.resources.downloadJobFailure(downloadJobResponse.data));
-          console.log('IT FAILED MA')
-          done = true;
+          console.log('failure or pending!!!');
+          yield put(actionCreators.resources.downloadJobPending());
+          setTimeout(1);
         }
       }
 
     }
     catch (error) {
-      console.log(downloadJobResponse);
-      // yield put(actionCreators.resources.downloadFromSourceTargetFailure(
-      //   error.downloadJobResponse.status,
-      //   error.downloadJobResponse.data.error)
-      // );
+      console.log('download job failure');
+
+      const downloadJobResponseData = new Blob(
+        [error.response.data],
+        {type : 'application/json'}
+      );
+
+      const reader = new FileReader();
+      reader.readAsText(downloadJobResponseData);
+      reader.onloadend = (event) => {
+        console.log(JSON.parse(reader.result))
+      };
+      // ONLY MOVE ON TO THIS AFTER THE FILEREADER IS DONE AND HAVE THE CONTENTS OF THE BLOBBOI!!
+      // yield put(actionCreators.resources.downloadJobFailure('hi'));
     }
   }
   catch (error) {

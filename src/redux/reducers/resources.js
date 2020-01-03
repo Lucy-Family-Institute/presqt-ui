@@ -254,7 +254,7 @@ export default handleActions(
       action
     ) => ({
       ...state,
-      pendingAPIOperations: false,
+      pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
@@ -267,7 +267,7 @@ export default handleActions(
     }),
     [actionCreators.resources.downloadJob]: state => ({
       ...state,
-      pendingAPIOperations: true,
+      pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
@@ -275,7 +275,7 @@ export default handleActions(
     }),
     [actionCreators.resources.downloadJobPending]: state => ({
       ...state,
-      pendingAPIOperations: false,
+      pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
@@ -283,7 +283,7 @@ export default handleActions(
     }),
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
-      pendingAPIOperations: false,
+      pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
@@ -292,7 +292,7 @@ export default handleActions(
     }),
     [actionCreators.resources.downloadJobFailure]: (state, action) => ({
       ...state,
-      pendingAPIOperations: false,
+      pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations

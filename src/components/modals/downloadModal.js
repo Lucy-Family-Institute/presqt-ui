@@ -8,10 +8,8 @@ import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import textStyles from "../../styles/text";
 import { basicFadeIn, basicFadeOut } from "../../styles/animations";
 import useAnimatedState from "../../hooks/useAnimatedState";
-import { actionCreators } from "../../redux/actionCreators";
-import { useDispatch, useSelector } from "react-redux";
-import TokenTextField from "../widgets/TokenTextField";
-import ModalSubmitButton from "../widgets/ModalSubmitButton";
+import { useSelector } from "react-redux";
+import FileSaver from 'file-saver';
 
 const styles = {
   darkenBackground: css({
@@ -95,29 +93,12 @@ export default function DownloadModal({ modalActive, toggleModal }) {
     setDownloadMessage(sourceDownload);
   }, [sourceDownload]);
 
-  function utf8_to_b64(str) {
-    return window.btoa(unescape(encodeURIComponent(str)));
-  }
-
   const DownloadFile = () => {
-    console.log(typeof downloadMessage);
     if (downloadMessage === null) {
       return "The download is being processed on the server.";
     } else {
-      console.log("Data Length", downloadMessage.length);
-      var bytes = new Uint8Array(downloadMessage.length);
-      for (var i = 0; i < downloadMessage.length; i++)
-        bytes[i] = downloadMessage.charCodeAt(i);
-      
-      console.log("Byte Length", bytes.length);
-      // var bytes = utf8_to_b64(downloadMessage);
-      // var downloadZip = base64ToArrayBuffer(downloadMessage);
-      var blob = new Blob([bytes]);
-      console.log("Blob Length", blob.size);
-      console.log("Blob Type", blob.type);
-      console.log(downloadMessage);
+      FileSaver.saveAs(downloadMessage, "hello PresQT_Download.zip");
       return "Download Complete......now what?";
-      // return saveAs(downloadMessage, "PresQT_Download.zip");
     }
   };
 

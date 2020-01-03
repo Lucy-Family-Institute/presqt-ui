@@ -38,12 +38,11 @@ export function getResourceDetail(resource, sourceTargetToken) {
  **/
 export function getResourceDownload(resource, sourceTargetToken) {
   const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
-  return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+  return axios.get('https://localhost/api_v1/targets/osf/resources/poop.zip/', { headers: { 'presqt-source-token': sourceTargetToken } });
 }
 
 export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
-  console.log('MAKING API CALL');
-  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
 }
 
 /**
