@@ -88,9 +88,11 @@ function* downloadSourceTargetResource(action) {
 
     yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
 
+    // Kick off the download job endpoint check-in
     try {
       let download_finished = false;
 
+      // Keep checking in on the download job endpoint until the download finishes or fails
       while (!download_finished) {
         yield put(actionCreators.resources.downloadJob());
 
@@ -100,38 +102,34 @@ function* downloadSourceTargetResource(action) {
           action.payload.sourceTargetToken
         );
 
+        // Download successful!
         if (downloadJobResponse.headers['content-type'] === 'application/zip') {
-          console.log('done!');
+          console.log('Done!');
           const downloadJobResponseData = new Blob(
             [downloadJobResponse.data],
             {type : 'application/json'}
           );
+
           yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData));
           download_finished = true;
         }
+        // Download pending!
         else {
-          console.log('failure or pending!!!');
+          console.log('Pending!!!');
           yield put(actionCreators.resources.downloadJobPending());
           setTimeout(1);
         }
       }
-
     }
+    // Download failed!
     catch (error) {
-      console.log('download job failure');
-
+      console.log('Failure');
       const downloadJobResponseData = new Blob(
         [error.response.data],
         {type : 'application/json'}
       );
-
-      const reader = new FileReader();
-      reader.readAsText(downloadJobResponseData);
-      reader.onloadend = (event) => {
-        console.log(JSON.parse(reader.result))
-      };
-      // ONLY MOVE ON TO THIS AFTER THE FILEREADER IS DONE AND HAVE THE CONTENTS OF THE BLOBBOI!!
-      // yield put(actionCreators.resources.downloadJobFailure('hi'));
+      const errorData = yield call(getErrorData, downloadJobResponseData);
+      yield put(actionCreators.resources.downloadJobFailure(errorData));
     }
   }
   catch (error) {
@@ -140,4 +138,8 @@ function* downloadSourceTargetResource(action) {
       error.response.data.error)
     );
   }
+}
+
+function getErrorData(downloadJobResponseData) {
+  return JSON.parse(downloadJobResponseData.text());
 }

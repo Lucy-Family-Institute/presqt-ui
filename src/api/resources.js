@@ -38,35 +38,9 @@ export function getResourceDetail(resource, sourceTargetToken) {
  **/
 export function getResourceDownload(resource, sourceTargetToken) {
   const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
-  return axios.get('https://localhost/api_v1/targets/osf/resources/poop.zip/', { headers: { 'presqt-source-token': sourceTargetToken } });
+  return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
 }
 
 export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
   return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
 }
-
-/**
- * Resource Download Endpoint
- **/
-// export function initiateResourceDownload(
-//   resourceDownloadURL,
-//   sourceTargetToken
-// ) {
-//   const closure = url => {
-//     axios
-//       .get(url, {
-//         headers: { 'presqt-source-token': sourceTargetToken },
-//         responseType: 'blob',
-//         timeout: 10000
-//       })
-//       .then(response => FileSaver(response.data, 'textname.txt'));
-//   };
-
-//   axios
-//     .get(resourceDownloadURL, {
-//       headers: { 'presqt-source-token': sourceTargetToken }
-//     })
-//     .then(response => {
-//       setInterval(closure, 5000, response.data.download_job);
-//     });
-// }
