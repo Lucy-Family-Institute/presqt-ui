@@ -110,26 +110,25 @@ function* downloadSourceTargetResource(action) {
             {type : 'application/json'}
           );
 
-          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData));
+          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
           download_finished = true;
         }
         // Download pending!
         else {
           console.log('Pending!!!');
-          yield put(actionCreators.resources.downloadJobPending());
+          yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
           setTimeout(1);
         }
       }
     }
     // Download failed!
     catch (error) {
-      console.log('Failure');
       const downloadJobResponseData = new Blob(
         [error.response.data],
         {type : 'application/json'}
       );
       const errorData = yield call(getErrorData, downloadJobResponseData);
-      yield put(actionCreators.resources.downloadJobFailure(errorData));
+      yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
     }
   }
   catch (error) {
@@ -141,5 +140,5 @@ function* downloadSourceTargetResource(action) {
 }
 
 function getErrorData(downloadJobResponseData) {
-  return JSON.parse(downloadJobResponseData.text());
+  return downloadJobResponseData.text();
 }

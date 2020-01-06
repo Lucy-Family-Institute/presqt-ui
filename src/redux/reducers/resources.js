@@ -64,10 +64,7 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (
-      state,
-      action
-    ) => {
+    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(action);
       return {
         ...state,
@@ -83,10 +80,7 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection call.
      **/
-    [actionCreators.resources.loadFromSourceTargetFailure]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.resources.loadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -104,10 +98,7 @@ export default handleActions(
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -249,10 +240,7 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
-    [actionCreators.resources.downloadFromSourceTargetFailure]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -273,14 +261,6 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
-    [actionCreators.resources.downloadJobPending]: state => ({
-      ...state,
-      pendingAPIResponse: false,
-      pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
-        state.pendingAPIOperations
-      )
-    }),
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -288,16 +268,13 @@ export default handleActions(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
       ),
-      sourceDownload: action.payload.data
+      sourceDownloadStatus: action.payload.status,
+      sourceDownloadContents: action.payload.data
     }),
-    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
+    [actionCreators.resources.clearDownloadData]: state => ({
       ...state,
-      pendingAPIResponse: false,
-      pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
-        state.pendingAPIOperations
-      ),
-      sourceDownload: action.payload.data
+      sourceDownloadStatus: null,
+      sourceDownloadContents: null
     })
   },
   initialState

@@ -8,8 +8,9 @@ import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import textStyles from "../../styles/text";
 import { basicFadeIn, basicFadeOut } from "../../styles/animations";
 import useAnimatedState from "../../hooks/useAnimatedState";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import FileSaver from 'file-saver';
+import {actionCreators} from "../../redux/actionCreators";
 
 const styles = {
   darkenBackground: css({
@@ -79,9 +80,11 @@ const styles = {
 };
 
 export default function DownloadModal({ modalActive, toggleModal }) {
-  const sourceDownload = useSelector(state => state.resources.sourceDownload);
+  const dispatch = useDispatch();
+
+  const sourceDownloadContents = useSelector(state => state.resources.sourceDownloadContents);
+  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
-  const [downloadMessage, setDownloadMessage] = useState("");
 
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {
@@ -89,17 +92,25 @@ export default function DownloadModal({ modalActive, toggleModal }) {
     }
   }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
 
-  useEffect(() => {
-    setDownloadMessage(sourceDownload);
-  }, [sourceDownload]);
-
   const DownloadFile = () => {
-    if (downloadMessage === null) {
+    // Download pending
+    if (sourceDownloadStatus === 'pending' || sourceDownloadStatus == null) {
       return "The download is being processed on the server.";
-    } else {
-      FileSaver.saveAs(downloadMessage, "hello PresQT_Download.zip");
-      return "Download Complete......now what?";
     }
+    // Download successful
+    else if (sourceDownloadStatus === 'success') {
+      FileSaver.saveAs(sourceDownloadContents, "hello PresQT_Download.zip");
+      return "Download Complete.";
+      }
+    // Download failed
+    else {
+      return sourceDownloadContents.message;
+    }
+  };
+
+  const onModalClose = () => {
+    toggleModal();
+    dispatch(actionCreators.resources.clearDownloadData())
   };
 
   return modalActive
@@ -125,7 +136,7 @@ export default function DownloadModal({ modalActive, toggleModal }) {
                   <div
                     onClick={() =>
                       transitionOut(() => {
-                        toggleModal();
+                        onModalClose();
                       })
                     }
                   >
