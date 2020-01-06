@@ -8,11 +8,28 @@ import DownloadModal from "../modals/downloadModal";
 import useModal from "../../hooks/useModal";
 import ActionButton from "./ActionButton";
 
-export default function DownloadButton({text}) {
+/**
+ * This component handles the download action button in the TargetActions component.
+ * It is responsible for dispatching the action that will make the download API call and open
+ * a modal to display the download status.
+ **/
+export default function DownloadButton() {
   const dispatch = useDispatch();
-  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+
+  /** SELECTOR DEFINITIONS
+   * sourceTargetToken : String user token for the source target
+   * selectedInSource  : Object representing the selected resource's details
+   **/
+  const sourceTargetToken = useSelector(state =>
+    state.authorization.apiTokens[state.targets.source.name]);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
 
+  /**
+   * Open the modal.
+   * Dispatch the downloadResource action
+   *   -> Saga call to Resource Download occurs here
+   *     -> On complete saga dispatches the ResourceDownloadSuccess action
+   **/
   const submitDownload = () => {
     toggleModalVisibility();
     dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
@@ -32,7 +49,7 @@ export default function DownloadButton({text}) {
         variant="contained"
         onClick={submitDownload}
       >
-        <span css={textStyles.buttonText}>{text}</span>
+        <span css={textStyles.buttonText}>Download</span>
       </ActionButton>
     </Fragment>
   )
