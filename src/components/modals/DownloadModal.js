@@ -93,9 +93,8 @@ export default function DownloadModal({ modalActive, toggleModal }) {
    * sourceDownloadStatus   : String status of the status of the download/
    *                          [null, 'pending', 'successful', 'failure']
    **/
-  const sourceDownloadContents = useSelector(
-    state => state.resources.sourceDownloadContentxs);
-  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatu);
+  const sourceDownloadContents = useSelector(state => state.resources.sourceDownloadContents);
+  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [modalMessage, setModalMessage] = useState('' +

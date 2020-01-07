@@ -1,4 +1,3 @@
-// TODO: Load Resource Details when resource is selected.
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
@@ -108,7 +107,6 @@ function* downloadSourceTargetResource(action) {
             [downloadJobResponse.data],
             {type : 'application/json'}
           );
-
           yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
           download_finished = true;
         }
