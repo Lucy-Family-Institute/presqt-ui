@@ -104,7 +104,6 @@ function* downloadSourceTargetResource(action) {
 
         // Download successful!
         if (downloadJobResponse.headers['content-type'] === 'application/zip') {
-          console.log('Done!');
           const downloadJobResponseData = new Blob(
             [downloadJobResponse.data],
             {type : 'application/json'}
@@ -115,7 +114,6 @@ function* downloadSourceTargetResource(action) {
         }
         // Download pending!
         else {
-          console.log('Pending!!!');
           yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
           setTimeout(1);
         }
