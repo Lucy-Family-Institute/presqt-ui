@@ -1,4 +1,5 @@
 import axios from 'axios';
+import FileSaver from 'file-saver';
 
 import { apiURLBase } from '../config';
 
@@ -17,8 +18,7 @@ export function getTargetResources(sourceTarget, sourceTargetToken) {
 export function getTargetResourcesSearch(sourceTarget, sourceTargetToken, search) {
   const searchValueNoSpaces = search.replace(/ /g, "+");
 
-  return axios.get(
-    `${apiURLBase}targets/${sourceTarget}/resources?title=${searchValueNoSpaces}`, {
+  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${searchValueNoSpaces}`, {
     headers: { 'presqt-source-token': sourceTargetToken }
   });
 }
@@ -39,12 +39,9 @@ export function getResourceDetail(resource, sourceTargetToken) {
 export function getResourceDownload(resource, sourceTargetToken) {
   const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
   return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
-  /** Bad request saved to test a failed request **/
-  // return axios.get('https://localhost/api_v1/targets/osf/resources/bad_id.zip/',
-  // { headers: { 'presqt-source-token': sourceTargetToken } });
+  // return axios.get('https://localhost/api_v1/targets/osf/resources/bad_id.zip/', { headers: { 'presqt-source-token': sourceTargetToken } });
 }
 
 export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
-  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken },
-    responseType: 'blob' });
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
 }
