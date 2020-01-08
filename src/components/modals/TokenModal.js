@@ -103,8 +103,11 @@ export default function Modal({ connection, modalActive, toggleModal }) {
     element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
 
   /**
-   * Watch for the modal states to change and open modal. Also add errors to the token state if
-   * they exist.
+   * Watch for the `modalActive` being set to true while `state.desiredVisibility` and 
+   * `state.animating` are both false. This indicates a scenario in which the user has
+   * take an action to indicate that the modal should be opened, but has not yet animated in.
+   * 
+   * Also add errors to the token state if they exist.
    **/
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {

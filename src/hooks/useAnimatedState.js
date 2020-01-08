@@ -34,7 +34,11 @@ const animationReducer = (state, action) => {
   }
 };
 
-function useAnimatedState() {
+/**
+ * A custom hook used to manage in/out transitions 
+ * for components.
+ */
+export default function useAnimatedState() {
   const [state, dispatch] = useReducer(animationReducer, {
     animating: false,
     desiredVisibility: false,
@@ -42,25 +46,55 @@ function useAnimatedState() {
     endAnimationCallback: null
   });
 
-  const transitionIn = (animationEndCallback = null) => {
+  /**
+   * Invoking this function attribute will update the component's 
+   * state to indicate that it is currently animating in.
+   * 
+   * Additionally, it sets the `endAnimationCallback` state attribute
+   * which should generally be used by the `onAnimationEnd` event
+   * handler to carry out necessary actions after the component 
+   * has finished transitioning in.
+   * 
+   * If the user does not specify a function for `endAnimationCallback`
+   * when invoking this function attribute, no custom actions will
+   * take place.
+   * 
+   * @param {Function} endAnimationCallback 
+   */
+  const transitionIn = (endAnimationCallback = null) => {
     dispatch({
       type: 'inTransitionStart',
-      callback: animationEndCallback
+      callback: endAnimationCallback
         ? () => {
             dispatch({ type: 'inTransitionEnd' });
-            animationEndCallback();
+            endAnimationCallback();
           }
         : () => dispatch({ type: 'inTransitionEnd' })
     });
   };
 
-  const transitionOut = (animationEndCallback = null) => {
+  /**
+   * Invoking this function attribute will update the component's 
+   * state to indicate that it is currently animating out.
+   * 
+   * Additionally, it sets the `endAnimationCallback` state attribute
+   * which should generally be used by the `onAnimationEnd` event
+   * handler to carry out necessary actions after the component 
+   * has finished transitioning out.
+   * 
+   * If the user does not specify a function for `endAnimationCallback`
+   * when invoking this function attribute, no custom actions will
+   * take place.
+   * 
+   * @param {Function} endAnimationCallback 
+   */
+  const transitionOut = (endAnimationCallback = null) => {
     dispatch({
       type: 'outTransitionStart',
-      callback: animationEndCallback
+      callback: endAnimationCallback
         ? () => {
             dispatch({ type: 'outTransitionEnd' });
-            animationEndCallback();
+            endAnimationCallback();
           }
         : () => dispatch({ type: 'outTransitionEnd' })
     });
@@ -68,5 +102,3 @@ function useAnimatedState() {
 
   return [state, transitionIn, transitionOut];
 }
-
-export default useAnimatedState;
