@@ -1,13 +1,10 @@
 /** @jsx jsx */
-import { useState } from "react";
 import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
-
 import textStyles from "../styles/text";
 import DownloadButton from "./widgets/DownloadButton";
 import UploadButton from "./widgets/UploadButton";
 import TransferButton from "./widgets/TransferButton";
-import useModal from "../hooks/useModal";
 import { actionCreators } from "../redux/actionCreators";
 
 /**
