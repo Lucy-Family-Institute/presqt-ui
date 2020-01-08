@@ -187,7 +187,7 @@ export default function DownloadModal({ modalActive, toggleModal }) {
                     {modalMessage}
                   </p>
                   {sourceDownloadStatus === 'pending' ||
-                  sourceDownloadStatus == null ? (
+                  sourceDownloadStatus === null ? (
                     <Spinner />
                   ) : null}
                   <div

@@ -54,7 +54,6 @@ function* loadSourceTargetResourcesSearch(action) {
   }
 }
 
-
 /** Resource Detail **/
 export function* watchSelectSourceResource() {
   yield takeEvery(actionCreators.resources.selectSourceResource, loadResourceDetail);
@@ -70,71 +69,4 @@ function* loadResourceDetail(action) {
   yield put(
     actionCreators.resources.selectSourceResourceSuccess(response.data)
   );
-}
-
-// Resource Download
-export function* watchSourceResourceDownload() {
-  yield takeEvery(actionCreators.resources.downloadResource, downloadSourceTargetResource)
-}
-
-function* downloadSourceTargetResource(action) {
-  try {
-    const response = yield call(
-    getResourceDownload,
-    action.payload.resource,
-    action.payload.sourceTargetToken
-    );
-
-    yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
-
-    // Kick off the download job endpoint check-in
-    try {
-      let download_finished = false;
-
-      // Keep checking in on the download job endpoint until the download finishes or fails
-      while (!download_finished) {
-        yield put(actionCreators.resources.downloadJob());
-
-        const downloadJobResponse = yield call(
-          resourceDownloadJob,
-          response.data.download_job,
-          action.payload.sourceTargetToken
-        );
-
-        // Download successful!
-        if (downloadJobResponse.headers['content-type'] === 'application/zip') {
-          const downloadJobResponseData = new Blob(
-            [downloadJobResponse.data],
-            {type : 'application/json'}
-          );
-          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
-          download_finished = true;
-        }
-        // Download pending!
-        else {
-          yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
-          setTimeout(1);
-        }
-      }
-    }
-    // Download failed!
-    catch (error) {
-      const downloadJobResponseData = new Blob(
-        [error.response.data],
-        {type : 'application/json'}
-      );
-      const errorData = yield call(getErrorData, downloadJobResponseData);
-      yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
-    }
-  }
-  catch (error) {
-    yield put(actionCreators.resources.downloadFromSourceTargetFailure(
-      error.response.status,
-      error.response.data.error)
-    );
-  }
-}
-
-function getErrorData(downloadJobResponseData) {
-  return downloadJobResponseData.text();
 }

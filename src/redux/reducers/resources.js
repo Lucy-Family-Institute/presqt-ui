@@ -184,7 +184,7 @@ export default handleActions(
       };
     },
     /***
-     * Untrack API call and track failure that occurred.
+     * Untrack API call.
      * Add resource details to selectedInSource.
      * Dispatched via Saga call on successful Resource Detail call.
      **/
@@ -222,7 +222,7 @@ export default handleActions(
       };
     },
     /**
-     * Register resource download operation
+     * Register resource download operation.
      **/
     [actionCreators.resources.downloadResource]: state => ({
       ...state,
@@ -232,6 +232,10 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
+    /**
+     * Untrack API call.
+     * Dispatched via Saga call on successful download call.
+     **/
     [actionCreators.resources.downloadFromSourceTargetSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
@@ -240,6 +244,10 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed download call.
+     **/
     [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -253,6 +261,9 @@ export default handleActions(
         state.apiOperationErrors
       )
     }),
+    /**
+     * Register download job operation.
+     **/
     [actionCreators.resources.downloadJob]: state => ({
       ...state,
       pendingAPIResponse: true,
@@ -261,6 +272,11 @@ export default handleActions(
         state.pendingAPIOperations
       )
     }),
+    /**
+     * Untrack API call.
+     * Add the download job status to sourceDownloadStatus.
+     * Add the download job contents to sourceDownloadContents.
+     **/
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -271,6 +287,9 @@ export default handleActions(
       sourceDownloadStatus: action.payload.status,
       sourceDownloadContents: action.payload.data
     }),
+    /**
+     * Clear the download data so a new download can be attempted.
+     **/
     [actionCreators.resources.clearDownloadData]: state => ({
       ...state,
       sourceDownloadStatus: null,
