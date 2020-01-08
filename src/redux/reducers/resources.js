@@ -294,6 +294,17 @@ export default handleActions(
       ...state,
       sourceDownloadStatus: null,
       sourceDownloadContents: null
+    }),
+    /**
+     * Register resource upload operation.
+     **/
+    [actionCreators.resources.uploadToSourceTarget]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.uploadToSourceTarget,
+        state.pendingAPIOperations
+      )
     })
   },
   initialState

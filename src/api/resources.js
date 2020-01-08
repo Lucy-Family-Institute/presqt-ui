@@ -38,6 +38,24 @@ export function getResourceDownload(resource, sourceTargetToken) {
   return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
 }
 
+/**
+ * Resource Download Job Endpoint
+ **/
 export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
   return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
+}
+
+/**
+ * Resource Upload Endpoint
+ **/
+
+export function postResourceUpload(file, resource, sourceTargetToken) {
+  const resourceUploadURL = resource.links.find(link => link.name === 'Upload').link;
+  const bodyformData = new FormData();
+  bodyformData.set('presqt-file', file);
+  return axios.post(resourceUploadURL,
+    bodyformData,
+    { headers: { 'presqt-destination-token': sourceTargetToken,
+        'presqt-file-duplicate-action': 'ignore' }}
+    )
 }
