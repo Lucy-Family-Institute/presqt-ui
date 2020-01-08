@@ -1,6 +1,4 @@
 import axios from 'axios';
-import FileSaver from 'file-saver';
-
 import { apiURLBase } from '../config';
 
 /**
@@ -35,25 +33,11 @@ export function getResourceDetail(resource, sourceTargetToken) {
 /**
  * Resource Download Endpoint
  **/
-export function initiateResourceDownload(
-  resourceDownloadURL,
-  sourceTargetToken
-) {
-  const closure = url => {
-    axios
-      .get(url, {
-        headers: { 'presqt-source-token': sourceTargetToken },
-        responseType: 'blob',
-        timeout: 10000
-      })
-      .then(response => FileSaver(response.data, 'textname.txt'));
-  };
+export function getResourceDownload(resource, sourceTargetToken) {
+  const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
+  return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+}
 
-  axios
-    .get(resourceDownloadURL, {
-      headers: { 'presqt-source-token': sourceTargetToken }
-    })
-    .then(response => {
-      setInterval(closure, 5000, response.data.download_job);
-    });
+export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
 }

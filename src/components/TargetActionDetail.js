@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
-import Spinner from "./widgets/spinner";
+import Spinner from "./widgets/Spinner";
 
 /**
  * This component is responsible for displaying the details of a selected resource.

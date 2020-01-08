@@ -1,7 +1,6 @@
-// TODO: Load Resource Details when resource is selected.
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
@@ -54,7 +53,6 @@ function* loadSourceTargetResourcesSearch(action) {
     );
   }
 }
-
 
 /** Resource Detail **/
 export function* watchSelectSourceResource() {

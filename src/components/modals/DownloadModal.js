@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,10 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import textStyles from '../../styles/text';
 import { basicFadeIn, basicFadeOut } from '../../styles/animations';
 import useAnimatedState from '../../hooks/useAnimatedState';
+import { useDispatch, useSelector } from 'react-redux';
+import FileSaver from 'file-saver';
+import { actionCreators } from '../../redux/actionCreators';
+import Spinner from '../widgets/Spinner';
 
 const styles = {
   darkenBackground: css({
@@ -67,29 +71,76 @@ const styles = {
   fadeIn: css({
     animationFillMode: 'forwards',
     animationName: `${basicFadeIn}`,
-    animationDuration: '.5s'
+    animationDuration: '.4s'
   }),
   fadeOut: css({
     animationFillMode: 'forwards',
     animationName: `${basicFadeOut}`,
-    animationDuration: '.5s'
+    animationDuration: '.4s'
   })
 };
 
-export default function DownloadModal({ modalActive, onHide }) {
-  const [token, setToken] = useState('');
-  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
+/**
+ * This component handles the download modal.
+ * It is responsible for showing the user that the download is pending and presenting
+ * any errors that may occur during download.
+ **/
+export default function DownloadModal({ modalActive, toggleModal }) {
+  const dispatch = useDispatch();
 
+  /** SELECTOR DEFINITIONS
+   * sourceDownloadContents : Object representing the blob content returned from the download call
+   * sourceDownloadStatus   : String status of the status of the download/
+   *                          [null, 'pending', 'successful', 'failure']
+   **/
+  const sourceDownloadContents = useSelector(state => state.resources.sourceDownloadContents);
+  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
+
+  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
+  const [modalMessage, setModalMessage] = useState('' +
+    'The download is being processed on the server. Please do not leave the page.');
+
+  /**
+   * Watch for the modal states to change and open modal.
+   **/
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {
       transitionIn();
     }
   }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
 
-  // const submitModalData = () => {
-  //   onSubmit(connection, token);
-  //   setToken('');
-  // };
+  /**
+   * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
+   * If 'failure' then update the modal message
+   * If 'success' then use FileSaver to download the file and transition the modal to close.
+   **/
+  useEffect(() => {
+    // Download failed
+    if (sourceDownloadStatus === 'failure') {
+      setModalMessage(
+        'Download returned a ' +
+        sourceDownloadContents.status_code +
+        ' status code. ' +
+        sourceDownloadContents.message)
+    }
+    // Download successful
+    else if (sourceDownloadStatus === 'success') {
+      FileSaver.saveAs(sourceDownloadContents, 'PresQT_Download.zip');
+      transitionOut(() => {
+        onModalClose();
+      })
+    }
+  }, [sourceDownloadStatus]);
+
+  /**
+   *  Close the modal.
+   *  Dispatch clearDownloadData to clear download data from state.
+   **/
+  const onModalClose = () => {
+    toggleModal();
+    setModalMessage('The download is being processed on the server. Please do not leave the page.');
+    dispatch(actionCreators.resources.clearDownloadData());
+  };
 
   return modalActive
     ? ReactDOM.createPortal(
@@ -110,11 +161,15 @@ export default function DownloadModal({ modalActive, onHide }) {
             <div css={styles.modalContainer} aria-modal aria-hidden>
               <div css={styles.modal}>
                 <div css={styles.modalHeader}>
-                  <span css={textStyles.modalTitle}>{`Downloading Blah!`}</span>
+                  <span css={textStyles.modalTitle}>
+                    {sourceDownloadStatus === 'failure'
+                      ? 'Download Failed!'
+                      : 'Download In Progress'}
+                  </span>
                   <div
                     onClick={() =>
                       transitionOut(() => {
-                        onHide();
+                        onModalClose();
                       })
                     }
                   >
@@ -128,13 +183,13 @@ export default function DownloadModal({ modalActive, onHide }) {
                     flexDirection: 'column'
                   }}
                 >
-                  <p css={textStyles.body}>
-                    In order to connect to DOWNLOAD FROM BLAH you will need to
-                    supply your API token. This will not be saved, so if you
-                    come back to this website, you will need to provide your
-                    token again.
+                  <p css={[textStyles.body, { marginBottom: 50 }]}>
+                    {modalMessage}
                   </p>
-
+                  {sourceDownloadStatus === 'pending' ||
+                  sourceDownloadStatus === null ? (
+                    <Spinner />
+                  ) : null}
                   <div
                     css={{
                       display: 'flex',
@@ -142,24 +197,7 @@ export default function DownloadModal({ modalActive, onHide }) {
                       justifyContent: 'space-between',
                       flexBasis: 35
                     }}
-                  >
-                    <input
-                      type='text'
-                      placeholder='Paste API Token Here'
-                      value={token}
-                      onChange={event => setToken(event.target.value)}
-                    />
-                    <button
-                      css={[
-                        token ? styles.button : styles.disabledButton,
-                        textStyles.buttonText
-                      ]}
-                      onClick={() => transitionOut()}
-                      disabled={!token}
-                    >
-                      Connect
-                    </button>
-                  </div>
+                  ></div>
                 </div>
               </div>
             </div>
