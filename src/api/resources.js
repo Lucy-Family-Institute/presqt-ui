@@ -42,20 +42,29 @@ export function getResourceDownload(resource, sourceTargetToken) {
  * Resource Download Job Endpoint
  **/
 export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
-  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken }, responseType: 'blob' });
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken },
+    responseType: 'blob' });
 }
 
 /**
  * Resource Upload Endpoint
  **/
-
 export function postResourceUpload(file, resource, sourceTargetToken) {
   const resourceUploadURL = resource.links.find(link => link.name === 'Upload').link;
-  const bodyformData = new FormData();
-  bodyformData.set('presqt-file', file);
+  const bodyFormData = new FormData();
+  bodyFormData.set('presqt-file', file);
   return axios.post(resourceUploadURL,
-    bodyformData,
+    bodyFormData,
     { headers: { 'presqt-destination-token': sourceTargetToken,
         'presqt-file-duplicate-action': 'ignore' }}
     )
+}
+
+/**
+ * Resource Upload Job Endpoint
+ **/
+export function resourceUploadJob(uploadJobURL, sourceTargetToken) {
+  return axios.get(
+    uploadJobURL,
+    { headers: { 'presqt-destination-token': sourceTargetToken }});
 }
