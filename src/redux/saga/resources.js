@@ -1,4 +1,3 @@
-// TODO: Load Resource Details when resource is selected.
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
@@ -104,18 +103,15 @@ function* downloadSourceTargetResource(action) {
 
         // Download successful!
         if (downloadJobResponse.headers['content-type'] === 'application/zip') {
-          console.log('Done!');
           const downloadJobResponseData = new Blob(
             [downloadJobResponse.data],
             {type : 'application/json'}
           );
-
           yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
           download_finished = true;
         }
         // Download pending!
         else {
-          console.log('Pending!!!');
           yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
           setTimeout(1);
         }

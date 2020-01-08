@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
 import useModal from '../hooks/useModal';
-import Modal from './modals/tokenModal';
+import Modal from './modals/TokenModal';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
