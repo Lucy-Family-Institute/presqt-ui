@@ -43,15 +43,15 @@ function* uploadSourceTargetResource(action) {
         }
       }
     }
-    // HANDLE 500 FROM UPLOAD JOB TO DISPLAY IN MODAL
+    // Upload failed!
     catch (error) {
-      console.log('error1');
-      console.log(error)
+      console.log(error.response.data);
+      yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
     }
   }
-  // DISPATCH INITIAL UPLOAD FAILURE
   catch (error) {
-    console.log('error2');
-    console.log(error);
-  }
+    yield put(actionCreators.resources.uploadToSourceTargetFailure(
+      error.response.status,
+      error.response.data.error)
+    )};
 }

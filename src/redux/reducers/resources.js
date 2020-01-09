@@ -260,7 +260,7 @@ export default handleActions(
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.downloadFromSourceTargetFailure.toString(),
+        actionCreators.resources.downloadResource.toString(),
         state.apiOperationErrors
       )
     }),
@@ -319,6 +319,23 @@ export default handleActions(
       pendingAPIOperations: untrackAction(
         actionCreators.resources.uploadToSourceTarget,
         state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload call.
+     **/
+    [actionCreators.resources.uploadToSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadToSourceTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadToSourceTarget.toString(),
+        state.apiOperationErrors
       )
     }),
     /**
