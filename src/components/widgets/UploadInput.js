@@ -5,6 +5,7 @@ import {actionCreators} from "../../redux/actionCreators";
 
 export default function UploadInput() {
   const dispatch = useDispatch();
+
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
 

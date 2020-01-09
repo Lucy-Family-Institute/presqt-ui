@@ -65,11 +65,6 @@ export function postResourceUpload(file, resource, sourceTargetToken) {
 /**
  * Resource Upload Job Endpoint
  **/
-// export function resourceUploadJob(uploadJobURL, sourceTargetToken) {
-//   return axios.get(
-//     uploadJobURL,
-//     { headers: { 'wandasykes': sourceTargetToken }});
-// }
 export function resourceUploadJob(uploadJobURL, sourceTargetToken) {
   return axios.get(
     uploadJobURL,

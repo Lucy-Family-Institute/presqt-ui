@@ -32,12 +32,10 @@ function* uploadSourceTargetResource(action) {
 
         // Upload successful!
         if (uploadJobResponse.status === 200) {
-          console.log('done!');
           yield put(actionCreators.resources.uploadJobSuccess(uploadJobResponse.data, 'success'));
           uploadFinished = true;
         }
         else {
-          console.log('pending');
           yield put(actionCreators.resources.uploadJobSuccess(null, 'pending'));
           setTimeout(1);
         }
@@ -45,7 +43,6 @@ function* uploadSourceTargetResource(action) {
     }
     // Upload failed!
     catch (error) {
-      console.log(error.response.data);
       yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
     }
   }
@@ -53,5 +50,5 @@ function* uploadSourceTargetResource(action) {
     yield put(actionCreators.resources.uploadToSourceTargetFailure(
       error.response.status,
       error.response.data.error)
-    )};
+    )}
 }

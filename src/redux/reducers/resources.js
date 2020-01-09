@@ -307,7 +307,8 @@ export default handleActions(
       pendingAPIOperations: trackAction(
         actionCreators.resources.uploadToSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      sourceUploadStatus: 'pending'
     }),
     /**
      * Untrack API call.
@@ -363,7 +364,15 @@ export default handleActions(
       ),
       sourceUploadStatus: action.payload.status,
       sourceUploadData: action.payload.data
-    })
+    }),
+    /**
+     * Clear the upload data so a new upload can be attempted.
+     **/
+    [actionCreators.resources.clearUploadData]: state => ({
+      ...state,
+      sourceUploadStatus: null,
+      sourceUploadData: null
+    }),
   },
   initialState
 );
