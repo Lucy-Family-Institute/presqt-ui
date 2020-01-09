@@ -180,8 +180,6 @@ export default function UploadModal({ modalActive, toggleModal }) {
                   flexDirection: 'column'
                 }}
               >
-
-                {/*<UploadInput />*/}
                 {modalContent}
                 <div
                   css={{

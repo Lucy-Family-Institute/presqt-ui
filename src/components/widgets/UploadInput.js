@@ -1,7 +1,9 @@
 import React, {Fragment, useState} from "react";
-import {DropzoneArea} from "material-ui-dropzone";
 import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
+import SelectFile from "./SelectFile";
+import UploadStepper from "./UploadStepper";
+
 
 export default function UploadInput() {
   const dispatch = useDispatch();
@@ -19,26 +21,32 @@ export default function UploadInput() {
     dispatch(actionCreators.resources.uploadToSourceTarget(file, selectedInSource, sourceTargetToken))
   };
 
+  const deleteFile = () => {
+    setFile(null);
+  };
+
   return (
     <Fragment>
-      <DropzoneArea
-        acceptedFiles={['application/zip']}
-        filesLimit={1}
-        showPreviewsInDropzone={false}
-        showPreviews={true}
-        onChange={handleChange.bind(this)}
-        useChipsForPreview={true}
-        previewChipProps={{
-          variant: "default"
-        }}
-        dropzoneText={"Drag file here or click. File must be a BagIt file in zip format."}
-      />
+      <UploadStepper />
+      {/*<DropzoneArea*/}
+      {/*  acceptedFiles={['application/zip']}*/}
+      {/*  filesLimit={1}*/}
+      {/*  showPreviewsInDropzone={false}*/}
+      {/*  showPreviews={false}*/}
+      {/*  onChange={handleChange.bind(this)}*/}
+      {/*  dropzoneText={"Drag file here or click. File must be a BagIt file in zip format."}*/}
+      {/*/>*/}
 
-      <button
-        onClick={submitUpload}
-      >
-        Upload
-      </button>
+      {/*{*/}
+      {/*  file*/}
+      {/*    ? <FileChip*/}
+      {/*      label={`Upload ${file.name}`}*/}
+      {/*      onClick={submitUpload}*/}
+      {/*      onDelete={deleteFile}*/}
+      {/*      deleteIconColorPrimary="white"*/}
+      {/*    />*/}
+      {/*    : null*/}
+      {/*}*/}
     </Fragment>
   )
 }
