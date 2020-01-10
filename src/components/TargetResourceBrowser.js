@@ -8,6 +8,7 @@ import TargetResourcesHeader from './widgets/TargetResourcesHeader';
 import textStyles from '../styles/text';
 import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/Spinner";
+import UploadButton from "./widgets/UploadButton";
 
 const fadeIn = keyframes`
   0% {
@@ -95,6 +96,12 @@ export default function TargetResourceBrowser() {
     }
   };
 
+  const upload = () => {
+    if (sourceTargetResources && sourceTarget.supported_actions['resource_upload'] === true) {
+      return <UploadButton />
+    }
+  }
+
   /**
    * Control what to display in the Target Resource Browser.
    */
@@ -140,6 +147,7 @@ export default function TargetResourceBrowser() {
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
         {search()}
+        {upload()}
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||
