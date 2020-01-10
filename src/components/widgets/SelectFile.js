@@ -1,6 +1,7 @@
 import Button from "@material-ui/core/Button";
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +27,7 @@ export default function SelectFile() {
         type="file"
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
+        <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
           Select File
         </Button>
       </label>

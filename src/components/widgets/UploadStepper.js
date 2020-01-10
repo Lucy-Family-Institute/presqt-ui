@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Select File', 'Select Duplicate Action', 'Initiate Upload', 'Results'];
+  return ['Select a file to upload. Note: The file must be a Zip file in BagIt format.',
+    'Select Duplicate Action', 'Initiate Upload', 'Results'];
 }
 
 function getStepContent(step) {
