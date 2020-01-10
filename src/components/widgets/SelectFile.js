@@ -27,7 +27,7 @@ export default function SelectFile() {
         type="file"
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+        <Button variant="contained" color="primary" component="span" endIcon={<CloudUploadIcon />}>
           Select File
         </Button>
       </label>
