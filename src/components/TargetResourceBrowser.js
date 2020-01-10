@@ -100,7 +100,7 @@ export default function TargetResourceBrowser() {
     if (sourceTargetResources && sourceTarget.supported_actions['resource_upload'] === true) {
       return <UploadButton />
     }
-  }
+  };
 
   /**
    * Control what to display in the Target Resource Browser.
