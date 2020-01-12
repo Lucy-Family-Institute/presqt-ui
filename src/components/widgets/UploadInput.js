@@ -1,7 +1,6 @@
 import React, {Fragment, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
-import SelectFile from "./SelectFile";
 import UploadStepper from "./UploadStepper";
 
 
@@ -28,25 +27,7 @@ export default function UploadInput() {
   return (
     <Fragment>
       <UploadStepper />
-      {/*<DropzoneArea*/}
-      {/*  acceptedFiles={['application/zip']}*/}
-      {/*  filesLimit={1}*/}
-      {/*  showPreviewsInDropzone={false}*/}
-      {/*  showPreviews={false}*/}
-      {/*  onChange={handleChange.bind(this)}*/}
-      {/*  dropzoneText={"Drag file here or click. File must be a BagIt file in zip format."}*/}
-      {/*/>*/}
 
-      {/*{*/}
-      {/*  file*/}
-      {/*    ? <FileChip*/}
-      {/*      label={`Upload ${file.name}`}*/}
-      {/*      onClick={submitUpload}*/}
-      {/*      onDelete={deleteFile}*/}
-      {/*      deleteIconColorPrimary="white"*/}
-      {/*    />*/}
-      {/*    : null*/}
-      {/*}*/}
     </Fragment>
   )
 }

@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'left',
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -18,7 +18,7 @@ const ColorCircularProgress = withStyles({
   },
 })(CircularProgress);
 
-export default function Spinner() {
+export default function LeftSpinner() {
   const classes = useStyles();
 
   return (

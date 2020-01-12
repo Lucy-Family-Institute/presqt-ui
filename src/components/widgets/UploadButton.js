@@ -1,33 +1,32 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
-import textStyles from "../../styles/text";
-import ActionButton from "./ActionButton";
-import useModal from "../../hooks/useModal";
-import UploadModal from "../modals/UploadModal";
-import {Fragment} from "react";
+import Button from "@material-ui/core/Button";
+import {jsx} from "@emotion/core";
+import {useDispatch, useSelector} from "react-redux";
+import {actionCreators} from "../../redux/actionCreators";
 
-export default function UploadButton() {
+export default function UploadButton(props) {
+  const dispatch = useDispatch();
+
+  const selectedInSource = useSelector(state => state.resources.selectedInSource);
+  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
 
   const submitUpload = () => {
-    toggleModalVisibility();
+    dispatch(actionCreators.resources.uploadToSourceTarget(
+      props.selectedFile,
+      props.selectedDuplicate,
+      selectedInSource,
+      sourceTargetToken));
+
+      props.handleNext()
   };
 
-  const { modalVisible, toggleModalVisibility } = useModal();
-
   return (
-    <Fragment>
-      <UploadModal
-        modalActive={modalVisible}
-        toggleModal={toggleModalVisibility}
-      />
-
-      <ActionButton
-        elevation={0}
-        variant="contained"
-        onClick={submitUpload}
-      >
-        <span css={textStyles.buttonText}>Upload</span>
-      </ActionButton>
-    </Fragment>
+    <Button
+      onClick={submitUpload}
+      variant="contained"
+      color="primary"
+    >
+    Upload File
+    </Button>
   )
 }

@@ -2,9 +2,9 @@
 import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
 import textStyles from "../styles/text";
-import DownloadButton from "./widgets/DownloadButton";
-import UploadButton from "./widgets/UploadButton";
-import TransferButton from "./widgets/TransferButton";
+import DownloadActionButton from "./widgets/DownloadActionButton";
+import UploadActionButton from "./widgets/UploadActionButton";
+import TransferActionButton from "./widgets/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
 
 /**
@@ -44,15 +44,15 @@ export default function TargetActions() {
           {selectedSourceResource &&
             selectedSourceResource.links.map(link =>
               link.name === "Download" ? (
-                <DownloadButton
+                <DownloadActionButton
                   key={link.name}
                 />
               ) : link.name === "Upload" ? (
-                <UploadButton
+                <UploadActionButton
                   key={link.name}
                 />
               ) : link.name === "Transfer" ? (
-                <TransferButton
+                <TransferActionButton
                   key={link.name}
                 />
               ) : null

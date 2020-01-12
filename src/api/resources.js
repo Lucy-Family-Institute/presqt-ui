@@ -49,7 +49,7 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
 /**
  * Resource Upload Endpoint
  **/
-export function postResourceUpload(file, resource, sourceTargetToken) {
+export function postResourceUpload(file, duplicateAction, resource, sourceTargetToken) {
   const resourceUploadURL = resource.links.find(link => link.name === 'Upload').link;
   const bodyFormData = new FormData();
 
@@ -58,7 +58,7 @@ export function postResourceUpload(file, resource, sourceTargetToken) {
   return axios.post(resourceUploadURL,
     bodyFormData,
     { headers: { 'presqt-destination-token': sourceTargetToken,
-        'presqt-file-duplicate-action': 'ignore' }}
+        'presqt-file-duplicate-action': duplicateAction }}
     )
 }
 

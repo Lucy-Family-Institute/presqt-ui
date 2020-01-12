@@ -21,7 +21,7 @@ export default function SelectFile(props) {
   const classes = useStyles();
 
   const onChangeHandler = (file) => {
-    props.setFileSelected(file)
+    props.setSelectedFile(file)
   };
 
   return (
@@ -46,7 +46,7 @@ export default function SelectFile(props) {
             </Button>
           </label>
         </div>
-        <span css={{color: '#696969'}}>{props.fileSelected ? props.fileSelected.name : null}</span>
+        <span css={{color: '#696969'}}>{props.selectedFile ? props.selectedFile.name : null}</span>
     </div>
   )
 }

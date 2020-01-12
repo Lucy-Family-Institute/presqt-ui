@@ -9,7 +9,6 @@ import {basicFadeIn, basicFadeOut} from "../../styles/animations";
 import {useEffect, useState} from "react";
 import UploadInput from "../widgets/UploadInput";
 import {useDispatch, useSelector} from "react-redux";
-import Spinner from "../widgets/Spinner";
 import {actionCreators} from "../../redux/actionCreators";
 
 const styles = {
@@ -82,11 +81,8 @@ const styles = {
 export default function UploadModal({ modalActive, toggleModal }) {
   const dispatch = useDispatch();
 
-  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
-  const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
-  const [modalContent, setModalContent] = useState('');
   const [modalHeader, setModalHeader] = useState('Upload Resource');
 
   useEffect(() => {
@@ -94,46 +90,6 @@ export default function UploadModal({ modalActive, toggleModal }) {
       transitionIn();
     }
   }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
-
-  useEffect(() => {
-    if (sourceUploadStatus === null) {
-      setModalContent(<UploadInput />);
-    }
-    else if (sourceUploadStatus === 'pending') {
-      setModalHeader('Upload In Progress');
-      setModalContent(<Spinner />);
-    }
-    else if (sourceUploadStatus === 'failure') {
-      setModalHeader('Upload Failed!');
-      setModalContent(<div>{sourceUploadData.message}</div>);
-    }
-    else {
-      setModalHeader(sourceUploadData.message);
-
-      const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
-        ? `The following files failed fixity: ${sourceUploadData.failed_fixity.join(', ')}`
-        : 'No files failed fixity.';
-      const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
-        ? `The following duplicate resources were ignored: 
-          ${sourceUploadData.resources_ignored.join(', ')}`
-        : 'No duplicate resources were ignored.';
-      const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
-        ? `The following duplicate resources were updated: 
-          ${sourceUploadData.resources_updated.join(', ')}`
-        : 'No duplicate resources were updated.';
-
-      const successfulMessage = <div>
-        <br/>
-        {failedFixityMessage}
-        <br />
-        {resourcesIgnoredMessage}
-        <br />
-        {resourcesUpdatedMessage}
-      </div>;
-
-      setModalContent(successfulMessage);
-    }
-  }, [sourceUploadStatus]);
 
   const onModalClose = () => {
     toggleModal();
@@ -180,7 +136,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
                   flexDirection: 'column'
                 }}
               >
-                {modalContent}
+                <UploadInput />
                 <div
                   css={{
                     display: 'flex',

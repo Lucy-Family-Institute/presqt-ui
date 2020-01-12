@@ -4,7 +4,7 @@ import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import ActionButton from "./ActionButton";
 
-export default function TransferButton() {
+export default function TransferActionButton() {
   return (
     <ActionButton
       elevation={0}

@@ -15,7 +15,7 @@ export default function DuplicateActionRadioButtons(props) {
   const classes = useStyles();
 
   const handleChange = event => {
-    props.setDuplicateSelected(event.target.value)
+    props.setSelectedDuplicate(event.target.value)
   };
 
   return (
@@ -23,7 +23,7 @@ export default function DuplicateActionRadioButtons(props) {
       <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup
           aria-label="Duplicate Actions"
-          value={props.duplicateSelected}
+          value={props.selectedDuplicate}
           onChange={handleChange}
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >

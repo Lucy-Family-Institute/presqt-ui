@@ -11,6 +11,7 @@ function* uploadSourceTargetResource(action) {
     const response = yield call(
       postResourceUpload,
       action.payload.file,
+      action.payload.duplicateAction,
       action.payload.resource,
       action.payload.sourceTargetToken
     );
