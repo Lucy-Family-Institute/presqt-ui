@@ -8,13 +8,14 @@ import {jsx} from "@emotion/core";
 import useAnimatedState from "../../hooks/useAnimatedState";
 import {useEffect, useState} from "react";
 import UploadInput from "../widgets/UploadInput";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
 
 export default function UploadModal({ modalActive, toggleModal }) {
   const dispatch = useDispatch();
 
-
+  const connection = useSelector(state => state.targets.source);
+  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [modalHeader, setModalHeader] = useState('Upload Resource');
 
@@ -27,6 +28,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
   const onModalClose = () => {
     toggleModal();
     dispatch(actionCreators.resources.clearUploadData());
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, sourceTargetToken, null));
     setModalHeader('Upload Resource');
   };
 
