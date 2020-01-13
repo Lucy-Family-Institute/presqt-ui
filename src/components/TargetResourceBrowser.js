@@ -147,7 +147,7 @@ export default function TargetResourceBrowser() {
       <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TargetResourcesHeader />
         {search()}
-        {/*{upload()}*/}
+        {upload()}
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||
