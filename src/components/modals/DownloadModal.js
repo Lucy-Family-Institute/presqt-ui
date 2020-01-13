@@ -14,7 +14,7 @@ import Spinner from '../widgets/Spinner';
 
 /**
  * This component handles the download modal.
- * It is responsible for showing the user that the download is pending and presenting
+ * It's responsible for showing the user that the download is pending and presenting
  * any errors that may occur during download.
  **/
 export default function DownloadModal({ modalActive, toggleModal }) {
