@@ -1,3 +1,5 @@
+/** @jsx jsx */
+
 import React, {useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -8,6 +10,7 @@ import {useSelector} from "react-redux";
 import LeftSpinner from "./LeftSpinner";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import { jsx } from '@emotion/core';
 
 export default function UploadResultsContent() {
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
@@ -81,7 +84,12 @@ export default function UploadResultsContent() {
 
       setStepThreeContent(successfulMessage);
     } else if (sourceUploadStatus === 'failure') {
-      setStepThreeContent(<div>{sourceUploadData.message}</div>);
+      setStepThreeContent(
+        <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <ErrorOutlineIcon color="error"/>
+          <span css={{marginLeft:5}}>{sourceUploadData.message}</span>
+        </div>
+      );
     }
   }, [sourceUploadStatus]);
 
