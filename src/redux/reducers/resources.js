@@ -337,7 +337,8 @@ export default handleActions(
         action,
         actionCreators.resources.uploadToSourceTarget.toString(),
         state.apiOperationErrors
-      )
+      ),
+      sourceUploadStatus: 'failure'
     }),
     /**
      * Register upload job operation.

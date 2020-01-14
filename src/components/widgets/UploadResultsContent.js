@@ -11,10 +11,16 @@ import LeftSpinner from "./LeftSpinner";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
+import {actionCreators} from "../../redux/actionCreators";
 
 export default function UploadResultsContent() {
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+
+  const error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+
 
   const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
 
@@ -84,14 +90,22 @@ export default function UploadResultsContent() {
 
       setStepThreeContent(successfulMessage);
     } else if (sourceUploadStatus === 'failure') {
+      let errorMessage;
+      if (error) {
+        errorMessage = error.data
+      }
+      else {
+        errorMessage = sourceUploadData.message
+      }
+
       setStepThreeContent(
         <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <ErrorOutlineIcon color="error"/>
-          <span css={{marginLeft:5}}>{sourceUploadData.message}</span>
+          <span css={{marginLeft:5}}>{errorMessage}</span>
         </div>
       );
     }
-  }, [sourceUploadStatus]);
+  }, [sourceUploadStatus, apiOperationErrors]);
 
   return(stepThreeContent)
 }

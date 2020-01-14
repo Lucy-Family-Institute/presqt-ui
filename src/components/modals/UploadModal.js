@@ -28,6 +28,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
   const onModalClose = () => {
     toggleModal();
     dispatch(actionCreators.resources.clearUploadData());
+    dispatch(actionCreators.resources.removeFromErrorList(actionCreators.resources.uploadToSourceTarget.toString()));
     dispatch(actionCreators.resources.loadFromSourceTarget(connection, sourceTargetToken, null));
     setModalHeader('Upload Resource');
   };

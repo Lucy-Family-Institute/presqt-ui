@@ -72,6 +72,8 @@ export default function DownloadModal({ modalActive, toggleModal }) {
     toggleModal();
     setModalMessage('The download is being processed on the server. Please do not leave the page.');
     dispatch(actionCreators.resources.clearDownloadData());
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.downloadResource.toString()));
   };
 
   return modalActive
