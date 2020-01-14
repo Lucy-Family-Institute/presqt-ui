@@ -6,7 +6,7 @@ import useModal from "../../hooks/useModal";
 import UploadModal from "../modals/UploadModal";
 import {Fragment} from "react";
 
-export default function UploadActionButton() {
+export default function UploadActionButton(props) {
 
   const submitUpload = () => {
     toggleModalVisibility();
@@ -22,11 +22,12 @@ export default function UploadActionButton() {
       />
 
       <ActionButton
+        css={props.style}
         elevation={0}
         variant="contained"
         onClick={submitUpload}
       >
-        <span css={textStyles.buttonText}>Upload</span>
+        <span css={textStyles.buttonText}>{props.text}</span>
       </ActionButton>
     </Fragment>
   )

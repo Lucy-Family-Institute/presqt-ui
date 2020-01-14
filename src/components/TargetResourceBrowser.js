@@ -8,7 +8,7 @@ import TargetResourcesHeader from "./widgets/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/Spinner";
-import UploadNewResourceActionButton from "./widgets/UploadNewResourceActionButton";
+import UploadActionButton from "./widgets/UploadActionButton";
 
 const fadeIn = keyframes`
   0% {
@@ -100,7 +100,7 @@ export default function TargetResourceBrowser() {
       sourceTargetResources &&
       sourceTarget.supported_actions["resource_upload"] === true
     ) {
-      return <UploadNewResourceActionButton />;
+      return <UploadActionButton style={{width: 250}} text="Upload New Project"/>;
     }
   };
 
