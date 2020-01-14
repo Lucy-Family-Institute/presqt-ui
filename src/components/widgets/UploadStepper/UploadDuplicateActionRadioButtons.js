@@ -4,14 +4,24 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
+import StepContent from "@material-ui/core/StepContent";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
     marginLeft: theme.spacing(1),
   },
+  checked: {
+  },
+  radio: {
+    '&$checked': {
+      color: '#0C52A7'
+    }
+  },
 }));
 
-export default function DuplicateActionRadioButtons(props) {
+export default function UploadDuplicateActionRadioButtons(props) {
   const classes = useStyles();
 
   const handleChange = event => {
@@ -29,12 +39,12 @@ export default function DuplicateActionRadioButtons(props) {
         >
           <FormControlLabel
             value="ignore"
-            control={<Radio color='primary'/>}
+            control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Ignore"
           />
           <FormControlLabel
             value="update"
-            control={<Radio color='primary'/>}
+            control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Update"
           />
         </RadioGroup>

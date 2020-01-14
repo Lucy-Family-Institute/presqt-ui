@@ -10,10 +10,10 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default function UploadResultsContent() {
-  const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
-
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
+
+  const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
 
   useEffect(() => {
     if (sourceUploadStatus === 'success') {
@@ -24,7 +24,7 @@ export default function UploadResultsContent() {
         ]
         : [
           'No files failed fixity',
-          <CheckCircleOutlineIcon color="primary"/>
+          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
         ];
       const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
         ? [
@@ -34,7 +34,7 @@ export default function UploadResultsContent() {
         ]
         : [
           'No duplicate resources were ignored',
-          <CheckCircleOutlineIcon color="primary"/>
+          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
         ];
       const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
         ? [
@@ -44,7 +44,7 @@ export default function UploadResultsContent() {
         ]
         : [
           'No duplicate resources were updated',
-          <CheckCircleOutlineIcon color="primary"/>
+          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
         ];
 
       const successfulMessage =

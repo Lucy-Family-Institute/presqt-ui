@@ -4,12 +4,14 @@ import React, {Fragment} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
+import withStyles from "@material-ui/core/styles/withStyles";
+import StepContent from "@material-ui/core/StepContent";
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      backgroundColor: '#0C52A7'
+
     },
   },
   input: {
@@ -17,7 +19,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SelectFile(props) {
+const CustomButton = withStyles({
+  root: {
+    backgroundColor: '#0C52A7',
+    '&:hover': {
+      backgroundColor: '#0a4996',
+    },
+  },
+})(Button);
+
+export default function UploadSelectFile(props) {
   const classes = useStyles();
 
   const onChangeHandler = (file) => {
@@ -35,15 +46,15 @@ export default function SelectFile(props) {
             onChange={event => onChangeHandler(event.target.files[0])}
           />
           <label htmlFor="contained-button-file">
-            <Button
+            <CustomButton
               variant="contained"
-              color="primary"
               component="span"
+              color="primary"
               endIcon={<CloudUploadIcon />}
               onAnimationEnd={(event) => {event.stopPropagation()}}
             >
               Select File
-            </Button>
+            </CustomButton>
           </label>
         </div>
         <span css={{color: '#696969'}}>{props.selectedFile ? props.selectedFile.name : null}</span>

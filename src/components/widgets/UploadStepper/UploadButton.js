@@ -1,8 +1,18 @@
 /** @jsx jsx */
-import Button from "@material-ui/core/Button";
 import {jsx} from "@emotion/core";
 import {useDispatch, useSelector} from "react-redux";
-import {actionCreators} from "../../redux/actionCreators";
+import {actionCreators} from "../../../redux/actionCreators";
+import Button from "@material-ui/core/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const CustomUploadButton = withStyles({
+  root: {
+    backgroundColor: '#0C52A7',
+    '&:hover': {
+      backgroundColor: '#0a4996',
+    },
+  },
+})(Button);
 
 export default function UploadButton(props) {
   const dispatch = useDispatch();
@@ -21,12 +31,12 @@ export default function UploadButton(props) {
   };
 
   return (
-    <Button
+    <CustomUploadButton
       onClick={submitUpload}
       variant="contained"
       color="primary"
     >
     Upload File
-    </Button>
+    </CustomUploadButton>
   )
 }

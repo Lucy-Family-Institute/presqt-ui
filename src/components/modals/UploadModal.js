@@ -7,9 +7,9 @@ import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import {jsx} from "@emotion/core";
 import useAnimatedState from "../../hooks/useAnimatedState";
 import {useEffect, useState} from "react";
-import UploadInput from "../widgets/UploadInput";
 import {useDispatch} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
+import UploadStepper from "../widgets/UploadStepper/UploadStepper";
 
 export default function UploadModal({ modalActive, toggleModal }) {
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
                   flexDirection: 'column'
                 }}
               >
-                <UploadInput />
+                <UploadStepper />
                 <div
                   css={{
                     display: 'flex',

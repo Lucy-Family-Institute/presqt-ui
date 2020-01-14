@@ -1,25 +1,24 @@
 /** @jsx jsx */
-import {useState} from 'react';
+import React, {useState} from 'react';
 import { jsx } from '@emotion/core';
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import SelectFile from "./SelectFile";
-import Button from "@material-ui/core/Button";
-import DuplicateActionRadioButtons from "./DuplicateActionRadioButtons";
+import UploadSelectFile from "./UploadSelectFile";
+import UploadDuplicateActionRadioButtons from "./UploadDuplicateActionRadioButtons";
 import UploadButton from "./UploadButton";
-import UploadResultsContent from "./UploadResultsContent";
+import UploadResultsContent from "../UploadResultsContent";
+import UploadStepConnector from "./UploadStepConnector";
+import StepContent from "@material-ui/core/StepContent";
+import withStyles from "@material-ui/core/styles/withStyles";
+import UploadStepperBackButton from "./UploadStepperBackButton";
+import UploadStepperNextButton from "./UploadStepperNextButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-  },
-  button: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
   },
   actionsContainer: {
     marginBottom: theme.spacing(2),
@@ -27,7 +26,19 @@ const useStyles = makeStyles(theme => ({
   resetContainer: {
     padding: theme.spacing(3),
   },
+  iconActive: {
+    fill: '#0C52A7',
+  },
+  iconCompleted: {
+    fill: '#0C52A7',
+  },
 }));
+
+const PresQTStepContent = withStyles({
+  root: {
+    borderColor: '#0C52A7',
+  },
+})(StepContent);
 
 function getSteps() {
   return [
@@ -43,6 +54,7 @@ export default function UploadStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
+
   const steps = getSteps();
 
   const handleBack = () => {
@@ -56,13 +68,13 @@ export default function UploadStepper() {
   function getStepContent(step) {
     switch (step) {
       case 0: {
-        return <SelectFile
+        return <UploadSelectFile
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
         />;
       }
       case 1:
-        return <DuplicateActionRadioButtons
+        return <UploadDuplicateActionRadioButtons
           selectedDuplicate={selectedDuplicate}
           setSelectedDuplicate={setSelectedDuplicate}
         />;
@@ -76,44 +88,18 @@ export default function UploadStepper() {
         return <UploadResultsContent />;
     }
   }
-  const backButton = () => {
-    return(
-        <Button
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          color="primary"
-          className={classes.button}
-        >
-          Back
-        </Button>
-    )
-  };
-
-  const nextButton = () => {
-    return(
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleNext}
-        className={classes.button}
-        disabled={activeStep === 0 ? !selectedFile : false}
-
-      >
-        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-      </Button>
-    )
-  };
 
   return (
     <div className={classes.root}>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
+        connector={<UploadStepConnector />}
       >
         {steps.map((label, index) => (
           <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-            <StepContent>
+            <StepLabel StepIconProps={{classes: {root: classes.iconRoot, active: classes.iconActive, completed: classes.iconCompleted}}}>{label}</StepLabel>
+            <PresQTStepContent>
               <Typography
                 component={'div'}
               >
@@ -121,11 +107,20 @@ export default function UploadStepper() {
               </Typography>
               <div className={classes.actionsContainer}>
                 <div>
-                  {index <= 2 ? backButton() : null }
-                  {index <= 1 ? nextButton() : null}
+                  {index <= 2 ? <UploadStepperBackButton
+                                  handleBack={handleBack}
+                                  activeStep={activeStep}/>
+                  : null }
+                  {index <= 1 ? <UploadStepperNextButton
+                                  handleNext={handleNext}
+                                  activeStep={activeStep}
+                                  selectedFile={selectedFile}
+                                  steps={steps}
+                                />
+                  : null }
                 </div>
               </div>
-            </StepContent>
+            </PresQTStepContent>
           </Step>
         ))}
       </Stepper>
