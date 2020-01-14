@@ -1,11 +1,10 @@
 /** @jsx jsx */
-import Button from "@material-ui/core/Button";
-import React, {Fragment} from "react";
+import Button from "@material-ui/core/Button/Button";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
 import withStyles from "@material-ui/core/styles/withStyles";
-import StepContent from "@material-ui/core/StepContent";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,7 +56,7 @@ export default function UploadSelectFile(props) {
             </CustomButton>
           </label>
         </div>
-        <span css={{color: '#696969'}}>{props.selectedFile ? props.selectedFile.name : null}</span>
+      <span css={{color: '#696969'}}>{props.selectedFile ? props.selectedFile.name : null}</span>
     </div>
   )
 }

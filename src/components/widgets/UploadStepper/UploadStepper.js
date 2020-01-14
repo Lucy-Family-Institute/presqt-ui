@@ -98,7 +98,12 @@ export default function UploadStepper() {
       >
         {steps.map((label, index) => (
           <Step key={label}>
-            <StepLabel StepIconProps={{classes: {root: classes.iconRoot, active: classes.iconActive, completed: classes.iconCompleted}}}>{label}</StepLabel>
+            <StepLabel
+              StepIconProps={{classes:
+                  {active: classes.iconActive, completed: classes.iconCompleted}}}
+            >
+              {label}
+            </StepLabel>
             <PresQTStepContent>
               <Typography
                 component={'div'}
