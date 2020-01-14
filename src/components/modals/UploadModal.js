@@ -14,8 +14,6 @@ import UploadStepper from "../widgets/UploadStepper/UploadStepper";
 export default function UploadModal({ modalActive, toggleModal }) {
   const dispatch = useDispatch();
 
-  const connection = useSelector(state => state.targets.source);
-  const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [modalHeader, setModalHeader] = useState('Upload Resource');
 
@@ -29,7 +27,6 @@ export default function UploadModal({ modalActive, toggleModal }) {
     toggleModal();
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(actionCreators.resources.uploadToSourceTarget.toString()));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, sourceTargetToken, null));
     setModalHeader('Upload Resource');
   };
 
