@@ -10,6 +10,7 @@ function* uploadSourceTargetResource(action) {
   try {
     const response = yield call(
       postResourceUpload,
+      action.payload.sourceTarget,
       action.payload.file,
       action.payload.duplicateAction,
       action.payload.resource,
