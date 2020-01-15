@@ -45,26 +45,39 @@ function getSteps() {
     'Select a file to upload. Note: The file must be a Zip file in BagIt format',
     'Select the action to occur when a duplicate resource is found',
     'Initiate Upload',
-    'Results'];
+    'Results'
+  ];
 }
 
+/**
+ * This component renders the stepper for the Upload Modal.
+ **/
 export default function UploadStepper(selectedInSource) {
   const classes = useStyles();
+  const steps = getSteps();
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 
-  const steps = getSteps();
-
+  /**
+   * Decrement the step count when the Back button is pressed
+   **/
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  /**
+   * Increment the step count when the Back button is pressed
+   **/
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
+  /**
+   * Define the contents for each step. getSteps() defines the text for the step while this
+   * function defines the contents.
+   **/
   function getStepContent(step) {
     switch (step) {
       case 0: {

@@ -27,9 +27,15 @@ const CustomButton = withStyles({
   },
 })(Button);
 
+/**
+ * Component for file select input inside of the upload stepper
+ **/
 export default function UploadSelectFile(props) {
   const classes = useStyles();
 
+  /**
+   * When a file is selected, add it to the selectedFile state
+   **/
   const onChangeHandler = (file) => {
     props.setSelectedFile(file)
   };

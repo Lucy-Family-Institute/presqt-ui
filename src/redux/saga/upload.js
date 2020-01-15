@@ -43,11 +43,12 @@ function* uploadSourceTargetResource(action) {
         }
       }
     }
-    // Upload failed!
+    // Upload failed because of target API error
     catch (error) {
       yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
     }
   }
+  // Upload failed because of PresQT API error
   catch (error) {
     yield put(actionCreators.resources.uploadToSourceTargetFailure(
       error.response.status,

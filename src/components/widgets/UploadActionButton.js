@@ -7,6 +7,9 @@ import UploadModal from "../modals/UploadModal";
 import { useSelector } from "react-redux";
 import {Fragment} from "react";
 
+/**
+ * This component is responsible for initializing and opening the upload modal
+ **/
 export default function UploadActionButton(props) {
   let selectedInSource;
   // We want to pass along the resource if the upload is to an existing project
