@@ -6,8 +6,10 @@ import useModal from "../../hooks/useModal";
 import UploadModal from "../modals/UploadModal";
 import {Fragment} from "react";
 
+/**
+ * This component is responsible for initializing and opening the upload modal
+ **/
 export default function UploadActionButton(props) {
-
   const submitUpload = () => {
     toggleModalVisibility();
   };

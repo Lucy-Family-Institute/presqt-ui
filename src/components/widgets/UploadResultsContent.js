@@ -1,18 +1,21 @@
 /** @jsx jsx */
-
 import React, {useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import LeftSpinner from "./LeftSpinner";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../redux/actionCreators";
 
+/**
+ * This component watches for the upload state to change and then renders the appropriate
+ * component to display the results of the upload.
+ **/
 export default function UploadResultsContent() {
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
@@ -21,10 +24,14 @@ export default function UploadResultsContent() {
   const error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
 
-
   const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
 
+  /**
+   * Watch for the upload state to change or for an upload error to occur. Once either of these
+   * occur, update the state content to the new component that displays the result of the upload.
+   **/
   useEffect(() => {
+    // Upload Successful!
     if (sourceUploadStatus === 'success') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
         ? [
@@ -89,11 +96,15 @@ export default function UploadResultsContent() {
         </Grid>;
 
       setStepThreeContent(successfulMessage);
-    } else if (sourceUploadStatus === 'failure') {
+    }
+    // Upload Failed!
+    else if (sourceUploadStatus === 'failure') {
       let errorMessage;
+      // PresQT API error occurred
       if (error) {
         errorMessage = error.data
       }
+      // Target error occurred
       else {
         errorMessage = sourceUploadData.message
       }

@@ -6,16 +6,18 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import {jsx} from "@emotion/core";
 import useAnimatedState from "../../hooks/useAnimatedState";
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
 import UploadStepper from "../widgets/UploadStepper/UploadStepper";
 
+/**
+ * This component is responsible for displaying the upload modal content including the stepper.
+ **/
 export default function UploadModal({ modalActive, toggleModal }) {
   const dispatch = useDispatch();
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
-  const [modalHeader, setModalHeader] = useState('Upload Resource');
 
   useEffect(() => {
     if (modalActive && !state.desiredVisibility && !state.animating) {
@@ -23,11 +25,15 @@ export default function UploadModal({ modalActive, toggleModal }) {
     }
   }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
 
+  /**
+   * When the 'x' is pressed on the modal clear the upload data, remove the upload error
+   * from APIOperationErrors if it exists, and toggle the modal.
+   **/
   const onModalClose = () => {
     toggleModal();
     dispatch(actionCreators.resources.clearUploadData());
-    dispatch(actionCreators.resources.removeFromErrorList(actionCreators.resources.uploadToSourceTarget.toString()));
-    setModalHeader('Upload Resource');
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.uploadToSourceTarget.toString()));
   };
 
   return modalActive
@@ -50,7 +56,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
             <div css={modalStyles.modal}>
               <div css={modalStyles.modalHeader}>
                   <span css={textStyles.modalTitle}>
-                    {modalHeader}
+                    Upload Resource
                   </span>
                 <div
                   onClick={() =>
@@ -77,7 +83,8 @@ export default function UploadModal({ modalActive, toggleModal }) {
                     justifyContent: 'space-between',
                     flexBasis: 35
                   }}
-                ></div>
+                >
+                </div>
               </div>
             </div>
           </div>

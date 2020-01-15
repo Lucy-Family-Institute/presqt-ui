@@ -18,9 +18,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * Component for the duplicate action radio buttons in the upload stepper
+ **/
 export default function UploadDuplicateActionRadioButtons(props) {
   const classes = useStyles();
 
+  /**
+   * When a new duplicate action is selected update the selectedDuplicate state to the new selection
+   **/
   const handleChange = event => {
     props.setSelectedDuplicate(event.target.value)
   };
