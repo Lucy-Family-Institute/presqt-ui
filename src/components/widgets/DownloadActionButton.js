@@ -5,7 +5,6 @@ import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import { actionCreators } from "../../redux/actionCreators";
 import DownloadModal from "../modals/DownloadModal";
-import useModal from "../../hooks/useModal";
 import ActionButton from "./ActionButton";
 
 /**

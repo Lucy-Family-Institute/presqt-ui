@@ -1,7 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import {jsx} from "@emotion/core";
 import textStyles from "../../styles/text";
 import React, {useEffect, useState} from "react";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -40,7 +39,7 @@ export default function DownloadModal({ modalState, setModalState }) {
     // Download successful
     else if (sourceDownloadStatus === 'success') {
       FileSaver.saveAs(sourceDownloadContents, 'PresQT_Download.zip');
-      // setModalState(false);
+      setModalState(false);
     }
   }, [sourceDownloadStatus]);
 
@@ -64,13 +63,8 @@ export default function DownloadModal({ modalState, setModalState }) {
             ? 'Download Failed!'
             : 'Download In Progress'}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent repositionOnUpdate={false} style={{padding:20}}>
           <div
-            css={{
-              padding: 20,
-              display: 'flex',
-              flexDirection: 'column'
-            }}
           >
             <p css={textStyles.body}>
               {modalMessage}
