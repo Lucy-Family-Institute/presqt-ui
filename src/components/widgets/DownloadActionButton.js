@@ -1,11 +1,10 @@
 /** @jsx jsx */
-import {Fragment} from "react";
+import {Fragment, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import { actionCreators } from "../../redux/actionCreators";
 import DownloadModal from "../modals/DownloadModal";
-import useModal from "../../hooks/useModal";
 import ActionButton from "./ActionButton";
 
 /**
@@ -24,6 +23,8 @@ export default function DownloadActionButton() {
     state.authorization.apiTokens[state.targets.source.name]);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
 
+  const [modalState, setModalState] = useState(false);
+
   /**
    * Open the modal.
    * Dispatch the downloadResource action
@@ -31,17 +32,15 @@ export default function DownloadActionButton() {
    *     -> On complete saga dispatches the ResourceDownloadSuccess action
    **/
   const submitDownload = () => {
-    toggleModalVisibility();
+    setModalState(true);
     dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
   };
-
-  const { modalVisible, toggleModalVisibility } = useModal();
 
   return (
     <Fragment>
       <DownloadModal
-        modalActive={modalVisible}
-        toggleModal={toggleModalVisibility}
+        modalState={modalState}
+        setModalState={setModalState}
       />
 
       <ActionButton

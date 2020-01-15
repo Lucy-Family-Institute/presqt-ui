@@ -2,15 +2,16 @@
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import ActionButton from "./ActionButton";
-import useModal from "../../hooks/useModal";
 import UploadModal from "../modals/UploadModal";
 import { useSelector } from "react-redux";
-import {Fragment} from "react";
+import {Fragment, useState} from "react";
 
 /**
  * This component is responsible for initializing and opening the upload modal
  **/
 export default function UploadActionButton(props) {
+  const [modalState, setModalState] = useState(false);
+
   let selectedInSource;
   // We want to pass along the resource if the upload is to an existing project
   // or null if the user has pressed the `Upload New Project Buttton`.
@@ -22,16 +23,14 @@ export default function UploadActionButton(props) {
   }
 
   const submitUpload = () => {
-    toggleModalVisibility();
+    setModalState(true);
   };
-
-  const { modalVisible, toggleModalVisibility } = useModal();
 
   return (
     <Fragment>
       <UploadModal
-        modalActive={modalVisible}
-        toggleModal={toggleModalVisibility}
+        modalState={modalState}
+        setModalState={setModalState}
         selectedInSource={selectedInSource}
       />
 
