@@ -51,6 +51,7 @@ export default function TargetActions() {
                 <UploadActionButton
                   key={link.name}
                   text='Upload'
+                  type="EXISTING"
                 />
               ) : link.name === "Transfer" ? (
                 <TransferActionButton

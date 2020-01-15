@@ -11,7 +11,7 @@ export default function UploadActionButton(props) {
   let selectedInSource;
   // We want to pass along the resource if the upload is to an existing project
   // or null if the user has pressed the `Upload New Project Buttton`.
-  if (props.text === 'Upload New Project') {
+  if (props.type === 'NEW') {
     selectedInSource = null;
   }
   else {
