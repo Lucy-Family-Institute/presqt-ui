@@ -22,8 +22,9 @@ export default function UploadButton(props) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.targets.source.name);
-  const selectedInSource = useSelector(state => state.resources.selectedInSource);
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  // Passing in the resource if `Upload` was pressed, or null if 'Upload New Project` was pressed.
+  const selectedInSource = props.selectedInSource;
 
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper

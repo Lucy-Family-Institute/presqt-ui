@@ -14,7 +14,7 @@ import UploadStepper from "../widgets/UploadStepper/UploadStepper";
 /**
  * This component is responsible for displaying the upload modal content including the stepper.
  **/
-export default function UploadModal({ modalActive, toggleModal }) {
+export default function UploadModal({ modalActive, toggleModal, selectedInSource }) {
   const dispatch = useDispatch();
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
@@ -75,7 +75,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
                   flexDirection: 'column'
                 }}
               >
-                <UploadStepper />
+                <UploadStepper selectedInSource={selectedInSource}/>
                 <div
                   css={{
                     display: 'flex',

@@ -52,7 +52,7 @@ function getSteps() {
 /**
  * This component renders the stepper for the Upload Modal.
  **/
-export default function UploadStepper() {
+export default function UploadStepper(selectedInSource) {
   const classes = useStyles();
   const steps = getSteps();
 
@@ -96,6 +96,7 @@ export default function UploadStepper() {
           selectedFile={selectedFile}
           selectedDuplicate={selectedDuplicate}
           handleNext={handleNext}
+          selectedInSource={selectedInSource}
         />;
       case 3:
         return <UploadResultsContent />;
