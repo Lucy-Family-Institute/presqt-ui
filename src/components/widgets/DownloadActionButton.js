@@ -13,7 +13,7 @@ import ActionButton from "./ActionButton";
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function DownloadButton() {
+export default function DownloadActionButton() {
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS

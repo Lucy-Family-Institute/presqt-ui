@@ -26,13 +26,19 @@ export const actionCreators = createActions({
         SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
         SELECT_SOURCE_RESOURCE_SUCCESS: undefined,
         CLEAR_SOURCE_RESOURCES: undefined,
-        DOWNLOAD_JOB: undefined,
-        DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         DOWNLOAD_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
         DOWNLOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,
         DOWNLOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({ status, data }),
-        CLEAR_DOWNLOAD_DATA: undefined
-        
+        DOWNLOAD_JOB: undefined,
+        DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
+        CLEAR_DOWNLOAD_DATA: undefined,
+        UPLOAD_TO_SOURCE_TARGET: (sourceTarget, file, duplicateAction, resource, sourceTargetToken) =>
+          ({sourceTarget, file, duplicateAction, resource, sourceTargetToken}),
+        UPLOAD_TO_SOURCE_TARGET_SUCCESS: undefined,
+        UPLOAD_TO_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
+        UPLOAD_JOB: undefined,
+        UPLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
+        CLEAR_UPLOAD_DATA: undefined
     },
     TARGETS: {
         LOAD: undefined,

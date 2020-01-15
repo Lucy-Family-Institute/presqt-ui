@@ -18,10 +18,10 @@ function* downloadSourceTargetResource(action) {
 
     // Kick off the download job endpoint check-in
     try {
-      let download_finished = false;
+      let downloadFinished = false;
 
       // Keep checking in on the download job endpoint until the download finishes or fails
-      while (!download_finished) {
+      while (!downloadFinished) {
         yield put(actionCreators.resources.downloadJob());
 
         const downloadJobResponse = yield call(
@@ -37,7 +37,7 @@ function* downloadSourceTargetResource(action) {
             {type : 'application/json'}
           );
           yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
-          download_finished = true;
+          downloadFinished = true;
         }
         // Download pending!
         else {
@@ -46,7 +46,7 @@ function* downloadSourceTargetResource(action) {
         }
       }
     }
-      // Download failed!
+    // Download failed!
     catch (error) {
       const downloadJobResponseData = new Blob(
         [error.response.data],

@@ -12,7 +12,10 @@ const initialState = {
   selectedInSource: null,
   apiOperationErrors: [],
   sourceSearchValue: null,
-  sourceDownload: null
+  sourceDownloadStatus: null,
+  sourceDownloadContents: null,
+  sourceUploadStatus: null,
+  sourceUploadData: null
 };
 
 export default handleActions(
@@ -257,7 +260,7 @@ export default handleActions(
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.downloadFromSourceTargetFailure.toString(),
+        actionCreators.resources.downloadResource.toString(),
         state.apiOperationErrors
       )
     }),
@@ -294,7 +297,83 @@ export default handleActions(
       ...state,
       sourceDownloadStatus: null,
       sourceDownloadContents: null
-    })
+    }),
+    /**
+     * Register resource upload operation.
+     **/
+    [actionCreators.resources.uploadToSourceTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.uploadToSourceTarget,
+        state.pendingAPIOperations
+      ),
+      sourceUploadStatus: 'pending'
+    }),
+    /**
+     * Untrack API call.
+     * Dispatched via Saga call on successful upload call.
+     **/
+    [actionCreators.resources.uploadToSourceTargetSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadToSourceTarget,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload call.
+     **/
+    [actionCreators.resources.uploadToSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadToSourceTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadToSourceTarget.toString(),
+        state.apiOperationErrors
+      ),
+      sourceUploadStatus: 'failure'
+    }),
+    /**
+     * Register upload job operation.
+     **/
+    [actionCreators.resources.uploadJob]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.uploadJob,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     * Add the upload job status to sourceUploadStatus.
+     * Add the upload job contents to sourceUploadData.
+     **/
+    [actionCreators.resources.uploadJobSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadJob,
+        state.pendingAPIOperations
+      ),
+      sourceUploadStatus: action.payload.status,
+      sourceUploadData: action.payload.data
+    }),
+    /**
+     * Clear the upload data so a new upload can be attempted.
+     **/
+    [actionCreators.resources.clearUploadData]: state => ({
+      ...state,
+      sourceUploadStatus: null,
+      sourceUploadData: null
+    }),
   },
   initialState
 );

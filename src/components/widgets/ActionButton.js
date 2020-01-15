@@ -18,6 +18,9 @@ const ActionButton = withStyles({
       boxShadow: "none",
       backgroundColor: "#E57B00"
     }
+  },
+  containedPrimary: {
+    backgroundColor: "#E57B00"
   }
 })(Button);
 
