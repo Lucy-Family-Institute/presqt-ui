@@ -48,7 +48,7 @@ function getSteps() {
     'Results'];
 }
 
-export default function UploadStepper() {
+export default function UploadStepper(selectedInSource) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -83,6 +83,7 @@ export default function UploadStepper() {
           selectedFile={selectedFile}
           selectedDuplicate={selectedDuplicate}
           handleNext={handleNext}
+          selectedInSource={selectedInSource}
         />;
       case 3:
         return <UploadResultsContent />;

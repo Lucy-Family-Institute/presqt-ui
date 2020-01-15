@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
 import UploadStepper from "../widgets/UploadStepper/UploadStepper";
 
-export default function UploadModal({ modalActive, toggleModal }) {
+export default function UploadModal({ modalActive, toggleModal, selectedInSource }) {
   const dispatch = useDispatch();
 
   const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
@@ -69,7 +69,7 @@ export default function UploadModal({ modalActive, toggleModal }) {
                   flexDirection: 'column'
                 }}
               >
-                <UploadStepper />
+                <UploadStepper selectedInSource={selectedInSource}/>
                 <div
                   css={{
                     display: 'flex',
