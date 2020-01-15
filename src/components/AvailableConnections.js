@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
 import useModal from '../hooks/useModal';
-import Modal from './modals/TokenModal';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
+import TokenModal from "./modals/TokenModal";
 
 /**
  * This component displays the various targets that a user can connect with.
@@ -17,6 +17,7 @@ import { basicFadeIn } from '../styles/animations';
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
+  const [modalState, setModalState] = useState(false);
 
   /** SELECTOR DEFINITIONS
    *
@@ -32,9 +33,6 @@ export default function AvailableConnections() {
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
-  /**  Custom modal hook **/
-  const { modalVisible, toggleModalVisibility } = useModal();
-
   /**
    * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
@@ -44,7 +42,7 @@ export default function AvailableConnections() {
 
   /**
    * Watch for a change in apiOperationErrors.
-   * If a  exists in apiOperationErrors then display the modal.
+   * If a exists in apiOperationErrors then display the modal.
    **/
   useEffect(() => {
     if (
@@ -52,7 +50,7 @@ export default function AvailableConnections() {
       apiOperationErrors.find(
         element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
     ) {
-      toggleModalVisibility();
+      setModalState(true);
     }
   }, [apiOperationErrors]);
 
@@ -73,7 +71,7 @@ export default function AvailableConnections() {
         actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
       );
     } else {
-      setTimeout(() => toggleModalVisibility(), 500);
+      setTimeout(() => setModalState(true), 500);
     }
   };
 
@@ -113,16 +111,23 @@ export default function AvailableConnections() {
                   backgroundColor: colors.ripeOrange,
                   animation: `${basicFadeIn} 1s`
                 }}
-              ></div>
+              >
+              </div>
             ) : null}
           </button>
         ))}
       </div>
-      <Modal
+      {/*<Modal*/}
+      {/*  connection={sourceTarget}*/}
+      {/*  modalActive={modalVisible}*/}
+      {/*  toggleModal={toggleModalVisibility}*/}
+      {/*/>*/}
+      <TokenModal
         connection={sourceTarget}
-        modalActive={modalVisible}
-        toggleModal={toggleModalVisibility}
+        modalState={modalState}
+        setModalState={setModalState}
       />
+
     </div>
   );
 }
