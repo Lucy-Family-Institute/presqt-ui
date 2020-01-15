@@ -5,49 +5,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import {useDispatch, useSelector} from "react-redux";
 import modalStyles from "../../styles/modal";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import { withStyles } from '@material-ui/core/styles';
 import textStyles from "../../styles/text";
 import TokenTextField from "../widgets/TokenTextField";
 import {useEffect, useState} from "react";
 import ModalSubmitButton from "../widgets/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
-
-const styles = theme => ({
-  dialogTitle: {
-    margin: 0,
-    backgroundColor: 'rgba(229, 123, 0,1)',
-    padding: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexBasis: 50,
-    color: "white"
-  },
-  closeButton: {
-    color: "white",
-  }
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.dialogTitle} {...other}>
-      <Typography variant="h6">
-        {children}
-      </Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
+import DialogTitle from "./modalHeader";
 
 export default function TokenModal({connection, modalState, setModalState}) {
   const dispatch = useDispatch();

@@ -1,23 +1,15 @@
-/** @jsx jsx */
-import {useEffect, useState} from 'react';
-import ReactDOM from 'react-dom';
-import { jsx } from '@emotion/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import modalStyles from "../../styles/modal";
-import textStyles from '../../styles/text';
-import useAnimatedState from '../../hooks/useAnimatedState';
-import { useDispatch, useSelector } from 'react-redux';
-import FileSaver from 'file-saver';
-import { actionCreators } from '../../redux/actionCreators';
-import Spinner from '../widgets/Spinner';
+import {useDispatch, useSelector} from "react-redux";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "./modalHeader";
+import {jsx} from "@emotion/core";
+import textStyles from "../../styles/text";
+import React, {useEffect, useState} from "react";
+import DialogContent from "@material-ui/core/DialogContent";
+import Spinner from "../widgets/Spinner";
+import FileSaver from "file-saver";
+import {actionCreators} from "../../redux/actionCreators";
 
-/**
- * This component handles the download modal.
- * It's responsible for showing the user that the download is pending and presenting
- * any errors that may occur during download.
- **/
-export default function DownloadModal({ modalActive, toggleModal }) {
+export default function DownloadModal({ modalState, setModalState }) {
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -28,18 +20,8 @@ export default function DownloadModal({ modalActive, toggleModal }) {
   const sourceDownloadContents = useSelector(state => state.resources.sourceDownloadContents);
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
-  const [state, transitionIn, transitionOut] = useAnimatedState(modalActive);
   const [modalMessage, setModalMessage] = useState('' +
     'The download is being processed on the server. Please do not leave the page.');
-
-  /**
-   * Watch for the modal states to change and open modal.
-   **/
-  useEffect(() => {
-    if (modalActive && !state.desiredVisibility && !state.animating) {
-      transitionIn();
-    }
-  }, [modalActive, state.animating, state.desiredVisibility, transitionIn]);
 
   /**
    * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
@@ -58,9 +40,7 @@ export default function DownloadModal({ modalActive, toggleModal }) {
     // Download successful
     else if (sourceDownloadStatus === 'success') {
       FileSaver.saveAs(sourceDownloadContents, 'PresQT_Download.zip');
-      transitionOut(() => {
-        onModalClose();
-      })
+      // setModalState(false);
     }
   }, [sourceDownloadStatus]);
 
@@ -68,76 +48,40 @@ export default function DownloadModal({ modalActive, toggleModal }) {
    *  Close the modal.
    *  Dispatch clearDownloadData to clear download data from state.
    **/
-  const onModalClose = () => {
-    toggleModal();
+  const handleClose = () => {
+    setModalState(false);
     setModalMessage('The download is being processed on the server. Please do not leave the page.');
     dispatch(actionCreators.resources.clearDownloadData());
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.resources.downloadResource.toString()));
   };
 
-  return modalActive
-    ? ReactDOM.createPortal(
-        <div
-          css={
-            state.currentVisibility || state.desiredVisibility
-              ? { display: 'initial' }
-              : { display: 'none' }
-          }
-        >
+  return modalState
+    ? <div>
+      <Dialog maxWidth="md" fullWidth={true} open={modalState} onClose={handleClose} aria-labelledby={"form-dialog-title"}>
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          {sourceDownloadStatus === 'failure'
+            ? 'Download Failed!'
+            : 'Download In Progress'}
+        </DialogTitle>
+        <DialogContent>
           <div
-            css={state.desiredVisibility ? modalStyles.fadeIn : modalStyles.fadeOut}
-            onAnimationEnd={() => {
-              state.endAnimationCallback();
+            css={{
+              padding: 20,
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
-            <div css={modalStyles.darkenBackground} />
-            <div css={modalStyles.modalContainer} aria-modal aria-hidden>
-              <div css={modalStyles.modal}>
-                <div css={modalStyles.modalHeader}>
-                  <span css={textStyles.modalTitle}>
-                    {sourceDownloadStatus === 'failure'
-                      ? 'Download Failed!'
-                      : 'Download In Progress'}
-                  </span>
-                  <div
-                    onClick={() =>
-                      transitionOut(() => {
-                        onModalClose();
-                      })
-                    }
-                  >
-                    <FontAwesomeIcon icon={faWindowClose} inverse size='lg' />
-                  </div>
-                </div>
-                <div
-                  css={{
-                    padding: 20,
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}
-                >
-                  <p css={[textStyles.body, { marginBottom: 50 }]}>
-                    {modalMessage}
-                  </p>
-                  {sourceDownloadStatus === 'pending' ||
-                  sourceDownloadStatus === null ? (
-                    <Spinner />
-                  ) : null}
-                  <div
-                    css={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      flexBasis: 35
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
+            <p css={textStyles.body}>
+              {modalMessage}
+            </p>
+            {sourceDownloadStatus === 'pending' ||
+            sourceDownloadStatus === null ? (
+              <Spinner />
+            ) : null}
           </div>
-        </div>,
-        document.body
-      )
-    : null;
+        </DialogContent>
+      </Dialog>
+    </div>
+    : null
 }

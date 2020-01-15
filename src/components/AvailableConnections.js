@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {useEffect, useState} from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
-import useModal from '../hooks/useModal';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
@@ -117,11 +116,6 @@ export default function AvailableConnections() {
           </button>
         ))}
       </div>
-      {/*<Modal*/}
-      {/*  connection={sourceTarget}*/}
-      {/*  modalActive={modalVisible}*/}
-      {/*  toggleModal={toggleModalVisibility}*/}
-      {/*/>*/}
       <TokenModal
         connection={sourceTarget}
         modalState={modalState}
