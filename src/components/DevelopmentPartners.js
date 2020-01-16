@@ -1,7 +1,15 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
 
 import developmentPartners from "../images/headers/developmentPartners.png";
+
+const imageHoverStyle = css({
+  transform: 'scale(1.1)'
+});
+
+const imageHoverOrFocus = css({
+  ":hover": imageHoverStyle
+});
 
 export default function DevelopmentPartners() {
   return (
@@ -22,7 +30,7 @@ export default function DevelopmentPartners() {
           paddingTop: 5
         }}
       >
-        <a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer" css={imageHoverOrFocus}>
           <img
             src={require("../images/icons/notreDameAcademicMark.png")}
             alt="Notre Dame Academic Mark"
@@ -34,7 +42,7 @@ export default function DevelopmentPartners() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={require("../images/icons/IMLS.png")} alt="IMLS Logo" />
+          <img src={require("../images/icons/IMLS.png")} alt="IMLS Logo" css={imageHoverOrFocus}/>
         </a>
       </div>
     </div>
