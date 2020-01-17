@@ -14,9 +14,8 @@ const presqtMetadataFileIconSelected = require("../../images/icons/presqtMetadat
 
 export default function ResourceButton(props) {
   const { resource, level, onClick } = props;
-  console.log(resource);
 
-  const iconGarbage = () => {
+  const iconSelector = () => {
     if (resource.kind === "container") {
       if (resource.open && resource.active) {
         return openFolderSelectedIcon;
@@ -65,7 +64,7 @@ export default function ResourceButton(props) {
       onClick={() => onClick(resource)}
     >
       <img
-        src={iconGarbage()}
+        src={iconSelector()}
         alt="Resource Icon"
         css={{ paddingRight: 10, height: 25 }}
       />
