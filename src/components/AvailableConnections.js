@@ -1,62 +1,76 @@
-/**
- * AvailableConnections
- *
- * This component displays the various targets that a user can connect with
- * to. It is also one place through which a user can submit an API token for
- * targets. Finally, it is responsible for broadcasting (via Redux) what the
- * currently selected "sourceTarget" is.
- */
-
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
-import useModal from '../hooks/useModal';
-import Modal from './modals/tokenModal';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
+import TokenModal from "./modals/TokenModal";
 
-// TEST_USER_TOKEN = '3f5ULLSX3OaJcNVmj6N6cTomvcmlZf5YQYYKl6ek6c6SKXMG7V0R63ueMB0uiiGwrkXQi8'
-// PRIVATE_USER_TOKEN = '0UAX3rbdd59OUXkGIu19gY0BMQODAbtGimcLNAfAie6dUQGGPig93mpFOpJQ8ceynlGScp'
-// UPLOAD_TEST_USER_TOKEN = 'E9luKQU9Ywe5QFG2HpgupjBqqSeH4fZKG6IxUMVP8fa242dSyECYuB5lhFvekbmjhxq1zT'
-// PRESQT_FORK_TOKEN = 'Airlov2nBOb41T1d3FkTIbzC8ahq3nBWDxMbGyrUYvWDinKWJgrPO52uuS6KJIBXKXFtlv'
-
+/**
+ * This component displays the various targets that a user can connect with.
+ * It's responsible for switching targets, handing off resource loading, and handing off modal work
+ * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
+ */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
-  const pendingAPIResponse = useSelector(
-    state => state.resources.pendingAPIResponse
-  );
+  const [modalState, setModalState] = useState(false);
+
+  /** SELECTOR DEFINITIONS
+   *
+   * pendingAPIResponse : Boolean representing if the API request is in progress
+   * apiTokens          : Object of <targets: tokens> submitted in the current session
+   * sourceTarget       : Object of the current source selected
+   * availableTargets   : List of objects of available targets
+   * apiOperationErrors : List of objects of current api errors
+   */
+  const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
+  /**
+   * Dispatch load action on page-load.
+   * Saga call to Target-Collection occurs with this action.
+   *    -> Saga function dispatches loadSuccess action when finished.
+   */
+  useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
+
+  /**
+   * Watch for a change in apiOperationErrors.
+   * If a exists in apiOperationErrors then display the modal.
+   **/
   useEffect(() => {
-    dispatch(actionCreators.targets.load());
-  }, [dispatch]);
+    if (
+      apiOperationErrors.length > 0 &&
+      apiOperationErrors.find(
+        element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
+    ) {
+      setModalState(true);
+    }
+  }, [apiOperationErrors]);
 
-  const { modalVisible, toggleModalVisibility } = useModal();
-
-  const onTokenSubmission = (connection, token) => {
-    toggleModalVisibility();
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
-  };
-
+  /**
+   * Set the selected target as the source target.
+   * If a connection already exists with the target then dispatch loadFromSourceTarget action.
+   *    -> Saga call to Resource-Collection occurs with this action.
+   *        -> Saga function dispatches loadFromSourceTargetSuccess action is if successful.
+   *        -> Saga function dispatches loadFromSourceTargetFailure action if not successful.
+   * Else display the modal.
+   */
   const handleSwitchSourceTarget = connection => {
+    dispatch(actionCreators.resources.clearSourceResources());
     dispatch(actionCreators.targets.switchSource(connection));
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromSourceTarget(
-          connection,
-          apiTokens[connection.name]
-        )
+        actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
       );
     } else {
-      setTimeout(() => toggleModalVisibility(), 500);
+      setTimeout(() => setModalState(true), 500);
     }
   };
 
@@ -96,17 +110,18 @@ export default function AvailableConnections() {
                   backgroundColor: colors.ripeOrange,
                   animation: `${basicFadeIn} 1s`
                 }}
-              ></div>
+              >
+              </div>
             ) : null}
           </button>
         ))}
       </div>
-      <Modal
+      <TokenModal
         connection={sourceTarget}
-        modalActive={modalVisible}
-        onHide={toggleModalVisibility}
-        onSubmit={onTokenSubmission}
+        modalState={modalState}
+        setModalState={setModalState}
       />
+
     </div>
   );
 }

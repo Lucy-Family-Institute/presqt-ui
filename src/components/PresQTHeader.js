@@ -2,7 +2,8 @@
 import { jsx } from '@emotion/core';
 
 import textStyles from '../styles/text';
-const PresQTHeader = () => {
+
+export default function PresQTHeader() {
   return (
     <div
       id='headerBackground'
@@ -29,5 +30,3 @@ const PresQTHeader = () => {
     </div>
   );
 };
-
-export default PresQTHeader;

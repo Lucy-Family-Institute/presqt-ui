@@ -1,60 +1,63 @@
-import { css } from '@emotion/core';
+import { css } from "@emotion/core";
 
 export default {
   body: css({
     fontSize: 14,
-    fontFamily: 'Roboto'
+    fontFamily: "Roboto"
+  }),
+  cubsRed: css({
+    color: "#CC3433" //GoCubsGo
   }),
   footerTitle: css({
     fontSize: 24,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 300,
-    color: '#4E4E4E'
+    color: "#4E4E4E"
   }),
   listItem: css({
     fontSize: 14,
-    fontFamily: 'Roboto'
+    fontFamily: "Roboto"
   }),
   globalNav: css({
     fontSize: 16,
-    fontFamily: 'Raleway',
-    color: 'white'
+    fontFamily: "Raleway",
+    color: "white"
   }),
   largeHeader: css({
     fontSize: 32,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 300,
-    color: '#4E4E4E'
+    color: "#4E4E4E"
   }),
   mediumHeader: css({
     fontSize: 24,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 400,
-    color: '#4E4E4E'
+    color: "#4E4E4E"
   }),
   presqtLogo: css({
     fontSize: 68,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 800,
-    color: 'white',
+    color: "white",
     marginBottom: -10
   }),
   presqtLogoSubtext: css({
     fontSize: 14,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 400,
-    color: 'white'
+    color: "white"
   }),
   modalTitle: css({
     fontSize: 24,
-    fontFamily: 'Raleway',
+    fontFamily: "Raleway",
     fontWeight: 800,
-    color: 'white'
+    color: "white"
   }),
   buttonText: css({
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
     fontWeight: 500,
     fontSize: 12,
-    textTransform: 'uppercase'
+    textTransform: "uppercase"
   })
 };

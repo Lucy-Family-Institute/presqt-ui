@@ -10,7 +10,7 @@ import targetsReducer from './redux/reducers/targets';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import rootSaga from './redux/saga';
+import rootSaga from './redux/saga/saga_root';
 
 const rootReducer = combineReducers({
   authorization: authorizationReducer,

@@ -1,23 +1,41 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx, css } from "@emotion/core";
 
-import textStyles from '../styles/text';
+import textStyles from "../styles/text";
+import { whileStatement } from "@babel/types";
 
-const HeaderMenu = () => {
+const imageHoverStyle = css({
+  fontSize: 17
+});
+
+const imageHoverOrFocus = css({
+  ":hover": imageHoverStyle
+});
+
+export default function HeaderMenu() {
   return (
     <div
       css={{
-        gridArea: 'headerMenu',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
+        gridArea: "headerMenu",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
         paddingRight: 50
       }}
     >
-      <span css={textStyles.globalNav}>About PresQT</span>
+      <a
+        css={[
+          textStyles.globalNav,
+          { textDecoration: "none" },
+          imageHoverOrFocus
+        ]}
+        href="https://presqt.crc.nd.edu"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        About PresQT
+      </a>
     </div>
   );
-};
-
-export default HeaderMenu;
+}
