@@ -10,6 +10,7 @@ import TargetActions from './components/TargetActions';
 import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
 import HeaderBackground from './components/HeaderBackground';
+import SnackBar from "./components/SnackBar";
 
 const styles = {
   app: css({
@@ -39,6 +40,7 @@ function App() {
       <TargetActionDetail />
       <AvailableConnections />
       <DevelopmentPartners />
+      <SnackBar />
     </div>
   );
 }
