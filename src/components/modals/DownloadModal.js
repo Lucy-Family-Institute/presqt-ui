@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
@@ -8,6 +9,13 @@ import Spinner from "../widgets/Spinner";
 import FileSaver from "file-saver";
 import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import {jsx} from "@emotion/core";
+
+const modalDefaultMessage = (
+  <div style={textStyles.body}>
+    <div css={{paddingBottom: 15}}>The download is being processed on the server. Please do not leave the page.</div>
+    <Spinner />
+  </div>);
 
 export default function DownloadModal({ modalState, setModalState }) {
   const dispatch = useDispatch();
@@ -24,11 +32,8 @@ export default function DownloadModal({ modalState, setModalState }) {
     state => state.resources.sourceDownloadStatus
   );
 
-  const [modalMessage, setModalMessage] = useState(
-    "" +
-      "The download is being processed on the server. Please do not leave the page."
-  );
-  const [egg, setEgg] = useState(`${textStyles.cubsRed}`);
+  const [modalContent, setModalContent] = useState(modalDefaultMessage);
+
 
   /**
    * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
@@ -38,14 +43,21 @@ export default function DownloadModal({ modalState, setModalState }) {
   useEffect(() => {
     // Download failed
     if (sourceDownloadStatus === "failure") {
-      setEgg(textStyles.cubsRed);
-      console.log(egg);
-      setModalMessage(
+      const errorMessage = (
         "Download returned a " +
           sourceDownloadContents.status_code +
           " status code. " +
           sourceDownloadContents.message
       );
+
+      setModalContent(
+        <div
+          style={textStyles.body}
+          css={{paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <ErrorOutlineIcon color="error"/>
+          <span css={{marginLeft:5}}>{errorMessage}</span>
+        </div>
+      )
     }
     // Download successful
     else if (sourceDownloadStatus === "success") {
@@ -60,9 +72,7 @@ export default function DownloadModal({ modalState, setModalState }) {
    **/
   const handleClose = () => {
     setModalState(false);
-    setModalMessage(
-      "The download is being processed on the server. Please do not leave the page."
-    );
+    setModalContent(modalDefaultMessage);
     dispatch(actionCreators.resources.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
@@ -86,14 +96,7 @@ export default function DownloadModal({ modalState, setModalState }) {
             : "Download In Progress"}
         </DialogTitle>
         <DialogContent repositionOnUpdate={false} style={{ padding: 20 }}>
-          <div>
-            {sourceDownloadStatus === 'failure' ? <ErrorOutlineIcon color="error"/> : null}
-            <span css={{marginLeft:5}}>{modalMessage}</span>
-            {sourceDownloadStatus === "pending" ||
-            sourceDownloadStatus === null ? (
-              <Spinner />
-            ) : null}
-          </div>
+            {modalContent}
         </DialogContent>
       </Dialog>
     </div>
