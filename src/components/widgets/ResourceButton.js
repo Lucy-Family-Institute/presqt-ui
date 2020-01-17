@@ -9,9 +9,45 @@ const openFolderSelectedIcon = require("../../images/icons/openFolderSelected.pn
 const closedFolderSelectedIcon = require("../../images/icons/closedFolderSelected.png");
 const fileIcon = require("../../images/icons/file.png");
 const fileSelectedIcon = require("../../images/icons/fileSelected.png");
+const presqtMetadataFileIcon = require("../../images/icons/presqtMetadataFile.png");
+const presqtMetadataFileIconSelected = require("../../images/icons/presqtMetadataFileSelected.png");
 
 export default function ResourceButton(props) {
   const { resource, level, onClick } = props;
+  console.log(resource);
+
+  const iconGarbage = () => {
+    if (resource.kind === "container") {
+      if (resource.open && resource.active) {
+        return openFolderSelectedIcon;
+      }
+      else if (resource.open && !resource.active) {
+        return openFolderIcon;
+      }
+      else if (!resource.open && resource.active) {
+        return closedFolderSelectedIcon;
+      }
+      else {
+        return closedFolderIcon;
+      }
+    }
+    else if (resource.title === "PRESQT_FTS_METADATA.json" || resource.title === "INVALID_PRESQT_FTS_METADATA.json") {
+      if (resource.active) {
+        return presqtMetadataFileIconSelected;
+      }
+      else {
+        return presqtMetadataFileIcon;
+      }
+    }
+    else {
+      if (resource.active) {
+        return fileSelectedIcon;
+      }
+      else {
+        return fileIcon;
+      }
+    }
+  };
 
   return (
     <button
@@ -29,19 +65,7 @@ export default function ResourceButton(props) {
       onClick={() => onClick(resource)}
     >
       <img
-        src={
-          resource.kind === "container"
-            ? resource.open && resource.active
-              ? openFolderSelectedIcon
-            : resource.open && !resource.active
-              ? openFolderIcon
-            : !resource.open && resource.active
-              ? closedFolderSelectedIcon
-            : closedFolderIcon
-          : resource.active
-            ? fileSelectedIcon
-          : fileIcon
-        }
+        src={iconGarbage()}
         alt="Resource Icon"
         css={{ paddingRight: 10, height: 25 }}
       />
