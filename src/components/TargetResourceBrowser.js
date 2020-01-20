@@ -100,7 +100,7 @@ export default function TargetResourceBrowser() {
       sourceTargetResources &&
       sourceTarget.supported_actions["resource_upload"] === true
     ) {
-      return <UploadActionButton style={{width: 250}} text="Upload New Project" type="NEW"/>;
+      return <UploadActionButton style={{width: 250}} text="Create New Project" type="NEW"/>;
     }
   };
 
