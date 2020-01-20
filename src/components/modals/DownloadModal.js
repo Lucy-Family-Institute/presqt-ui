@@ -59,6 +59,7 @@ export default function DownloadModal({ modalState, setModalState }) {
     else if (sourceDownloadStatus === "success") {
       FileSaver.saveAs(sourceDownloadContents, "PresQT_Download.zip");
       setModalState(false);
+      dispatch(actionCreators.resources.clearDownloadData());
     }
   }, [sourceDownloadStatus]);
 
