@@ -13,7 +13,13 @@ const useStyles = makeStyles(theme => ({
   },
   radio: {
     '&$checked': {
-      color: '#0C52A7'
+      color: '#0C52A7',
+      '&:hover': {
+        backgroundColor: '#cedced'
+      }
+    },
+    '&:hover': {
+      backgroundColor: '#cedced'
     }
   },
 }));
