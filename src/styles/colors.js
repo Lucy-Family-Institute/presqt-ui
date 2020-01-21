@@ -4,5 +4,6 @@ export default {
   warningYellow: '#E8A817',
   presqtBlue: '#0C52A7',
   presqtOrange: '#E57B00',
-  presqtTintedBlue: '#CEDCED'
+  presqtTintedBlue: '#CEDCED',
+  cubsRed: '#CC3433'  //GoCubsGo
 };

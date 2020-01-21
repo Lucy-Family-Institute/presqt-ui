@@ -35,14 +35,22 @@ export default function UploadResultsContent() {
     // Upload Successful!
     if (sourceUploadStatus === 'success') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
-        ? [
-          `The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`,
-          <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-        ]
-        : [
-          'All files passed fixity checks',
-          <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-        ];
+        ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+            />
+          </ListItem>
+        : <ListItem>
+            <ListItemIcon>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='All files passed fixity checks'
+            />
+          </ListItem>;
 
       const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
         ? <ListItem>
@@ -57,13 +65,13 @@ export default function UploadResultsContent() {
 
       const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
         ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
-          />
-        </ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+            />
+          </ListItem>
         : null;
 
       const successfulMessage =
@@ -78,14 +86,7 @@ export default function UploadResultsContent() {
                   primary={sourceUploadData.message}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  {failedFixityMessage[1]}
-                </ListItemIcon>
-                <ListItemText
-                  primary={failedFixityMessage[0]}
-                />
-              </ListItem>
+              {failedFixityMessage}
               {resourcesIgnoredMessage}
               {resourcesUpdatedMessage}
             </List>
