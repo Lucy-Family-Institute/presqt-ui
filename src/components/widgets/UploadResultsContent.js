@@ -67,7 +67,7 @@ export default function UploadResultsContent() {
         : null;
 
       const successfulMessage =
-        <Grid item md={8}>
+        <Grid item md={12}>
           <div>
             <List dense={true}>
               <ListItem>
@@ -107,10 +107,20 @@ export default function UploadResultsContent() {
       }
 
       setStepThreeContent(
-        <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{marginLeft:5}}>{errorMessage}</span>
-        </div>
+        <Grid item md={12}>
+          <div>
+            <List dense={true}>
+              <ListItem>
+                <ListItemIcon>
+                  <ErrorOutlineIcon color="error"/>
+                </ListItemIcon>
+                <ListItemText
+                  primary={errorMessage}
+                />
+              </ListItem>
+            </List>
+          </div>
+        </Grid>
       );
     }
   }, [sourceUploadStatus, apiOperationErrors]);
