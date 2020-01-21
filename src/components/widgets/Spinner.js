@@ -1,6 +1,7 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React from "react";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import colors from "../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 const ColorCircularProgress = withStyles({
   root: {
-    color: '#0C52A7',
+    color: colors.presqtBlue
   },
 })(CircularProgress);
 

@@ -1,5 +1,6 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button/Button";
+import colors from "../../styles/colors";
 
 const ActionButton = withStyles({
   root: {
@@ -10,8 +11,8 @@ const ActionButton = withStyles({
     marginRight: 20,
     paddingLeft: 15,
     paddingRight: 15,
-    backgroundColor: "#E57B00",
-    border: "1px solid #E57B00",
+    backgroundColor: colors.presqtOrange,
+    border: `1px solid ${colors.presqtOrange}`,
     color: "white",
     boxShadow: "none",
     "&:hover": {
@@ -20,7 +21,7 @@ const ActionButton = withStyles({
     }
   },
   containedPrimary: {
-    backgroundColor: "#E57B00"
+    backgroundColor: colors.presqtOrange
   }
 })(Button);
 
