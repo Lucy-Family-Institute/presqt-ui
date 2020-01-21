@@ -4,10 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import colors from "../../../styles/colors";
 
 const CustomUploadButton = withStyles({
   root: {
-    backgroundColor: '#0C52A7',
+    backgroundColor: colors.presqtBlue,
     '&:hover': {
       backgroundColor: '#0a4996',
     },

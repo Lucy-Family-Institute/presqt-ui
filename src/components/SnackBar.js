@@ -6,10 +6,11 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import {useSelector} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor:'#009639',
+    backgroundColor: colors.successGreen,
     color: 'white'
   },
 }));
@@ -59,7 +60,9 @@ export default function SnackBar() {
       autoHideDuration={6000}
       onClose={() => {setSnackBarOpen(false)}}
       action={
-        <IconButton size="small" aria-label="close" color="inherit" onClick={() => {setSnackBarOpen(false)}}>
+        <IconButton size="small" aria-label="close" color="inherit" onClick={() =>
+        {setSnackBarOpen(false)}}
+        >
           <CloseIcon fontSize="small" />
         </IconButton>
       }

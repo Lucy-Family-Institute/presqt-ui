@@ -1,12 +1,13 @@
 import Button from "@material-ui/core/Button/Button";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    color: '#0C52A7'
+    color: colors.presqtBlue
   }
 }));
 

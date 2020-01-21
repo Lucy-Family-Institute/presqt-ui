@@ -11,6 +11,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../redux/actionCreators";
+import colors from "../../styles/colors";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -34,63 +35,60 @@ export default function UploadResultsContent() {
     // Upload Successful!
     if (sourceUploadStatus === 'success') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
-        ? [
-          `The following files failed fixity: ${sourceUploadData.failed_fixity.join(', ')}`,
-          <ErrorOutlineIcon color="error"/>
-        ]
-        : [
-          'No files failed fixity',
-          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
-        ];
+        ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+            />
+          </ListItem>
+        : <ListItem>
+            <ListItemIcon>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='All files passed fixity checks'
+            />
+          </ListItem>;
+
       const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
-        ? [
-          `The following duplicate resources were ignored: 
-          ${sourceUploadData.resources_ignored.join(', ')}`,
-          <ErrorOutlineIcon color="error"/>
-        ]
-        : [
-          'No duplicate resources were ignored',
-          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
-        ];
+        ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+            />
+          </ListItem>
+        : null;
+
       const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
-        ? [
-          `The following duplicate resources were updated:
-          ${sourceUploadData.resources_updated.join(', ')}`,
-          <ErrorOutlineIcon color="error"/>
-        ]
-        : [
-          'No duplicate resources were updated',
-          <CheckCircleOutlineIcon style={{ color: '#0C52A7' }}/>
-        ];
+        ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+            />
+          </ListItem>
+        : null;
 
       const successfulMessage =
-        <Grid item md={6}>
+        <Grid item md={12}>
           <div>
             <List dense={true}>
               <ListItem>
                 <ListItemIcon>
-                  {failedFixityMessage[1]}
+                  <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
                 </ListItemIcon>
                 <ListItemText
-                  primary={failedFixityMessage[0]}
+                  primary={sourceUploadData.message}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  {resourcesIgnoredMessage[1]}
-                </ListItemIcon>
-                <ListItemText
-                  primary={resourcesIgnoredMessage[0]}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  {resourcesUpdatedMessage[1]}
-                </ListItemIcon>
-                <ListItemText
-                  primary={resourcesUpdatedMessage[0]}
-                />
-              </ListItem>
+              {failedFixityMessage}
+              {resourcesIgnoredMessage}
+              {resourcesUpdatedMessage}
             </List>
           </div>
         </Grid>;
@@ -110,10 +108,20 @@ export default function UploadResultsContent() {
       }
 
       setStepThreeContent(
-        <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{marginLeft:5}}>{errorMessage}</span>
-        </div>
+        <Grid item md={12}>
+          <div>
+            <List dense={true}>
+              <ListItem>
+                <ListItemIcon>
+                  <ErrorOutlineIcon color="error"/>
+                </ListItemIcon>
+                <ListItemText
+                  primary={errorMessage}
+                />
+              </ListItem>
+            </List>
+          </div>
+        </Grid>
       );
     }
   }, [sourceUploadStatus, apiOperationErrors]);

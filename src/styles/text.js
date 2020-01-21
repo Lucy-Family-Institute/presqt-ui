@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import colors from "../styles/colors";
 
 export default {
   body: css({
@@ -6,7 +7,7 @@ export default {
     fontFamily: "Roboto"
   }),
   cubsRed: css({
-    color: "#CC3433" //GoCubsGo
+    color:  colors.cubsRed
   }),
   footerTitle: css({
     fontSize: 24,

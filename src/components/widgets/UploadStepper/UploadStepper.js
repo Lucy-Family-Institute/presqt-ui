@@ -15,6 +15,7 @@ import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
 import UploadStepperBackButton from "./UploadStepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,16 +28,16 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   iconActive: {
-    fill: '#0C52A7',
+    fill: colors.presqtBlue,
   },
   iconCompleted: {
-    fill: '#0C52A7',
+    fill: colors.presqtBlue,
   },
 }));
 
 const PresQTStepContent = withStyles({
   root: {
-    borderColor: '#0C52A7',
+    borderColor: colors.presqtBlue,
   },
 })(StepContent);
 

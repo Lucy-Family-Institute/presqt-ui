@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
 import withStyles from "@material-ui/core/styles/withStyles";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 const CustomButton = withStyles({
   root: {
-    backgroundColor: '#0C52A7',
+    backgroundColor: colors.presqtBlue,
     '&:hover': {
       backgroundColor: '#0a4996',
     },
