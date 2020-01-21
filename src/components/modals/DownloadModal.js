@@ -55,7 +55,8 @@ export default function DownloadModal({ modalState, setModalState }) {
           <span css={{ marginLeft: 15 }}>
             <RetryActionButton
               setModalContent={setModalContent}
-              modalDefaultMessage={modalDefaultMessage} />
+              modalDefaultMessage={modalDefaultMessage}
+              action={'DOWNLOAD'}/>
           </span>
         </div>
       )
