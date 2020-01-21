@@ -100,7 +100,12 @@ export default function UploadStepper(selectedInSource) {
           selectedInSource={selectedInSource}
         />;
       case 3:
-        return <UploadResultsContent />;
+        return <UploadResultsContent
+          setActiveStep={setActiveStep}
+          setSelectedFile={setSelectedFile}
+          selectedFile={selectedFile}
+          selectedDuplicate={selectedDuplicate}
+        />;
     }
   }
 
