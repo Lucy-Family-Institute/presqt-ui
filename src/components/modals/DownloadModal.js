@@ -10,6 +10,7 @@ import FileSaver from "file-saver";
 import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
+import RetryActionButton from "../widgets/RetryActionButton";
 
 const modalDefaultMessage = (
   <div style={textStyles.body}>
@@ -29,7 +30,6 @@ export default function DownloadModal({ modalState, setModalState }) {
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
-
 
   /**
    * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
@@ -51,7 +51,12 @@ export default function DownloadModal({ modalState, setModalState }) {
           style={textStyles.body}
           css={{paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <ErrorOutlineIcon color="error"/>
-          <span css={{marginLeft:5}}>{errorMessage}</span>
+          <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+          <span css={{ marginLeft: 15 }}>
+            <RetryActionButton
+              setModalContent={setModalContent}
+              modalDefaultMessage={modalDefaultMessage} />
+          </span>
         </div>
       )
     }
