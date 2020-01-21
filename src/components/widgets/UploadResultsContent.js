@@ -43,26 +43,28 @@ export default function UploadResultsContent() {
           'All files passed fixity checks',
           <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
         ];
+
       const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
-        ? [
-          `The following duplicate resources were ignored: 
-          ${sourceUploadData.resources_ignored.join(', ')}`,
-          <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-        ]
-        : [
-          'No duplicate resources were ignored',
-          <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-        ];
+        ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+            />
+          </ListItem>
+        : null;
+
       const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
-        ? [
-          `The following duplicate resources were updated:
-          ${sourceUploadData.resources_updated.join(', ')}`,
-          <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-        ]
-        : [
-          'No duplicate resources were updated',
-          <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-        ];
+        ? <ListItem>
+          <ListItemIcon>
+            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+          </ListItemIcon>
+          <ListItemText
+            primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+          />
+        </ListItem>
+        : null;
 
       const successfulMessage =
         <Grid item md={8}>
@@ -73,7 +75,7 @@ export default function UploadResultsContent() {
                   <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
                 </ListItemIcon>
                 <ListItemText
-                  primary='Resources successfully uploaded without errors!'
+                  primary={sourceUploadData.message}
                 />
               </ListItem>
               <ListItem>
@@ -84,22 +86,8 @@ export default function UploadResultsContent() {
                   primary={failedFixityMessage[0]}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  {resourcesIgnoredMessage[1]}
-                </ListItemIcon>
-                <ListItemText
-                  primary={resourcesIgnoredMessage[0]}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  {resourcesUpdatedMessage[1]}
-                </ListItemIcon>
-                <ListItemText
-                  primary={resourcesUpdatedMessage[0]}
-                />
-              </ListItem>
+              {resourcesIgnoredMessage}
+              {resourcesUpdatedMessage}
             </List>
           </div>
         </Grid>;
