@@ -50,7 +50,6 @@ function* uploadSourceTargetResource(action) {
   }
   // Upload failed because of PresQT API error
   catch (error) {
-    console.log(error);
     yield put(actionCreators.resources.uploadToSourceTargetFailure(
       error.response.status,
       error.response.data.error)
