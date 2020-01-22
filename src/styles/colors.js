@@ -6,5 +6,7 @@ export default {
   presqtOrange: '#E57B00',
   presqtTintedBlue: '#CEDCED',
   cubsRed: '#CC3433',  //GoCubsGo
+  chevelleRed: '#DD412D', // It filters through
+  
   presqtBlueHover: '#0a4996'
 };

@@ -9,10 +9,14 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../styles/colors";
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  success: {
     backgroundColor: colors.successGreen,
     color: 'white'
   },
+  failure: {
+    backgroundColor: colors.chevelleRed,
+    color: 'white'
+  }
 }));
 
 export default function SnackBar() {
@@ -23,6 +27,7 @@ export default function SnackBar() {
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
+  const [snackBarClass, setSnackbarClass] = useState('');
 
   /**
    * DOWNLOAD
@@ -31,6 +36,12 @@ export default function SnackBar() {
     if (sourceDownloadStatus === 'success') {
       setSnackBarOpen(true);
       setSnackBarText('Download Successful!');
+      setSnackbarClass(classes.success);
+    }
+    else if (sourceDownloadStatus === 'failure') {
+      setSnackBarOpen(true);
+      setSnackBarText('Download Failed!');
+      setSnackbarClass(classes.failure);
     }
   }, [sourceDownloadStatus]);
 
@@ -41,6 +52,12 @@ export default function SnackBar() {
     if (sourceUploadStatus === 'success') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Successful!');
+      setSnackbarClass(classes.success);
+    }
+    else if (sourceUploadStatus === 'failure') {
+      setSnackBarOpen(true);
+      setSnackBarText('Upload Failed!');
+      setSnackbarClass(classes.failure);
     }
   }, [sourceUploadStatus]);
 
@@ -48,7 +65,7 @@ export default function SnackBar() {
     <Snackbar
       ContentProps={{
         classes: {
-          root: classes.root
+          root: snackBarClass
         }
       }}
       anchorOrigin={{
