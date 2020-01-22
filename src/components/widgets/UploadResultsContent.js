@@ -1,16 +1,16 @@
 /** @jsx jsx */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import LeftSpinner from "./LeftSpinner";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { jsx } from '@emotion/core';
-import {actionCreators} from "../../redux/actionCreators";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { jsx } from "@emotion/core";
+import { actionCreators } from "../../redux/actionCreators";
 import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/RetryButtons/RetryStartUploadOverButton";
@@ -20,12 +20,21 @@ import RetryStartUploadOverButton from "../widgets/RetryButtons/RetryStartUpload
  * component to display the results of the upload.
  **/
 export default function UploadResultsContent(props) {
-  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
-  const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const sourceUploadStatus = useSelector(
+    state => state.resources.sourceUploadStatus
+  );
+  const sourceUploadData = useSelector(
+    state => state.resources.sourceUploadData
+  );
+  const apiOperationErrors = useSelector(
+    state => state.resources.apiOperationErrors
+  );
 
   const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+    element =>
+      element.action ===
+      actionCreators.resources.uploadToSourceTarget.toString()
+  );
 
   const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
 
@@ -35,112 +44,122 @@ export default function UploadResultsContent(props) {
    **/
   useEffect(() => {
     // Upload Successful!
-    if (sourceUploadStatus === 'success') {
-      const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
-        ? <ListItem>
+    if (sourceUploadStatus === "success") {
+      const failedFixityMessage =
+        sourceUploadData.failed_fixity.length > 0 ? (
+          <ListItem>
             <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }} />
             </ListItemIcon>
             <ListItemText
-              primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+              primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(
+                ", "
+              )}`}
             />
           </ListItem>
-        : <ListItem>
+        ) : (
+          <ListItem>
             <ListItemIcon>
-              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }} />
             </ListItemIcon>
-            <ListItemText
-              primary='All files passed fixity checks'
-            />
-          </ListItem>;
+            <ListItemText primary="All files passed fixity checks" />
+          </ListItem>
+        );
 
-      const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
-        ? <ListItem>
+      const resourcesIgnoredMessage =
+        sourceUploadData.resources_ignored.length > 0 ? (
+          <ListItem>
             <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }} />
             </ListItemIcon>
             <ListItemText
-              primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+              primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(
+                ", "
+              )}`}
             />
           </ListItem>
-        : null;
+        ) : null;
 
-      const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
-        ? <ListItem>
+      const resourcesUpdatedMessage =
+        sourceUploadData.resources_updated.length > 0 ? (
+          <ListItem>
             <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }} />
             </ListItemIcon>
             <ListItemText
-              primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+              primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(
+                ", "
+              )}`}
             />
           </ListItem>
-        : null;
+        ) : null;
 
-      const successfulMessage =
+      const successfulMessage = (
         <Grid item md={12}>
           <div>
             <List dense={true}>
               <ListItem>
                 <ListItemIcon>
-                  <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+                  <CheckCircleOutlineIcon
+                    style={{ color: colors.successGreen }}
+                  />
                 </ListItemIcon>
-                <ListItemText
-                  primary={sourceUploadData.message}
-                />
+                <ListItemText primary={sourceUploadData.message} />
               </ListItem>
               {failedFixityMessage}
               {resourcesIgnoredMessage}
               {resourcesUpdatedMessage}
             </List>
           </div>
-        </Grid>;
+        </Grid>
+      );
 
       setStepThreeContent(successfulMessage);
     }
     // Upload Failed!
-    else if (sourceUploadStatus === 'failure') {
+    else if (sourceUploadStatus === "failure") {
       let errorMessage;
       // PresQT API error occurred
       if (error) {
-        errorMessage = error.data
+        errorMessage = error.data;
       }
       // Target error occurred
       else {
-        errorMessage = sourceUploadData.message
+        errorMessage = sourceUploadData.message;
       }
 
       setStepThreeContent(
-        <Grid item md={12}>
-          <div>
-            <List dense={true}>
-              <ListItem>
-                <ListItemIcon>
-                  <ErrorOutlineIcon color="error"/>
-                </ListItemIcon>
-                <ListItemText
-                  primary={errorMessage}
-                />
-              </ListItem>
-              <ListItem>
-              <RetryStartUploadOverButton
-                  setActiveStep={props.setActiveStep}
-                  setSelectedFile={props.setSelectedFile}
-                />
-                <span css={{marginLeft: 5}}>
-                <RetryUploadButton
-                  setActiveStep={props.setActiveStep}
-                  selectedFile={props.selectedFile}
-                  selectedDuplicate={props.selectedDuplicate}
-                  setStepThreeContent={setStepThreeContent}
-                />
-                </span>
-              </ListItem>
-            </List>
+        <Fragment>
+          <Grid item md={12}>
+            <div>
+              <List dense={true}>
+                <ListItem>
+                  <ListItemIcon>
+                    <ErrorOutlineIcon color="error" />
+                  </ListItemIcon>
+                  <ListItemText primary={errorMessage} />
+                </ListItem>
+              </List>
+            </div>
+          </Grid>
+          <div css={{height: 36.5}}>
+            <RetryStartUploadOverButton
+              setActiveStep={props.setActiveStep}
+              setSelectedFile={props.setSelectedFile}
+            />
+            <span css={{ marginLeft: 5 }}>
+              <RetryUploadButton
+                setActiveStep={props.setActiveStep}
+                selectedFile={props.selectedFile}
+                selectedDuplicate={props.selectedDuplicate}
+                setStepThreeContent={setStepThreeContent}
+              />
+            </span>
           </div>
-        </Grid>
+        </Fragment>
       );
     }
   }, [sourceUploadStatus, apiOperationErrors]);
 
-  return(stepThreeContent)
+  return stepThreeContent;
 }

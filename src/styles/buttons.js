@@ -4,7 +4,7 @@ import colors from "./colors";
 export default {
   RetryUpload: makeStyles(theme => ({
     button: {
-      marginTop: theme.spacing(1),
+      height: "100%",
       marginRight: theme.spacing(1),
       backgroundColor: colors.presqtBlue,
       "&:hover": {
@@ -14,6 +14,7 @@ export default {
   })),
   RetryDownload: makeStyles(theme => ({
     button: {
+      height: "100%",
       marginRight: theme.spacing(1),
       backgroundColor: colors.presqtBlue,
       "&:hover": {
@@ -23,7 +24,7 @@ export default {
   })),
   RetryStartUploadOver: makeStyles(theme => ({
     button: {
-      marginTop: theme.spacing(1),
+      height: "100%",
       marginRight: theme.spacing(1),
       color: colors.presqtBlue
     }
