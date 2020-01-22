@@ -51,7 +51,7 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
  **/
 export function postResourceUpload(sourceTarget, file, duplicateAction, resource, sourceTargetToken) {
   let resourceUploadURL;
-  if (!resource.selectedInSource) {
+  if (!resource) {
     resourceUploadURL = `${apiURLBase}targets/${sourceTarget}/resources/`;
   }
   else {
