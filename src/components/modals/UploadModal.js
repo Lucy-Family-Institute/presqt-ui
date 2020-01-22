@@ -22,7 +22,7 @@ export default function UploadModal({ modalState, setModalState, selectedInSourc
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.resources.uploadToSourceTarget.toString()));
   };
-
+  
   return modalState
     ? <div>
       <Dialog maxWidth="md" fullWidth={true} open={modalState} onClose={handleClose} aria-labelledby={"form-dialog-title"}>

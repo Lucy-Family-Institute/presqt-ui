@@ -53,7 +53,7 @@ function getSteps() {
 /**
  * This component renders the stepper for the Upload Modal.
  **/
-export default function UploadStepper(selectedInSource) {
+export default function UploadStepper({ selectedInSource }) {
   const classes = useStyles();
   const steps = getSteps();
 
@@ -88,10 +88,10 @@ export default function UploadStepper(selectedInSource) {
         />;
       }
       case 1:
-        return <UploadDuplicateActionRadioButtons
-          selectedDuplicate={selectedDuplicate}
-          setSelectedDuplicate={setSelectedDuplicate}
-        />;
+          return <UploadDuplicateActionRadioButtons
+            selectedDuplicate={selectedDuplicate}
+            setSelectedDuplicate={setSelectedDuplicate}
+          />;
       case 2:
         return <UploadButton
           selectedFile={selectedFile}

@@ -12,7 +12,8 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../redux/actionCreators";
 import colors from "../../styles/colors";
-import RetryActionButton from "./RetryActionButton";
+import RetryUploadButton from "../widgets/RetryButtons/RetryUploadButton";
+import RetryStartUploadOverButton from "../widgets/RetryButtons/RetryStartUploadOverButton";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -121,20 +122,18 @@ export default function UploadResultsContent(props) {
                 />
               </ListItem>
               <ListItem>
-                <RetryActionButton
-                  action={'UPLOAD_START_OVER'}
+              <RetryStartUploadOverButton
                   setActiveStep={props.setActiveStep}
                   setSelectedFile={props.setSelectedFile}
                 />
-              </ListItem>
-              <ListItem>
-                <RetryActionButton
-                  action={'UPLOAD'}
+                <span css={{marginLeft: 5}}>
+                <RetryUploadButton
                   setActiveStep={props.setActiveStep}
                   selectedFile={props.selectedFile}
                   selectedDuplicate={props.selectedDuplicate}
                   setStepThreeContent={setStepThreeContent}
                 />
+                </span>
               </ListItem>
             </List>
           </div>
