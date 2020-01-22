@@ -2,22 +2,13 @@
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
+import buttonStyles from "../../../styles/buttons";
 import textStyles from "../../../styles/text";
-import colors from "../../../styles/colors";
 import { actionCreators } from "../../../redux/actionCreators";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button/Button";
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    color: colors.presqtBlue
-  }
-}));
-
 export default function RetryStartUploadOverButton(props) {
-  const classes = useStyles();
+  const classes = buttonStyles.RetryStartUploadOver();
   const dispatch = useDispatch();
 
   const submitRetry = () => {
