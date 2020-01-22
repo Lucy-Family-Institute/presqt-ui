@@ -8,7 +8,7 @@ export default {
       marginRight: theme.spacing(1),
       backgroundColor: colors.presqtBlue,
       "&:hover": {
-        backgroundColor: "#0a4996"
+        backgroundColor: colors.presqtBlueHover
       }
     }
   })),
@@ -17,7 +17,7 @@ export default {
       marginRight: theme.spacing(1),
       backgroundColor: colors.presqtBlue,
       "&:hover": {
-        backgroundColor: "#0a4996"
+        backgroundColor: colors.presqtBlueHover
       }
     }
   })),
