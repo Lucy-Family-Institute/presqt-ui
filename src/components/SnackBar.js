@@ -27,7 +27,7 @@ export default function SnackBar() {
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
-  const [snackBarClass, setSnackbarClass] = useState('');
+  const [snackBarClass, setSnackBarClass] = useState('');
 
   /**
    * DOWNLOAD
@@ -36,12 +36,12 @@ export default function SnackBar() {
     if (sourceDownloadStatus === 'success') {
       setSnackBarOpen(true);
       setSnackBarText('Download Successful!');
-      setSnackbarClass(classes.success);
+      setSnackBarClass(classes.success);
     }
     else if (sourceDownloadStatus === 'failure') {
       setSnackBarOpen(true);
       setSnackBarText('Download Failed!');
-      setSnackbarClass(classes.failure);
+      setSnackBarClass(classes.failure);
     }
   }, [sourceDownloadStatus]);
 
@@ -52,12 +52,12 @@ export default function SnackBar() {
     if (sourceUploadStatus === 'success') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Successful!');
-      setSnackbarClass(classes.success);
+      setSnackBarClass(classes.success);
     }
     else if (sourceUploadStatus === 'failure') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Failed!');
-      setSnackbarClass(classes.failure);
+      setSnackBarClass(classes.failure);
     }
   }, [sourceUploadStatus]);
 
