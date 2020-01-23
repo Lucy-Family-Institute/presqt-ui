@@ -107,7 +107,8 @@ export default function TokenModal({connection, modalState, setModalState}) {
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
-                onAnimationEnd={(event) => {event.stopPropagation()}}
+                onAnimationEnd={(event) => { event.stopPropagation() }}
+                onKeyPress={() => modalSubmit()}  
               />
               <ModalSubmitButton
                 variant="contained"

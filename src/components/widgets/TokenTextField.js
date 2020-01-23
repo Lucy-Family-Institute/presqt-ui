@@ -10,4 +10,4 @@ const TokenTextField = withStyles({
   }
 })(SearchTextField);
 
-export default TokenTextField
+export default TokenTextField;
