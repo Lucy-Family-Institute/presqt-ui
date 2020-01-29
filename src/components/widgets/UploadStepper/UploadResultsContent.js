@@ -5,22 +5,26 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {useSelector} from "react-redux";
-import LeftSpinner from "./LeftSpinner";
+import {useDispatch, useSelector} from "react-redux";
+import LeftSpinner from "../LeftSpinner";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
-import {actionCreators} from "../../redux/actionCreators";
-import colors from "../../styles/colors";
+import {actionCreators} from "../../../redux/actionCreators";
+import colors from "../../../styles/colors";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
  * component to display the results of the upload.
  **/
 export default function UploadResultsContent() {
+  const dispatch = useDispatch();
+
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const connection = useSelector(state => state.targets.source);
+  const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
   const error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
@@ -34,6 +38,7 @@ export default function UploadResultsContent() {
   useEffect(() => {
     // Upload Successful!
     if (sourceUploadStatus === 'success') {
+      dispatch(actionCreators.resources.loadFromSourceTarget(connection, token, null));
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
         ? <ListItem>
             <ListItemIcon>

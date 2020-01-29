@@ -39,7 +39,8 @@ export const actionCreators = createActions({
         UPLOAD_JOB: undefined,
         UPLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         CLEAR_UPLOAD_DATA: undefined,
-        TOGGLE_UPLOAD_MODAL: undefined
+        DISPLAY_UPLOAD_MODAL: (selectedInSource) => ({selectedInSource}),
+        HIDE_UPLOAD_MODAL: undefined
     },
     TARGETS: {
         LOAD: undefined,

@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import UploadSelectFile from "./UploadSelectFile";
 import UploadDuplicateActionRadioButtons from "./UploadDuplicateActionRadioButtons";
 import UploadButton from "./UploadButton";
-import UploadResultsContent from "../UploadResultsContent";
+import UploadResultsContent from "./UploadResultsContent";
 import UploadStepConnector from "./UploadStepConnector";
 import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
