@@ -15,7 +15,8 @@ const initialState = {
   sourceDownloadStatus: null,
   sourceDownloadContents: null,
   sourceUploadStatus: null,
-  sourceUploadData: null
+  sourceUploadData: null,
+  uploadModalDisplay: false
 };
 
 export default handleActions(
@@ -374,6 +375,13 @@ export default handleActions(
       sourceUploadStatus: null,
       sourceUploadData: null
     }),
+    /**
+     * Toggle the Upload Modal display
+     **/
+    [actionCreators.resources.toggleModalDisplay]: state => ({
+      ...state,
+      uploadModalDisplay: !state.uploadModalDisplay
+    })
   },
   initialState
 );
