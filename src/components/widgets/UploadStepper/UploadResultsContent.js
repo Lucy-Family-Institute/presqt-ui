@@ -25,6 +25,7 @@ export default function UploadResultsContent() {
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const connection = useSelector(state => state.targets.source);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
+  const inSourceTarget = useSelector(state => state.resources.inSourceTarget);
 
   const error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
@@ -36,47 +37,48 @@ export default function UploadResultsContent() {
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
-    // Upload Successful!
     if (sourceUploadStatus === 'success') {
-      dispatch(actionCreators.resources.loadFromSourceTarget(connection, token, null));
+      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+    }
+    else if (sourceUploadStatus === 'finished') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
         ? <ListItem>
-            <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
-            />
-          </ListItem>
+          <ListItemIcon>
+            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+          </ListItemIcon>
+          <ListItemText
+            primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+          />
+        </ListItem>
         : <ListItem>
-            <ListItemIcon>
-              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary='All files passed fixity checks'
-            />
-          </ListItem>;
+          <ListItemIcon>
+            <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+          </ListItemIcon>
+          <ListItemText
+            primary='All files passed fixity checks'
+          />
+        </ListItem>;
 
       const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
         ? <ListItem>
-            <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
-            />
-          </ListItem>
+          <ListItemIcon>
+            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+          </ListItemIcon>
+          <ListItemText
+            primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+          />
+        </ListItem>
         : null;
 
       const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
         ? <ListItem>
-            <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
-            />
-          </ListItem>
+          <ListItemIcon>
+            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+          </ListItemIcon>
+          <ListItemText
+            primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+          />
+        </ListItem>
         : null;
 
       const successfulMessage =
@@ -130,6 +132,10 @@ export default function UploadResultsContent() {
       );
     }
   }, [sourceUploadStatus, apiOperationErrors]);
+
+  useEffect(() => {
+
+  }, []);
 
   return(stepThreeContent)
 }

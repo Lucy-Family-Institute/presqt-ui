@@ -391,7 +391,54 @@ export default handleActions(
       ...state,
       uploadModalDisplay: false,
       uploadType: null
-    })
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    [actionCreators.resources.refreshSourceTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.refreshSourceTarget,
+        state.pendingAPIOperations
+      ),
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshSourceTargetSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.refreshSourceTarget,
+          state.pendingAPIOperations
+        ),
+        inSourceTarget: resourceHierarchy,
+        sourceUploadStatus: "finished"
+      };
+    },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.refreshSourceTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.refreshSourceTarget.toString(),
+        state.apiOperationErrors
+      ),
+      inSourceTarget: null
+    }),
   },
   initialState
 );

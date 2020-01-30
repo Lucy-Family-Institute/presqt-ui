@@ -38,7 +38,7 @@ export default function SnackBar() {
    * UPLOAD
    **/
   useEffect(() => {
-    if (sourceUploadStatus === 'success') {
+    if (sourceUploadStatus === 'finished') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Successful!');
     }
