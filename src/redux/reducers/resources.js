@@ -382,7 +382,8 @@ export default handleActions(
     [actionCreators.resources.displayUploadModal]: (state, action) => ({
       ...state,
       uploadModalDisplay: true,
-      uploadType: action.type
+      uploadType: action.payload.uploadType
+      // uploadType: action.type
     }),
     /**
      * Display the Upload Modal

@@ -17,7 +17,7 @@ export default function UploadModal()  {
    **/
   const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
   const uploadType = useSelector(state => state.resources.uploadType);
-
+  const selectedInSource = useSelector(state => state.resources.selectedInSource);
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.
@@ -30,18 +30,12 @@ export default function UploadModal()  {
     )
   };
 
-  let selectedInSource;
+  let resourceToUploadTo = null;
   // We want to pass along the resource if the upload is to an existing project
   // or null if the user has pressed the `Create New Project Button`.
-  if (uploadType === 'NEW') {
-    selectedInSource = null;
+  if (uploadType !== 'NEW') {
+    resourceToUploadTo = selectedInSource
   }
-  else {
-    selectedInSource = useSelector(state => state.resources.selectedInSource);
-  }
-
-  console.log(uploadType);
-  console.log(selectedInSource);
 
   return uploadModalDisplay
     ? <div>
@@ -50,7 +44,7 @@ export default function UploadModal()  {
           Upload Resource
         </DialogTitle>
         <DialogContent>
-          <UploadStepper selectedInSource={selectedInSource}/>
+          <UploadStepper resourceToUploadTo={resourceToUploadTo}/>
         </DialogContent>
       </Dialog>
     </div>

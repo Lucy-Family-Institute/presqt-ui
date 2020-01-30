@@ -13,7 +13,7 @@ function* uploadSourceTargetResource(action) {
       action.payload.sourceTarget,
       action.payload.file,
       action.payload.duplicateAction,
-      action.payload.resource,
+      action.payload.resourceToUploadTo,
       action.payload.sourceTargetToken
     );
 
