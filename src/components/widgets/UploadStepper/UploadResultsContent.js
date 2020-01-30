@@ -27,7 +27,6 @@ export default function UploadResultsContent(props) {
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const connection = useSelector(state => state.targets.source);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
-  const inSourceTarget = useSelector(state => state.resources.inSourceTarget);
 
   const error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
