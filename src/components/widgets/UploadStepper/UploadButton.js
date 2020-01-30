@@ -25,7 +25,6 @@ export default function UploadButton(props) {
   const selectedTarget = useSelector(state => state.targets.source.name);
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
 
-
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper
    * index to move forward.

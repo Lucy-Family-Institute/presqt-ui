@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -81,13 +81,15 @@ export default function UploadResultsContent() {
         </ListItem>
         : null;
 
-      const successfulMessage =
+      const successfulMessage = (
         <Grid item md={12}>
           <div>
             <List dense={true}>
               <ListItem>
                 <ListItemIcon>
-                  <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+                  <CheckCircleOutlineIcon
+                    style={{ color: colors.successGreen }}
+                  />
                 </ListItemIcon>
                 <ListItemText
                   primary={sourceUploadData.message}
@@ -98,7 +100,8 @@ export default function UploadResultsContent() {
               {resourcesUpdatedMessage}
             </List>
           </div>
-        </Grid>;
+        </Grid>
+      );
 
       setStepThreeContent(successfulMessage);
     }
@@ -107,35 +110,45 @@ export default function UploadResultsContent() {
       let errorMessage;
       // PresQT API error occurred
       if (error) {
-        errorMessage = error.data
+        errorMessage = error.data;
       }
       // Target error occurred
       else {
-        errorMessage = sourceUploadData.message
+        errorMessage = sourceUploadData.message;
       }
 
       setStepThreeContent(
-        <Grid item md={12}>
-          <div>
-            <List dense={true}>
-              <ListItem>
-                <ListItemIcon>
-                  <ErrorOutlineIcon color="error"/>
-                </ListItemIcon>
-                <ListItemText
-                  primary={errorMessage}
-                />
-              </ListItem>
-            </List>
+        <Fragment>
+          <Grid item md={12}>
+            <div>
+              <List dense={true}>
+                <ListItem>
+                  <ListItemIcon>
+                    <ErrorOutlineIcon color="error" />
+                  </ListItemIcon>
+                  <ListItemText primary={errorMessage} />
+                </ListItem>
+              </List>
+            </div>
+          </Grid>
+          <div css={{height: 36.5}}>
+            <RetryStartUploadOverButton
+              setActiveStep={props.setActiveStep}
+              setSelectedFile={props.setSelectedFile}
+            />
+            <span css={{ marginLeft: 5 }}>
+              <RetryUploadButton
+                setActiveStep={props.setActiveStep}
+                selectedFile={props.selectedFile}
+                selectedDuplicate={props.selectedDuplicate}
+                setStepThreeContent={setStepThreeContent}
+              />
+            </span>
           </div>
-        </Grid>
+        </Fragment>
       );
     }
   }, [sourceUploadStatus, apiOperationErrors]);
-
-  useEffect(() => {
-
-  }, []);
 
   return(stepThreeContent)
 }

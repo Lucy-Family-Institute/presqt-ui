@@ -2,17 +2,18 @@
 import { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
-import textStyles from "../../styles/text";
-import { actionCreators } from "../../redux/actionCreators";
-import DownloadModal from "../modals/DownloadModal";
-import ActionButton from "./ActionButton";
+import textStyles from "../../../styles/text";
+import buttonStyles from "../../../styles/buttons";
+import { actionCreators } from "../../../redux/actionCreators";
+import Button from "@material-ui/core/Button/Button";
 
 /**
  * This component handles the download action button in the TargetActions component.
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function RetryActionButton(props) {
+export default function RetryDownloadButton(props) {
+  const classes = buttonStyles.RetryDownload();
   const dispatch = useDispatch();
   /** SELECTOR DEFINITIONS
    * sourceTargetToken : String user token for the source target
@@ -23,15 +24,7 @@ export default function RetryActionButton(props) {
     state => state.authorization.apiTokens[state.targets.source.name]);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
 
-
-  /**
-   * Open the modal.
-   * Dispatch the downloadResource action
-   *   -> Saga call to Resource Download occurs here
-   *     -> On complete saga dispatches the ResourceDownloadSuccess action
-   **/
   const submitRetry = () => {
-    if (props.action === 'DOWNLOAD') {
       dispatch(actionCreators.resources.clearDownloadData());
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.downloadResource.toString()));
@@ -39,13 +32,12 @@ export default function RetryActionButton(props) {
         selectedInSource, sourceTargetToken));
       props.setModalContent(props.modalDefaultMessage);
     }
-  };
 
   return (
     <Fragment>
-      <ActionButton elevation={0} variant="contained" onClick={submitRetry}>
-        <span css={textStyles.buttonText}>Retry</span>
-      </ActionButton>
+      <Button variant="contained" color="primary" className={classes.button} onClick={submitRetry}>
+        <span css={textStyles.buttonText}>Retry Download</span>
+      </Button>
     </Fragment>
   );
 }

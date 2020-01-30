@@ -100,7 +100,12 @@ export default function UploadStepper({resourceToUploadTo}) {
           resourceToUploadTo={resourceToUploadTo}
         />;
       case 3:
-        return <UploadResultsContent />;
+        return <UploadResultsContent
+          setActiveStep={setActiveStep}
+          setSelectedFile={setSelectedFile}
+          selectedFile={selectedFile}
+          selectedDuplicate={selectedDuplicate}
+        />;
     }
   }
 
