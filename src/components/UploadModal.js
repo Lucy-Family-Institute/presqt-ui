@@ -40,6 +40,9 @@ export default function UploadModal()  {
     selectedInSource = useSelector(state => state.resources.selectedInSource);
   }
 
+  console.log(uploadType);
+  console.log(selectedInSource);
+
   return uploadModalDisplay
     ? <div>
       <Dialog maxWidth="md" fullWidth={true} open={uploadModalDisplay} onClose={handleClose} aria-labelledby={"form-dialog-title"}>
