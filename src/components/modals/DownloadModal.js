@@ -10,7 +10,7 @@ import FileSaver from "file-saver";
 import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
-import RetryDownloadButton from "../widgets/RetryButtons/RetryDownloadButton";
+import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 
 
 const modalDefaultMessage = (
