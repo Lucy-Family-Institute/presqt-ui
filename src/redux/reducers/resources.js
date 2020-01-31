@@ -17,7 +17,8 @@ const initialState = {
   sourceUploadStatus: null,
   sourceUploadData: null,
   uploadModalDisplay: false,
-  uploadType: null
+  uploadType: null,
+  openResources: []
 };
 
 export default handleActions(
@@ -47,14 +48,15 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       selectedInSource: null,
-      sourceSearchValue: action.payload.searchValue
+      sourceSearchValue: action.payload.searchValue,
+      openResources: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(action);
+      const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -70,7 +72,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(action);
+      const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -124,6 +126,8 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
+      let newOpenResources = state.openResources;
+
       const searchForResourceInArray = (
         desiredContainer,
         openContainer,
@@ -132,6 +136,12 @@ export default handleActions(
         const updatedNode = possibleMatches;
 
         if (updatedNode.id === desiredContainer.id) {
+          if (openContainer) {
+            newOpenResources.push(desiredContainer.id)
+          }
+          else{
+            newOpenResources = newOpenResources.filter(element => element !== desiredContainer.id)
+          }
           return {
             ...updatedNode,
             open: openContainer
@@ -157,7 +167,8 @@ export default handleActions(
 
       return {
         ...state,
-        inSourceTarget: updatedSourceResources
+        inSourceTarget: updatedSourceResources,
+        openResources: newOpenResources
       };
     },
     /**
@@ -410,7 +421,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
     [actionCreators.resources.refreshSourceTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(action);
+      const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
