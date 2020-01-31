@@ -32,13 +32,21 @@ export const actionCreators = createActions({
         DOWNLOAD_JOB: undefined,
         DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         CLEAR_DOWNLOAD_DATA: undefined,
-        UPLOAD_TO_SOURCE_TARGET: (sourceTarget, file, duplicateAction, resource, sourceTargetToken) =>
-          ({sourceTarget, file, duplicateAction, resource, sourceTargetToken}),
+        UPLOAD_TO_SOURCE_TARGET: (sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) =>
+          ({sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken}),
         UPLOAD_TO_SOURCE_TARGET_SUCCESS: undefined,
         UPLOAD_TO_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
         UPLOAD_JOB: undefined,
         UPLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
-        CLEAR_UPLOAD_DATA: undefined
+        CLEAR_UPLOAD_DATA: undefined,
+        DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
+        HIDE_UPLOAD_MODAL: undefined,
+        REFRESH_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
+            sourceTarget,
+            sourceTargetToken,
+        }),
+        REFRESH_SOURCE_TARGET_SUCCESS: undefined,
+        REFRESH_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
     },
     TARGETS: {
         LOAD: undefined,

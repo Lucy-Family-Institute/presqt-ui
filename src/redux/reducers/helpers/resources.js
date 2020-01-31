@@ -1,11 +1,11 @@
 /**
  * Augment a `possibleParent` object with it's children in `unsortedChildren`.
  */
-function findUnsortedChildren(unsortedChildren, possibleParent) {
+function findUnsortedChildren(openResources, unsortedChildren, possibleParent) {
   unsortedChildren.forEach((possibleChild, index) => {
     if (possibleChild.container === possibleParent.id) {
       if (possibleChild.kind === 'container') {
-        possibleChild.open = false;
+        possibleChild.open = openResources.indexOf(possibleChild.id) > -1;
       }
 
       possibleParent.children
@@ -14,7 +14,7 @@ function findUnsortedChildren(unsortedChildren, possibleParent) {
 
       possibleParent.count = possibleParent.children.length;
       const addedObj = unsortedChildren.splice(index, 1);
-      findUnsortedChildren(unsortedChildren, addedObj[0]);
+      findUnsortedChildren(openResources, unsortedChildren, addedObj[0]);
     }
   });
 }
@@ -23,7 +23,7 @@ function findUnsortedChildren(unsortedChildren, possibleParent) {
  * Attempt to find a resource's parent, and if found, augment the parent
  * resource's `children` array with `child`.
  */
-function associateWithParentResource(possibleParents, child) {
+function associateWithParentResource(openResources, possibleParents, child) {
   let found = false;
 
   possibleParents.forEach(possibleParent => {
@@ -31,7 +31,7 @@ function associateWithParentResource(possibleParents, child) {
       found = true;
 
       if (child.kind === 'container') {
-        child.open = false;
+        child.open = openResources.indexOf(child.id) > -1;
       }
 
       if (possibleParent.children) {
@@ -44,7 +44,7 @@ function associateWithParentResource(possibleParents, child) {
       return true;
     } else if (possibleParent.children)
       // Invoke Recursion
-      found = associateWithParentResource(possibleParent.children, child);
+      found = associateWithParentResource(openResources, possibleParent.children, child);
   });
 
   return found;
@@ -53,30 +53,33 @@ function associateWithParentResource(possibleParents, child) {
 /**
  * Sort the target's resources into their proper hierarchy
  **/
-export default function buildResourceHierarchy(action) {
+export default function buildResourceHierarchy(state, action) {
+
   let resourceHierarchy = [];
   if (action.payload.length > 0) {
     resourceHierarchy = action.payload.reduce(
       (initial, resource, index, original) => {
+        if (state.selectedInSource && resource.id === state.selectedInSource.id) {
+          resource.active = true;
+        }
+
         if (resource.container === null) {
           /* Root Level Containers */
 
           // Check if there is anything already in the
           // unsorted array that should be attached
           // to this container.
-          findUnsortedChildren(initial.unsorted, resource);
+          findUnsortedChildren(state.openResources, initial.unsorted, resource);
 
-          resource.open = false;
+          resource.open = state.openResources.indexOf(resource.id) > -1;
 
           // Push onto the hierarchy object
           initial.sorted.push(resource);
         } else {
-          const parentFound = associateWithParentResource(
-            initial.sorted,
-            resource
-          );
+          const parentFound = associateWithParentResource(state.openResources, initial.sorted, resource);
+
           if (parentFound) {
-            findUnsortedChildren(initial.unsorted, resource);
+            findUnsortedChildren(state.openResources, initial.unsorted, resource);
           } else {
             // Add the resource to the unsorted array
             // where it will be considered in each future

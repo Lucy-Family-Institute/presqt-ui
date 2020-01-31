@@ -49,13 +49,13 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
 /**
  * Resource Upload Endpoint
  **/
-export function postResourceUpload(sourceTarget, file, duplicateAction, resource, sourceTargetToken) {
+export function postResourceUpload(sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) {
   let resourceUploadURL;
-  if (!resource) {
+  if (!resourceToUploadTo) {
     resourceUploadURL = `${apiURLBase}targets/${sourceTarget}/resources/`;
   }
   else {
-    resourceUploadURL = resource.selectedInSource.links.find(link => link.name === 'Upload').link;
+    resourceUploadURL = resourceToUploadTo.links.find(link => link.name === 'Upload').link;
   }
   const bodyFormData = new FormData();
 

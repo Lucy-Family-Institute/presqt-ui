@@ -70,3 +70,30 @@ function* loadResourceDetail(action) {
     actionCreators.resources.selectSourceResourceSuccess(response.data)
   );
 }
+
+/** Refresh Resource Collection **/
+export function* watchRefreshSource() {
+  yield takeEvery(actionCreators.resources.refreshSourceTarget, refreshTargetResources);
+}
+
+/**
+ * Make an Axios request to Resource Collection.
+ * Dispatch either the success or failure actions accordingly.
+ **/
+function* refreshTargetResources(action) {
+
+  try {
+    const response = yield call(
+      getTargetResources,
+      action.payload.sourceTarget.name,
+      action.payload.sourceTargetToken
+    );
+    yield put(actionCreators.resources.refreshSourceTargetSuccess(response.data));
+  }
+  catch (error) {
+    yield put(actionCreators.resources.refreshSourceTargetFailure(
+      error.response.status,
+      error.response.data.error)
+    );
+  }
+}

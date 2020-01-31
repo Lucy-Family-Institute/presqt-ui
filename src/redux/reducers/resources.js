@@ -15,7 +15,10 @@ const initialState = {
   sourceDownloadStatus: null,
   sourceDownloadContents: null,
   sourceUploadStatus: null,
-  sourceUploadData: null
+  sourceUploadData: null,
+  uploadModalDisplay: false,
+  uploadType: null,
+  openResources: []
 };
 
 export default handleActions(
@@ -45,14 +48,15 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       selectedInSource: null,
-      sourceSearchValue: action.payload.searchValue
+      sourceSearchValue: action.payload.searchValue,
+      openResources: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(action);
+      const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -68,7 +72,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(action);
+      const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -122,6 +126,8 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
+      let newOpenResources = state.openResources;
+
       const searchForResourceInArray = (
         desiredContainer,
         openContainer,
@@ -130,6 +136,12 @@ export default handleActions(
         const updatedNode = possibleMatches;
 
         if (updatedNode.id === desiredContainer.id) {
+          if (openContainer) {
+            newOpenResources.push(desiredContainer.id)
+          }
+          else{
+            newOpenResources = newOpenResources.filter(element => element !== desiredContainer.id)
+          }
           return {
             ...updatedNode,
             open: openContainer
@@ -155,7 +167,8 @@ export default handleActions(
 
       return {
         ...state,
-        inSourceTarget: updatedSourceResources
+        inSourceTarget: updatedSourceResources,
+        openResources: newOpenResources
       };
     },
     /**
@@ -373,6 +386,69 @@ export default handleActions(
       ...state,
       sourceUploadStatus: null,
       sourceUploadData: null
+    }),
+    /**
+     * Display the Upload Modal
+     **/
+    [actionCreators.resources.displayUploadModal]: (state, action) => ({
+      ...state,
+      uploadModalDisplay: true,
+      uploadType: action.payload.uploadType
+    }),
+    /**
+     * Hide the Upload Modal
+     **/
+    [actionCreators.resources.hideUploadModal]: state => ({
+      ...state,
+      uploadModalDisplay: false,
+      uploadType: null
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    [actionCreators.resources.refreshSourceTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.refreshSourceTarget,
+        state.pendingAPIOperations
+      ),
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshSourceTargetSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(state, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.refreshSourceTarget,
+          state.pendingAPIOperations
+        ),
+        inSourceTarget: resourceHierarchy,
+        sourceUploadStatus: "finished"
+      };
+    },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshSourceTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.refreshSourceTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.refreshSourceTarget.toString(),
+        state.apiOperationErrors
+      ),
+      inSourceTarget: null
     }),
   },
   initialState

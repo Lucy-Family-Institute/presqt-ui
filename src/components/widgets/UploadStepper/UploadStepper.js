@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import UploadSelectFile from "./UploadSelectFile";
 import UploadDuplicateActionRadioButtons from "./UploadDuplicateActionRadioButtons";
 import UploadButton from "./UploadButton";
-import UploadResultsContent from "../UploadResultsContent";
+import UploadResultsContent from "./UploadResultsContent";
 import UploadStepConnector from "./UploadStepConnector";
 import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -53,8 +53,8 @@ function getSteps() {
 /**
  * This component renders the stepper for the Upload Modal.
  **/
-export default function UploadStepper({ selectedInSource }) {
-  const classes = useStyles();
+export default function UploadStepper({resourceToUploadTo}) {
+  const classes = useStyles;
   const steps = getSteps();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -88,16 +88,16 @@ export default function UploadStepper({ selectedInSource }) {
         />;
       }
       case 1:
-          return <UploadDuplicateActionRadioButtons
-            selectedDuplicate={selectedDuplicate}
-            setSelectedDuplicate={setSelectedDuplicate}
-          />;
+        return <UploadDuplicateActionRadioButtons
+          selectedDuplicate={selectedDuplicate}
+          setSelectedDuplicate={setSelectedDuplicate}
+        />;
       case 2:
         return <UploadButton
           selectedFile={selectedFile}
           selectedDuplicate={selectedDuplicate}
           handleNext={handleNext}
-          selectedInSource={selectedInSource}
+          resourceToUploadTo={resourceToUploadTo}
         />;
       case 3:
         return <UploadResultsContent

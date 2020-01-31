@@ -64,7 +64,7 @@ export default function TokenModal({connection, modalState, setModalState}) {
   const modalSubmit = () => {
     setModalState(false);
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token, null));
+    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromSourceTarget.toString()));

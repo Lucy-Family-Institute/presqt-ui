@@ -34,7 +34,7 @@ export default function UploadButton(props) {
       selectedTarget,
       props.selectedFile,
       props.selectedDuplicate,
-      props.selectedInSource,
+      props.resourceToUploadTo,
       sourceTargetToken));
 
       props.handleNext()
