@@ -17,7 +17,7 @@ const fadeIn = keyframes`
   
   100% {
     opacity: 100;
-  }f
+  }
 `;
 
 /**
