@@ -12,7 +12,7 @@ import ActionButton from "./ActionButton";
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function DownloadActionButton() {
+export default function DownloadActionButton({ disabled }) {
   const dispatch = useDispatch();
 
   /** SELECTOR DEFINITIONS
@@ -47,6 +47,7 @@ export default function DownloadActionButton() {
         elevation={0}
         variant="contained"
         onClick={submitDownload}
+        disabled={disabled}
       >
         <span css={textStyles.buttonText}>Download</span>
       </ActionButton>

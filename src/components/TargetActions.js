@@ -6,6 +6,7 @@ import DownloadActionButton from "./widgets/DownloadActionButton";
 import UploadActionButton from "./widgets/UploadActionButton";
 import TransferActionButton from "./widgets/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
+import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
@@ -19,6 +20,12 @@ export default function TargetActions() {
   const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
+  var buttonsList = [];
+  if (selectedSourceResource) {
+    for (var i = 0; i < selectedSourceResource.links.length; i++) {
+      buttonsList.push(selectedSourceResource.links[i].name);
+    }
+  }
 
   const DisplayTargetActions = () => {
     return (
@@ -38,24 +45,23 @@ export default function TargetActions() {
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedSourceResource &&
-            selectedSourceResource.links.map(link =>
-              link.name === "Download" ? (
-                <DownloadActionButton
-                  key={link.name}
-                />
-              ) : link.name === "Upload" && !sourceSearchValue ? (
-                <UploadActionButton
-                  key={link.name}
-                  text='Upload'
-                  type="EXISTING"
-                />
-              ) : link.name === "Transfer" ? (
-                <TransferActionButton
-                  key={link.name}
-                />
-              ) : null
-            )}
+          {selectedSourceResource
+            ? <DownloadActionButton
+              key={"Download"}
+              disabled={!arrayValueFinder(buttonsList, "Download")}
+            /> : null}
+          {selectedSourceResource
+          ? <UploadActionButton
+              key={"UPLOAD"}
+              text="Upload"
+              type="EXISTING"
+              disabled={!sourceSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+            /> : null}
+          {selectedSourceResource
+          ? <TransferActionButton
+              key={"Transfer"}
+              disabled={true}
+            />: null}
         </div>
       </div>
     );
