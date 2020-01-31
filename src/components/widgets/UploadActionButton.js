@@ -3,7 +3,6 @@ import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import ActionButton from "./ActionButton";
 import {useDispatch} from "react-redux";
-import {Fragment} from "react";
 import {actionCreators} from "../../redux/actionCreators";
 
 /**
@@ -17,7 +16,6 @@ export default function UploadActionButton(props) {
   };
 
   return (
-    <Fragment>
       <ActionButton
         css={props.style}
         elevation={0}
@@ -26,6 +24,5 @@ export default function UploadActionButton(props) {
       >
         <span css={textStyles.buttonText}>{props.text}</span>
       </ActionButton>
-    </Fragment>
   )
 }

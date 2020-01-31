@@ -388,16 +388,15 @@ export default handleActions(
       sourceUploadData: null
     }),
     /**
-     * Display the Upload Moda
+     * Display the Upload Modal
      **/
     [actionCreators.resources.displayUploadModal]: (state, action) => ({
       ...state,
       uploadModalDisplay: true,
       uploadType: action.payload.uploadType
-      // uploadType: action.type
     }),
     /**
-     * Display the Upload Modal
+     * Hide the Upload Modal
      **/
     [actionCreators.resources.hideUploadModal]: state => ({
       ...state,

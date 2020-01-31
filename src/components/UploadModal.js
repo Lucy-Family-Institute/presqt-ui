@@ -12,9 +12,6 @@ import {actionCreators} from "../redux/actionCreators";
 export default function UploadModal()  {
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * uploadModalDisplay :
-   **/
   const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
   const uploadType = useSelector(state => state.resources.uploadType);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
