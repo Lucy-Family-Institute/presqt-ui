@@ -18,6 +18,11 @@ const ActionButton = withStyles({
     "&:hover": {
       boxShadow: "none",
       backgroundColor: "#c96d02"
+    },
+    "&:disabled": {
+      backgroundColor: "#D3D3D3",
+      border: `1px solid ${"#D3D3D3"}`,
+      color: "#FFF"
     }
   },
   containedPrimary: {
