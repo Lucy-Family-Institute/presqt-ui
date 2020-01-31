@@ -32,7 +32,7 @@ export default function DevelopmentPartners() {
       >
         <a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer" css={imageHoverOrFocus}>
           <img
-            src={require("../images/icons/notreDameAcademicMark.png")}
+            src={require("../images/development_partners/notreDameAcademicMark.png")}
             alt="Notre Dame Academic Mark"
             css={{ paddingRight: 25 }}
           />
@@ -42,7 +42,7 @@ export default function DevelopmentPartners() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={require("../images/icons/IMLS.png")} alt="IMLS Logo" css={imageHoverOrFocus}/>
+          <img src={require("../images/development_partners/IMLS.png")} alt="IMLS Logo" css={imageHoverOrFocus}/>
         </a>
       </div>
     </div>
