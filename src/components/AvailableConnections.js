@@ -99,7 +99,7 @@ export default function AvailableConnections() {
             disabled={pendingAPIResponse}
           >
             <img
-              src={require(`../images/icons/${connection.name}.png`)}
+              src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
             {sourceTarget && sourceTarget.name === connection.name ? (

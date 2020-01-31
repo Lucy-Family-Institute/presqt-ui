@@ -7,7 +7,7 @@ import textStyles from "../../../styles/text";
 import { actionCreators } from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 
-export default function RetryStartUploadOverButton(props) {
+export default function RetryStartUploadOverButton({setActiveStep, setSelectedFile}) {
   const classes = buttonStyles.RetryStartUploadOver();
   const dispatch = useDispatch();
 
@@ -18,8 +18,8 @@ export default function RetryStartUploadOverButton(props) {
         actionCreators.resources.uploadToSourceTarget.toString()
       )
     );
-    props.setSelectedFile(null);
-    props.setActiveStep(0);
+    setSelectedFile(null);
+    setActiveStep(0);
   };
 
   return (

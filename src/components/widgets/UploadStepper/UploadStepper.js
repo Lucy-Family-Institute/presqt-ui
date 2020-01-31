@@ -54,7 +54,7 @@ function getSteps() {
  * This component renders the stepper for the Upload Modal.
  **/
 export default function UploadStepper({resourceToUploadTo}) {
-  const classes = useStyles;
+  const classes = useStyles();
   const steps = getSteps();
 
   const [activeStep, setActiveStep] = useState(0);
