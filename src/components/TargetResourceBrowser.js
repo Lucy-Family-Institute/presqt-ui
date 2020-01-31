@@ -8,7 +8,7 @@ import TargetResourcesHeader from "./widgets/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/Spinner";
-import UploadActionButton from "./widgets/UploadActionButton";
+import UploadActionButton from "./action_buttons/UploadActionButton";
 
 const fadeIn = keyframes`
   0% {
