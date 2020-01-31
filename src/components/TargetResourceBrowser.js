@@ -93,7 +93,7 @@ export default function TargetResourceBrowser() {
         style={{ width: 250 }}
         text="Create New Project"
         type="NEW"
-        disabled={!sourceSearchValue ? false : true}
+        disabled={sourceSearchValue}
       />;
     }
   };
