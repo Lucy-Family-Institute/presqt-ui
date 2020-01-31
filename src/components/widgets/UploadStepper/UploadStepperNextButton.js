@@ -14,19 +14,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UploadStepperNextButton(props) {
+export default function UploadStepperNextButton({handleNext, activeStep, selectedFile, steps}) {
   const classes = useStyles();
 
     return(
       <Button
         variant="contained"
         color="primary"
-        onClick={props.handleNext}
+        onClick={handleNext}
         className={classes.button}
-        disabled={props.activeStep === 0 ? !props.selectedFile : false}
+        disabled={activeStep === 0 ? !selectedFile : false}
 
       >
-        {props.activeStep === props.steps.length - 1 ? 'Finish' : 'Next'}
+        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
       </Button>
     )
 }

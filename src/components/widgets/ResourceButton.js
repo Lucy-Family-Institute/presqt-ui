@@ -12,8 +12,7 @@ const fileSelectedIcon = require("../../images/icons/fileSelected.png");
 const presqtMetadataFileIcon = require("../../images/icons/presqtMetadataFile.png");
 const presqtMetadataFileIconSelected = require("../../images/icons/presqtMetadataFileSelected.png");
 
-export default function ResourceButton(props) {
-  const { resource, level, onClick } = props;
+export default function ResourceButton({ resource, level, onClick }) {
 
   const iconSelector = () => {
     if (resource.kind === "container") {
