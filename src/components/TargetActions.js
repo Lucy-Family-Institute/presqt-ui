@@ -47,10 +47,18 @@ export default function TargetActions() {
               ) : link.name === "Upload" && !sourceSearchValue ? (
                 <UploadActionButton
                   key={link.name}
-                  text='Upload'
+                  text="Upload"
                   type="EXISTING"
+                  disabled={false}
                 />
-              ) : link.name === "Transfer" ? (
+              ) : link.name === "Upload" && sourceSearchValue ? (
+                <UploadActionButton
+                  key={link.name}
+                  text="Upload"
+                  type="EXISTING"
+                  disabled={true}
+                />
+              )  : link.name === "Transfer" ? (
                 <TransferActionButton
                   key={link.name}
                 />
