@@ -16,12 +16,9 @@ export default function TargetActions() {
    * selectedSourceResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
    **/
-  const selectedSourceResource = useSelector(
-    state => state.resources.selectedInSource
-  );
-  const pendingAPIOperations = useSelector(
-    state => state.resources.pendingAPIOperations
-  );
+  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
 
   const DisplayTargetActions = () => {
     return (
@@ -47,7 +44,7 @@ export default function TargetActions() {
                 <DownloadActionButton
                   key={link.name}
                 />
-              ) : link.name === "Upload" ? (
+              ) : link.name === "Upload" && !sourceSearchValue ? (
                 <UploadActionButton
                   key={link.name}
                   text='Upload'
