@@ -50,19 +50,12 @@ export default function TargetActions() {
               key={"Download"}
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
-          {selectedSourceResource && !sourceSearchValue
+          {selectedSourceResource
           ? <UploadActionButton
               key={"UPLOAD"}
               text="Upload"
               type="EXISTING"
-              disabled={!arrayValueFinder(buttonsList, "Upload")}
-            /> : null}
-          {selectedSourceResource && sourceSearchValue
-          ? <UploadActionButton
-              key={"UPLOAD"}
-              text="Upload"
-              type="EXISTING"
-              disabled={true}
+              disabled={!sourceSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
           {selectedSourceResource
           ? <TransferActionButton

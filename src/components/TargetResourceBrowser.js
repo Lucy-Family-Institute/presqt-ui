@@ -88,21 +88,12 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources && sourceTarget.supported_actions["resource_upload"] === true &&
-      !sourceSearchValue) {
+    if (sourceTargetResources && sourceTarget.supported_actions["resource_upload"] === true) {
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
         type="NEW"
-        disabled={false}
-      />;
-    }
-    else if (sourceTargetResources && sourceSearchValue) {
-      return <UploadActionButton
-        style={{ width: 250 }}
-        text="Create New Project"
-        type="NEW"
-        disabled={true}
+        disabled={!sourceSearchValue ? false : true}
       />;
     }
   };
