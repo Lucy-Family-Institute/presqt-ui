@@ -19,7 +19,8 @@ import RetryStartUploadOverButton from "../RetryButtons/RetryStartUploadOverButt
  * This component watches for the upload state to change and then renders the appropriate
  * component to display the results of the upload.
  **/
-export default function UploadResultsContent(props) {
+export default function UploadResultsContent({setActiveStep, setSelectedFile,
+                                               selectedFile, selectedDuplicate}) {
   const dispatch = useDispatch();
 
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
@@ -134,14 +135,13 @@ export default function UploadResultsContent(props) {
           </Grid>
           <div css={{height: 36.5}}>
             <RetryStartUploadOverButton
-              setActiveStep={props.setActiveStep}
-              setSelectedFile={props.setSelectedFile}
+              setActiveStep={setActiveStep}
+              setSelectedFile={setSelectedFile}
             />
             <span css={{ marginLeft: 5 }}>
               <RetryUploadButton
-                setActiveStep={props.setActiveStep}
-                selectedFile={props.selectedFile}
-                selectedDuplicate={props.selectedDuplicate}
+                selectedFile={selectedFile}
+                selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
               />
             </span>

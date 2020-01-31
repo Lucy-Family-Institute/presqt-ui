@@ -8,7 +8,7 @@ import { actionCreators } from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import LeftSpinner from "../LeftSpinner";
 
-export default function RetryUploadButton(props) {
+export default function RetryUploadButton({selectedFile, selectedDuplicate, setStepThreeContent}) {
   const classes = buttonStyles.RetryUpload();
   const dispatch = useDispatch();
 
@@ -30,13 +30,13 @@ export default function RetryUploadButton(props) {
     dispatch(
       actionCreators.resources.uploadToSourceTarget(
         selectedTarget,
-        props.selectedFile,
-        props.selectedDuplicate,
+        selectedFile,
+        selectedDuplicate,
         selectedInSource,
         sourceTargetToken
       )
     );
-    props.setStepThreeContent(<LeftSpinner />);
+    setStepThreeContent(<LeftSpinner />);
   };
 
   return (

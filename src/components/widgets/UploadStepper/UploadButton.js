@@ -19,7 +19,8 @@ const CustomUploadButton = withStyles({
  * Component responsible for rendering the upload button in the upload stepper and passing the
  * selected file to the Upload API endpoint
  **/
-export default function UploadButton(props) {
+export default function UploadButton({selectedFile, selectedDuplicate,
+                                       handleNext, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.targets.source.name);
@@ -32,12 +33,12 @@ export default function UploadButton(props) {
   const submitUpload = () => {
     dispatch(actionCreators.resources.uploadToSourceTarget(
       selectedTarget,
-      props.selectedFile,
-      props.selectedDuplicate,
-      props.resourceToUploadTo,
+      selectedFile,
+      selectedDuplicate,
+      resourceToUploadTo,
       sourceTargetToken));
 
-      props.handleNext()
+      handleNext()
   };
 
   return (

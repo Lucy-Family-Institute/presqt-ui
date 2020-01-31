@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UploadStepperBackButton(props) {
+export default function UploadStepperBackButton({handleBack, activeStep}) {
   const classes = useStyles();
 
   return(
     <Button
-      disabled={props.activeStep === 0}
-      onClick={props.handleBack}
+      disabled={activeStep === 0}
+      onClick={handleBack}
       color="primary"
       className={classes.button}
     >

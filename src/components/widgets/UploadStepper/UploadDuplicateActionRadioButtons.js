@@ -28,14 +28,14 @@ const useStyles = makeStyles(theme => ({
 /**
  * Component for the duplicate action radio buttons in the upload stepper
  **/
-export default function UploadDuplicateActionRadioButtons(props) {
+export default function UploadDuplicateActionRadioButtons({selectedDuplicate, setSelectedDuplicate}) {
   const classes = useStyles();
 
   /**
    * When a new duplicate action is selected update the selectedDuplicate state to the new selection
    **/
   const handleChange = event => {
-    props.setSelectedDuplicate(event.target.value)
+    setSelectedDuplicate(event.target.value)
   };
 
   return (
@@ -43,7 +43,7 @@ export default function UploadDuplicateActionRadioButtons(props) {
       <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup
           aria-label="Duplicate Actions"
-          value={props.selectedDuplicate}
+          value={selectedDuplicate}
           onChange={handleChange}
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >
