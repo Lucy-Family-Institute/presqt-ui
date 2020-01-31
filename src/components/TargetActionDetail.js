@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
 import textStyles from "../styles/text";
-import MediumHeader from "./widgets/MediumHeader";
+import MediumHeader from "./widgets/headers/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
 import Spinner from "./widgets/Spinner";
 

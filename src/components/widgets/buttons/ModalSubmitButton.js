@@ -1,6 +1,6 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button/Button";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 /**
  * Create a new component that inherits the Material Button component so we can update the colors

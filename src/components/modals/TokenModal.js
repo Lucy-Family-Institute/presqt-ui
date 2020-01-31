@@ -8,7 +8,7 @@ import modalStyles from "../../styles/modal";
 import textStyles from "../../styles/text";
 import TokenTextField from "../widgets/TokenTextField";
 import React, {useEffect, useState} from "react";
-import ModalSubmitButton from "../widgets/ModalSubmitButton";
+import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
 
