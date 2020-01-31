@@ -4,7 +4,7 @@ import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import SearchTextField from "./widgets/SearchTextField";
+import SearchTextField from "./widgets/text_fields/SearchTextField";
 
 const useStyles = makeStyles({
   root: {
