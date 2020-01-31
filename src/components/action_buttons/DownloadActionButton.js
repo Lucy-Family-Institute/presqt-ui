@@ -5,7 +5,7 @@ import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import { actionCreators } from "../../redux/actionCreators";
 import DownloadModal from "../modals/DownloadModal";
-import ActionButton from "../widgets/ActionButton";
+import ActionButton from "../widgets/buttons/ActionButton";
 
 /**
  * This component handles the download action button in the TargetActions component.

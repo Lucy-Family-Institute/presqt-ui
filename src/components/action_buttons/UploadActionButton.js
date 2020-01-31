@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
-import ActionButton from "../widgets/ActionButton";
+import ActionButton from "../widgets/buttons/ActionButton";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 

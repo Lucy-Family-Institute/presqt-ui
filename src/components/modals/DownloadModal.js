@@ -5,7 +5,7 @@ import DialogTitle from "./modalHeader";
 import textStyles from "../../styles/text";
 import React, { useEffect, useState } from "react";
 import DialogContent from "@material-ui/core/DialogContent";
-import Spinner from "../widgets/Spinner";
+import Spinner from "../widgets/spinners/Spinner";
 import FileSaver from "file-saver";
 import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';

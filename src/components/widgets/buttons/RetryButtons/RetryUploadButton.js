@@ -6,7 +6,7 @@ import textStyles from "../../../../styles/text";
 import buttonStyles from "../../../../styles/buttons";
 import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
-import LeftSpinner from "../../LeftSpinner";
+import LeftSpinner from "../../spinners/LeftSpinner";
 
 export default function RetryUploadButton({selectedFile, selectedDuplicate, setStepThreeContent}) {
   const classes = buttonStyles.RetryUpload();
