@@ -13,7 +13,7 @@ const initialState = {
   apiOperationErrors: [],
   sourceSearchValue: null,
   sourceDownloadStatus: null,
-  sourceDownloadContents: null,
+  sourceDownloadData: null,
   sourceUploadStatus: null,
   sourceUploadData: null,
   uploadModalDisplay: false,
@@ -291,7 +291,7 @@ export default handleActions(
     /**
      * Untrack API call.
      * Add the download job status to sourceDownloadStatus.
-     * Add the download job contents to sourceDownloadContents.
+     * Add the download job contents to sourceDownloadData.
      **/
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
@@ -301,7 +301,7 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       sourceDownloadStatus: action.payload.status,
-      sourceDownloadContents: action.payload.data
+      sourceDownloadData: action.payload.data
     }),
     /**
      * Clear the download data so a new download can be attempted.
@@ -309,7 +309,7 @@ export default handleActions(
     [actionCreators.resources.clearDownloadData]: state => ({
       ...state,
       sourceDownloadStatus: null,
-      sourceDownloadContents: null
+      sourceDownloadData: null
     }),
     /**
      * Register resource upload operation.

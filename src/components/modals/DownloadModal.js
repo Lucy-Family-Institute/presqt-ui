@@ -22,12 +22,7 @@ const modalDefaultMessage = (
 export default function DownloadModal({ modalState, setModalState }) {
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * sourceDownloadContents : Object representing the blob content returned from the download call
-   * sourceDownloadStatus   : String status of the status of the download/
-   *                          [null, 'pending', 'successful', 'failure']
-   **/
-  const sourceDownloadContents = useSelector(state => state.resources.sourceDownloadContents);
+  const sourceDownloadData = useSelector(state => state.resources.sourceDownloadData);
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
@@ -42,9 +37,9 @@ export default function DownloadModal({ modalState, setModalState }) {
     if (sourceDownloadStatus === "failure") {
       const errorMessage = (
         "Download returned a " +
-          sourceDownloadContents.status_code +
+        sourceDownloadData.status_code +
           " status code. " +
-          sourceDownloadContents.message
+        sourceDownloadData.message
       );
 
       setModalContent(
@@ -64,7 +59,7 @@ export default function DownloadModal({ modalState, setModalState }) {
     }
     // Download successful
     else if (sourceDownloadStatus === "success") {
-      FileSaver.saveAs(sourceDownloadContents, "PresQT_Download.zip");
+      FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
       setModalState(false);
       dispatch(actionCreators.resources.clearDownloadData());
     }
