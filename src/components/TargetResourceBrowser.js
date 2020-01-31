@@ -98,7 +98,8 @@ export default function TargetResourceBrowser() {
   const upload = () => {
     if (
       sourceTargetResources &&
-      sourceTarget.supported_actions["resource_upload"] === true
+      sourceTarget.supported_actions["resource_upload"] === true &&
+      !sourceSearchValue
     ) {
       return <UploadActionButton style={{width: 250}} text="Create New Project" type="NEW"/>;
     }
