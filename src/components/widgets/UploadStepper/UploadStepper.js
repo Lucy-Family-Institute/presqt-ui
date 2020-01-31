@@ -41,21 +41,29 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-function getSteps() {
-  return [
-    'Select a file to upload. Note: The file must be a Zip file in BagIt format',
-    'Select the action to occur when a duplicate resource is found',
-    'Initiate Upload',
-    'Results'
-  ];
+const possibleSteps = [
+  'Select a file to upload. Note: The file must be a Zip file in BagIt format',
+  'Select the action to occur when a duplicate resource is found',
+  'Initiate Upload',
+  'Results'
+];
+
+function getSteps(uploadType) {
+  if (uploadType === "NEW") {
+    return [...possibleSteps.slice(0, 1), ...possibleSteps.slice(2, 4)];
+  }
+  else {
+    return possibleSteps;
+  }
+
 }
 
 /**
  * This component renders the stepper for the Upload Modal.
  **/
-export default function UploadStepper({resourceToUploadTo}) {
+export default function UploadStepper({resourceToUploadTo, uploadType}) {
   const classes = useStyles();
-  const steps = getSteps();
+  const steps = getSteps(uploadType);
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -80,33 +88,60 @@ export default function UploadStepper({resourceToUploadTo}) {
    * function defines the contents.
    **/
   function getStepContent(step) {
-    switch (step) {
-      case 0: {
-        return <UploadSelectFile
-          selectedFile={selectedFile}
-          setSelectedFile={setSelectedFile}
-        />;
+    if (uploadType === 'NEW') {
+      switch (step) {
+        case 0: {
+          return <UploadSelectFile
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+          />;
+        }
+        case 1:
+          return <UploadButton
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+            handleNext={handleNext}
+            resourceToUploadTo={resourceToUploadTo}
+          />;
+        case 2:
+          return <UploadResultsContent
+            setActiveStep={setActiveStep}
+            setSelectedFile={setSelectedFile}
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+          />;
       }
-      case 1:
-        return <UploadDuplicateActionRadioButtons
-          selectedDuplicate={selectedDuplicate}
-          setSelectedDuplicate={setSelectedDuplicate}
-        />;
-      case 2:
-        return <UploadButton
-          selectedFile={selectedFile}
-          selectedDuplicate={selectedDuplicate}
-          handleNext={handleNext}
-          resourceToUploadTo={resourceToUploadTo}
-        />;
-      case 3:
-        return <UploadResultsContent
-          setActiveStep={setActiveStep}
-          setSelectedFile={setSelectedFile}
-          selectedFile={selectedFile}
-          selectedDuplicate={selectedDuplicate}
-        />;
     }
+    else {
+      switch (step) {
+        case 0: {
+          return <UploadSelectFile
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+          />;
+        }
+        case 1:
+          return <UploadDuplicateActionRadioButtons
+            selectedDuplicate={selectedDuplicate}
+            setSelectedDuplicate={setSelectedDuplicate}
+          />;
+        case 2:
+          return <UploadButton
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+            handleNext={handleNext}
+            resourceToUploadTo={resourceToUploadTo}
+          />;
+        case 3:
+          return <UploadResultsContent
+            setActiveStep={setActiveStep}
+            setSelectedFile={setSelectedFile}
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+          />;
+      }
+    }
+
   }
 
   return (
@@ -132,16 +167,18 @@ export default function UploadStepper({resourceToUploadTo}) {
               </Typography>
               <div className={classes.actionsContainer}>
                 <div>
-                  {index <= 2 ? <UploadStepperBackButton
-                                  handleBack={handleBack}
-                                  activeStep={activeStep}/>
-                  : null }
-                  {index <= 1 ? <UploadStepperNextButton
-                                  handleNext={handleNext}
-                                  activeStep={activeStep}
-                                  selectedFile={selectedFile}
-                                  steps={steps}
-                                />
+                  {possibleSteps.indexOf(label) !== 3
+                    ? <UploadStepperBackButton
+                      handleBack={handleBack}
+                      activeStep={activeStep}/>
+                    : null }
+                  {possibleSteps.indexOf(label) === 0 || possibleSteps.indexOf(label) === 1
+                    ? <UploadStepperNextButton
+                          handleNext={handleNext}
+                          activeStep={activeStep}
+                          selectedFile={selectedFile}
+                          steps={steps}
+                        />
                   : null }
                 </div>
               </div>
