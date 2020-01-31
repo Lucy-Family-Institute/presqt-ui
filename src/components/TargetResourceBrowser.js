@@ -27,14 +27,6 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * sourceTargetToken     : String user token if a source exists else null
-   * sourceTargetResources : Array containing source target resources in hierarchical order
-   * pendingAPIOperations  : List of API operations currently in progress.
-   * apiOperationErrors    : List of objects of current api errors
-   * sourceTarget          : Object of the current source selected
-   * sourceSearchValue     : Search term last submitted in the source search input
-   */
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
       : null,);
@@ -98,9 +90,10 @@ export default function TargetResourceBrowser() {
   const upload = () => {
     if (
       sourceTargetResources &&
-      sourceTarget.supported_actions["resource_upload"] === true
+      sourceTarget.supported_actions["resource_upload"] === true &&
+      !sourceSearchValue
     ) {
-      return <UploadActionButton style={{width: 250}} text="Upload New Project" type="NEW"/>;
+      return <UploadActionButton style={{width: 250}} text="Create New Project" type="NEW"/>;
     }
   };
 

@@ -10,6 +10,8 @@ import TargetActions from './components/TargetActions';
 import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
 import HeaderBackground from './components/HeaderBackground';
+import SnackBar from "./components/SnackBar";
+import UploadModal from "./components/UploadModal";
 
 const styles = {
   app: css({
@@ -39,6 +41,8 @@ function App() {
       <TargetActionDetail />
       <AvailableConnections />
       <DevelopmentPartners />
+      <SnackBar />
+      <UploadModal />
     </div>
   );
 }

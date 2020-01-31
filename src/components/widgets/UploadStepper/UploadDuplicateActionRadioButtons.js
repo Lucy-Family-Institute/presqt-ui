@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -13,7 +14,13 @@ const useStyles = makeStyles(theme => ({
   },
   radio: {
     '&$checked': {
-      color: '#0C52A7'
+      color: colors.presqtBlue,
+      '&:hover': {
+        backgroundColor: colors.presqtTintedBlue
+      }
+    },
+    '&:hover': {
+      backgroundColor: colors.presqtTintedBlue
     }
   },
 }));

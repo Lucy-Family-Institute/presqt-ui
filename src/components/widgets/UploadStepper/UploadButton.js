@@ -4,10 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import colors from "../../../styles/colors";
 
 const CustomUploadButton = withStyles({
   root: {
-    backgroundColor: '#0C52A7',
+    backgroundColor: colors.presqtBlue,
     '&:hover': {
       backgroundColor: '#0a4996',
     },
@@ -23,8 +24,6 @@ export default function UploadButton(props) {
 
   const selectedTarget = useSelector(state => state.targets.source.name);
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
-  // Passing in the resource if `Upload` was pressed, or null if 'Upload New Project` was pressed.
-  const selectedInSource = props.selectedInSource;
 
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper
@@ -35,7 +34,7 @@ export default function UploadButton(props) {
       selectedTarget,
       props.selectedFile,
       props.selectedDuplicate,
-      selectedInSource,
+      props.resourceToUploadTo,
       sourceTargetToken));
 
       props.handleNext()

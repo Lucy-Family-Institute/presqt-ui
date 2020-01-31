@@ -1,7 +1,12 @@
 import {all} from 'redux-saga/effects';
 
 import {watchLoadTargets} from "./targets";
-import {watchSearch, watchSelectSourceResource, watchSwitchSource} from "./resources";
+import {
+  watchRefreshSource,
+  watchSearch,
+  watchSelectSourceResource,
+  watchSwitchSource
+} from "./resources";
 import {watchSourceResourceDownload} from "./download";
 import {watchSourceResourceUpload} from "./upload";
 
@@ -13,6 +18,7 @@ export default function* rootSaga() {
     watchSelectSourceResource(),
     watchSearch(),
     watchSourceResourceDownload(),
-    watchSourceResourceUpload()
+    watchSourceResourceUpload(),
+    watchRefreshSource()
   ]);
 }

@@ -107,7 +107,7 @@ export default function AvailableConnections() {
                 css={{
                   minHeight: 5,
                   marginTop: 5,
-                  backgroundColor: colors.ripeOrange,
+                  backgroundColor: colors.presqtOrange,
                   animation: `${basicFadeIn} 1s`
                 }}
               >

@@ -1,5 +1,6 @@
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
+import colors from "../../styles/colors";
 
 /**
  * Create a new component that inherits the Material TextField component so we can update the colors
@@ -7,14 +8,14 @@ import { withStyles } from "@material-ui/styles";
 const SearchTextField = withStyles({
   root: {
     "& label.Mui-focused": {
-      color: "#0C52A7"
+      color: colors.presqtBlue
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: "#0C52A7"
+      borderBottomColor: colors.presqtBlue
     },
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
-        borderColor: "#0C52A7"
+        borderColor: colors.presqtBlue
       }
     }
   }

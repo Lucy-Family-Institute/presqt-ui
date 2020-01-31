@@ -9,12 +9,13 @@ import Typography from "@material-ui/core/Typography";
 import UploadSelectFile from "./UploadSelectFile";
 import UploadDuplicateActionRadioButtons from "./UploadDuplicateActionRadioButtons";
 import UploadButton from "./UploadButton";
-import UploadResultsContent from "../UploadResultsContent";
+import UploadResultsContent from "./UploadResultsContent";
 import UploadStepConnector from "./UploadStepConnector";
 import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
 import UploadStepperBackButton from "./UploadStepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,16 +28,16 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   iconActive: {
-    fill: '#0C52A7',
+    fill: colors.presqtBlue,
   },
   iconCompleted: {
-    fill: '#0C52A7',
+    fill: colors.presqtBlue,
   },
 }));
 
 const PresQTStepContent = withStyles({
   root: {
-    borderColor: '#0C52A7',
+    borderColor: colors.presqtBlue,
   },
 })(StepContent);
 
@@ -52,8 +53,8 @@ function getSteps() {
 /**
  * This component renders the stepper for the Upload Modal.
  **/
-export default function UploadStepper(selectedInSource) {
-  const classes = useStyles();
+export default function UploadStepper({resourceToUploadTo}) {
+  const classes = useStyles;
   const steps = getSteps();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -96,10 +97,15 @@ export default function UploadStepper(selectedInSource) {
           selectedFile={selectedFile}
           selectedDuplicate={selectedDuplicate}
           handleNext={handleNext}
-          selectedInSource={selectedInSource}
+          resourceToUploadTo={resourceToUploadTo}
         />;
       case 3:
-        return <UploadResultsContent />;
+        return <UploadResultsContent
+          setActiveStep={setActiveStep}
+          setSelectedFile={setSelectedFile}
+          selectedFile={selectedFile}
+          selectedDuplicate={selectedDuplicate}
+        />;
     }
   }
 

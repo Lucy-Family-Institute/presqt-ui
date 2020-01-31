@@ -1,6 +1,6 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {postResourceUpload, resourceDownloadJob, resourceUploadJob} from "../../api/resources";
+import {postResourceUpload, resourceUploadJob} from "../../api/resources";
 
 export function* watchSourceResourceUpload() {
   yield takeEvery(actionCreators.resources.uploadToSourceTarget, uploadSourceTargetResource)
@@ -13,7 +13,7 @@ function* uploadSourceTargetResource(action) {
       action.payload.sourceTarget,
       action.payload.file,
       action.payload.duplicateAction,
-      action.payload.resource,
+      action.payload.resourceToUploadTo,
       action.payload.sourceTargetToken
     );
 
