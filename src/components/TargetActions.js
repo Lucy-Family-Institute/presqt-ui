@@ -2,9 +2,9 @@
 import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
 import textStyles from "../styles/text";
-import DownloadActionButton from "./widgets/DownloadActionButton";
-import UploadActionButton from "./widgets/UploadActionButton";
-import TransferActionButton from "./widgets/TransferActionButton";
+import DownloadActionButton from "./action_buttons/DownloadActionButton";
+import UploadActionButton from "./action_buttons/UploadActionButton";
+import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
 import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
 

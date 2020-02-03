@@ -2,9 +2,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import UploadStepper from "./widgets/UploadStepper/UploadStepper";
-import DialogTitle from "./modals/modalHeader";
-import {actionCreators} from "../redux/actionCreators";
+import UploadStepper from "../upload_stepper/UploadStepper";
+import DialogTitle from "./modalHeader";
+import {actionCreators} from "../../redux/actionCreators";
 
 /**
  * This component is responsible for displaying the upload modal content including the stepper.

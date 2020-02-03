@@ -3,12 +3,12 @@ import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actionCreators";
-import ResourceButton from "./widgets/ResourceButton";
-import TargetResourcesHeader from "./widgets/TargetResourcesHeader";
+import ResourceButton from "./widgets/buttons/ResourceButton";
+import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
-import Spinner from "./widgets/Spinner";
-import UploadActionButton from "./widgets/UploadActionButton";
+import Spinner from "./widgets/spinners/Spinner";
+import UploadActionButton from "./action_buttons/UploadActionButton";
 
 const fadeIn = keyframes`
   0% {

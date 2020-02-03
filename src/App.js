@@ -11,7 +11,7 @@ import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
 import HeaderBackground from './components/HeaderBackground';
 import SnackBar from "./components/SnackBar";
-import UploadModal from "./components/UploadModal";
+import UploadModal from "./components/modals/UploadModal";
 
 const styles = {
   app: css({
