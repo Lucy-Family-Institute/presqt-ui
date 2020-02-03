@@ -41,7 +41,7 @@ export default function UploadModal()  {
           Upload Resource
         </DialogTitle>
         <DialogContent>
-          <UploadStepper resourceToUploadTo={resourceToUploadTo}/>
+          <UploadStepper resourceToUploadTo={resourceToUploadTo} uploadType={uploadType}/>
         </DialogContent>
       </Dialog>
     </div>
