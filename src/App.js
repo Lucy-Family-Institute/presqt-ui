@@ -12,6 +12,7 @@ import DevelopmentPartners from './components/DevelopmentPartners';
 import HeaderBackground from './components/HeaderBackground';
 import SnackBar from "./components/SnackBar";
 import UploadModal from "./components/modals/UploadModal";
+import TokenModal from "./components/modals/TokenModal";
 
 const styles = {
   app: css({
@@ -41,8 +42,11 @@ function App() {
       <TargetActionDetail />
       <AvailableConnections />
       <DevelopmentPartners />
+
+      {/* Hidden Components */}
       <SnackBar />
       <UploadModal />
+      <TokenModal />
     </div>
   );
 }

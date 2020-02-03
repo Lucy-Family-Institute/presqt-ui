@@ -5,7 +5,8 @@ import {pick} from "lodash";
 import { actionCreators } from '../actionCreators';
 
 const initialState = {
-  apiTokens: {}
+  apiTokens: {},
+  tokenModalDisplay: false,
 };
 
 export default handleActions(
@@ -29,7 +30,21 @@ export default handleActions(
         apiTokens: pick(state.apiTokens,
           Object.keys(state.apiTokens).filter(targetName => targetName !== action.payload.target))
       }
-    }
+    },
+    /**
+     * Display the Token Modal
+     **/
+    [actionCreators.authorization.displayTokenModal]: state => ({
+      ...state,
+      tokenModalDisplay: true,
+    }),
+    /**
+     * Hide the Token Modal
+     **/
+    [actionCreators.authorization.hideTokenModal]: state => ({
+      ...state,
+      tokenModalDisplay: false,
+    }),
   },
   initialState
 );

@@ -7,7 +7,6 @@ import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
-import TokenModal from "./modals/TokenModal";
 
 /**
  * This component displays the various targets that a user can connect with.
@@ -16,16 +15,7 @@ import TokenModal from "./modals/TokenModal";
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
-  const [modalState, setModalState] = useState(false);
 
-  /** SELECTOR DEFINITIONS
-   *
-   * pendingAPIResponse : Boolean representing if the API request is in progress
-   * apiTokens          : Object of <targets: tokens> submitted in the current session
-   * sourceTarget       : Object of the current source selected
-   * availableTargets   : List of objects of available targets
-   * apiOperationErrors : List of objects of current api errors
-   */
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
@@ -49,7 +39,7 @@ export default function AvailableConnections() {
       apiOperationErrors.find(
         element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
     ) {
-      setModalState(true);
+      dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
 
@@ -70,7 +60,7 @@ export default function AvailableConnections() {
         actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
       );
     } else {
-      setTimeout(() => setModalState(true), 500);
+      setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);
     }
   };
 
@@ -116,12 +106,6 @@ export default function AvailableConnections() {
           </button>
         ))}
       </div>
-      <TokenModal
-        connection={sourceTarget}
-        modalState={modalState}
-        setModalState={setModalState}
-      />
-
     </div>
   );
 }

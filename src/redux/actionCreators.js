@@ -5,6 +5,8 @@ export const actionCreators = createActions({
     AUTHORIZATION: {
         SAVE_TOKEN: (targetID, token) => ({targetID, token}),
         REMOVE_TOKEN: (target) => ({target: target}),
+        DISPLAY_TOKEN_MODAL: undefined,
+        HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
         LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
@@ -53,5 +55,5 @@ export const actionCreators = createActions({
         LOAD_SUCCESS: undefined,
         SWITCH_SOURCE: undefined,
         SWITCH_TARGET: undefined
-    }
+    },
 });
