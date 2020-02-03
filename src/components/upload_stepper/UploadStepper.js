@@ -88,60 +88,55 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
    * function defines the contents.
    **/
   function getStepContent(step) {
-    if (uploadType === 'NEW') {
-      switch (step) {
-        case 0: {
-          return <UploadSelectFile
-            selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
-          />;
-        }
-        case 1:
+    switch (step) {
+      case 0: {
+        return <UploadSelectFile
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+        />;
+      }
+      case 1:
+        if (uploadType === 'NEW') {
           return <UploadButton
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
             handleNext={handleNext}
             resourceToUploadTo={resourceToUploadTo}
           />;
-        case 2:
-          return <UploadResultsContent
-            setActiveStep={setActiveStep}
-            setSelectedFile={setSelectedFile}
-            selectedFile={selectedFile}
-            selectedDuplicate={selectedDuplicate}
-          />;
-      }
-    }
-    else {
-      switch (step) {
-        case 0: {
-          return <UploadSelectFile
-            selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
-          />;
         }
-        case 1:
+        else {
           return <UploadDuplicateActionRadioButtons
             selectedDuplicate={selectedDuplicate}
             setSelectedDuplicate={setSelectedDuplicate}
           />;
-        case 2:
-          return <UploadButton
-            selectedFile={selectedFile}
-            selectedDuplicate={selectedDuplicate}
-            handleNext={handleNext}
-            resourceToUploadTo={resourceToUploadTo}
-          />;
-        case 3:
+        }
+      case 2:
+        if (uploadType === 'NEW') {
           return <UploadResultsContent
             setActiveStep={setActiveStep}
             setSelectedFile={setSelectedFile}
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
           />;
-      }
+        }
+        else {
+          return <UploadButton
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+            handleNext={handleNext}
+            resourceToUploadTo={resourceToUploadTo}
+          />;
+        }
+      case 3:
+        if (uploadType !== 'NEW') {
+          return <UploadResultsContent
+            setActiveStep={setActiveStep}
+            setSelectedFile={setSelectedFile}
+            selectedFile={selectedFile}
+            selectedDuplicate={selectedDuplicate}
+          />;
+        }
     }
-
   }
 
   return (
