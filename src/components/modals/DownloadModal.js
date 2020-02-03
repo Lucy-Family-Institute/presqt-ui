@@ -19,11 +19,12 @@ const modalDefaultMessage = (
     <Spinner />
   </div>);
 
-export default function DownloadModal({ modalState, setModalState }) {
+export default function DownloadModal() {
   const dispatch = useDispatch();
 
   const sourceDownloadData = useSelector(state => state.resources.sourceDownloadData);
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
+  const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
@@ -60,7 +61,7 @@ export default function DownloadModal({ modalState, setModalState }) {
     // Download successful
     else if (sourceDownloadStatus === "success") {
       FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
-      setModalState(false);
+      dispatch(actionCreators.resources.hideDownloadModal());
       dispatch(actionCreators.resources.clearDownloadData());
     }
   }, [sourceDownloadStatus]);
@@ -70,7 +71,7 @@ export default function DownloadModal({ modalState, setModalState }) {
    *  Dispatch clearDownloadData to clear download data from state.
    **/
   const handleClose = () => {
-    setModalState(false);
+    dispatch(actionCreators.resources.hideDownloadModal());
     setModalContent(modalDefaultMessage);
     dispatch(actionCreators.resources.clearDownloadData());
     dispatch(
@@ -80,12 +81,12 @@ export default function DownloadModal({ modalState, setModalState }) {
     );
   };
 
-  return modalState ? (
+  return downloadModalDisplay ? (
     <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
       <Dialog
         maxWidth="md"
         fullWidth={true}
-        open={modalState}
+        open={downloadModalDisplay}
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
       >

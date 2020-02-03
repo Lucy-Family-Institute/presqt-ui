@@ -5,6 +5,8 @@ export const actionCreators = createActions({
     AUTHORIZATION: {
         SAVE_TOKEN: (targetID, token) => ({targetID, token}),
         REMOVE_TOKEN: (target) => ({target: target}),
+        DISPLAY_TOKEN_MODAL: undefined,
+        HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
         LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
@@ -32,6 +34,8 @@ export const actionCreators = createActions({
         DOWNLOAD_JOB: undefined,
         DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         CLEAR_DOWNLOAD_DATA: undefined,
+        DISPLAY_DOWNLOAD_MODAL: undefined,
+        HIDE_DOWNLOAD_MODAL: undefined,
         UPLOAD_TO_SOURCE_TARGET: (sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) =>
           ({sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken}),
         UPLOAD_TO_SOURCE_TARGET_SUCCESS: undefined,
