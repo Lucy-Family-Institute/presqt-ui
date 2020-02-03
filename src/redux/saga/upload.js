@@ -45,7 +45,14 @@ function* uploadSourceTargetResource(action) {
     }
     // Upload failed because of target API error
     catch (error) {
-      yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
+      if (error.response.status === 500) {
+        yield put(actionCreators.resources.uploadJobSuccess(error.response.data.message, 'failure'));
+      }
+      else {
+        yield put(actionCreators.resources.uploadJobFailure(
+          error.response.status,
+          error.response.data.error)
+      )}
     }
   }
   // Upload failed because of PresQT API error

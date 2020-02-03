@@ -395,6 +395,24 @@ export default handleActions(
       sourceUploadData: action.payload.data
     }),
     /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload job call.
+     **/
+    [actionCreators.resources.uploadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceUploadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadJob.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
      * Clear the upload data so a new upload can be attempted.
      **/
     [actionCreators.resources.clearUploadData]: state => ({
