@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import Button from "@material-ui/core/Button/Button";
-import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
