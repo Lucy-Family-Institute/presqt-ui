@@ -2,9 +2,9 @@
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
-import buttonStyles from "../../../styles/buttons";
-import textStyles from "../../../styles/text";
-import { actionCreators } from "../../../redux/actionCreators";
+import buttonStyles from "../../../../styles/buttons";
+import textStyles from "../../../../styles/text";
+import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 
 export default function RetryStartUploadOverButton({setActiveStep, setSelectedFile}) {

@@ -15,7 +15,7 @@ import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
 import UploadStepperBackButton from "./UploadStepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
-import colors from "../../../styles/colors";
+import colors from "../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {

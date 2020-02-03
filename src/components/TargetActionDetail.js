@@ -3,9 +3,9 @@ import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
 import textStyles from "../styles/text";
-import MediumHeader from "./widgets/MediumHeader";
+import MediumHeader from "./widgets/headers/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
-import Spinner from "./widgets/Spinner";
+import Spinner from "./widgets/spinners/Spinner";
 
 /**
  * This component is responsible for displaying the details of a selected resource.

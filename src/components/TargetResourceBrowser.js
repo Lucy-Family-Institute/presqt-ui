@@ -3,12 +3,12 @@ import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actionCreators";
-import ResourceButton from "./widgets/ResourceButton";
-import TargetResourcesHeader from "./widgets/TargetResourcesHeader";
+import ResourceButton from "./widgets/buttons/ResourceButton";
+import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
-import Spinner from "./widgets/Spinner";
-import UploadActionButton from "./widgets/UploadActionButton";
+import Spinner from "./widgets/spinners/Spinner";
+import UploadActionButton from "./action_buttons/UploadActionButton";
 
 const fadeIn = keyframes`
   0% {
@@ -88,12 +88,14 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources && sourceTarget.supported_actions["resource_upload"] === true) {
+    if (sourceTargetResources) {
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
         type="NEW"
-        disabled={sourceSearchValue !== null}
+        // If there is no search value and the target supports resource upload, this button is clickable.
+        // Otherwise, it's disabled. 
+        disabled={!sourceSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
       />;
     }
   };
@@ -147,9 +149,7 @@ export default function TargetResourceBrowser() {
         {search()}
         {!sourceTarget
           ? null
-          : sourceTarget.supported_actions.resource_upload === true
-            ? upload()
-        : null}
+          : upload()}
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||

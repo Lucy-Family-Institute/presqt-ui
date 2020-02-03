@@ -2,7 +2,7 @@
 
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
-import ActionButton from "./ActionButton";
+import ActionButton from "../widgets/buttons/ActionButton";
 
 export default function TransferActionButton({ disabled }) {
   return (

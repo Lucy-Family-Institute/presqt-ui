@@ -2,7 +2,7 @@
 import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
 
-import textStyles from '../../styles/text';
+import textStyles from '../../../styles/text';
 
 const fadeIn = keyframes`
   0% {
