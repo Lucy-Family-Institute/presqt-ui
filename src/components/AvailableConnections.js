@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
-import {useEffect, useState} from 'react';
+import { useEffect } from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';

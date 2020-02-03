@@ -13,6 +13,7 @@ import HeaderBackground from './components/HeaderBackground';
 import SnackBar from "./components/SnackBar";
 import UploadModal from "./components/modals/UploadModal";
 import TokenModal from "./components/modals/TokenModal";
+import DownloadModal from "./components/modals/DownloadModal";
 
 const styles = {
   app: css({
@@ -47,6 +48,7 @@ function App() {
       <SnackBar />
       <UploadModal />
       <TokenModal />
+      <DownloadModal />
     </div>
   );
 }

@@ -14,6 +14,7 @@ const initialState = {
   sourceSearchValue: null,
   sourceDownloadStatus: null,
   sourceDownloadData: null,
+  downloadModalDisplay: false,
   sourceUploadStatus: null,
   sourceUploadData: null,
   uploadModalDisplay: false,
@@ -310,6 +311,20 @@ export default handleActions(
       ...state,
       sourceDownloadStatus: null,
       sourceDownloadData: null
+    }),
+    /**
+     * Display the Download Modal
+     **/
+    [actionCreators.resources.displayDownloadModal]: state => ({
+      ...state,
+      downloadModalDisplay: true,
+    }),
+    /**
+     * Hide the Download Modal
+     **/
+    [actionCreators.resources.hideDownloadModal]: state => ({
+      ...state,
+      downloadModalDisplay: false,
     }),
     /**
      * Register resource upload operation.
