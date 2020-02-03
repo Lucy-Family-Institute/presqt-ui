@@ -123,7 +123,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       }
       // Target error
       else {
-        errorMessage = `The Target returned the following error: ${sourceUploadData}`;
+        errorMessage = `The Target returned an error status code ${sourceUploadData.status_code}: ${sourceUploadData.message}`;
       }
 
       setStepThreeContent(

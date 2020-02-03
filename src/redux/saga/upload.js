@@ -46,7 +46,7 @@ function* uploadSourceTargetResource(action) {
     // Upload failed because of target API error
     catch (error) {
       if (error.response.status === 500) {
-        yield put(actionCreators.resources.uploadJobSuccess(error.response.data.message, 'failure'));
+        yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
       }
       else {
         yield put(actionCreators.resources.uploadJobFailure(
