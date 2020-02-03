@@ -88,12 +88,15 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources && sourceTarget.supported_actions["resource_upload"] === true) {
+    if (sourceTargetResources) {
+      console.log('HERE');
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
         type="NEW"
-        disabled={!sourceSearchValue ? false : true}
+        // If there is no search value and the target supports resource upload, this button is clickable.
+        // Otherwise, it's disabled. 
+        disabled={!sourceSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
       />;
     }
   };
@@ -147,9 +150,7 @@ export default function TargetResourceBrowser() {
         {search()}
         {!sourceTarget
           ? null
-          : sourceTarget.supported_actions.resource_upload === true
-            ? upload()
-        : null}
+          : upload()}
         {
           pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
           ||
