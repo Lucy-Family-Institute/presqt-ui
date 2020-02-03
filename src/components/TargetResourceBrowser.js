@@ -89,7 +89,6 @@ export default function TargetResourceBrowser() {
 
   const upload = () => {
     if (sourceTargetResources) {
-      console.log('HERE');
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
