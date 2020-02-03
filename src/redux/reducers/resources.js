@@ -268,6 +268,7 @@ export default handleActions(
     [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
+      sourceDownloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
@@ -303,6 +304,24 @@ export default handleActions(
       ),
       sourceDownloadStatus: action.payload.status,
       sourceDownloadData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed download job call.
+     **/
+    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceDownloadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.downloadJob.toString(),
+        state.apiOperationErrors
+      ),
     }),
     /**
      * Clear the download data so a new download can be attempted.

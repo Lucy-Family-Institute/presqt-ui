@@ -25,8 +25,15 @@ export default function DownloadModal() {
   const sourceDownloadData = useSelector(state => state.resources.sourceDownloadData);
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
+
+  const downloadError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.downloadResource.toString());
+
+  const downloadJobError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.downloadJob.toString());
 
   /**
    * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
@@ -35,13 +42,18 @@ export default function DownloadModal() {
    **/
   useEffect(() => {
     // Download failed
+    let errorMessage;
     if (sourceDownloadStatus === "failure") {
-      const errorMessage = (
-        "Download returned a " +
-        sourceDownloadData.status_code +
-          " status code. " +
-        sourceDownloadData.message
-      );
+      if (downloadError) {
+        errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
+      }
+      else if (downloadJobError) {
+        errorMessage = `PresQT API returned an error with status code ${downloadJobError.status}: ${downloadJobError.data}`
+      }
+      // Target error
+      else {
+        errorMessage = `The Target returned an error with status code ${sourceDownloadData.status_code}: ${sourceDownloadData.message}`;
+      }
 
       setModalContent(
         <div

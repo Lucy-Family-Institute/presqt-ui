@@ -48,12 +48,24 @@ function* downloadSourceTargetResource(action) {
     }
     // Download failed!
     catch (error) {
-      const downloadJobResponseData = new Blob(
-        [error.response.data],
-        {type : 'application/json'}
-      );
-      const errorData = yield call(getErrorData, downloadJobResponseData);
-      yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+      if (error.response.status === 500) {
+        const downloadJobResponseData = new Blob(
+          [error.response.data],
+          {type : 'application/json'}
+        );
+        const errorData = yield call(getErrorData, downloadJobResponseData);
+        yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+      }
+      else {
+        const downloadJobResponseData = new Blob(
+          [error.response.data],
+          {type : 'application/json'}
+        );
+        const errorData = yield call(getErrorData, downloadJobResponseData);
+        yield put(actionCreators.resources.downloadJobFailure(
+          error.response.status,
+          JSON.parse(errorData).error));
+      }
     }
   }
   catch (error) {

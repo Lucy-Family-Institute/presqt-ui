@@ -115,11 +115,11 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       let errorMessage;
       // PresQT Upload Post error
       if (uploadError) {
-        errorMessage = `PresQT API returned a status code ${uploadError.status}: ${uploadError.data}`;
+        errorMessage = `PresQT API returned an error status code ${uploadError.status}: ${uploadError.data}`;
       }
       // PresQT Upload Job error
       else if (uploadJobError) {
-        errorMessage = `PresQT API returned a status code ${uploadJobError.status}: ${uploadJobError.data}`;
+        errorMessage = `PresQT API returned an error status code ${uploadJobError.status}: ${uploadJobError.data}`;
       }
       // Target error
       else {
