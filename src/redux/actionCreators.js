@@ -57,5 +57,5 @@ export const actionCreators = createActions({
         LOAD_SUCCESS: undefined,
         SWITCH_SOURCE: undefined,
         SWITCH_TARGET: undefined
-    },
+    }
 });
