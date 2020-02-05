@@ -21,7 +21,13 @@ export default function AvailableConnections() {
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-
+  const collection_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+  
+  let tokenError;
+  if (collection_error) {
+    tokenError = collection_error.data.includes('Token')
+  }
   /**
    * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
@@ -36,10 +42,8 @@ export default function AvailableConnections() {
   useEffect(() => {
     if (
       apiOperationErrors.length > 0 &&
-      apiOperationErrors.find(
-        element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
-    ) {
-      dispatch(actionCreators.authorization.displayTokenModal());
+      tokenError) {
+        dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
 
