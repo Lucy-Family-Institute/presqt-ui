@@ -268,6 +268,7 @@ export default handleActions(
     [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
+      sourceDownloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
@@ -303,6 +304,24 @@ export default handleActions(
       ),
       sourceDownloadStatus: action.payload.status,
       sourceDownloadData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed download job call.
+     **/
+    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceDownloadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.downloadJob.toString(),
+        state.apiOperationErrors
+      ),
     }),
     /**
      * Clear the download data so a new download can be attempted.
@@ -393,6 +412,24 @@ export default handleActions(
       ),
       sourceUploadStatus: action.payload.status,
       sourceUploadData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload job call.
+     **/
+    [actionCreators.resources.uploadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceUploadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadJob.toString(),
+        state.apiOperationErrors
+      ),
     }),
     /**
      * Clear the upload data so a new upload can be attempted.

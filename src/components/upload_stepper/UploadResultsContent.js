@@ -29,8 +29,11 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const connection = useSelector(state => state.targets.source);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
-  const error = apiOperationErrors.find(
+  const uploadError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+
+  const uploadJobError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.uploadJob.toString());
 
   const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
 
@@ -110,13 +113,17 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     // Upload Failed!
     else if (sourceUploadStatus === 'failure') {
       let errorMessage;
-      // PresQT API error occurred
-      if (error) {
-        errorMessage = error.data;
+      // PresQT Upload Post error
+      if (uploadError) {
+        errorMessage = `PresQT API returned an error status code ${uploadError.status}: ${uploadError.data}`;
       }
-      // Target error occurred
+      // PresQT Upload Job error
+      else if (uploadJobError) {
+        errorMessage = `PresQT API returned an error status code ${uploadJobError.status}: ${uploadJobError.data}`;
+      }
+      // Target error
       else {
-        errorMessage = sourceUploadData.message;
+        errorMessage = `The Target returned an error status code ${sourceUploadData.status_code}: ${sourceUploadData.message}`;
       }
 
       setStepThreeContent(
