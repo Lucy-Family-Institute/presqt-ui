@@ -11,7 +11,6 @@ import React, {useEffect, useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
-import modal from "../../styles/modal";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
