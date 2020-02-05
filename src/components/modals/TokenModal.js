@@ -71,13 +71,6 @@ export default function TokenModal() {
     setToken('');
   };
 
-  const keyPress = (buttonClicked) => {
-    // Keycode for Enter is 13....
-    if (buttonClicked.keyCode === 13) {
-      modalSubmit();
-    }
-  }
-
   return connection
   ? (
     <div>
@@ -115,7 +108,8 @@ export default function TokenModal() {
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
                 onAnimationEnd={(event) => { event.stopPropagation() }}
-                onKeyDown={(event) => keyPress(event)}
+                // If the enter button is pressed (code 13), submit the modal.
+                onKeyDown={(event) => { if (event.keyCode === 13) {modalSubmit()} }}
               />
               <ModalSubmitButton
                 variant="contained"
