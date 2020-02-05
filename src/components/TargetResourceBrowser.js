@@ -84,12 +84,22 @@ export default function TargetResourceBrowser() {
    **/
   const search = () => {
     if (sourceTargetResources || sourceSearchValue || collection_error) {
+      if (collection_error) {
+        if (collection_error.data.includes('Token')) {
+          return null;
+        }
+      }
       return <TargetSearch />;
     }
   };
 
   const upload = () => {
     if (sourceTargetResources || collection_error) {
+      if (collection_error) {
+        if (collection_error.data.includes('Token')) {
+          return null;
+        }
+      }
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
