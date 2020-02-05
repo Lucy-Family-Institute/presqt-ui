@@ -11,6 +11,7 @@ import React, {useEffect, useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
+import modal from "../../styles/modal";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -70,6 +71,13 @@ export default function TokenModal() {
     setToken('');
   };
 
+  const keyPress = (buttonClicked) => {
+    // Keycode for Enter is 13....
+    if (buttonClicked.keyCode === 13) {
+      modalSubmit();
+    }
+  }
+
   return connection
   ? (
     <div>
@@ -106,7 +114,8 @@ export default function TokenModal() {
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
-                onAnimationEnd={(event) => {event.stopPropagation()}}
+                onAnimationEnd={(event) => { event.stopPropagation() }}
+                onKeyDown={(event) => keyPress(event)}
               />
               <ModalSubmitButton
                 variant="contained"
