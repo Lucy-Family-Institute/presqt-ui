@@ -94,7 +94,7 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources || collection_error) {
+    if (sourceTargetResources || sourceSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.data.includes('Token')) {
           return null;
