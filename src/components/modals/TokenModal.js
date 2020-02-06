@@ -106,7 +106,9 @@ export default function TokenModal() {
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
-                onAnimationEnd={(event) => {event.stopPropagation()}}
+                onAnimationEnd={(event) => { event.stopPropagation() }}
+                // If the enter button is pressed (code 13), submit the modal.
+                onKeyDown={(event) => { if (event.keyCode === 13) {modalSubmit()} }}
               />
               <ModalSubmitButton
                 variant="contained"
