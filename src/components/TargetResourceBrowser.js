@@ -35,7 +35,8 @@ export default function TargetResourceBrowser() {
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
   const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
-
+  const collection_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
 
@@ -82,13 +83,23 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (sourceTargetResources || sourceSearchValue) {
+    if (sourceTargetResources || sourceSearchValue || collection_error) {
+      if (collection_error) {
+        if (collection_error.status === 401) {
+          return null;
+        }
+      }
       return <TargetSearch />;
     }
   };
 
   const upload = () => {
-    if (sourceTargetResources) {
+    if (sourceTargetResources || sourceSearchValue || collection_error) {
+      if (collection_error) {
+        if (collection_error.status === 401) {
+          return null;
+        }
+      }
       return <UploadActionButton
         style={{ width: 250 }}
         text="Create New Project"
@@ -112,22 +123,27 @@ export default function TargetResourceBrowser() {
           sourceTargetResources
         )
       ) : // No resources exist with the given search term
-      sourceTargetResources &&
-        sourceTargetResources.length === 0 &&
-        sourceSearchValue ? (
-        <div css={[textStyles.body, { marginTop: 10 }]}>
-          No {sourceTarget.readable_name} resources found for search term{" "}
-          {sourceSearchValue}.
+        sourceTargetResources &&
+          sourceTargetResources.length === 0 &&
+          sourceSearchValue ? (
+            <div css={[textStyles.body, { marginTop: 10 }]}>
+              No {sourceTarget.readable_name} resources found for search term{" "}
+              {sourceSearchValue}.
         </div>
-      ) : // No resources exist for the user
-      sourceTargetResources && sourceTargetResources.length === 0 ? (
-        <div css={[textStyles.body, { marginTop: 10 }]}>
-          No {sourceTarget.readable_name} resources found for this user.
+          ) : // No resources exist for the user
+          sourceTargetResources && sourceTargetResources.length === 0 ? (
+            <div css={[textStyles.body, { marginTop: 10 }]}>
+              No {sourceTarget.readable_name} resources found for this user.
         </div>
-      ) : // An error was returned when searching the target
-      search_error ? (
+          ) : // An error was returned when searching the target
+            search_error ? (
+              <div css={[textStyles.body, { marginTop: 10 }, textStyles.cubsRed]}>
+                {search_error.data}
+              </div>
+            ) :
+              collection_error && collection_error.status !== 401 ? (
         <div css={[textStyles.body, { marginTop: 10 }, textStyles.cubsRed]}>
-          {search_error.data}
+          {collection_error.data}
         </div>
       ) : null
     );
