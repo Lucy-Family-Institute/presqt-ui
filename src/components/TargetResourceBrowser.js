@@ -85,7 +85,7 @@ export default function TargetResourceBrowser() {
   const search = () => {
     if (sourceTargetResources || sourceSearchValue || collection_error) {
       if (collection_error) {
-        if (collection_error.data.includes('Token')) {
+        if (collection_error.status === 401) {
           return null;
         }
       }
@@ -96,7 +96,7 @@ export default function TargetResourceBrowser() {
   const upload = () => {
     if (sourceTargetResources || sourceSearchValue || collection_error) {
       if (collection_error) {
-        if (collection_error.data.includes('Token')) {
+        if (collection_error.status === 401) {
           return null;
         }
       }
@@ -141,7 +141,7 @@ export default function TargetResourceBrowser() {
                 {search_error.data}
               </div>
             ) :
-              collection_error && !collection_error.data.includes('Token') ? (
+              collection_error && collection_error.status !== 401 ? (
         <div css={[textStyles.body, { marginTop: 10 }, textStyles.cubsRed]}>
           {collection_error.data}
         </div>

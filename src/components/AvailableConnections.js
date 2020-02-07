@@ -26,7 +26,7 @@ export default function AvailableConnections() {
   
   let tokenError;
   if (collection_error) {
-    tokenError = collection_error.data.includes('Token')
+    tokenError = collection_error.status === 401;
   }
   /**
    * Dispatch load action on page-load.
