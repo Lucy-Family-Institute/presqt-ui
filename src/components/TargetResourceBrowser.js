@@ -110,12 +110,7 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={
-            !sourceSearchValue &&
-            sourceTarget.supported_actions["resource_upload"] === true
-              ? false
-              : true
-          }
+          disabled={!sourceSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
