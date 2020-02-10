@@ -40,7 +40,7 @@ export default function TargetResourceBrowser() {
     element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
-  const [textCss, setTextCss] = useState([textStyles.body, { marginTop: 10 }]);
+  const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
   /**
@@ -134,11 +134,11 @@ export default function TargetResourceBrowser() {
       setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
     }
     else if (search_error) {
-      setTextCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
+      setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
       setMessage(`${search_error.data}`);
     }
     else if (collection_error && collection_error.status !== 401) {
-      setTextCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
+      setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
       setMessage(`${collection_error.data}`);
     }
     else {
@@ -169,7 +169,7 @@ export default function TargetResourceBrowser() {
         ) ? <Spinner />
           : (
           <div>
-            <div css={textCss}>{message}</div>
+            <div css={messageCss}>{message}</div>
           </div>
         )}
       </div>
