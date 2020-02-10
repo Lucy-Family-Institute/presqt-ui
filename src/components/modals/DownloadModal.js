@@ -14,8 +14,8 @@ import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadBu
 
 
 const modalDefaultMessage = (
-  <div style={textStyles.body}>
-    <div css={{paddingBottom: 15}}>The download is being processed on the server. Please do not leave the page.</div>
+  <div>
+    <div css={{ paddingBottom: 15 }}>The download is being processed on the server. Please do not leave the page.</div>
     <Spinner />
   </div>);
 
@@ -57,8 +57,7 @@ export default function DownloadModal() {
 
       setModalContent(
         <div
-          style={textStyles.body}
-          css={{paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <ErrorOutlineIcon color="error"/>
           <span css={{ marginLeft: 5 }}>{errorMessage}</span>
           <span css={{ marginLeft: 15 }}>
@@ -107,7 +106,7 @@ export default function DownloadModal() {
             ? "Download Failed!"
             : "Download In Progress"}
         </DialogTitle>
-        <DialogContent repositionOnUpdate={false} style={{ padding: 20 }}>
+        <DialogContent css={{ padding: 20 }}>
             {modalContent}
         </DialogContent>
       </Dialog>
