@@ -106,7 +106,7 @@ export default function DownloadModal() {
             ? "Download Failed!"
             : "Download In Progress"}
         </DialogTitle>
-        <DialogContent css={{ padding: 20 }}>
+        <DialogContent style={{ padding: 20 }}>
             {modalContent}
         </DialogContent>
       </Dialog>
