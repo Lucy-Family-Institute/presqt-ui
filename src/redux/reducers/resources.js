@@ -456,6 +456,50 @@ export default handleActions(
       uploadType: null
     }),
     /**
+     * Cancel the upload
+     **/
+    [actionCreators.resources.cancelUpload]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     * Add the cancel upload status to sourceUploadStatus.
+     * Add the cancel upload contents to sourceUploadData.
+     **/
+    [actionCreators.resources.cancelUploadSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      ),
+      sourceUploadStatus: action.payload.status,
+      sourceUploadData: action.payload.data
+    }),
+    /** 
+    * Untrack API call and track failure that occurred.
+    * Dispatched via Saga call on failed cancel upload call.
+    **/
+    [actionCreators.resources.cancelUploadFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceUploadStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelUpload.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
      * Refresh the resources in the Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
      **/

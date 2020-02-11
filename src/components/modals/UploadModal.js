@@ -15,16 +15,20 @@ export default function UploadModal()  {
   const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
   const uploadType = useSelector(state => state.resources.uploadType);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
+  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.
+   * If there is a pending download...cancel it.
    **/
   const handleClose = () => {
+    if (pendingAPIOperations) {
+      dispatch(actionCreators.resources.cancelUpload());
+    }
     dispatch(actionCreators.resources.hideUploadModal());
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
-      actionCreators.resources.uploadToSourceTarget.toString())
-    )
+      actionCreators.resources.uploadToSourceTarget.toString()));
   };
 
   let resourceToUploadTo = null;
