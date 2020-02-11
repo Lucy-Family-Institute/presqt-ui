@@ -14,6 +14,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
+import CancelButton from "../widgets/buttons/CancelButton";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -35,7 +36,13 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadJob.toString());
 
-  const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
+  const [stepThreeContent, setStepThreeContent] = useState(
+    <div>
+      <LeftSpinner />
+      <div css={{ paddingTop: 15 }}>
+      <CancelButton />
+      </div>
+    </div>);
 
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these

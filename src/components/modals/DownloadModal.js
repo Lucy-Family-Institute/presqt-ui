@@ -11,12 +11,16 @@ import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
+import CancelButton from "../widgets/buttons/CancelButton";
 
 
 const modalDefaultMessage = (
   <div>
     <div css={{ paddingBottom: 15 }}>The download is being processed on the server. Please do not leave the page.</div>
     <Spinner />
+    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <CancelButton />
+    </div>
   </div>);
 
 export default function DownloadModal() {
@@ -26,6 +30,7 @@ export default function DownloadModal() {
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
@@ -100,8 +105,14 @@ export default function DownloadModal() {
         open={downloadModalDisplay}
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
+        disableBackdropClick={downloadStatus === 'pending'}
+        disableEscapeKeyDown={downloadStatus === 'pending'}
       >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+        <DialogTitle
+          id="form-dialog-title"
+          onClose={handleClose}
+          disabled={downloadStatus === 'pending'}
+        >
           {sourceDownloadStatus === "failure"
             ? "Download Failed!"
             : "Download In Progress"}

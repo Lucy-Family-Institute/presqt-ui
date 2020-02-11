@@ -15,16 +15,13 @@ export default function UploadModal()  {
   const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
   const uploadType = useSelector(state => state.resources.uploadType);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const uploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.
    * If there is a pending download...cancel it.
    **/
   const handleClose = () => {
-    if (pendingAPIOperations) {
-      dispatch(actionCreators.resources.cancelUpload());
-    }
     dispatch(actionCreators.resources.hideUploadModal());
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
@@ -40,8 +37,20 @@ export default function UploadModal()  {
 
   return uploadModalDisplay
     ? <div>
-      <Dialog maxWidth="md" fullWidth={true} open={uploadModalDisplay} onClose={handleClose} aria-labelledby={"form-dialog-title"}>
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+      <Dialog
+        maxWidth="md"
+        fullWidth={true}
+        open={uploadModalDisplay}
+        onClose={handleClose}
+        aria-labelledby={"form-dialog-title"}
+        disableBackdropClick={uploadStatus === 'pending' || uploadStatus === 'success'}
+        disableEscapeKeyDown={uploadStatus === 'pending' || uploadStatus === 'success'}
+      >
+        <DialogTitle
+          id="form-dialog-title"
+          onClose={handleClose}
+          disabled={uploadStatus === 'pending' || uploadStatus === 'success'}
+        >
           Upload Resource
         </DialogTitle>
         <DialogContent>
