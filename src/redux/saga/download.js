@@ -58,7 +58,14 @@ function* downloadSourceTargetResource(action) {
           {type : 'application/json'}
         );
         const errorData = yield call(getErrorData, downloadJobResponseData);
-        yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+        if (JSON.parse(errorData).status_code === '499') {
+          console.log('yeah baby');
+          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'cancelled'));
+        }
+        else {
+          console.log('off');
+          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+        }
       }
       else {
         const downloadJobResponseData = new Blob(

@@ -341,7 +341,7 @@ export default handleActions(
      * Add the cancel download status to sourceDownloadStatus.
      * Add the cancel download contents to sourceDownloadData.
      **/
-    [actionCreators.resources.cancelDownloadSuccess]: (state, action) => ({
+    [actionCreators.resources.cancelDownloadSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(

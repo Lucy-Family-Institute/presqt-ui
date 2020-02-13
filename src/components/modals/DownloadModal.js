@@ -52,8 +52,7 @@ export default function DownloadModal() {
     if (sourceDownloadStatus === "failure") {
       if (downloadError) {
         errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
-      }
-      else if (downloadJobError) {
+      } else if (downloadJobError) {
         errorMessage = `PresQT API returned an error with status code ${downloadJobError.status}: ${downloadJobError.data}`
       }
       // Target error
@@ -70,11 +69,27 @@ export default function DownloadModal() {
             <RetryDownloadButton
               setModalContent={setModalContent}
               modalDefaultMessage={modalDefaultMessage}
-              />
+            />
           </span>
         </div>
       )
     }
+    else if (sourceDownloadStatus === 'cancelled') {
+      setModalContent(
+        <div
+          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <ErrorOutlineIcon color="error"/>
+          <span css={{ marginLeft: 5 }}>{sourceDownloadData.message}</span>
+          <span css={{ marginLeft: 15 }}>
+            <RetryDownloadButton
+              setModalContent={setModalContent}
+              modalDefaultMessage={modalDefaultMessage}
+            />
+          </span>
+        </div>
+      )
+    }
+
     // Download successful
     else if (sourceDownloadStatus === "success") {
       FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
@@ -117,6 +132,8 @@ export default function DownloadModal() {
         >
           {sourceDownloadStatus === "failure"
             ? "Download Failed!"
+            : sourceDownloadStatus === "cancelled"
+            ? "Download Cancelled"
             : "Download In Progress"}
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>
