@@ -54,6 +54,18 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     if (sourceUploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
     }
+    else if (sourceUploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+      setStepThreeContent(
+        <div>
+          <p>Upload is being cancelled...</p>
+          <LeftSpinner />
+          <div css={{ paddingTop: 15 }}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
+    }
     else if (sourceUploadStatus === 'finished') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
         ? <ListItem>

@@ -50,7 +50,7 @@ function* uploadSourceTargetResource(action) {
     catch (error) {
       if (error.response.status === 500) {
         if (error.response.data.status_code === '499'){
-          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'cancelled'));
+          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'cancelSuccess'));
         }
         else {
           yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));

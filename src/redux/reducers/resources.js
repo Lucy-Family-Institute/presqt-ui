@@ -572,7 +572,7 @@ export default handleActions(
           state.pendingAPIOperations
         ),
         inSourceTarget: resourceHierarchy,
-        sourceUploadStatus: "finished"
+        sourceUploadStatus: state.sourceUploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
     /**

@@ -13,6 +13,7 @@ export default function CancelButton({actionType}) {
   const sourceTarget = useSelector(state => state.targets.source);
   const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
   const sourceTargetToken = useSelector(state => state.authorization.apiTokens)[sourceTarget.name];
+  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
 
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
@@ -30,7 +31,7 @@ export default function CancelButton({actionType}) {
         color="primary"
         className={classes.button}
         onClick={submitCancel}
-        disabled={!ticketNumber}
+        disabled={!ticketNumber || sourceUploadStatus === 'cancelSuccess'}
       >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>
