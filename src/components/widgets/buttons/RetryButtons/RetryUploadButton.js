@@ -14,11 +14,8 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate, setS
   const dispatch = useDispatch();
 
   const sourceTargetToken = useSelector(
-    state => state.authorization.apiTokens[state.targets.source.name]
-  );
-  const selectedInSource = useSelector(
-    state => state.resources.selectedInSource
-  );
+    state => state.authorization.apiTokens[state.targets.source.name]);
+  const selectedInSource = useSelector(state => state.resources.selectedInSource);
   const selectedTarget = useSelector(state => state.targets.source.name);
 
   const submitRetry = () => {

@@ -49,7 +49,12 @@ function* uploadSourceTargetResource(action) {
     // Upload failed because of target API error
     catch (error) {
       if (error.response.status === 500) {
-        yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
+        if (error.response.data.status_code === '499'){
+          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'cancelled'));
+        }
+        else {
+          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
+        }
       }
       else {
         yield put(actionCreators.resources.uploadJobFailure(

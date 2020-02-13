@@ -59,11 +59,9 @@ function* downloadSourceTargetResource(action) {
         );
         const errorData = yield call(getErrorData, downloadJobResponseData);
         if (JSON.parse(errorData).status_code === '499') {
-          console.log('yeah baby');
           yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'cancelled'));
         }
         else {
-          console.log('off');
           yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
         }
       }

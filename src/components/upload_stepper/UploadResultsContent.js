@@ -120,10 +120,13 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(successfulMessage);
     }
     // Upload Failed!
-    else if (sourceUploadStatus === 'failure') {
+    else if (sourceUploadStatus === 'failure' || sourceUploadStatus === 'cancelled') {
       let errorMessage;
+      if (sourceUploadStatus === 'cancelled') {
+        errorMessage = `${sourceUploadData.message}. Some resources may have still be uploaded.`
+      }
       // PresQT Upload Post error
-      if (uploadError) {
+      else if (uploadError) {
         errorMessage = `PresQT API returned an error status code ${uploadError.status}: ${uploadError.data}`;
       }
       // PresQT Upload Job error
