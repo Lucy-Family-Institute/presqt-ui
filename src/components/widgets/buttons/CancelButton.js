@@ -18,6 +18,10 @@ export default function CancelButton({actionType}) {
     if (actionType === 'DOWNLOAD') {
       dispatch(actionCreators.resources.cancelDownload(ticketNumber, sourceTargetToken))
     }
+    else if (actionType === 'UPLOAD') {
+      dispatch(actionCreators.resources.cancelUpload(ticketNumber, sourceTargetToken))
+    }
+  };
 
   return (
     <Fragment>

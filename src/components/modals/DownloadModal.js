@@ -20,7 +20,7 @@ const modalDefaultMessage = (
     </div>
     <Spinner />
     <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-      <CancelButton />
+      <CancelButton actionType='DOWNLOAD' />
     </div>
   </div>);
 

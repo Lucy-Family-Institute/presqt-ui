@@ -8,7 +8,7 @@ import {
   watchSwitchSource
 } from "./resources";
 import {watchCancelDownload, watchSourceResourceDownload} from "./download";
-import {watchSourceResourceUpload} from "./upload";
+import {watchCancelUpload, watchSourceResourceUpload} from "./upload";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -20,6 +20,7 @@ export default function* rootSaga() {
     watchSourceResourceDownload(),
     watchSourceResourceUpload(),
     watchRefreshSource(),
-    watchCancelDownload()
+    watchCancelDownload(),
+    watchCancelUpload()
   ]);
 }

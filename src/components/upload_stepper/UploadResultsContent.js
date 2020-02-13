@@ -41,9 +41,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
       <LeftSpinner />
       <div css={{ paddingTop: 15 }}>
-      <CancelButton />
+      <CancelButton actionType='UPLOAD' />
       </div>
-    </div>);
+    </div>
+  );
 
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these

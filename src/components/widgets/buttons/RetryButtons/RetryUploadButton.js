@@ -7,6 +7,7 @@ import buttonStyles from "../../../../styles/buttons";
 import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import LeftSpinner from "../../spinners/LeftSpinner";
+import CancelButton from "../CancelButton";
 
 export default function RetryUploadButton({selectedFile, selectedDuplicate, setStepThreeContent}) {
   const classes = buttonStyles.RetryUpload();
@@ -36,7 +37,15 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate, setS
         sourceTargetToken
       )
     );
-    setStepThreeContent(<LeftSpinner />);
+    setStepThreeContent(
+      <div>
+        <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
+        <LeftSpinner />
+        <div css={{ paddingTop: 15 }}>
+          <CancelButton actionType='UPLOAD' />
+        </div>
+      </div>
+    );
   };
 
   return (

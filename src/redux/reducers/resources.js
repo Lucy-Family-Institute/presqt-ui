@@ -409,13 +409,14 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful upload call.
      **/
-    [actionCreators.resources.uploadToSourceTargetSuccess]: state => ({
+    [actionCreators.resources.uploadToSourceTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.uploadToSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -519,15 +520,13 @@ export default handleActions(
      * Add the cancel upload status to sourceUploadStatus.
      * Add the cancel upload contents to sourceUploadData.
      **/
-    [actionCreators.resources.cancelUploadSuccess]: (state, action) => ({
+    [actionCreators.resources.cancelUploadSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelUpload,
         state.pendingAPIOperations
-      ),
-      sourceUploadStatus: action.payload.status,
-      sourceUploadData: action.payload.data
+      )
     }),
     /** 
     * Untrack API call and track failure that occurred.

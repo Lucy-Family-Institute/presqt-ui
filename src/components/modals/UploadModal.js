@@ -25,7 +25,9 @@ export default function UploadModal()  {
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.resources.uploadToSourceTarget.toString()));
+    dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
+
 
   let resourceToUploadTo = null;
   // We want to pass along the resource if the upload is to an existing project
