@@ -19,7 +19,6 @@ export default function UploadModal()  {
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.
-   * If there is a pending download...cancel it.
    **/
   const handleClose = () => {
     dispatch(actionCreators.resources.hideUploadModal());
@@ -43,7 +42,7 @@ export default function UploadModal()  {
         open={uploadModalDisplay}
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
-        disableBackdropClick={uploadStatus === 'pending' || uploadStatus === 'success'}
+        disableBackdropClick={true}
         disableEscapeKeyDown={uploadStatus === 'pending' || uploadStatus === 'success'}
       >
         <DialogTitle

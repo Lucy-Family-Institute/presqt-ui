@@ -38,6 +38,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
+      <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
       <LeftSpinner />
       <div css={{ paddingTop: 15 }}>
       <CancelButton />

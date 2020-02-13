@@ -324,6 +324,54 @@ export default handleActions(
       ),
     }),
     /**
+     * Cancel the download
+     **/
+    [actionCreators.resources.cancelDownload]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     * Add the cancel download status to sourceDownloadStatus.
+     * Add the cancel download contents to sourceDownloadData.
+     **/
+    [actionCreators.resources.cancelDownloadSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      ),
+      sourceDownloadStatus: action.payload.status,
+      sourceDownloadData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed cancel download call.
+     **/
+    [actionCreators.resources.cancelDownloadFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceDownloadStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelDownload.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    /**
      * Clear the download data so a new download can be attempted.
      **/
     [actionCreators.resources.clearDownloadData]: state => ({

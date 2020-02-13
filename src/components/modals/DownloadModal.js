@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import textStyles from "../../styles/text";
 import React, { useEffect, useState } from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
@@ -16,7 +15,9 @@ import CancelButton from "../widgets/buttons/CancelButton";
 
 const modalDefaultMessage = (
   <div>
-    <div css={{ paddingBottom: 15 }}>The download is being processed on the server. Please do not leave the page.</div>
+    <div css={{ paddingBottom: 15 }}>
+      <p>The download is being processed on the server.</p>
+    </div>
     <Spinner />
     <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
       <CancelButton />
@@ -105,7 +106,7 @@ export default function DownloadModal() {
         open={downloadModalDisplay}
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
-        disableBackdropClick={downloadStatus === 'pending'}
+        disableBackdropClick={true}
         disableEscapeKeyDown={downloadStatus === 'pending'}
       >
         <DialogTitle
