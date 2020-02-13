@@ -19,7 +19,8 @@ const initialState = {
   sourceUploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openResources: []
+  openResources: [],
+  activeTicketNumber: null
 };
 
 export default handleActions(
@@ -253,13 +254,14 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetSuccess]: state => ({
+    [actionCreators.resources.downloadFromSourceTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
-      )
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -345,9 +347,7 @@ export default handleActions(
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelDownload,
         state.pendingAPIOperations
-      ),
-      sourceDownloadStatus: action.payload.status,
-      sourceDownloadData: action.payload.data
+      )
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -594,6 +594,13 @@ export default handleActions(
       ),
       inSourceTarget: null
     }),
+    /**
+     * Clear the ticket number
+     **/
+    [actionCreators.resources.clearActiveTicketNumber]: state => ({
+      ...state,
+      activeTicketNumber: null
+    })
   },
   initialState
 );

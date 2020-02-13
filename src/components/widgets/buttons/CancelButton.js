@@ -5,20 +5,29 @@ import textStyles from "../../../styles/text";
 import buttonStyles from "../../../styles/buttons";
 import Button from "@material-ui/core/Button/Button";
 import {actionCreators} from "../../../redux/actionCreators";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-export default function CancelButton() {
+export default function CancelButton({actionType}) {
   const classes = buttonStyles.RetryDownload();
   const dispatch = useDispatch();
+  const sourceTarget = useSelector(state => state.targets.source);
+  const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
+  const sourceTargetToken = useSelector(state => state.authorization.apiTokens)[sourceTarget.name];
 
   const submitCancel = () => {
-      console.log("CANCEL THE PROCESS");
-      dispatch(actionCreators.resources.cancelDownload())
-    };
+    if (actionType === 'DOWNLOAD') {
+      dispatch(actionCreators.resources.cancelDownload(ticketNumber, sourceTargetToken))
+    }
 
   return (
     <Fragment>
-      <Button variant="contained" color="primary" className={classes.button} onClick={submitCancel}>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        onClick={submitCancel}
+        disabled={!ticketNumber}
+      >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>
     </Fragment>

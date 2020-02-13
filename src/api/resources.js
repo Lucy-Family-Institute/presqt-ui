@@ -49,8 +49,8 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
 /**
  * Cancel Download Job Endpoint
  **/
-export function cancelResourceDownloadJob(downloadJobURL, sourceTargetToken) {
-  return axios.patch(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+export function cancelResourceDownloadJob(ticketNumber, sourceTargetToken) {
+  return axios.patch(`${apiURLBase}downloads/${ticketNumber}/`, null, { headers: { 'presqt-source-token': sourceTargetToken }});
 }
 
 /**
