@@ -47,6 +47,13 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
 }
 
 /**
+ * Cancel Download Job Endpoint
+ **/
+export function cancelResourceDownloadJob(downloadJobURL, sourceTargetToken) {
+  return axios.patch(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+}
+
+/**
  * Resource Upload Endpoint
  **/
 export function postResourceUpload(sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) {
