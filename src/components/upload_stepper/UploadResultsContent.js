@@ -20,7 +20,7 @@ import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetrySta
  * component to display the results of the upload.
  **/
 export default function UploadResultsContent({setActiveStep, setSelectedFile,
-                                               selectedFile, selectedDuplicate}) {
+                                               selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
@@ -150,6 +150,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                 selectedFile={selectedFile}
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
+                resourceToUploadTo={resourceToUploadTo}
               />
             </span>
           </div>

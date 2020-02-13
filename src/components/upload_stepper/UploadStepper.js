@@ -117,6 +117,7 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
             setSelectedFile={setSelectedFile}
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
+            resourceToUploadTo={resourceToUploadTo}
           />;
         }
         else {
@@ -134,6 +135,7 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
             setSelectedFile={setSelectedFile}
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
+            resourceToUploadTo={resourceToUploadTo}
           />;
         }
     }
