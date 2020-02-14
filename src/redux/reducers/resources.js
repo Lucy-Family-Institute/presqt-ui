@@ -10,7 +10,7 @@ const initialState = {
   leftTargetResources: null,
   selectedLeftResource: null,
   apiOperationErrors: [],
-  sourceSearchValue: null,
+  leftSearchValue: null,
   sourceDownloadStatus: null,
   sourceDownloadData: null,
   downloadModalDisplay: false,
@@ -49,7 +49,7 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       selectedLeftResource: null,
-      sourceSearchValue: action.payload.searchValue,
+      leftSearchValue: action.payload.searchValue,
       openResources: []
     }),
     /**
@@ -235,7 +235,7 @@ export default handleActions(
         ...state,
         leftTargetResources: null,
         selectedLeftResource: null,
-        sourceSearchValue: null
+        leftSearchValue: null
       };
     },
     /**
