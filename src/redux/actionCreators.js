@@ -9,9 +9,9 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        LOAD_FROM_TARGET: (sourceTarget, sourceTargetToken) => ({
-            sourceTarget,
-            sourceTargetToken,
+        LOAD_FROM_TARGET: (target, targetToken) => ({
+            target,
+            targetToken,
         }),
         LOAD_FROM_SOURCE_TARGET_SEARCH: (sourceTarget, sourceTargetToken, searchValue) => ({
             sourceTarget,

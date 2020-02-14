@@ -15,8 +15,8 @@ function* loadSourceTargetResources(action) {
   try {
     const response = yield call(
     getTargetResources,
-    action.payload.sourceTarget.name,
-    action.payload.sourceTargetToken
+    action.payload.target.name,
+    action.payload.targetToken
     );
     yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
   }
