@@ -15,6 +15,7 @@ export default function UploadModal()  {
   const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
   const uploadType = useSelector(state => state.resources.uploadType);
   const selectedInSource = useSelector(state => state.resources.selectedInSource);
+  const uploadStatus = useSelector(state => state.resources.sourceUploadStatus);
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.
@@ -23,9 +24,10 @@ export default function UploadModal()  {
     dispatch(actionCreators.resources.hideUploadModal());
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
-      actionCreators.resources.uploadToSourceTarget.toString())
-    )
+      actionCreators.resources.uploadToSourceTarget.toString()));
+    dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
+
 
   let resourceToUploadTo = null;
   // We want to pass along the resource if the upload is to an existing project
@@ -36,8 +38,20 @@ export default function UploadModal()  {
 
   return uploadModalDisplay
     ? <div>
-      <Dialog maxWidth="md" fullWidth={true} open={uploadModalDisplay} onClose={handleClose} aria-labelledby={"form-dialog-title"}>
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+      <Dialog
+        maxWidth="md"
+        fullWidth={true}
+        open={uploadModalDisplay}
+        onClose={handleClose}
+        aria-labelledby={"form-dialog-title"}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={uploadStatus === 'pending' || uploadStatus === 'success'}
+      >
+        <DialogTitle
+          id="form-dialog-title"
+          onClose={handleClose}
+          disabled={uploadStatus === 'pending' || uploadStatus === 'success'}
+        >
           Upload Resource
         </DialogTitle>
         <DialogContent>

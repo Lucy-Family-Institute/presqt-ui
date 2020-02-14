@@ -1,6 +1,10 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {postResourceUpload, resourceUploadJob} from "../../api/resources";
+import {
+  cancelResourceDownloadJob, cancelResourceUploadJob,
+  postResourceUpload,
+  resourceUploadJob
+} from "../../api/resources";
 
 export function* watchSourceResourceUpload() {
   yield takeEvery(actionCreators.resources.uploadToSourceTarget, uploadSourceTargetResource)
@@ -16,8 +20,7 @@ function* uploadSourceTargetResource(action) {
       action.payload.resourceToUploadTo,
       action.payload.sourceTargetToken
     );
-
-    yield put(actionCreators.resources.uploadToSourceTargetSuccess());
+    yield put(actionCreators.resources.uploadToSourceTargetSuccess(response.data));
 
     // Kick off the upload job endpoint check-in
     try {
@@ -46,7 +49,12 @@ function* uploadSourceTargetResource(action) {
     // Upload failed because of target API error
     catch (error) {
       if (error.response.status === 500) {
-        yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
+        if (error.response.data.status_code === '499'){
+          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'cancelSuccess'));
+        }
+        else {
+          yield put(actionCreators.resources.uploadJobSuccess(error.response.data, 'failure'));
+        }
       }
       else {
         yield put(actionCreators.resources.uploadJobFailure(
@@ -61,4 +69,29 @@ function* uploadSourceTargetResource(action) {
       error.response.status,
       error.response.data.error)
     )}
+}
+
+// Cancel Upload
+export function* watchCancelUpload() {
+  yield takeEvery(actionCreators.resources.cancelUpload, cancelUpload)
+}
+
+function* cancelUpload(action) {
+  try {
+    yield call(
+      cancelResourceUploadJob,
+      action.payload.ticketNumber,
+      action.payload.sourceTargetToken
+    );
+
+    yield put(actionCreators.resources.cancelUploadSuccess())
+
+  }
+
+  catch (error) {
+    yield put(actionCreators.resources.cancelUploadFailure(
+      error.response.status,
+      error.response.data.error)
+    )
+  }
 }

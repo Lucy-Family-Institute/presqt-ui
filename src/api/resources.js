@@ -47,6 +47,13 @@ export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
 }
 
 /**
+ * Cancel Download Job Endpoint
+ **/
+export function cancelResourceDownloadJob(ticketNumber, sourceTargetToken) {
+  return axios.patch(`${apiURLBase}downloads/${ticketNumber}/`, null, { headers: { 'presqt-source-token': sourceTargetToken }});
+}
+
+/**
  * Resource Upload Endpoint
  **/
 export function postResourceUpload(sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) {
@@ -74,4 +81,11 @@ export function resourceUploadJob(uploadJobURL, sourceTargetToken) {
   return axios.get(
     uploadJobURL,
     { headers: { 'presqt-destination-token': sourceTargetToken }});
+}
+
+/**
+ * Cancel Upload Job Endpoint
+ **/
+export function cancelResourceUploadJob(ticketNumber, sourceTargetToken) {
+  return axios.patch(`${apiURLBase}uploads/${ticketNumber}/`, null, { headers: { 'presqt-destination-token': sourceTargetToken }});
 }

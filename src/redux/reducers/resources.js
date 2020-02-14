@@ -19,7 +19,8 @@ const initialState = {
   sourceUploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openResources: []
+  openResources: [],
+  activeTicketNumber: null
 };
 
 export default handleActions(
@@ -253,13 +254,14 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetSuccess]: state => ({
+    [actionCreators.resources.downloadFromSourceTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
-      )
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -324,6 +326,50 @@ export default handleActions(
       ),
     }),
     /**
+     * Cancel the download
+     **/
+    [actionCreators.resources.cancelDownload]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     **/
+    [actionCreators.resources.cancelDownloadSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed cancel download call.
+     **/
+    [actionCreators.resources.cancelDownloadFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceDownloadStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelDownload,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelDownload.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    /**
      * Clear the download data so a new download can be attempted.
      **/
     [actionCreators.resources.clearDownloadData]: state => ({
@@ -361,13 +407,14 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful upload call.
      **/
-    [actionCreators.resources.uploadToSourceTargetSuccess]: state => ({
+    [actionCreators.resources.uploadToSourceTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.uploadToSourceTarget,
         state.pendingAPIOperations
-      )
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -456,6 +503,46 @@ export default handleActions(
       uploadType: null
     }),
     /**
+     * Cancel the upload
+     **/
+    [actionCreators.resources.cancelUpload]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     **/
+    [actionCreators.resources.cancelUploadSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      )
+    }),
+    /** 
+    * Untrack API call and track failure that occurred.
+    * Dispatched via Saga call on failed cancel upload call.
+    **/
+    [actionCreators.resources.cancelUploadFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      sourceUploadStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelUpload.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
      * Refresh the resources in the Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
      **/
@@ -481,7 +568,7 @@ export default handleActions(
           state.pendingAPIOperations
         ),
         inSourceTarget: resourceHierarchy,
-        sourceUploadStatus: "finished"
+        sourceUploadStatus: state.sourceUploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
     /**
@@ -502,6 +589,13 @@ export default handleActions(
       ),
       inSourceTarget: null
     }),
+    /**
+     * Clear the ticket number
+     **/
+    [actionCreators.resources.clearActiveTicketNumber]: state => ({
+      ...state,
+      activeTicketNumber: null
+    })
   },
   initialState
 );

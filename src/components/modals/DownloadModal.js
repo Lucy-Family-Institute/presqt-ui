@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import textStyles from "../../styles/text";
 import React, { useEffect, useState } from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
@@ -11,12 +10,18 @@ import { actionCreators } from "../../redux/actionCreators";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
+import CancelButton from "../widgets/buttons/CancelButton";
 
 
 const modalDefaultMessage = (
   <div>
-    <div css={{ paddingBottom: 15 }}>The download is being processed on the server. Please do not leave the page.</div>
+    <div css={{ paddingBottom: 15 }}>
+      <p>The download is being processed on the server.</p>
+    </div>
     <Spinner />
+    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <CancelButton actionType='DOWNLOAD' />
+    </div>
   </div>);
 
 export default function DownloadModal() {
@@ -26,6 +31,7 @@ export default function DownloadModal() {
   const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
@@ -46,8 +52,7 @@ export default function DownloadModal() {
     if (sourceDownloadStatus === "failure") {
       if (downloadError) {
         errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
-      }
-      else if (downloadJobError) {
+      } else if (downloadJobError) {
         errorMessage = `PresQT API returned an error with status code ${downloadJobError.status}: ${downloadJobError.data}`
       }
       // Target error
@@ -64,11 +69,27 @@ export default function DownloadModal() {
             <RetryDownloadButton
               setModalContent={setModalContent}
               modalDefaultMessage={modalDefaultMessage}
-              />
+            />
           </span>
         </div>
       )
     }
+    else if (sourceDownloadStatus === 'cancelled') {
+      setModalContent(
+        <div
+          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <ErrorOutlineIcon color="error"/>
+          <span css={{ marginLeft: 5 }}>{sourceDownloadData.message}</span>
+          <span css={{ marginLeft: 15 }}>
+            <RetryDownloadButton
+              setModalContent={setModalContent}
+              modalDefaultMessage={modalDefaultMessage}
+            />
+          </span>
+        </div>
+      )
+    }
+
     // Download successful
     else if (sourceDownloadStatus === "success") {
       FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
@@ -90,6 +111,7 @@ export default function DownloadModal() {
         actionCreators.resources.downloadResource.toString()
       )
     );
+    dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
 
   return downloadModalDisplay ? (
@@ -100,10 +122,18 @@ export default function DownloadModal() {
         open={downloadModalDisplay}
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={downloadStatus === 'pending'}
       >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+        <DialogTitle
+          id="form-dialog-title"
+          onClose={handleClose}
+          disabled={downloadStatus === 'pending'}
+        >
           {sourceDownloadStatus === "failure"
             ? "Download Failed!"
+            : sourceDownloadStatus === "cancelled"
+            ? "Download Cancelled"
             : "Download In Progress"}
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>

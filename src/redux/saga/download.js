@@ -1,6 +1,10 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDownload, resourceDownloadJob} from "../../api/resources";
+import {
+  cancelResourceDownloadJob,
+  getResourceDownload,
+  resourceDownloadJob
+} from "../../api/resources";
 
 export function* watchSourceResourceDownload() {
   yield takeEvery(actionCreators.resources.downloadResource, downloadSourceTargetResource)
@@ -54,7 +58,12 @@ function* downloadSourceTargetResource(action) {
           {type : 'application/json'}
         );
         const errorData = yield call(getErrorData, downloadJobResponseData);
-        yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+        if (JSON.parse(errorData).status_code === '499') {
+          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'cancelled'));
+        }
+        else {
+          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+        }
       }
       else {
         const downloadJobResponseData = new Blob(
@@ -78,4 +87,30 @@ function* downloadSourceTargetResource(action) {
 
 function getErrorData(downloadJobResponseData) {
   return downloadJobResponseData.text();
+}
+
+// Cancel Download
+export function* watchCancelDownload() {
+  yield takeEvery(actionCreators.resources.cancelDownload, cancelDownload)
+}
+
+function* cancelDownload(action) {
+  try {
+    yield call(
+      cancelResourceDownloadJob,
+      action.payload.ticketNumber,
+      action.payload.sourceTargetToken
+    );
+
+    yield put(actionCreators.resources.cancelDownloadSuccess())
+
+  }
+
+  catch (error) {
+    yield put(actionCreators.resources.cancelDownloadFailure(
+      error.response.status,
+      error.response.data.error)
+    )
+  }
+
 }

@@ -14,6 +14,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
+import CancelButton from "../widgets/buttons/CancelButton";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -35,7 +36,15 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadJob.toString());
 
-  const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
+  const [stepThreeContent, setStepThreeContent] = useState(
+    <div>
+      <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
+      <LeftSpinner />
+      <div css={{ paddingTop: 15 }}>
+      <CancelButton actionType='UPLOAD' />
+      </div>
+    </div>
+  );
 
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
@@ -44,6 +53,18 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   useEffect(() => {
     if (sourceUploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+    }
+    else if (sourceUploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+      setStepThreeContent(
+        <div>
+          <p>Upload is being cancelled...</p>
+          <LeftSpinner />
+          <div css={{ paddingTop: 15 }}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
     }
     else if (sourceUploadStatus === 'finished') {
       const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
@@ -111,10 +132,13 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(successfulMessage);
     }
     // Upload Failed!
-    else if (sourceUploadStatus === 'failure') {
+    else if (sourceUploadStatus === 'failure' || sourceUploadStatus === 'cancelled') {
       let errorMessage;
+      if (sourceUploadStatus === 'cancelled') {
+        errorMessage = `${sourceUploadData.message}. Some resources may have still be uploaded.`
+      }
       // PresQT Upload Post error
-      if (uploadError) {
+      else if (uploadError) {
         errorMessage = `PresQT API returned an error status code ${uploadError.status}: ${uploadError.data}`;
       }
       // PresQT Upload Job error
