@@ -37,7 +37,7 @@ export default function TargetResourceBrowser() {
   const sourceTarget = useSelector(state => state.targets.source);
   const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
   const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
@@ -157,7 +157,7 @@ export default function TargetResourceBrowser() {
         {search()}
         {!sourceTarget ? null : upload()}
         {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTarget.toString()
+          actionCreators.resources.loadFromTarget.toString()
         ) ||
         pendingAPIOperations.includes(
           actionCreators.resources.loadFromSourceTargetSearch.toString()

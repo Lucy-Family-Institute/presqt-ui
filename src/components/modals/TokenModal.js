@@ -25,7 +25,7 @@ export default function TokenModal() {
   const [token, setToken] = useState('');
 
   const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
 
   /**
    * Add errors to the token state if they exist.
@@ -39,15 +39,15 @@ export default function TokenModal() {
   /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
+   * Dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const handleClose = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
     if (apiOperationErrors.length > 0 && error) {
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTarget.toString()));
+        actionCreators.resources.loadFromTarget.toString()));
       dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
   };
@@ -55,17 +55,17 @@ export default function TokenModal() {
   /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
+   * Dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
+    dispatch(actionCreators.resources.loadFromTarget(connection, token));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTarget.toString()));
+        actionCreators.resources.loadFromTarget.toString()));
     }
     setToken('');
   };

@@ -9,7 +9,7 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        LOAD_FROM_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
+        LOAD_FROM_TARGET: (sourceTarget, sourceTargetToken) => ({
             sourceTarget,
             sourceTargetToken,
         }),

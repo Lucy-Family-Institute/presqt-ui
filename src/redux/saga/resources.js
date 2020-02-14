@@ -4,7 +4,7 @@ import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getReso
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
-  yield takeEvery(actionCreators.resources.loadFromSourceTarget, loadSourceTargetResources);
+  yield takeEvery(actionCreators.resources.loadFromTarget, loadSourceTargetResources);
 }
 
  /**

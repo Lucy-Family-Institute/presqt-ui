@@ -28,11 +28,11 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: state => ({
+    [actionCreators.resources.loadFromTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromSourceTarget,
+        actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
       leftTargetResources: null
@@ -62,7 +62,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromSourceTarget,
+          actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
         leftTargetResources: resourceHierarchy
@@ -92,12 +92,12 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromSourceTarget,
+        actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromSourceTarget.toString(),
+        actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
       leftTargetResources: null

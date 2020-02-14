@@ -22,7 +22,7 @@ export default function AvailableConnections() {
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
   
   let tokenError;
   if (collection_error) {
@@ -49,10 +49,10 @@ export default function AvailableConnections() {
 
   /**
    * Set the selected target as the source target.
-   * If a connection already exists with the target then dispatch loadFromSourceTarget action.
+   * If a connection already exists with the target then dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatches loadFromSourceTargetSuccess action is if successful.
-   *        -> Saga function dispatches loadFromSourceTargetFailure action if not successful.
+   *        -> Saga function dispatches loadFromTargetSuccess action is if successful.
+   *        -> Saga function dispatches loadFromTargetFailure action if not successful.
    * Else display the modal.
    */
   const handleSwitchSourceTarget = connection => {
@@ -61,7 +61,7 @@ export default function AvailableConnections() {
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
+        actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name])
       );
     } else {
       setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);
