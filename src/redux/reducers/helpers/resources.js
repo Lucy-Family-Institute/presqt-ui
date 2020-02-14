@@ -59,7 +59,7 @@ export default function buildResourceHierarchy(state, action) {
   if (action.payload.length > 0) {
     resourceHierarchy = action.payload.reduce(
       (initial, resource, index, original) => {
-        if (state.selectedInSource && resource.id === state.selectedInSource.id) {
+        if (state.selectedLeftResource && resource.id === state.selectedLeftResource.id) {
           resource.active = true;
         }
 

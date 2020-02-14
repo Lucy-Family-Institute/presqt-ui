@@ -31,7 +31,7 @@ export default function TargetResourceBrowser() {
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
       : null);
-  const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
+  const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
@@ -86,7 +86,7 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (sourceTargetResources || sourceSearchValue || collection_error) {
+    if (leftTargetResources || sourceSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -97,7 +97,7 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources || sourceSearchValue || collection_error) {
+    if (leftTargetResources || sourceSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -117,15 +117,15 @@ export default function TargetResourceBrowser() {
   };
 
   useEffect(() => {
-    if (sourceTargetResources && sourceTargetResources.length > 0) {
+    if (leftTargetResources && leftTargetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources))
+        resource => onResourceClicked(resource, sourceTargetToken), leftTargetResources))
     }
-    else if (sourceTargetResources && sourceTargetResources.length === 0 && sourceSearchValue) {
+    else if (leftTargetResources && leftTargetResources.length === 0 && sourceSearchValue) {
       setMessage(`No ${sourceTarget.readable_name} resources found for search term 
         "${sourceSearchValue}".`);
     }
-    else if (sourceTargetResources && sourceTargetResources.length === 0) {
+    else if (leftTargetResources && leftTargetResources.length === 0) {
       setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
     }
     else if (search_error) {
@@ -139,7 +139,7 @@ export default function TargetResourceBrowser() {
     else {
       setMessage('');
     }
-  }, [sourceTargetResources]);
+  }, [leftTargetResources]);
 
   return (
     <div
