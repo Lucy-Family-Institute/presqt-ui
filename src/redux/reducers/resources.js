@@ -14,8 +14,8 @@ const initialState = {
   downloadStatus: null,
   downloadData: null,
   downloadModalDisplay: false,
-  sourceUploadStatus: null,
-  sourceUploadData: null,
+  uploadStatus: null,
+  uploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
   openResources: [],
@@ -400,7 +400,7 @@ export default handleActions(
         actionCreators.resources.uploadToSourceTarget,
         state.pendingAPIOperations
       ),
-      sourceUploadStatus: 'pending'
+      uploadStatus: 'pending'
     }),
     /**
      * Untrack API call.
@@ -431,7 +431,7 @@ export default handleActions(
         actionCreators.resources.uploadToSourceTarget.toString(),
         state.apiOperationErrors
       ),
-      sourceUploadStatus: 'failure'
+      uploadStatus: 'failure'
     }),
     /**
      * Register upload job operation.
@@ -446,8 +446,8 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the upload job status to sourceUploadStatus.
-     * Add the upload job contents to sourceUploadData.
+     * Add the upload job status to uploadStatus.
+     * Add the upload job contents to uploadData.
      **/
     [actionCreators.resources.uploadJobSuccess]: (state, action) => ({
       ...state,
@@ -456,8 +456,8 @@ export default handleActions(
         actionCreators.resources.uploadJob,
         state.pendingAPIOperations
       ),
-      sourceUploadStatus: action.payload.status,
-      sourceUploadData: action.payload.data
+      uploadStatus: action.payload.status,
+      uploadData: action.payload.data
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -466,7 +466,7 @@ export default handleActions(
     [actionCreators.resources.uploadJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      sourceUploadStatus: 'failure',
+      uploadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.uploadJob,
         state.pendingAPIOperations
@@ -482,8 +482,8 @@ export default handleActions(
      **/
     [actionCreators.resources.clearUploadData]: state => ({
       ...state,
-      sourceUploadStatus: null,
-      sourceUploadData: null
+      uploadStatus: null,
+      uploadData: null
     }),
     /**
      * Display the Upload Modal
@@ -530,7 +530,7 @@ export default handleActions(
     [actionCreators.resources.cancelUploadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      sourceUploadStatus: 'cancelled',
+      uploadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelUpload,
         state.pendingAPIOperations
@@ -567,7 +567,7 @@ export default handleActions(
           state.pendingAPIOperations
         ),
         leftTargetResources: resourceHierarchy,
-        sourceUploadStatus: state.sourceUploadStatus === 'success' ? "finished" : 'cancelled'
+        uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
     /**

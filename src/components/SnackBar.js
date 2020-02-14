@@ -23,7 +23,7 @@ export default function SnackBar() {
   const classes = useStyles();
 
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
-  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
@@ -49,17 +49,17 @@ export default function SnackBar() {
    * UPLOAD
    **/
   useEffect(() => {
-    if (sourceUploadStatus === 'finished') {
+    if (uploadStatus === 'finished') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Successful!');
       setSnackBarClass(classes.success);
     }
-    else if (sourceUploadStatus === 'failure') {
+    else if (uploadStatus === 'failure') {
       setSnackBarOpen(true);
       setSnackBarText('Upload Failed!');
       setSnackBarClass(classes.failure);
     }
-  }, [sourceUploadStatus]);
+  }, [uploadStatus]);
 
   return (
     <Snackbar
