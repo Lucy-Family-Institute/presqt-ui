@@ -18,7 +18,7 @@ const initialState = {
   uploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openResources: [],
+  openLeftResources: [],
   activeTicketNumber: null
 };
 
@@ -50,7 +50,7 @@ export default handleActions(
       ),
       selectedLeftResource: null,
       leftSearchValue: action.payload.searchValue,
-      openResources: []
+      openLeftResources: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -127,7 +127,7 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
-      let newOpenResources = state.openResources;
+      let newopenLeftResources = state.openLeftResources;
 
       const searchForResourceInArray = (
         desiredContainer,
@@ -138,10 +138,10 @@ export default handleActions(
 
         if (updatedNode.id === desiredContainer.id) {
           if (openContainer) {
-            newOpenResources.push(desiredContainer.id)
+            newopenLeftResources.push(desiredContainer.id)
           }
           else{
-            newOpenResources = newOpenResources.filter(element => element !== desiredContainer.id)
+            newopenLeftResources = newopenLeftResources.filter(element => element !== desiredContainer.id)
           }
           return {
             ...updatedNode,
@@ -169,7 +169,7 @@ export default handleActions(
       return {
         ...state,
         leftTargetResources: updatedSourceResources,
-        openResources: newOpenResources
+        openLeftResources: newopenLeftResources
       };
     },
     /**
