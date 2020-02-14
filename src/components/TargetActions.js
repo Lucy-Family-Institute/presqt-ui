@@ -81,7 +81,7 @@ export default function TargetActions() {
         actionCreators.resources.selectSourceResource.toString()
       ) ||
       pendingAPIOperations.includes(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString()
       )
         ? null
         : DisplayTargetActions()}

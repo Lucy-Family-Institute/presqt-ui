@@ -39,7 +39,7 @@ export default function TargetResourceBrowser() {
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
   const search_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
+    element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
@@ -160,7 +160,7 @@ export default function TargetResourceBrowser() {
           actionCreators.resources.loadFromTarget.toString()
         ) ||
         pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTargetSearch.toString()
+          actionCreators.resources.loadFromTargetSearch.toString()
         ) ? <Spinner />
           : (
           <div>

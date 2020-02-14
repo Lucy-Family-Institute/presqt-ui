@@ -13,9 +13,9 @@ export const actionCreators = createActions({
             target,
             targetToken,
         }),
-        LOAD_FROM_SOURCE_TARGET_SEARCH: (sourceTarget, sourceTargetToken, searchValue) => ({
-            sourceTarget,
-            sourceTargetToken,
+        LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue) => ({
+            target,
+            targetToken,
             searchValue
         }),
         LOAD_FROM_SOURCE_TARGET_SUCCESS: undefined,

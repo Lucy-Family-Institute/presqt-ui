@@ -37,11 +37,11 @@ export default function TargetSearch() {
     event.preventDefault();
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString()
       )
     );
     dispatch(
-      actionCreators.resources.loadFromSourceTargetSearch(
+      actionCreators.resources.loadFromTargetSearch(
         sourceTarget.name,
         token,
         searchValue

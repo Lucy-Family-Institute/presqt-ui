@@ -118,7 +118,7 @@ export default function TargetActionDetail() {
       {
         pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
         ? <Spinner />
-        : pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+        : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null
         : selectedLeftResource ? (
           <div>

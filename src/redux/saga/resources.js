@@ -1,6 +1,6 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
@@ -33,15 +33,15 @@ function* loadSourceTargetResources(action) {
  *  Dispatch either the success or failure actions accordingly.
  **/
 export function* watchSearch() {
-  yield takeEvery(actionCreators.resources.loadFromSourceTargetSearch, loadSourceTargetResourcesSearch);
+  yield takeEvery(actionCreators.resources.loadFromTargetSearch, loadTargetResourcesSearch);
 }
 
-function* loadSourceTargetResourcesSearch(action) {
+function* loadTargetResourcesSearch(action) {
   try {
     const response = yield call(
     getTargetResourcesSearch,
-    action.payload.sourceTarget,
-    action.payload.sourceTargetToken,
+    action.payload.target,
+    action.payload.targetToken,
     action.payload.searchValue
     );
     yield put(actionCreators.resources.loadFromSourceTargetSearchSuccess(response.data));
