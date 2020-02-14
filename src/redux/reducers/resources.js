@@ -12,7 +12,7 @@ const initialState = {
   apiOperationErrors: [],
   leftSearchValue: null,
   downloadStatus: null,
-  sourceDownloadData: null,
+  downloadData: null,
   downloadModalDisplay: false,
   sourceUploadStatus: null,
   sourceUploadData: null,
@@ -294,7 +294,7 @@ export default handleActions(
     /**
      * Untrack API call.
      * Add the download job status to downloadStatus.
-     * Add the download job contents to sourceDownloadData.
+     * Add the download job contents to downloadData.
      **/
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
@@ -304,7 +304,7 @@ export default handleActions(
         state.pendingAPIOperations
       ),
       downloadStatus: action.payload.status,
-      sourceDownloadData: action.payload.data
+      downloadData: action.payload.data
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -374,7 +374,7 @@ export default handleActions(
     [actionCreators.resources.clearDownloadData]: state => ({
       ...state,
       downloadStatus: null,
-      sourceDownloadData: null
+      downloadData: null
     }),
     /**
      * Display the Download Modal

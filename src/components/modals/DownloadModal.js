@@ -27,7 +27,7 @@ const modalDefaultMessage = (
 export default function DownloadModal() {
   const dispatch = useDispatch();
 
-  const sourceDownloadData = useSelector(state => state.resources.sourceDownloadData);
+  const downloadData = useSelector(state => state.resources.downloadData);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
@@ -56,7 +56,7 @@ export default function DownloadModal() {
       }
       // Target error
       else {
-        errorMessage = `The Target returned an error with status code ${sourceDownloadData.status_code}: ${sourceDownloadData.message}`;
+        errorMessage = `The Target returned an error with status code ${downloadData.status_code}: ${downloadData.message}`;
       }
 
       setModalContent(
@@ -78,7 +78,7 @@ export default function DownloadModal() {
         <div
           css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <ErrorOutlineIcon color="error"/>
-          <span css={{ marginLeft: 5 }}>{sourceDownloadData.message}</span>
+          <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
           <span css={{ marginLeft: 15 }}>
             <RetryDownloadButton
               setModalContent={setModalContent}
@@ -91,7 +91,7 @@ export default function DownloadModal() {
 
     // Download successful
     else if (downloadStatus === "success") {
-      FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
+      FileSaver.saveAs(downloadData, "PresQT_Download.zip");
       dispatch(actionCreators.resources.hideDownloadModal());
       dispatch(actionCreators.resources.clearDownloadData());
     }
