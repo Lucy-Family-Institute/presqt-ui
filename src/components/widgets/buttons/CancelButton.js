@@ -8,7 +8,7 @@ import {actionCreators} from "../../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 
 export default function CancelButton({actionType}) {
-  const classes = buttonStyles.RetryDownload();
+  const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
   const sourceTarget = useSelector(state => state.targets.source);
   const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
