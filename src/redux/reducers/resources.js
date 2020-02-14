@@ -338,8 +338,6 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the cancel download status to sourceDownloadStatus.
-     * Add the cancel download contents to sourceDownloadData.
      **/
     [actionCreators.resources.cancelDownloadSuccess]: state => ({
       ...state,
@@ -517,8 +515,6 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the cancel upload status to sourceUploadStatus.
-     * Add the cancel upload contents to sourceUploadData.
      **/
     [actionCreators.resources.cancelUploadSuccess]: state => ({
       ...state,
