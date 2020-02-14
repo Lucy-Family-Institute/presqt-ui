@@ -28,10 +28,9 @@ export default function DownloadModal() {
   const dispatch = useDispatch();
 
   const sourceDownloadData = useSelector(state => state.resources.sourceDownloadData);
-  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const downloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
@@ -42,14 +41,14 @@ export default function DownloadModal() {
     element => element.action === actionCreators.resources.downloadJob.toString());
 
   /**
-   * Watch for the sourceDownloadStatus to change to 'failure' or 'success'.
+   * Watch for the downloadStatus to change to 'failure' or 'success'.
    * If 'failure' then update the modal message
    * If 'success' then use FileSaver to download the file and transition the modal to close.
    **/
   useEffect(() => {
     // Download failed
     let errorMessage;
-    if (sourceDownloadStatus === "failure") {
+    if (downloadStatus === "failure") {
       if (downloadError) {
         errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
       } else if (downloadJobError) {
@@ -74,7 +73,7 @@ export default function DownloadModal() {
         </div>
       )
     }
-    else if (sourceDownloadStatus === 'cancelled') {
+    else if (downloadStatus === 'cancelled') {
       setModalContent(
         <div
           css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -91,12 +90,12 @@ export default function DownloadModal() {
     }
 
     // Download successful
-    else if (sourceDownloadStatus === "success") {
+    else if (downloadStatus === "success") {
       FileSaver.saveAs(sourceDownloadData, "PresQT_Download.zip");
       dispatch(actionCreators.resources.hideDownloadModal());
       dispatch(actionCreators.resources.clearDownloadData());
     }
-  }, [sourceDownloadStatus]);
+  }, [downloadStatus]);
 
   /**
    *  Close the modal.
@@ -130,9 +129,9 @@ export default function DownloadModal() {
           onClose={handleClose}
           disabled={downloadStatus === 'pending'}
         >
-          {sourceDownloadStatus === "failure"
+          {downloadStatus === "failure"
             ? "Download Failed!"
-            : sourceDownloadStatus === "cancelled"
+            : downloadStatus === "cancelled"
             ? "Download Cancelled"
             : "Download In Progress"}
         </DialogTitle>

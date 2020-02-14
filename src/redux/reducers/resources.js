@@ -11,7 +11,7 @@ const initialState = {
   selectedLeftResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
-  sourceDownloadStatus: null,
+  downloadStatus: null,
   sourceDownloadData: null,
   downloadModalDisplay: false,
   sourceUploadStatus: null,
@@ -269,7 +269,7 @@ export default handleActions(
     [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      sourceDownloadStatus: 'failure',
+      downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
@@ -293,7 +293,7 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the download job status to sourceDownloadStatus.
+     * Add the download job status to downloadStatus.
      * Add the download job contents to sourceDownloadData.
      **/
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
@@ -303,7 +303,7 @@ export default handleActions(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
       ),
-      sourceDownloadStatus: action.payload.status,
+      downloadStatus: action.payload.status,
       sourceDownloadData: action.payload.data
     }),
     /**
@@ -313,7 +313,7 @@ export default handleActions(
     [actionCreators.resources.downloadJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      sourceDownloadStatus: 'failure',
+      downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
@@ -353,7 +353,7 @@ export default handleActions(
     [actionCreators.resources.cancelDownloadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      sourceDownloadStatus: 'cancelled',
+      downloadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelDownload,
         state.pendingAPIOperations
@@ -373,7 +373,7 @@ export default handleActions(
      **/
     [actionCreators.resources.clearDownloadData]: state => ({
       ...state,
-      sourceDownloadStatus: null,
+      downloadStatus: null,
       sourceDownloadData: null
     }),
     /**

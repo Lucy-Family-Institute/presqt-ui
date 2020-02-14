@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 export default function SnackBar() {
   const classes = useStyles();
 
-  const sourceDownloadStatus = useSelector(state => state.resources.sourceDownloadStatus);
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
   const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -33,17 +33,17 @@ export default function SnackBar() {
    * DOWNLOAD
    **/
   useEffect(() => {
-    if (sourceDownloadStatus === 'success') {
+    if (downloadStatus === 'success') {
       setSnackBarOpen(true);
       setSnackBarText('Download Successful!');
       setSnackBarClass(classes.success);
     }
-    else if (sourceDownloadStatus === 'failure') {
+    else if (downloadStatus === 'failure') {
       setSnackBarOpen(true);
       setSnackBarText('Download Failed!');
       setSnackBarClass(classes.failure);
     }
-  }, [sourceDownloadStatus]);
+  }, [downloadStatus]);
 
   /**
    * UPLOAD
