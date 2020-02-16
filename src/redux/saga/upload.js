@@ -16,7 +16,7 @@ function* uploadTargetResource(action) {
       action.payload.resourceToUploadTo,
       action.payload.targetToken
     );
-    yield put(actionCreators.resources.uploadToSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.uploadToTargetSuccess(response.data));
 
     // Kick off the upload job endpoint check-in
     try {
@@ -61,7 +61,7 @@ function* uploadTargetResource(action) {
   }
   // Upload failed because of PresQT API error
   catch (error) {
-    yield put(actionCreators.resources.uploadToSourceTargetFailure(
+    yield put(actionCreators.resources.uploadToTargetFailure(
       error.response.status,
       error.response.data.error)
     )}

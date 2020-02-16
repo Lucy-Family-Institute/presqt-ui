@@ -406,7 +406,7 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful upload call.
      **/
-    [actionCreators.resources.uploadToSourceTargetSuccess]: (state, action) => ({
+    [actionCreators.resources.uploadToTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -419,7 +419,7 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed upload call.
      **/
-    [actionCreators.resources.uploadToSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.uploadToTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
