@@ -73,7 +73,7 @@ function* loadResourceDetail(action) {
 
 /** Refresh Resource Collection **/
 export function* watchRefreshSource() {
-  yield takeEvery(actionCreators.resources.refreshSourceTarget, refreshTargetResources);
+  yield takeEvery(actionCreators.resources.refreshTarget, refreshTargetResources);
 }
 
 /**
@@ -85,8 +85,8 @@ function* refreshTargetResources(action) {
   try {
     const response = yield call(
       getTargetResources,
-      action.payload.sourceTarget.name,
-      action.payload.sourceTargetToken
+      action.payload.target.name,
+      action.payload.targetToken
     );
     yield put(actionCreators.resources.refreshSourceTargetSuccess(response.data));
   }

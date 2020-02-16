@@ -545,11 +545,11 @@ export default handleActions(
      * Refresh the resources in the Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.refreshSourceTarget]: state => ({
+    [actionCreators.resources.refreshTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.refreshSourceTarget,
+        actionCreators.resources.refreshTarget,
         state.pendingAPIOperations
       ),
     }),
@@ -563,7 +563,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.refreshSourceTarget,
+          actionCreators.resources.refreshTarget,
           state.pendingAPIOperations
         ),
         leftTargetResources: resourceHierarchy,
@@ -578,12 +578,12 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.refreshSourceTarget,
+        actionCreators.resources.refreshTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.refreshSourceTarget.toString(),
+        actionCreators.resources.refreshTarget.toString(),
         state.apiOperationErrors
       ),
       leftTargetResources: null

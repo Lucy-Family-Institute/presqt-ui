@@ -50,10 +50,7 @@ export const actionCreators = createActions({
         CLEAR_UPLOAD_DATA: undefined,
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
         HIDE_UPLOAD_MODAL: undefined,
-        REFRESH_SOURCE_TARGET: (sourceTarget, sourceTargetToken) => ({
-            sourceTarget,
-            sourceTargetToken,
-        }),
+        REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_SOURCE_TARGET_SUCCESS: undefined,
         REFRESH_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined

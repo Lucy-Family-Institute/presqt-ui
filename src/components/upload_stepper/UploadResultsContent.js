@@ -52,10 +52,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
    **/
   useEffect(() => {
     if (uploadStatus === 'success') {
-      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
     else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
       setStepThreeContent(
         <div>
           <p>Upload is being cancelled...</p>
