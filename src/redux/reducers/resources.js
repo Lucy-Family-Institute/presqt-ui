@@ -230,7 +230,7 @@ export default handleActions(
     /**
      * Clear source list and detail data
      **/
-    [actionCreators.resources.clearSourceResources]: state => {
+    [actionCreators.resources.clearResources]: state => {
       return {
         ...state,
         leftTargetResources: null,
