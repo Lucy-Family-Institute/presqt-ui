@@ -1,4 +1,4 @@
-import {call, put, takeEvery} from "@redux-saga/core/effects";
+import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
   cancelResourceDownloadJob,
@@ -46,7 +46,7 @@ function* downloadSourceTargetResource(action) {
         // Download pending!
         else {
           yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
-          setTimeout(1);
+          yield delay(1000);
         }
       }
     }
