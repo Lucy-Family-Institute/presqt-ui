@@ -25,7 +25,7 @@ export const actionCreators = createActions({
         SELECT_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         SELECT_RESOURCE_SUCCESS: undefined,
         CLEAR_RESOURCES: undefined,
-        DOWNLOAD_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
+        DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         DOWNLOAD_FROM_SOURCE_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,

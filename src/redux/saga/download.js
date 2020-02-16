@@ -15,7 +15,7 @@ function* downloadSourceTargetResource(action) {
     const response = yield call(
       getResourceDownload,
       action.payload.resource,
-      action.payload.sourceTargetToken
+      action.payload.targetToken
     );
 
     yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
@@ -31,7 +31,7 @@ function* downloadSourceTargetResource(action) {
         const downloadJobResponse = yield call(
           resourceDownloadJob,
           response.data.download_job,
-          action.payload.sourceTargetToken
+          action.payload.targetToken
         );
 
         // Download successful!

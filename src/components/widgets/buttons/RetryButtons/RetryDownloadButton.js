@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../../../styles/text";
@@ -20,7 +20,7 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
    * selectedLeftResource  : Object representing the selected resource's details
    **/
   // Download specific Selectors
-  const sourceTargetToken = useSelector(
+  const targetToken = useSelector(
     state => state.authorization.apiTokens[state.targets.source.name]);
   const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
 
@@ -28,8 +28,8 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
       dispatch(actionCreators.resources.clearDownloadData());
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.downloadResource.toString()));
-      dispatch(actionCreators.resources.downloadResource(
-        selectedLeftResource, sourceTargetToken));
+      dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
+
       setModalContent(modalDefaultMessage);
     };
 

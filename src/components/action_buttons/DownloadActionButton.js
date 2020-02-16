@@ -14,7 +14,7 @@ import ActionButton from "../widgets/buttons/ActionButton";
 export default function DownloadActionButton({ disabled }) {
   const dispatch = useDispatch();
 
-  const sourceTargetToken = useSelector(state =>
+  const targetToken = useSelector(state =>
     state.authorization.apiTokens[state.targets.source.name]);
   const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
 
@@ -27,7 +27,7 @@ export default function DownloadActionButton({ disabled }) {
    **/
   const submitDownload = () => {
     dispatch(actionCreators.resources.displayDownloadModal());
-    dispatch(actionCreators.resources.downloadResource(selectedLeftResource, sourceTargetToken));
+    dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
   };
 
   return (
