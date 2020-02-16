@@ -72,7 +72,7 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
+    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
@@ -106,7 +106,7 @@ export default handleActions(
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
+    [actionCreators.resources.loadFromTargetSearchFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(

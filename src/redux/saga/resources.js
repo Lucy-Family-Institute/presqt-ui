@@ -44,10 +44,10 @@ function* loadTargetResourcesSearch(action) {
     action.payload.targetToken,
     action.payload.searchValue
     );
-    yield put(actionCreators.resources.loadFromSourceTargetSearchSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.loadFromSourceTargetSearchFailure(
+    yield put(actionCreators.resources.loadFromTargetSearchFailure(
       error.response.status,
       error.response.data.error)
     );
