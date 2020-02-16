@@ -22,7 +22,7 @@ export const actionCreators = createActions({
         REMOVE_FROM_ERROR_LIST: (actionToRemove) => ({actionToRemove}),
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
-        SELECT_SOURCE_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),
+        SELECT_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         SELECT_SOURCE_RESOURCE_SUCCESS: undefined,
         CLEAR_SOURCE_RESOURCES: undefined,
         DOWNLOAD_RESOURCE: (resource, sourceTargetToken) => ({resource, sourceTargetToken}),

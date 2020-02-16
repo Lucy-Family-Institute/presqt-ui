@@ -176,14 +176,14 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Detail occurs with this action.
      **/
-    [actionCreators.resources.selectSourceResource]: (state, action) => {
-      const updateleftTargetResources = leftTargetResources => {
+    [actionCreators.resources.selectResource]: (state, action) => {
+      const updateLeftTargetResources = leftTargetResources => {
         let sourceResources = leftTargetResources;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updateleftTargetResources(resource.children);
+              updateLeftTargetResources(resource.children);
             }
           }
         });
@@ -194,10 +194,10 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.selectSourceResource,
+          actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        leftTargetResources: updateleftTargetResources(state.leftTargetResources)
+        leftTargetResources: updateLeftTargetResources(state.leftTargetResources)
       };
     },
     /***
@@ -211,7 +211,7 @@ export default handleActions(
         selectedLeftResource: action.payload,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.selectSourceResource,
+          actionCreators.resources.selectResource,
           state.pendingAPIOperations
         )
       };

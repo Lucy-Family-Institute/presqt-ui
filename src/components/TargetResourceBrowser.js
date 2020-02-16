@@ -46,16 +46,16 @@ export default function TargetResourceBrowser() {
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
    * Else dispatch the openContainer action to expand the container
-   * After the container action completes, dispatch selectSourceResource to fetch resource details
+   * After the container action completes, dispatch selectResource to fetch resource details
    *   -> Saga call to Resource Detail occurs here
    *      -> On complete saga dispatches the selectSourceResourceSuccess action
    */
-  const onResourceClicked = (resource, sourceTargetToken) => {
+  const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
-    dispatch(actionCreators.resources.selectSourceResource(resource, sourceTargetToken));
+    dispatch(actionCreators.resources.selectResource(resource, targetToken));
   };
 
   /**

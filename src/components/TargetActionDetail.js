@@ -116,7 +116,7 @@ export default function TargetActionDetail() {
       ]}
     >
       {
-        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        pendingAPIOperations.includes(actionCreators.resources.selectResource.toString())
         ? <Spinner />
         : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null

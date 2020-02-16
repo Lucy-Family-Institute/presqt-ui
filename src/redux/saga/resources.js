@@ -55,15 +55,15 @@ function* loadTargetResourcesSearch(action) {
 }
 
 /** Resource Detail **/
-export function* watchSelectSourceResource() {
-  yield takeEvery(actionCreators.resources.selectSourceResource, loadResourceDetail);
+export function* watchSelectResource() {
+  yield takeEvery(actionCreators.resources.selectResource, loadResourceDetail);
 }
 
 function* loadResourceDetail(action) {
   const response = yield call(
     getResourceDetail,
     action.payload.resource,
-    action.payload.sourceTargetToken
+    action.payload.targetToken
   );
 
   yield put(
