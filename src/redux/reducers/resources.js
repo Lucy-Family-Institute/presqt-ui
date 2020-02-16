@@ -557,7 +557,7 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshSourceTargetSuccess]: (state, action) => {
+    [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
@@ -574,7 +574,7 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.refreshTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
