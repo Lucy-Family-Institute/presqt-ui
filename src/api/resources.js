@@ -4,62 +4,62 @@ import { apiURLBase } from '../config';
 /**
  * Resource Collection Endpoint
  **/
-export function getTargetResources(sourceTarget, sourceTargetToken) {
-  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources/`, {
-    headers: { 'presqt-source-token': sourceTargetToken }
+export function getTargetResources(target, targetToken) {
+  return axios.get(`${apiURLBase}targets/${target}/resources/`, {
+    headers: { 'presqt-source-token': targetToken }
   });
 }
 
 /**
  * Resource Collection Endpoint With Search Parameter
  **/
-export function getTargetResourcesSearch(sourceTarget, sourceTargetToken, search) {
+export function getTargetResourcesSearch(target, targetToken, search) {
   const searchValueNoSpaces = search.replace(/ /g, "+");
 
-  return axios.get(`${apiURLBase}targets/${sourceTarget}/resources?title=${searchValueNoSpaces}`, {
-    headers: { 'presqt-source-token': sourceTargetToken }
+  return axios.get(`${apiURLBase}targets/${target}/resources?title=${searchValueNoSpaces}`, {
+    headers: { 'presqt-source-token': targetToken }
   });
 }
 
 /**
  * Resource Detail Endpoint
  **/
-export function getResourceDetail(resource, sourceTargetToken) {
+export function getResourceDetail(resource, targetToken) {
   const resourceDetailURL = resource.links.find(link => link.name === 'Detail').link;
-  return axios.get(resourceDetailURL, {headers: { 'presqt-source-token': sourceTargetToken }
+  return axios.get(resourceDetailURL, {headers: { 'presqt-source-token': targetToken }
   });
 }
 
 /**
  * Resource Download Endpoint
  **/
-export function getResourceDownload(resource, sourceTargetToken) {
+export function getResourceDownload(resource, targetToken) {
   const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
-  return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': sourceTargetToken } });
+  return axios.get(resourceDownloadURL, { headers: { 'presqt-source-token': targetToken } });
 }
 
 /**
  * Resource Download Job Endpoint
  **/
-export function resourceDownloadJob(downloadJobURL, sourceTargetToken) {
-  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': sourceTargetToken },
+export function resourceDownloadJob(downloadJobURL, targetToken) {
+  return axios.get(downloadJobURL, { headers: { 'presqt-source-token': targetToken },
     responseType: 'blob' });
 }
 
 /**
  * Cancel Download Job Endpoint
  **/
-export function cancelResourceDownloadJob(ticketNumber, sourceTargetToken) {
-  return axios.patch(`${apiURLBase}downloads/${ticketNumber}/`, null, { headers: { 'presqt-source-token': sourceTargetToken }});
+export function cancelResourceDownloadJob(ticketNumber, targetToken) {
+  return axios.patch(`${apiURLBase}downloads/${ticketNumber}/`, null, { headers: { 'presqt-source-token': targetToken }});
 }
 
 /**
  * Resource Upload Endpoint
  **/
-export function postResourceUpload(sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) {
+export function postResourceUpload(target, file, duplicateAction, resourceToUploadTo, targetToken) {
   let resourceUploadURL;
   if (!resourceToUploadTo) {
-    resourceUploadURL = `${apiURLBase}targets/${sourceTarget}/resources/`;
+    resourceUploadURL = `${apiURLBase}targets/${target}/resources/`;
   }
   else {
     resourceUploadURL = resourceToUploadTo.links.find(link => link.name === 'Upload').link;
@@ -69,7 +69,7 @@ export function postResourceUpload(sourceTarget, file, duplicateAction, resource
   bodyFormData.set('presqt-file', file);
   return axios.post(resourceUploadURL,
     bodyFormData,
-    { headers: { 'presqt-destination-token': sourceTargetToken,
+    { headers: { 'presqt-destination-token': targetToken,
         'presqt-file-duplicate-action': duplicateAction }}
     )
 }
@@ -77,15 +77,15 @@ export function postResourceUpload(sourceTarget, file, duplicateAction, resource
 /**
  * Resource Upload Job Endpoint
  **/
-export function resourceUploadJob(uploadJobURL, sourceTargetToken) {
+export function resourceUploadJob(uploadJobURL, targetToken) {
   return axios.get(
     uploadJobURL,
-    { headers: { 'presqt-destination-token': sourceTargetToken }});
+    { headers: { 'presqt-destination-token': targetToken }});
 }
 
 /**
  * Cancel Upload Job Endpoint
  **/
-export function cancelResourceUploadJob(ticketNumber, sourceTargetToken) {
-  return axios.patch(`${apiURLBase}uploads/${ticketNumber}/`, null, { headers: { 'presqt-destination-token': sourceTargetToken }});
+export function cancelResourceUploadJob(ticketNumber, targetToken) {
+  return axios.patch(`${apiURLBase}uploads/${ticketNumber}/`, null, { headers: { 'presqt-destination-token': targetToken }});
 }
