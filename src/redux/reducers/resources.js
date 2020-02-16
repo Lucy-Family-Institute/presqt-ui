@@ -205,7 +205,7 @@ export default handleActions(
      * Add resource details to selectedLeftResource.
      * Dispatched via Saga call on successful Resource Detail call.
      **/
-    [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
+    [actionCreators.resources.selectResourceSuccess]: (state, action) => {
       return {
         ...state,
         selectedLeftResource: action.payload,

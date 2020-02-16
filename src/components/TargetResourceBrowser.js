@@ -48,7 +48,7 @@ export default function TargetResourceBrowser() {
    * Else dispatch the openContainer action to expand the container
    * After the container action completes, dispatch selectResource to fetch resource details
    *   -> Saga call to Resource Detail occurs here
-   *      -> On complete saga dispatches the selectSourceResourceSuccess action
+   *      -> On complete saga dispatches the selectResourceSuccess action
    */
   const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
