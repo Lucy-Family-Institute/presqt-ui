@@ -99,7 +99,7 @@ function* cancelDownload(action) {
     yield call(
       cancelResourceDownloadJob,
       action.payload.ticketNumber,
-      action.payload.sourceTargetToken
+      action.payload.targetToken
     );
 
     yield put(actionCreators.resources.cancelDownloadSuccess())
