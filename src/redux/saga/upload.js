@@ -1,24 +1,20 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {
-  cancelResourceDownloadJob, cancelResourceUploadJob,
-  postResourceUpload,
-  resourceUploadJob
-} from "../../api/resources";
+import {cancelResourceUploadJob, postResourceUpload, resourceUploadJob} from "../../api/resources";
 
 export function* watchSourceResourceUpload() {
-  yield takeEvery(actionCreators.resources.uploadToSourceTarget, uploadSourceTargetResource)
+  yield takeEvery(actionCreators.resources.uploadToTarget, uploadTargetResource)
 }
 
-function* uploadSourceTargetResource(action) {
+function* uploadTargetResource(action) {
   try {
     const response = yield call(
       postResourceUpload,
-      action.payload.sourceTarget,
+      action.payload.target,
       action.payload.file,
       action.payload.duplicateAction,
       action.payload.resourceToUploadTo,
-      action.payload.sourceTargetToken
+      action.payload.targetToken
     );
     yield put(actionCreators.resources.uploadToSourceTargetSuccess(response.data));
 
@@ -32,7 +28,7 @@ function* uploadSourceTargetResource(action) {
         const uploadJobResponse = yield call(
           resourceUploadJob,
           response.data.upload_job,
-          action.payload.sourceTargetToken
+          action.payload.targetToken
         );
 
         // Upload successful!
@@ -81,7 +77,7 @@ function* cancelUpload(action) {
     yield call(
       cancelResourceUploadJob,
       action.payload.ticketNumber,
-      action.payload.sourceTargetToken
+      action.payload.targetToken
     );
 
     yield put(actionCreators.resources.cancelUploadSuccess())

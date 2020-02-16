@@ -26,8 +26,8 @@ export const actionCreators = createActions({
         SELECT_RESOURCE_SUCCESS: undefined,
         CLEAR_RESOURCES: undefined,
         DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
-        DOWNLOAD_FROM_SOURCE_TARGET_SUCCESS: (data) => ({data}),
-        DOWNLOAD_FROM_SOURCE_TARGET_FAILURE: (status, data) => ({ status, data }),
+        DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
+        DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,
         DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         DOWNLOAD_JOB_FAILURE: (status, data) => ({status, data}),
@@ -37,8 +37,8 @@ export const actionCreators = createActions({
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
-        UPLOAD_TO_SOURCE_TARGET: (sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken) =>
-          ({sourceTarget, file, duplicateAction, resourceToUploadTo, sourceTargetToken}),
+        UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
+          ({target, file, duplicateAction, resourceToUploadTo, targetToken}),
         UPLOAD_TO_SOURCE_TARGET_SUCCESS: (data) => ({data}),
         UPLOAD_TO_SOURCE_TARGET_FAILURE: (status, data) => ({status, data}),
         UPLOAD_JOB: undefined,

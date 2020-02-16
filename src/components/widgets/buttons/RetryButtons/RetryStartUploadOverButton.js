@@ -15,7 +15,7 @@ export default function RetryStartUploadOverButton({setActiveStep, setSelectedFi
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.uploadToSourceTarget.toString()
+        actionCreators.resources.uploadToTarget.toString()
       )
     );
     setSelectedFile(null);

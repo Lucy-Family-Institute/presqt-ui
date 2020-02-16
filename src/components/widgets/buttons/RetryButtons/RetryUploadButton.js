@@ -22,11 +22,11 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.uploadToSourceTarget.toString()
+        actionCreators.resources.uploadToTarget.toString()
       )
     );
     dispatch(
-      actionCreators.resources.uploadToSourceTarget(
+      actionCreators.resources.uploadToTarget(
         selectedTarget,
         selectedFile,
         selectedDuplicate,

@@ -31,7 +31,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
   const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+    element => element.action === actionCreators.resources.uploadToTarget.toString());
 
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadJob.toString());

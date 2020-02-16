@@ -18,7 +18,7 @@ function* downloadSourceTargetResource(action) {
       action.payload.targetToken
     );
 
-    yield put(actionCreators.resources.downloadFromSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.downloadFromTargetSuccess(response.data));
 
     // Kick off the download job endpoint check-in
     try {
@@ -78,7 +78,7 @@ function* downloadSourceTargetResource(action) {
     }
   }
   catch (error) {
-    yield put(actionCreators.resources.downloadFromSourceTargetFailure(
+    yield put(actionCreators.resources.downloadFromTargetFailure(
       error.response.status,
       error.response.data.error)
     );

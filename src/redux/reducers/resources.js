@@ -253,7 +253,7 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetSuccess]: (state, action) => ({
+    [actionCreators.resources.downloadFromTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -266,7 +266,7 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.downloadFromTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       downloadStatus: 'failure',
@@ -393,11 +393,11 @@ export default handleActions(
     /**
      * Register resource upload operation.
      **/
-    [actionCreators.resources.uploadToSourceTarget]: state => ({
+    [actionCreators.resources.uploadToTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.uploadToTarget,
         state.pendingAPIOperations
       ),
       uploadStatus: 'pending'
@@ -410,7 +410,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.uploadToTarget,
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -423,12 +423,12 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.uploadToTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.uploadToSourceTarget.toString(),
+        actionCreators.resources.uploadToTarget.toString(),
         state.apiOperationErrors
       ),
       uploadStatus: 'failure'
