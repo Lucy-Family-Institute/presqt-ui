@@ -18,10 +18,10 @@ function* loadSourceTargetResources(action) {
     action.payload.target.name,
     action.payload.targetToken
     );
-    yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.loadFromSourceTargetFailure(
+    yield put(actionCreators.resources.loadFromTargetFailure(
       error.response.status,
       error.response.data.error)
     );
