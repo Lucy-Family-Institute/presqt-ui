@@ -17,10 +17,12 @@ export default function TokenModal() {
 
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const leftTarget = useSelector(state => state.targets.leftTarget);
+  const sideSelected = useSelector(state => state.targets.sideSelected);
   const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
-  const connection = useSelector(state => state.targets.leftTarget);
 
+  const target = sideSelected === 'left'
+    ? useSelector(state => state.targets.leftTarget)
+    : useSelector(state => state.targets.rightTarget);
 
   const [token, setToken] = useState('');
 
@@ -32,7 +34,7 @@ export default function TokenModal() {
    **/
   useEffect(() => {
     if (tokenModalDisplay) {
-      setToken(apiTokens[leftTarget.name] ? apiTokens[leftTarget.name]: '');
+      setToken(apiTokens[target.name] ? apiTokens[target.name]: '');
     }
   }, [tokenModalDisplay]);
 
@@ -48,7 +50,7 @@ export default function TokenModal() {
     if (apiOperationErrors.length > 0 && error) {
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
-      dispatch(actionCreators.authorization.removeToken(leftTarget.name));
+      dispatch(actionCreators.authorization.removeToken(target.name));
     }
   };
 
@@ -61,8 +63,8 @@ export default function TokenModal() {
    */
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromTarget(connection, token));
+    dispatch(actionCreators.authorization.saveToken(target.name, token));
+    dispatch(actionCreators.resources.loadFromTarget(target, token));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
@@ -70,13 +72,13 @@ export default function TokenModal() {
     setToken('');
   };
 
-  return connection
+  return target
   ? (
     <div>
       <Dialog maxWidth="md" fullWidth={true} open={tokenModalDisplay}
               onClose={handleClose} aria-labelledby={"form-dialog-title"}>
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          {`Access Token for ${connection.readable_name}`}
+          {`Access Token for ${target.readable_name}`}
         </DialogTitle>
         <DialogContent>
           <div
@@ -87,7 +89,7 @@ export default function TokenModal() {
               color: 'black'
             }}
           >
-              <p>In order to connect to {connection.readable_name} you will
+              <p>In order to connect to {target.readable_name} you will
               need to supply your API token. This will not be saved, so if
               you come back to this website, you will need to provide your
               token again.

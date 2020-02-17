@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/core';
 
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
-import AvailableConnectionsLeft from './components/AvailableConnectionsLeft';
+import AvailableConnectionsLeft from './components/left_components/AvailableConnectionsLeft';
 import TargetResourceBrowserRight from './components/TargetResourceBrowserRight';
 import TargetResourceBrowserLeft from './components/TargetResourceBrowserLeft';
 import TargetActionDetailLeft from './components/TargetActionDetailLeft';
@@ -17,7 +17,7 @@ import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
 import TargetActionsRight from "./components/TargetActionsRight";
 import TargetActionDetailRight from "./components/TargetActionDetailRight";
-import AvailableConnectionsRight from "./components/AvailableConnectionsRight";
+import AvailableConnectionsRight from "./components/right_components/AvailableConnectionsRight";
 
 const styles = {
   app: css({

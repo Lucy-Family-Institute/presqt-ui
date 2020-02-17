@@ -58,6 +58,7 @@ export const actionCreators = createActions({
     TARGETS: {
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
-        SWITCH_TARGET: undefined
+        SWITCH_TARGET: (targetData) => ({targetData}),
+        SWITCH_SIDE: (side) => ({side})
     }
 });

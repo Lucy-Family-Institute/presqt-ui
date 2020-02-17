@@ -13,22 +13,22 @@ import { basicFadeIn } from '../styles/animations';
  * It's responsible for switching targets, handing off resource loading, and handing off modal work
  * It's also responsible for broadcasting (via Redux) what the currently selected "Target" is.
  */
-export default function AvailableConnectionsRight() {
+export default function AvailableConnections({side, target, gridArea}) {
   const dispatch = useDispatch();
 
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const leftTarget = useSelector(state => state.targets.leftTarget);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
-  
+
   let tokenError;
   if (collection_error) {
     tokenError = collection_error.status === 401;
   }
+
   /**
    * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
@@ -44,7 +44,7 @@ export default function AvailableConnectionsRight() {
     if (
       apiOperationErrors.length > 0 &&
       tokenError) {
-        dispatch(actionCreators.authorization.displayTokenModal());
+      dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
 
@@ -58,6 +58,7 @@ export default function AvailableConnectionsRight() {
    */
   const handleSwitchTarget = connection => {
     dispatch(actionCreators.resources.clearResources());
+    dispatch(actionCreators.targets.switchSide(side));
     dispatch(actionCreators.targets.switchTarget(connection));
 
     if (connection.name in apiTokens) {
@@ -72,7 +73,7 @@ export default function AvailableConnectionsRight() {
   return (
     <div
       css={{
-        gridArea: 'availableConnectionsRight',
+        gridArea: gridArea,
         paddingLeft: 50
       }}
     >
@@ -97,7 +98,7 @@ export default function AvailableConnectionsRight() {
               src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
-            {leftTarget && leftTarget.name === connection.name ? (
+            {target && target.name === connection.name ? (
               <div
                 css={{
                   minHeight: 5,
