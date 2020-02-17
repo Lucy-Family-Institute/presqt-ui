@@ -111,7 +111,10 @@ export default function TargetActionDetail() {
           borderLeftColor: "#C5C5C5",
           borderLeftWidth: 1,
           borderLeftStyle: "solid",
-          paddingLeft: 25
+          paddingLeft: 25,
+          borderRightColor: "black",
+          borderRightWidth: 1,
+          borderRightStyle: "solid",
         })
       ]}
     >

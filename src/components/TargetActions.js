@@ -74,7 +74,10 @@ export default function TargetActions() {
         borderLeftColor: "#979797",
         borderLeftWidth: 1,
         borderLeftStyle: "solid",
-        paddingLeft: 25
+        paddingLeft: 25,
+        borderRightColor: "black",
+        borderRightWidth: 1,
+        borderRightStyle: "solid",
       }}
     >
       {pendingAPIOperations.includes(

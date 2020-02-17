@@ -74,7 +74,7 @@ export default function TargetActionsRight() {
         borderRightColor: "#979797",
         borderRightWidth: 1,
         borderRightStyle: "solid",
-        paddingRight: 25
+        paddingLeft: 25
       }}
     >
       {pendingAPIOperations.includes(
