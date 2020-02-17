@@ -3,17 +3,16 @@ import { handleActions } from 'redux-actions';
 import { actionCreators } from '../actionCreators';
 
 const initialState = {
-  source: null,
-  destination: null,
+  leftTarget: null,
   available: []
 };
 
 export default handleActions(
   {
     // Targets Actions
-    [actionCreators.targets.switchSource]: (state, action) => ({
+    [actionCreators.targets.switchTarget]: (state, action) => ({
       ...state,
-      source: action.payload
+      leftTarget: action.payload
     }),
     [actionCreators.targets.loadSuccess]: (state, action) => ({
       ...state,

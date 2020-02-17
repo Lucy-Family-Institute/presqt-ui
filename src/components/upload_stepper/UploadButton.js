@@ -23,8 +23,8 @@ export default function UploadButton({selectedFile, selectedDuplicate,
                                        handleNext, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.source.name);
-  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  const selectedTarget = useSelector(state => state.targets.leftTarget.name);
+  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.leftTarget.name]);
 
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper

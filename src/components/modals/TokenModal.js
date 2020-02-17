@@ -17,9 +17,9 @@ export default function TokenModal() {
 
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.source);
+  const leftTarget = useSelector(state => state.targets.leftTarget);
   const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
-  const connection = useSelector(state => state.targets.source);
+  const connection = useSelector(state => state.targets.leftTarget);
 
 
   const [token, setToken] = useState('');
@@ -32,7 +32,7 @@ export default function TokenModal() {
    **/
   useEffect(() => {
     if (tokenModalDisplay) {
-      setToken(apiTokens[sourceTarget.name] ? apiTokens[sourceTarget.name]: '');
+      setToken(apiTokens[leftTarget.name] ? apiTokens[leftTarget.name]: '');
     }
   }, [tokenModalDisplay]);
 
@@ -48,7 +48,7 @@ export default function TokenModal() {
     if (apiOperationErrors.length > 0 && error) {
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
-      dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
+      dispatch(actionCreators.authorization.removeToken(leftTarget.name));
     }
   };
 

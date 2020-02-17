@@ -28,13 +28,13 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowserLeft() {
   const dispatch = useDispatch();
 
-  const sourceTargetToken = useSelector(state => state.targets.source
-      ? state.authorization.apiTokens[state.targets.source.name]
+  const leftTargetToken = useSelector(state => state.targets.leftTarget
+      ? state.authorization.apiTokens[state.targets.leftTarget.name]
       : null);
   const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.source);
+  const leftTarget = useSelector(state => state.targets.leftTarget);
   const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
@@ -110,7 +110,7 @@ export default function TargetResourceBrowserLeft() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!leftSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!leftSearchValue && leftTarget.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
@@ -119,14 +119,14 @@ export default function TargetResourceBrowserLeft() {
   useEffect(() => {
     if (leftTargetResources && leftTargetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, sourceTargetToken), leftTargetResources))
+        resource => onResourceClicked(resource, leftTargetToken), leftTargetResources))
     }
     else if (leftTargetResources && leftTargetResources.length === 0 && leftSearchValue) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for search term 
+      setMessage(`No ${leftTarget.readable_name} resources found for search term 
         "${leftSearchValue}".`);
     }
     else if (leftTargetResources && leftTargetResources.length === 0) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
+      setMessage(`No ${leftTarget.readable_name} resources found for this user.`);
     }
     else if (search_error) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
@@ -155,7 +155,7 @@ export default function TargetResourceBrowserLeft() {
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}
-        {!sourceTarget ? null : upload()}
+        {!leftTarget ? null : upload()}
         {pendingAPIOperations.includes(
           actionCreators.resources.loadFromTarget.toString()
         ) ||
