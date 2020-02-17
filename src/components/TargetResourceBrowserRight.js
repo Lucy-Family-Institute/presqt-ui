@@ -25,7 +25,7 @@ const fadeIn = keyframes`
  * This component handles actions within the resource browser. It will open/close containers,
  * display resource details, as well as sort the hierarchy of resources.
  */
-export default function TargetToots() {
+export default function TargetResourceBrowserRight() {
   const dispatch = useDispatch();
 
   const sourceTargetToken = useSelector(state => state.targets.source
@@ -144,8 +144,8 @@ export default function TargetToots() {
   return (
     <div
       css={{
-        gridArea: "targetToots",
-        paddingLeft: 50,
+        gridArea: "targetResourcesRight",
+        paddingRight: 50,
         paddingBottom: 50,
         minHeight: "25vh",
         flex: 1,

@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/core';
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
 import AvailableConnections from './components/AvailableConnections';
-import TargetToots from './components/TargetToots';
+import TargetResourceBrowserRight from './components/TargetResourceBrowserRight';
 import TargetResourceBrowser from './components/TargetResourceBrowser';
 import TargetActionDetail from './components/TargetActionDetail';
 import TargetActions from './components/TargetActions';
@@ -15,6 +15,9 @@ import SnackBar from "./components/SnackBar";
 import UploadModal from "./components/modals/UploadModal";
 import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
+import TargetActionsRight from "./components/TargetActionsRight";
+import TargetActionDetailRight from "./components/TargetActionDetailRight";
+import AvailableConnectionsRight from "./components/AvailableConnectionsRight";
 
 const styles = {
   app: css({
@@ -23,12 +26,12 @@ const styles = {
     paddingBottom: 50,
     gridRowGap: 25,
     gridTemplateRows: '150px 125px 1fr 100px',
-    gridTemplateColumns: '450px 150px 400px 400px 150px 1fr',
+    gridTemplateColumns: '350px 150px 400px 400px 150px 350px',
     gridTemplateAreas: `
         "headerLogo headerMenu headerMenu headerMenu headerMenu headerMenu"
-        "targetResources targetActions targetActions targetActions targetActions targetToots"
-        "targetResources targetActionDetail targetActionDetail targetActionDetail targetActionDetail targetToots"
-        "availableConnections . developmentPartners . . ."
+        "targetResources targetActions targetActions targetActionsRight targetActionsRight targetResourcesRight"
+        "targetResources targetActionDetail targetActionDetail targetActionDetailRight targetActionDetailRight targetResourcesRight"
+        "availableConnections . developmentPartners . . availableConnectionsRight"
         `
   })
 };
@@ -42,7 +45,10 @@ function App() {
       <TargetResourceBrowser />
       <TargetActions />
       <TargetActionDetail />
-      <TargetToots />
+      <TargetActionsRight />
+      <TargetActionDetailRight />
+      <TargetResourceBrowserRight />
+      <AvailableConnectionsRight />
       <AvailableConnections />
       <DevelopmentPartners />
 
