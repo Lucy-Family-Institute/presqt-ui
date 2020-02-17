@@ -3,11 +3,11 @@ import { jsx, css } from '@emotion/core';
 
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
-import AvailableConnections from './components/AvailableConnections';
+import AvailableConnectionsLeft from './components/AvailableConnectionsLeft';
 import TargetResourceBrowserRight from './components/TargetResourceBrowserRight';
-import TargetResourceBrowser from './components/TargetResourceBrowser';
-import TargetActionDetail from './components/TargetActionDetail';
-import TargetActions from './components/TargetActions';
+import TargetResourceBrowserLeft from './components/TargetResourceBrowserLeft';
+import TargetActionDetailLeft from './components/TargetActionDetailLeft';
+import TargetActionsLeft from './components/TargetActionsLeft';
 import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
 import HeaderBackground from './components/HeaderBackground';
@@ -29,9 +29,9 @@ const styles = {
     gridTemplateColumns: '1fr 150px 400px 400px 150px 1fr',
     gridTemplateAreas: `
         "headerLogo headerMenu headerMenu headerMenu headerMenu headerMenu"
-        "targetResources targetActions targetActions targetActionsRight targetActionsRight targetResourcesRight"
-        "targetResources targetActionDetail targetActionDetail targetActionDetailRight targetActionDetailRight targetResourcesRight"
-        "availableConnections . developmentPartners developmentPartners . availableConnectionsRight"
+        "targetResourcesLeft targetActionsLeft targetActionsLeft targetActionsRight targetActionsRight targetResourcesRight"
+        "targetResourcesLeft targetActionDetailLeft targetActionDetailLeft targetActionDetailRight targetActionDetailRight targetResourcesRight"
+        "availableConnectionsLeft . developmentPartners developmentPartners . availableConnectionsRight"
         `
   })
 };
@@ -42,14 +42,14 @@ function App() {
       <HeaderBackground />
       <PresQTHeader />
       <HeaderMenu />
-      <TargetResourceBrowser />
-      <TargetActions />
-      <TargetActionDetail />
+      <TargetResourceBrowserLeft />
+      <TargetActionsLeft />
+      <TargetActionDetailLeft />
       <TargetActionsRight />
       <TargetActionDetailRight />
       <TargetResourceBrowserRight />
       <AvailableConnectionsRight />
-      <AvailableConnections />
+      <AvailableConnectionsLeft />
       <DevelopmentPartners />
 
       {/* Hidden Components */}

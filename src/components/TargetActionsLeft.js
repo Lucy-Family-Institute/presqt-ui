@@ -12,7 +12,7 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  * Component for target action buttons on the detail page. It is responsible for the rendering of
  * the html element, and rendering the correct component for each action.
  **/
-export default function TargetActions() {
+export default function TargetActionsLeft() {
   /** SELECTOR DEFINITIONS
    * selectedLeftResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
@@ -70,7 +70,7 @@ export default function TargetActions() {
   return (
     <div
       css={{
-        gridArea: "targetActions",
+        gridArea: "targetActionsLeft",
         borderLeftColor: "#979797",
         borderLeftWidth: 1,
         borderLeftStyle: "solid",

@@ -25,7 +25,7 @@ const fadeIn = keyframes`
  * This component handles actions within the resource browser. It will open/close containers,
  * display resource details, as well as sort the hierarchy of resources.
  */
-export default function TargetResourceBrowser() {
+export default function TargetResourceBrowserLeft() {
   const dispatch = useDispatch();
 
   const sourceTargetToken = useSelector(state => state.targets.source
@@ -144,7 +144,7 @@ export default function TargetResourceBrowser() {
   return (
     <div
       css={{
-        gridArea: "targetResources",
+        gridArea: "targetResourcesLeft",
         paddingLeft: 50,
         paddingBottom: 50,
         minHeight: "25vh",

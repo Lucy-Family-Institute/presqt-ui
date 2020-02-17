@@ -7,7 +7,7 @@ import { actionCreators } from "../../redux/actionCreators";
 import ActionButton from "../widgets/buttons/ActionButton";
 
 /**
- * This component handles the download action button in the TargetActions component.
+ * This component handles the download action button in the TargetActionsLeft component.
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/

@@ -10,7 +10,7 @@ import Spinner from "./widgets/spinners/Spinner";
 /**
  * This component is responsible for displaying the details of a selected resource.
  **/
-export default function TargetActionDetail() {
+export default function TargetActionDetailLeft() {
   /** SELECTOR DEFINITIONS
    * selectedLeftResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
@@ -107,7 +107,7 @@ export default function TargetActionDetail() {
     <div
       css={[
         css({
-          gridArea: "targetActionDetail",
+          gridArea: "targetActionDetailLeft",
           borderLeftColor: "#C5C5C5",
           borderLeftWidth: 1,
           borderLeftStyle: "solid",

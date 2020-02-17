@@ -13,7 +13,7 @@ import { basicFadeIn } from '../styles/animations';
  * It's responsible for switching targets, handing off resource loading, and handing off modal work
  * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
  */
-export default function AvailableConnections() {
+export default function AvailableConnectionsLeft() {
   const dispatch = useDispatch();
 
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
@@ -71,7 +71,7 @@ export default function AvailableConnections() {
   return (
     <div
       css={{
-        gridArea: 'availableConnections',
+        gridArea: 'availableConnectionsLeft',
         paddingLeft: 50
       }}
     >
