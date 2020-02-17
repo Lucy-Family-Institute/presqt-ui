@@ -26,12 +26,12 @@ const styles = {
     paddingBottom: 50,
     gridRowGap: 25,
     gridTemplateRows: '150px 125px 1fr 100px',
-    gridTemplateColumns: '350px 150px 400px 400px 150px 350px',
+    gridTemplateColumns: '1fr 150px 400px 400px 150px 1fr',
     gridTemplateAreas: `
         "headerLogo headerMenu headerMenu headerMenu headerMenu headerMenu"
         "targetResources targetActions targetActions targetActionsRight targetActionsRight targetResourcesRight"
         "targetResources targetActionDetail targetActionDetail targetActionDetailRight targetActionDetailRight targetResourcesRight"
-        "availableConnections . developmentPartners . . availableConnectionsRight"
+        "availableConnections . developmentPartners developmentPartners . availableConnectionsRight"
         `
   })
 };
