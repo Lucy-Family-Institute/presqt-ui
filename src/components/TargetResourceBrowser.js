@@ -6,10 +6,11 @@ import { actionCreators } from "../redux/actionCreators";
 import ResourceButton from "./widgets/buttons/ResourceButton";
 import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
-import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
+
 import { useState, React, useEffect } from "react";
+import TargetSearch from "./TargetSearch";
 
 const fadeIn = keyframes`
   0% {
@@ -25,21 +26,23 @@ const fadeIn = keyframes`
  * This component handles actions within the resource browser. It will open/close containers,
  * display resource details, as well as sort the hierarchy of resources.
  */
-export default function TargetResourceBrowserLeft() {
+export default function TargetResourceBrowser({side, gridArea, target, targetResources}) {
   const dispatch = useDispatch();
 
-  const leftTargetToken = useSelector(state => state.targets.leftTarget
-      ? state.authorization.apiTokens[state.targets.leftTarget.name]
-      : null);
-  const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
+  const targetToken = useSelector(state => target
+    ? state.authorization.apiTokens[target.name]
+    : null);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const leftTarget = useSelector(state => state.targets.leftTarget);
   const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  const sideSelected = useSelector(state => state.resources.sideSelected);
+
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
+
   const search_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
+
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
@@ -86,7 +89,7 @@ export default function TargetResourceBrowserLeft() {
    * then display the search input.
    **/
   const search = () => {
-    if (leftTargetResources || leftSearchValue || collection_error) {
+    if (targetResources || leftSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -97,7 +100,7 @@ export default function TargetResourceBrowserLeft() {
   };
 
   const upload = () => {
-    if (leftTargetResources || leftSearchValue || collection_error) {
+    if (targetResources || leftSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -110,23 +113,23 @@ export default function TargetResourceBrowserLeft() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!leftSearchValue && leftTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!leftSearchValue && target.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
   };
 
   useEffect(() => {
-    if (leftTargetResources && leftTargetResources.length > 0) {
+    if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, leftTargetToken), leftTargetResources))
+        resource => onResourceClicked(resource, targetToken), targetResources))
     }
-    else if (leftTargetResources && leftTargetResources.length === 0 && leftSearchValue) {
-      setMessage(`No ${leftTarget.readable_name} resources found for search term 
+    else if (targetResources && targetResources.length === 0 && leftSearchValue) {
+      setMessage(`No ${target.readable_name} resources found for search term 
         "${leftSearchValue}".`);
     }
-    else if (leftTargetResources && leftTargetResources.length === 0) {
-      setMessage(`No ${leftTarget.readable_name} resources found for this user.`);
+    else if (targetResources && targetResources.length === 0) {
+      setMessage(`No ${target.readable_name} resources found for this user.`);
     }
     else if (search_error) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
@@ -139,12 +142,12 @@ export default function TargetResourceBrowserLeft() {
     else {
       setMessage('');
     }
-  }, [leftTargetResources]);
+  }, [targetResources]);
 
   return (
     <div
       css={{
-        gridArea: "targetResourcesLeft",
+        gridArea: {gridArea},
         paddingLeft: 50,
         paddingBottom: 50,
         minHeight: "25vh",
@@ -153,20 +156,18 @@ export default function TargetResourceBrowserLeft() {
       }}
     >
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <TargetResourcesHeader />
+        <TargetResourcesHeader target={targetToken ? target : null}/>
         {search()}
-        {!leftTarget ? null : upload()}
-        {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromTarget.toString()
-        ) ||
-        pendingAPIOperations.includes(
-          actionCreators.resources.loadFromTargetSearch.toString()
-        ) ? <Spinner />
-          : (
-          <div>
-            <div css={messageCss}>{message}</div>
-          </div>
-        )}
+        {!target ? null : upload()}
+        {
+          side === sideSelected
+          &&
+          (pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString())
+          ||
+          pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()))
+            ? <Spinner />
+            : <div css={messageCss}>{message}</div>
+        }
       </div>
     </div>
   );

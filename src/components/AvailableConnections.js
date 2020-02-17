@@ -57,9 +57,9 @@ export default function AvailableConnections({side, target, gridArea}) {
    * Else display the modal.
    */
   const handleSwitchTarget = connection => {
+    dispatch(actionCreators.resources.switchSide(side));
     dispatch(actionCreators.resources.clearResources());
-    dispatch(actionCreators.targets.switchSide(side));
-    dispatch(actionCreators.targets.switchTarget(connection));
+    dispatch(actionCreators.targets.switchTarget(side, connection));
 
     if (connection.name in apiTokens) {
       dispatch(

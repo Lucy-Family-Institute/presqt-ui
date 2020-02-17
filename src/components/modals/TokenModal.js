@@ -17,7 +17,7 @@ export default function TokenModal() {
 
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sideSelected = useSelector(state => state.targets.sideSelected);
+  const sideSelected = useSelector(state => state.resources.sideSelected);
   const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
 
   const target = sideSelected === 'left'

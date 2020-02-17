@@ -53,12 +53,12 @@ export const actionCreators = createActions({
         REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
-        CLEAR_ACTIVE_TICKET_NUMBER: undefined
+        CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        SWITCH_SIDE: (side) => ({side})
     },
     TARGETS: {
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
-        SWITCH_TARGET: (targetData) => ({targetData}),
-        SWITCH_SIDE: (side) => ({side})
+        SWITCH_TARGET: (side, targetData) => ({side, targetData}),
     }
 });

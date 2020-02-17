@@ -8,6 +8,7 @@ const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
   leftTargetResources: null,
+  rightTargetResources: null,
   selectedLeftResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
@@ -19,7 +20,8 @@ const initialState = {
   uploadModalDisplay: false,
   uploadType: null,
   openLeftResources: [],
-  activeTicketNumber: null
+  activeTicketNumber: null,
+  sideSelected: null
 };
 
 export default handleActions(
@@ -35,7 +37,6 @@ export default handleActions(
         actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
-      leftTargetResources: null
     }),
     /**
      * Add API call to trackers.
@@ -57,6 +58,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
+      console.log(state);
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
@@ -65,7 +67,8 @@ export default handleActions(
           actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy
+        leftTargetResources: state.sideSelected === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: state.sideSelected === 'right' ? resourceHierarchy : state.rightTargetResources
       };
     },
     /**
@@ -233,7 +236,8 @@ export default handleActions(
     [actionCreators.resources.clearResources]: state => {
       return {
         ...state,
-        leftTargetResources: null,
+        leftTargetResources: state.sideSelected === 'left' ? null : state.leftTargetResources,
+        rightTargetResources: state.sideSelected === 'right' ? null : state.rightTargetResources,
         selectedLeftResource: null,
         leftSearchValue: null
       };
@@ -595,6 +599,10 @@ export default handleActions(
     [actionCreators.resources.clearActiveTicketNumber]: state => ({
       ...state,
       activeTicketNumber: null
+    }),
+    [actionCreators.resources.switchSide]: (state, action) => ({
+      ...state,
+      sideSelected: action.payload.side
     })
   },
   initialState
