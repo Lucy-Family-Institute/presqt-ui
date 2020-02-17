@@ -145,7 +145,7 @@ export default function TargetResourceBrowserRight() {
     <div
       css={{
         gridArea: "targetResourcesRight",
-        paddingRight: 50,
+        paddingLeft: 50,
         paddingBottom: 50,
         minHeight: "25vh",
         flex: 1,

@@ -16,7 +16,7 @@ const fadeIn = keyframes`
 
 function TargetResourcesHeader() {
   return (
-    <div css={{ display: 'flex', alignItems: 'center' }}>
+    <div css={{ display: 'flex'}}>
       <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
         Resources
       </span>

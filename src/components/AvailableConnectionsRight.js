@@ -72,7 +72,7 @@ export default function AvailableConnectionsRight() {
     <div
       css={{
         gridArea: 'availableConnectionsRight',
-        paddingRight: 50
+        paddingLeft: 50
       }}
     >
       <span css={text.mediumHeader}>Available Connections</span>
