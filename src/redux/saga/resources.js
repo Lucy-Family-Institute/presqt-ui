@@ -1,10 +1,10 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getResourceDownload, resourceDownloadJob} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchSource() {
-  yield takeEvery(actionCreators.resources.loadFromSourceTarget, loadSourceTargetResources);
+  yield takeEvery(actionCreators.resources.loadFromTarget, loadSourceTargetResources);
 }
 
  /**
@@ -15,13 +15,13 @@ function* loadSourceTargetResources(action) {
   try {
     const response = yield call(
     getTargetResources,
-    action.payload.sourceTarget.name,
-    action.payload.sourceTargetToken
+    action.payload.target.name,
+    action.payload.targetToken
     );
-    yield put(actionCreators.resources.loadFromSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.loadFromSourceTargetFailure(
+    yield put(actionCreators.resources.loadFromTargetFailure(
       error.response.status,
       error.response.data.error)
     );
@@ -33,21 +33,21 @@ function* loadSourceTargetResources(action) {
  *  Dispatch either the success or failure actions accordingly.
  **/
 export function* watchSearch() {
-  yield takeEvery(actionCreators.resources.loadFromSourceTargetSearch, loadSourceTargetResourcesSearch);
+  yield takeEvery(actionCreators.resources.loadFromTargetSearch, loadTargetResourcesSearch);
 }
 
-function* loadSourceTargetResourcesSearch(action) {
+function* loadTargetResourcesSearch(action) {
   try {
     const response = yield call(
     getTargetResourcesSearch,
-    action.payload.sourceTarget,
-    action.payload.sourceTargetToken,
+    action.payload.target,
+    action.payload.targetToken,
     action.payload.searchValue
     );
-    yield put(actionCreators.resources.loadFromSourceTargetSearchSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.loadFromSourceTargetSearchFailure(
+    yield put(actionCreators.resources.loadFromTargetSearchFailure(
       error.response.status,
       error.response.data.error)
     );
@@ -55,25 +55,25 @@ function* loadSourceTargetResourcesSearch(action) {
 }
 
 /** Resource Detail **/
-export function* watchSelectSourceResource() {
-  yield takeEvery(actionCreators.resources.selectSourceResource, loadResourceDetail);
+export function* watchSelectResource() {
+  yield takeEvery(actionCreators.resources.selectResource, loadResourceDetail);
 }
 
 function* loadResourceDetail(action) {
   const response = yield call(
     getResourceDetail,
     action.payload.resource,
-    action.payload.sourceTargetToken
+    action.payload.targetToken
   );
 
   yield put(
-    actionCreators.resources.selectSourceResourceSuccess(response.data)
+    actionCreators.resources.selectResourceSuccess(response.data)
   );
 }
 
 /** Refresh Resource Collection **/
 export function* watchRefreshSource() {
-  yield takeEvery(actionCreators.resources.refreshSourceTarget, refreshTargetResources);
+  yield takeEvery(actionCreators.resources.refreshTarget, refreshTargetResources);
 }
 
 /**
@@ -85,13 +85,13 @@ function* refreshTargetResources(action) {
   try {
     const response = yield call(
       getTargetResources,
-      action.payload.sourceTarget.name,
-      action.payload.sourceTargetToken
+      action.payload.target.name,
+      action.payload.targetToken
     );
-    yield put(actionCreators.resources.refreshSourceTargetSuccess(response.data));
+    yield put(actionCreators.resources.refreshTargetSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.refreshSourceTargetFailure(
+    yield put(actionCreators.resources.refreshTargetFailure(
       error.response.status,
       error.response.data.error)
     );

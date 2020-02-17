@@ -28,5 +28,14 @@ export default {
       marginRight: theme.spacing(1),
       color: colors.presqtBlue
     }
+  })),
+  CancelButton: makeStyles(theme => ({
+    button: {
+      height: "100%",
+      backgroundColor: colors.presqtBlue,
+      "&:hover": {
+        backgroundColor: colors.presqtBlueHover
+      }
+    }
   }))
 };

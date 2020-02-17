@@ -6,50 +6,48 @@ import DialogContent from "@material-ui/core/DialogContent";
 import {useDispatch, useSelector} from "react-redux";
 import modalStyles from "../../styles/modal";
 import textStyles from "../../styles/text";
-import TokenTextField from "../widgets/TokenTextField";
+import TokenTextField from "../widgets/text_fields/TokenTextField";
 import React, {useEffect, useState} from "react";
-import ModalSubmitButton from "../widgets/ModalSubmitButton";
+import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
 
-export default function TokenModal({connection, modalState, setModalState}) {
+export default function TokenModal() {
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * apiTokens          : Object of <targets: tokens> submitted in the current session
-   * apiOperationErrors : List of objects of current api errors
-   * sourceTarget       : Object of the current source selected
-   **/
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
+  const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
+  const connection = useSelector(state => state.targets.source);
+
 
   const [token, setToken] = useState('');
 
   const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
 
   /**
    * Add errors to the token state if they exist.
    **/
   useEffect(() => {
-    if (modalState) {
+    if (tokenModalDisplay) {
       setToken(apiTokens[sourceTarget.name] ? apiTokens[sourceTarget.name]: '');
     }
-  }, [modalState]);
+  }, [tokenModalDisplay]);
 
   /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
+   * Dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const handleClose = () => {
-    setModalState(false);
+    dispatch(actionCreators.authorization.hideTokenModal());
     if (apiOperationErrors.length > 0 && error) {
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTarget.toString()));
+        actionCreators.resources.loadFromTarget.toString()));
       dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
   };
@@ -57,17 +55,17 @@ export default function TokenModal({connection, modalState, setModalState}) {
   /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
-   * Dispatch loadFromSourceTarget action.
+   * Dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromSourceTargetSuccess action when finished.
+   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const modalSubmit = () => {
-    setModalState(false);
+    dispatch(actionCreators.authorization.hideTokenModal());
     dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromSourceTarget(connection, token));
+    dispatch(actionCreators.resources.loadFromTarget(connection, token));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTarget.toString()));
+        actionCreators.resources.loadFromTarget.toString()));
     }
     setToken('');
   };
@@ -75,7 +73,8 @@ export default function TokenModal({connection, modalState, setModalState}) {
   return connection
   ? (
     <div>
-      <Dialog maxWidth="md" fullWidth={true} open={modalState} onClose={handleClose} aria-labelledby={"form-dialog-title"}>
+      <Dialog maxWidth="md" fullWidth={true} open={tokenModalDisplay}
+              onClose={handleClose} aria-labelledby={"form-dialog-title"}>
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           {`Access Token for ${connection.readable_name}`}
         </DialogTitle>
@@ -107,7 +106,9 @@ export default function TokenModal({connection, modalState, setModalState}) {
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
-                onAnimationEnd={(event) => {event.stopPropagation()}}
+                onAnimationEnd={(event) => { event.stopPropagation() }}
+                // If the enter button is pressed (code 13), submit the modal.
+                onKeyDown={(event) => { if (event.keyCode === 13) {modalSubmit()} }}
               />
               <ModalSubmitButton
                 variant="contained"

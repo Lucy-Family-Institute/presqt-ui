@@ -6,49 +6,74 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import {useDispatch, useSelector} from "react-redux";
-import LeftSpinner from "../LeftSpinner";
+import LeftSpinner from "../widgets/spinners/LeftSpinner";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
-import {actionCreators} from "../../../redux/actionCreators";
-import colors from "../../../styles/colors";
-import RetryUploadButton from "../RetryButtons/RetryUploadButton";
-import RetryStartUploadOverButton from "../RetryButtons/RetryStartUploadOverButton";
+import {actionCreators} from "../../redux/actionCreators";
+import colors from "../../styles/colors";
+import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
+import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
+import CancelButton from "../widgets/buttons/CancelButton";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
  * component to display the results of the upload.
  **/
-export default function UploadResultsContent(props) {
+export default function UploadResultsContent({setActiveStep, setSelectedFile,
+                                               selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
-  const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const uploadData = useSelector(state => state.resources.uploadData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const connection = useSelector(state => state.targets.source);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
-  const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+  const uploadError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.uploadToTarget.toString());
 
-  const [stepThreeContent, setStepThreeContent] = useState(<LeftSpinner />);
+  const uploadJobError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.uploadJob.toString());
+
+  const [stepThreeContent, setStepThreeContent] = useState(
+    <div>
+      <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
+      <LeftSpinner />
+      <div css={{ paddingTop: 15 }}>
+      <CancelButton actionType='UPLOAD' />
+      </div>
+    </div>
+  );
 
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
-    if (sourceUploadStatus === 'success') {
-      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+    if (uploadStatus === 'success') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    else if (sourceUploadStatus === 'finished') {
-      const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
+    else if (uploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
+      setStepThreeContent(
+        <div>
+          <p>Upload is being cancelled...</p>
+          <LeftSpinner />
+          <div css={{ paddingTop: 15 }}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
+    }
+    else if (uploadStatus === 'finished') {
+      const failedFixityMessage = uploadData.failed_fixity.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+            primary={`The following files failed fixity checks: ${uploadData.failed_fixity.join(', ')}`}
           />
         </ListItem>
         : <ListItem>
@@ -60,24 +85,24 @@ export default function UploadResultsContent(props) {
           />
         </ListItem>;
 
-      const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
+      const resourcesIgnoredMessage = uploadData.resources_ignored.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+            primary={`The following duplicate resources were ignored: ${uploadData.resources_ignored.join(', ')}`}
           />
         </ListItem>
         : null;
 
-      const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
+      const resourcesUpdatedMessage = uploadData.resources_updated.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+            primary={`The following duplicate resources were updated: ${uploadData.resources_updated.join(', ')}`}
           />
         </ListItem>
         : null;
@@ -93,7 +118,7 @@ export default function UploadResultsContent(props) {
                   />
                 </ListItemIcon>
                 <ListItemText
-                  primary={sourceUploadData.message}
+                  primary={uploadData.message}
                 />
               </ListItem>
               {failedFixityMessage}
@@ -107,15 +132,22 @@ export default function UploadResultsContent(props) {
       setStepThreeContent(successfulMessage);
     }
     // Upload Failed!
-    else if (sourceUploadStatus === 'failure') {
+    else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
-      // PresQT API error occurred
-      if (error) {
-        errorMessage = error.data;
+      if (uploadStatus === 'cancelled') {
+        errorMessage = `${uploadData.message}. Some resources may have still be uploaded.`
       }
-      // Target error occurred
+      // PresQT Upload Post error
+      else if (uploadError) {
+        errorMessage = `PresQT API returned an error status code ${uploadError.status}: ${uploadError.data}`;
+      }
+      // PresQT Upload Job error
+      else if (uploadJobError) {
+        errorMessage = `PresQT API returned an error status code ${uploadJobError.status}: ${uploadJobError.data}`;
+      }
+      // Target error
       else {
-        errorMessage = sourceUploadData.message;
+        errorMessage = `The Target returned an error status code ${uploadData.status_code}: ${uploadData.message}`;
       }
 
       setStepThreeContent(
@@ -134,22 +166,22 @@ export default function UploadResultsContent(props) {
           </Grid>
           <div css={{height: 36.5}}>
             <RetryStartUploadOverButton
-              setActiveStep={props.setActiveStep}
-              setSelectedFile={props.setSelectedFile}
+              setActiveStep={setActiveStep}
+              setSelectedFile={setSelectedFile}
             />
             <span css={{ marginLeft: 5 }}>
               <RetryUploadButton
-                setActiveStep={props.setActiveStep}
-                selectedFile={props.selectedFile}
-                selectedDuplicate={props.selectedDuplicate}
+                selectedFile={selectedFile}
+                selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
+                resourceToUploadTo={resourceToUploadTo}
               />
             </span>
           </div>
         </Fragment>
       );
     }
-  }, [sourceUploadStatus, apiOperationErrors]);
+  }, [uploadStatus, apiOperationErrors]);
 
   return(stepThreeContent)
 }

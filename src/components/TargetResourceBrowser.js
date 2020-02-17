@@ -3,12 +3,13 @@ import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actionCreators";
-import ResourceButton from "./widgets/ResourceButton";
-import TargetResourcesHeader from "./widgets/TargetResourcesHeader";
+import ResourceButton from "./widgets/buttons/ResourceButton";
+import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
-import Spinner from "./widgets/Spinner";
-import UploadActionButton from "./widgets/UploadActionButton";
+import Spinner from "./widgets/spinners/Spinner";
+import UploadActionButton from "./action_buttons/UploadActionButton";
+import { useState, React, useEffect } from "react";
 
 const fadeIn = keyframes`
   0% {
@@ -29,29 +30,32 @@ export default function TargetResourceBrowser() {
 
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
-      : null,);
-  const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
+      : null);
+  const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
-  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
-
+  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  const collection_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
   const search_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
+    element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
+  const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
+  const [message, setMessage] = useState("");
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
    * Else dispatch the openContainer action to expand the container
-   * After the container action completes, dispatch selectSourceResource to fetch resource details
+   * After the container action completes, dispatch selectResource to fetch resource details
    *   -> Saga call to Resource Detail occurs here
-   *      -> On complete saga dispatches the selectSourceResourceSuccess action
+   *      -> On complete saga dispatches the selectResourceSuccess action
    */
-  const onResourceClicked = (resource, sourceTargetToken) => {
+  const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
-    dispatch(actionCreators.resources.selectSourceResource(resource, sourceTargetToken));
+    dispatch(actionCreators.resources.selectResource(resource, targetToken));
   };
 
   /**
@@ -82,53 +86,60 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (sourceTargetResources || sourceSearchValue) {
+    if (leftTargetResources || leftSearchValue || collection_error) {
+      if (collection_error) {
+        if (collection_error.status === 401) {
+          return null;
+        }
+      }
       return <TargetSearch />;
     }
   };
 
   const upload = () => {
-    if (
-      sourceTargetResources &&
-      sourceTarget.supported_actions["resource_upload"] === true &&
-      !sourceSearchValue
-    ) {
-      return <UploadActionButton style={{width: 250}} text="Create New Project" type="NEW"/>;
+    if (leftTargetResources || leftSearchValue || collection_error) {
+      if (collection_error) {
+        if (collection_error.status === 401) {
+          return null;
+        }
+      }
+      return (
+        <UploadActionButton
+          style={{ width: 250 }}
+          text="Create New Project"
+          type="NEW"
+          // If there is no search value and the target supports resource upload, this button is clickable.
+          // Otherwise, it's disabled.
+          disabled={!leftSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+        />
+      );
     }
   };
 
-  /**
-   * Control what to display in the Target Resource Browser.
-   */
-  const targetResources = () => {
-    return (
-      // If resources exist for the user then display them
-      sourceTargetResources && sourceTargetResources.length > 0 ? (
-        resourceHierarchy(
-          resource => onResourceClicked(resource, sourceTargetToken),
-          sourceTargetResources
-        )
-      ) : // No resources exist with the given search term
-      sourceTargetResources &&
-        sourceTargetResources.length === 0 &&
-        sourceSearchValue ? (
-        <div css={[textStyles.body, { marginTop: 10 }]}>
-          No {sourceTarget.readable_name} resources found for search term{" "}
-          {sourceSearchValue}.
-        </div>
-      ) : // No resources exist for the user
-      sourceTargetResources && sourceTargetResources.length === 0 ? (
-        <div css={[textStyles.body, { marginTop: 10 }]}>
-          No {sourceTarget.readable_name} resources found for this user.
-        </div>
-      ) : // An error was returned when searching the target
-      search_error ? (
-        <div css={[textStyles.body, { marginTop: 10 }, textStyles.cubsRed]}>
-          {search_error.data}
-        </div>
-      ) : null
-    );
-  };
+  useEffect(() => {
+    if (leftTargetResources && leftTargetResources.length > 0) {
+      setMessage(resourceHierarchy(
+        resource => onResourceClicked(resource, sourceTargetToken), leftTargetResources))
+    }
+    else if (leftTargetResources && leftTargetResources.length === 0 && leftSearchValue) {
+      setMessage(`No ${sourceTarget.readable_name} resources found for search term 
+        "${leftSearchValue}".`);
+    }
+    else if (leftTargetResources && leftTargetResources.length === 0) {
+      setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
+    }
+    else if (search_error) {
+      setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
+      setMessage(`${search_error.data}`);
+    }
+    else if (collection_error && collection_error.status !== 401) {
+      setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
+      setMessage(`${collection_error.data}`);
+    }
+    else {
+      setMessage('');
+    }
+  }, [leftTargetResources]);
 
   return (
     <div
@@ -144,22 +155,18 @@ export default function TargetResourceBrowser() {
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}
-        {!sourceTarget
-          ? null
-          : sourceTarget.supported_actions.resource_upload === true
-            ? upload()
-        : null}
-        {
-          pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTarget.toString())
-          ||
-          pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
-          ? <Spinner />
+        {!sourceTarget ? null : upload()}
+        {pendingAPIOperations.includes(
+          actionCreators.resources.loadFromTarget.toString()
+        ) ||
+        pendingAPIOperations.includes(
+          actionCreators.resources.loadFromTargetSearch.toString()
+        ) ? <Spinner />
           : (
-            <div>
-              {targetResources()}
-            </div>
-          )
-        }
+          <div>
+            <div css={messageCss}>{message}</div>
+          </div>
+        )}
       </div>
     </div>
   );

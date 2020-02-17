@@ -4,7 +4,7 @@ import {useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import SearchTextField from "./widgets/SearchTextField";
+import SearchTextField from "./widgets/text_fields/SearchTextField";
 
 const useStyles = makeStyles({
   root: {
@@ -37,11 +37,11 @@ export default function TargetSearch() {
     event.preventDefault();
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString()
       )
     );
     dispatch(
-      actionCreators.resources.loadFromSourceTargetSearch(
+      actionCreators.resources.loadFromTargetSearch(
         sourceTarget.name,
         token,
         searchValue

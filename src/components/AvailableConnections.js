@@ -1,13 +1,12 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
-import {useEffect, useState} from 'react';
+import { useEffect } from 'react';
 
 import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
-import TokenModal from "./modals/TokenModal";
 
 /**
  * This component displays the various targets that a user can connect with.
@@ -16,22 +15,19 @@ import TokenModal from "./modals/TokenModal";
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
-  const [modalState, setModalState] = useState(false);
 
-  /** SELECTOR DEFINITIONS
-   *
-   * pendingAPIResponse : Boolean representing if the API request is in progress
-   * apiTokens          : Object of <targets: tokens> submitted in the current session
-   * sourceTarget       : Object of the current source selected
-   * availableTargets   : List of objects of available targets
-   * apiOperationErrors : List of objects of current api errors
-   */
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-
+  const collection_error = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
+  
+  let tokenError;
+  if (collection_error) {
+    tokenError = collection_error.status === 401;
+  }
   /**
    * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
@@ -46,31 +42,29 @@ export default function AvailableConnections() {
   useEffect(() => {
     if (
       apiOperationErrors.length > 0 &&
-      apiOperationErrors.find(
-        element => element.action === actionCreators.resources.loadFromSourceTarget.toString())
-    ) {
-      setModalState(true);
+      tokenError) {
+        dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
 
   /**
    * Set the selected target as the source target.
-   * If a connection already exists with the target then dispatch loadFromSourceTarget action.
+   * If a connection already exists with the target then dispatch loadFromTarget action.
    *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatches loadFromSourceTargetSuccess action is if successful.
-   *        -> Saga function dispatches loadFromSourceTargetFailure action if not successful.
+   *        -> Saga function dispatches loadFromTargetSuccess action is if successful.
+   *        -> Saga function dispatches loadFromTargetFailure action if not successful.
    * Else display the modal.
    */
   const handleSwitchSourceTarget = connection => {
-    dispatch(actionCreators.resources.clearSourceResources());
+    dispatch(actionCreators.resources.clearResources());
     dispatch(actionCreators.targets.switchSource(connection));
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromSourceTarget(connection,apiTokens[connection.name])
+        actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name])
       );
     } else {
-      setTimeout(() => setModalState(true), 500);
+      setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);
     }
   };
 
@@ -99,7 +93,7 @@ export default function AvailableConnections() {
             disabled={pendingAPIResponse}
           >
             <img
-              src={require(`../images/icons/${connection.name}.png`)}
+              src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
             {sourceTarget && sourceTarget.name === connection.name ? (
@@ -116,12 +110,6 @@ export default function AvailableConnections() {
           </button>
         ))}
       </div>
-      <TokenModal
-        connection={sourceTarget}
-        modalState={modalState}
-        setModalState={setModalState}
-      />
-
     </div>
   );
 }

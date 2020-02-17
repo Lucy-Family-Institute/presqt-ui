@@ -2,10 +2,11 @@
 import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
 import textStyles from "../styles/text";
-import DownloadActionButton from "./widgets/DownloadActionButton";
-import UploadActionButton from "./widgets/UploadActionButton";
-import TransferActionButton from "./widgets/TransferActionButton";
+import DownloadActionButton from "./action_buttons/DownloadActionButton";
+import UploadActionButton from "./action_buttons/UploadActionButton";
+import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
+import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
@@ -13,12 +14,18 @@ import { actionCreators } from "../redux/actionCreators";
  **/
 export default function TargetActions() {
   /** SELECTOR DEFINITIONS
-   * selectedSourceResource : Object of the resource details of the selected resource to display.
+   * selectedLeftResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
+  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  var buttonsList = [];
+  if (selectedLeftResource) {
+    for (var i = 0; i < selectedLeftResource.links.length; i++) {
+      buttonsList.push(selectedLeftResource.links[i].name);
+    }
+  }
 
   const DisplayTargetActions = () => {
     return (
@@ -34,28 +41,27 @@ export default function TargetActions() {
             textStyles.largeHeader
           ]}
         >
-          {selectedSourceResource ? selectedSourceResource.title : null}
+          {selectedLeftResource ? selectedLeftResource.title : null}
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedSourceResource &&
-            selectedSourceResource.links.map(link =>
-              link.name === "Download" ? (
-                <DownloadActionButton
-                  key={link.name}
-                />
-              ) : link.name === "Upload" && !sourceSearchValue ? (
-                <UploadActionButton
-                  key={link.name}
-                  text='Upload'
-                  type="EXISTING"
-                />
-              ) : link.name === "Transfer" ? (
-                <TransferActionButton
-                  key={link.name}
-                />
-              ) : null
-            )}
+          {selectedLeftResource
+            ? <DownloadActionButton
+              key={"Download"}
+              disabled={!arrayValueFinder(buttonsList, "Download")}
+            /> : null}
+          {selectedLeftResource
+          ? <UploadActionButton
+              key={"UPLOAD"}
+              text="Upload"
+              type="EXISTING"
+              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+            /> : null}
+          {selectedLeftResource
+          ? <TransferActionButton
+              key={"Transfer"}
+              disabled={true}
+            />: null}
         </div>
       </div>
     );
@@ -72,10 +78,10 @@ export default function TargetActions() {
       }}
     >
       {pendingAPIOperations.includes(
-        actionCreators.resources.selectSourceResource.toString()
+        actionCreators.resources.selectResource.toString()
       ) ||
       pendingAPIOperations.includes(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString()
       )
         ? null
         : DisplayTargetActions()}

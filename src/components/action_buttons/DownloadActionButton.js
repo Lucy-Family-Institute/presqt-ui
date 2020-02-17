@@ -4,26 +4,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
 import { actionCreators } from "../../redux/actionCreators";
-import DownloadModal from "../modals/DownloadModal";
-import ActionButton from "./ActionButton";
+import ActionButton from "../widgets/buttons/ActionButton";
 
 /**
  * This component handles the download action button in the TargetActions component.
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function DownloadActionButton() {
+export default function DownloadActionButton({ disabled }) {
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * sourceTargetToken : String user token for the source target
-   * selectedInSource  : Object representing the selected resource's details
-   **/
-  const sourceTargetToken = useSelector(state =>
+  const targetToken = useSelector(state =>
     state.authorization.apiTokens[state.targets.source.name]);
-  const selectedInSource = useSelector(state => state.resources.selectedInSource);
+  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
 
-  const [modalState, setModalState] = useState(false);
 
   /**
    * Open the modal.
@@ -32,21 +26,17 @@ export default function DownloadActionButton() {
    *     -> On complete saga dispatches the ResourceDownloadSuccess action
    **/
   const submitDownload = () => {
-    setModalState(true);
-    dispatch(actionCreators.resources.downloadResource(selectedInSource, sourceTargetToken));
+    dispatch(actionCreators.resources.displayDownloadModal());
+    dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
   };
 
   return (
     <Fragment>
-      <DownloadModal
-        modalState={modalState}
-        setModalState={setModalState}
-      />
-
       <ActionButton
         elevation={0}
         variant="contained"
         onClick={submitDownload}
+        disabled={disabled}
       >
         <span css={textStyles.buttonText}>Download</span>
       </ActionButton>

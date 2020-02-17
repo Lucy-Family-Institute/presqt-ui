@@ -7,18 +7,19 @@ import buildResourceHierarchy from "./helpers/resources";
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
-  inSourceTarget: null,
-  inDestinationTarget: null,
-  selectedInSource: null,
+  leftTargetResources: null,
+  selectedLeftResource: null,
   apiOperationErrors: [],
-  sourceSearchValue: null,
-  sourceDownloadStatus: null,
-  sourceDownloadContents: null,
-  sourceUploadStatus: null,
-  sourceUploadData: null,
+  leftSearchValue: null,
+  downloadStatus: null,
+  downloadData: null,
+  downloadModalDisplay: false,
+  uploadStatus: null,
+  uploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openResources: []
+  openLeftResources: [],
+  activeTicketNumber: null
 };
 
 export default handleActions(
@@ -27,97 +28,97 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromSourceTarget]: state => ({
+    [actionCreators.resources.loadFromTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromSourceTarget,
+        actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
-      inSourceTarget: null
+      leftTargetResources: null
     }),
     /**
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action with search parameter.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearch]: (state, action) => ({
+    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromSourceTargetSearch,
+        actionCreators.resources.loadFromTargetSearch,
         state.pendingAPIOperations
       ),
-      selectedInSource: null,
-      sourceSearchValue: action.payload.searchValue,
-      openResources: []
+      selectedLeftResource: null,
+      leftSearchValue: action.payload.searchValue,
+      openLeftResources: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSuccess]: (state, action) => {
+    [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromSourceTarget,
+          actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        inSourceTarget: resourceHierarchy
+        leftTargetResources: resourceHierarchy
       };
     },
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchSuccess]: (state, action) => {
+    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromSourceTargetSearch,
+          actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
-        inSourceTarget: resourceHierarchy
+        leftTargetResources: resourceHierarchy
       };
     },
     /**
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection call.
      **/
-    [actionCreators.resources.loadFromSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.loadFromTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromSourceTarget,
+        actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromSourceTarget.toString(),
+        actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
-      inSourceTarget: null
+      leftTargetResources: null
     }),
     /**
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
-    [actionCreators.resources.loadFromSourceTargetSearchFailure]: (state, action) => ({
+    [actionCreators.resources.loadFromTargetSearchFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromSourceTargetSearch,
+        actionCreators.resources.loadFromTargetSearch,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromSourceTargetSearch,
+        actionCreators.resources.loadFromTargetSearch,
         state.apiOperationErrors
       ),
-      inSourceTarget: null
+      leftTargetResources: null
     }),
     [combineActions(
       /**
@@ -126,7 +127,7 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
-      let newOpenResources = state.openResources;
+      let newopenLeftResources = state.openLeftResources;
 
       const searchForResourceInArray = (
         desiredContainer,
@@ -137,10 +138,10 @@ export default handleActions(
 
         if (updatedNode.id === desiredContainer.id) {
           if (openContainer) {
-            newOpenResources.push(desiredContainer.id)
+            newopenLeftResources.push(desiredContainer.id)
           }
           else{
-            newOpenResources = newOpenResources.filter(element => element !== desiredContainer.id)
+            newopenLeftResources = newopenLeftResources.filter(element => element !== desiredContainer.id)
           }
           return {
             ...updatedNode,
@@ -157,7 +158,7 @@ export default handleActions(
         return updatedNode;
       };
 
-      const updatedSourceResources = state.inSourceTarget.map(topLevelNode => {
+      const updatedSourceResources = state.leftTargetResources.map(topLevelNode => {
         return searchForResourceInArray(
           action.payload.container,
           action.payload.open,
@@ -167,22 +168,22 @@ export default handleActions(
 
       return {
         ...state,
-        inSourceTarget: updatedSourceResources,
-        openResources: newOpenResources
+        leftTargetResources: updatedSourceResources,
+        openLeftResources: newopenLeftResources
       };
     },
     /**
      * Add API call to trackers.
      * Saga call to Resource-Detail occurs with this action.
      **/
-    [actionCreators.resources.selectSourceResource]: (state, action) => {
-      const updateInSourceTarget = inSourceTarget => {
-        let sourceResources = inSourceTarget;
+    [actionCreators.resources.selectResource]: (state, action) => {
+      const updateLeftTargetResources = leftTargetResources => {
+        let sourceResources = leftTargetResources;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updateInSourceTarget(resource.children);
+              updateLeftTargetResources(resource.children);
             }
           }
         });
@@ -193,24 +194,24 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.selectSourceResource,
+          actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        inSourceTarget: updateInSourceTarget(state.inSourceTarget)
+        leftTargetResources: updateLeftTargetResources(state.leftTargetResources)
       };
     },
     /***
      * Untrack API call.
-     * Add resource details to selectedInSource.
+     * Add resource details to selectedLeftResource.
      * Dispatched via Saga call on successful Resource Detail call.
      **/
-    [actionCreators.resources.selectSourceResourceSuccess]: (state, action) => {
+    [actionCreators.resources.selectResourceSuccess]: (state, action) => {
       return {
         ...state,
-        selectedInSource: action.payload,
+        selectedLeftResource: action.payload,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.selectSourceResource,
+          actionCreators.resources.selectResource,
           state.pendingAPIOperations
         )
       };
@@ -229,12 +230,12 @@ export default handleActions(
     /**
      * Clear source list and detail data
      **/
-    [actionCreators.resources.clearSourceResources]: state => {
+    [actionCreators.resources.clearResources]: state => {
       return {
         ...state,
-        inSourceTarget: null,
-        selectedInSource: null,
-        sourceSearchValue: null
+        leftTargetResources: null,
+        selectedLeftResource: null,
+        leftSearchValue: null
       };
     },
     /**
@@ -252,21 +253,23 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetSuccess]: state => ({
+    [actionCreators.resources.downloadFromTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
-      )
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
     }),
     /**
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed download call.
      **/
-    [actionCreators.resources.downloadFromSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.downloadFromTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
+      downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.downloadResource,
         state.pendingAPIOperations
@@ -290,8 +293,8 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the download job status to sourceDownloadStatus.
-     * Add the download job contents to sourceDownloadContents.
+     * Add the download job status to downloadStatus.
+     * Add the download job contents to downloadData.
      **/
     [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
       ...state,
@@ -300,58 +303,135 @@ export default handleActions(
         actionCreators.resources.downloadJob,
         state.pendingAPIOperations
       ),
-      sourceDownloadStatus: action.payload.status,
-      sourceDownloadContents: action.payload.data
+      downloadStatus: action.payload.status,
+      downloadData: action.payload.data
     }),
     /**
-     * Clear the download data so a new download can be attempted.
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed download job call.
      **/
-    [actionCreators.resources.clearDownloadData]: state => ({
+    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
       ...state,
-      sourceDownloadStatus: null,
-      sourceDownloadContents: null
+      pendingAPIResponse: false,
+      downloadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.downloadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.downloadJob.toString(),
+        state.apiOperationErrors
+      ),
     }),
     /**
-     * Register resource upload operation.
+     * Cancel the download
      **/
-    [actionCreators.resources.uploadToSourceTarget]: state => ({
+    [actionCreators.resources.cancelDownload]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.cancelDownload,
         state.pendingAPIOperations
-      ),
-      sourceUploadStatus: 'pending'
+      )
     }),
     /**
      * Untrack API call.
-     * Dispatched via Saga call on successful upload call.
      **/
-    [actionCreators.resources.uploadToSourceTargetSuccess]: state => ({
+    [actionCreators.resources.cancelDownloadSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.cancelDownload,
         state.pendingAPIOperations
       )
     }),
     /**
      * Untrack API call and track failure that occurred.
-     * Dispatched via Saga call on failed upload call.
+     * Dispatched via Saga call on failed cancel download call.
      **/
-    [actionCreators.resources.uploadToSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.cancelDownloadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
+      downloadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToSourceTarget,
+        actionCreators.resources.cancelDownload,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.uploadToSourceTarget.toString(),
+        actionCreators.resources.cancelDownload.toString(),
         state.apiOperationErrors
       ),
-      sourceUploadStatus: 'failure'
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    /**
+     * Clear the download data so a new download can be attempted.
+     **/
+    [actionCreators.resources.clearDownloadData]: state => ({
+      ...state,
+      downloadStatus: null,
+      downloadData: null
+    }),
+    /**
+     * Display the Download Modal
+     **/
+    [actionCreators.resources.displayDownloadModal]: state => ({
+      ...state,
+      downloadModalDisplay: true,
+    }),
+    /**
+     * Hide the Download Modal
+     **/
+    [actionCreators.resources.hideDownloadModal]: state => ({
+      ...state,
+      downloadModalDisplay: false,
+    }),
+    /**
+     * Register resource upload operation.
+     **/
+    [actionCreators.resources.uploadToTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.uploadToTarget,
+        state.pendingAPIOperations
+      ),
+      uploadStatus: 'pending'
+    }),
+    /**
+     * Untrack API call.
+     * Dispatched via Saga call on successful upload call.
+     **/
+    [actionCreators.resources.uploadToTargetSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadToTarget,
+        state.pendingAPIOperations
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload call.
+     **/
+    [actionCreators.resources.uploadToTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadToTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadToTarget.toString(),
+        state.apiOperationErrors
+      ),
+      uploadStatus: 'failure'
     }),
     /**
      * Register upload job operation.
@@ -366,8 +446,8 @@ export default handleActions(
     }),
     /**
      * Untrack API call.
-     * Add the upload job status to sourceUploadStatus.
-     * Add the upload job contents to sourceUploadData.
+     * Add the upload job status to uploadStatus.
+     * Add the upload job contents to uploadData.
      **/
     [actionCreators.resources.uploadJobSuccess]: (state, action) => ({
       ...state,
@@ -376,16 +456,34 @@ export default handleActions(
         actionCreators.resources.uploadJob,
         state.pendingAPIOperations
       ),
-      sourceUploadStatus: action.payload.status,
-      sourceUploadData: action.payload.data
+      uploadStatus: action.payload.status,
+      uploadData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed upload job call.
+     **/
+    [actionCreators.resources.uploadJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      uploadStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.uploadJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.uploadJob.toString(),
+        state.apiOperationErrors
+      ),
     }),
     /**
      * Clear the upload data so a new upload can be attempted.
      **/
     [actionCreators.resources.clearUploadData]: state => ({
       ...state,
-      sourceUploadStatus: null,
-      sourceUploadData: null
+      uploadStatus: null,
+      uploadData: null
     }),
     /**
      * Display the Upload Modal
@@ -404,14 +502,55 @@ export default handleActions(
       uploadType: null
     }),
     /**
-     * Refresh the resources in the Resource Browser.
-     * Saga call to Resource-Collection occurs with this action.
+     * Cancel the upload
      **/
-    [actionCreators.resources.refreshSourceTarget]: state => ({
+    [actionCreators.resources.cancelUpload]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.refreshSourceTarget,
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     **/
+    [actionCreators.resources.cancelUploadSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      ),
+      sourceUploadStatus: 'cancelSuccess',
+    }),
+    /** 
+    * Untrack API call and track failure that occurred.
+    * Dispatched via Saga call on failed cancel upload call.
+    **/
+    [actionCreators.resources.cancelUploadFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      uploadStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelUpload,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelUpload.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
+     * Refresh the resources in the Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    [actionCreators.resources.refreshTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.refreshTarget,
         state.pendingAPIOperations
       ),
     }),
@@ -419,37 +558,44 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshSourceTargetSuccess]: (state, action) => {
+    [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.refreshSourceTarget,
+          actionCreators.resources.refreshTarget,
           state.pendingAPIOperations
         ),
-        inSourceTarget: resourceHierarchy,
-        sourceUploadStatus: "finished"
+        leftTargetResources: resourceHierarchy,
+        uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
     /**
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshSourceTargetFailure]: (state, action) => ({
+    [actionCreators.resources.refreshTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.refreshSourceTarget,
+        actionCreators.resources.refreshTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.refreshSourceTarget.toString(),
+        actionCreators.resources.refreshTarget.toString(),
         state.apiOperationErrors
       ),
-      inSourceTarget: null
+      leftTargetResources: null
     }),
+    /**
+     * Clear the ticket number
+     **/
+    [actionCreators.resources.clearActiveTicketNumber]: state => ({
+      ...state,
+      activeTicketNumber: null
+    })
   },
   initialState
 );

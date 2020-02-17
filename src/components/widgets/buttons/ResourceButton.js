@@ -1,19 +1,18 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import textStyles from "../../styles/text";
+import textStyles from "../../../styles/text";
 
-const closedFolderIcon = require("../../images/icons/closedFolder.png");
-const openFolderIcon = require("../../images/icons/openFolder.png");
-const openFolderSelectedIcon = require("../../images/icons/openFolderSelected.png");
-const closedFolderSelectedIcon = require("../../images/icons/closedFolderSelected.png");
-const fileIcon = require("../../images/icons/file.png");
-const fileSelectedIcon = require("../../images/icons/fileSelected.png");
-const presqtMetadataFileIcon = require("../../images/icons/presqtMetadataFile.png");
-const presqtMetadataFileIconSelected = require("../../images/icons/presqtMetadataFileSelected.png");
+const closedFolderIcon = require("../../../images/icons/closedFolder.png");
+const openFolderIcon = require("../../../images/icons/openFolder.png");
+const openFolderSelectedIcon = require("../../../images/icons/openFolderSelected.png");
+const closedFolderSelectedIcon = require("../../../images/icons/closedFolderSelected.png");
+const fileIcon = require("../../../images/icons/file.png");
+const fileSelectedIcon = require("../../../images/icons/fileSelected.png");
+const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile.png");
+const presqtMetadataFileIconSelected = require("../../../images/icons/presqtMetadataFileSelected.png");
 
-export default function ResourceButton(props) {
-  const { resource, level, onClick } = props;
+export default function ResourceButton({ resource, level, onClick }) {
 
   const iconSelector = () => {
     if (resource.kind === "container") {

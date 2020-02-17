@@ -2,12 +2,12 @@
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
-import buttonStyles from "../../../styles/buttons";
-import textStyles from "../../../styles/text";
-import { actionCreators } from "../../../redux/actionCreators";
+import buttonStyles from "../../../../styles/buttons";
+import textStyles from "../../../../styles/text";
+import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 
-export default function RetryStartUploadOverButton(props) {
+export default function RetryStartUploadOverButton({setActiveStep, setSelectedFile}) {
   const classes = buttonStyles.RetryStartUploadOver();
   const dispatch = useDispatch();
 
@@ -15,11 +15,11 @@ export default function RetryStartUploadOverButton(props) {
     dispatch(actionCreators.resources.clearUploadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.uploadToSourceTarget.toString()
+        actionCreators.resources.uploadToTarget.toString()
       )
     );
-    props.setSelectedFile(null);
-    props.setActiveStep(0);
+    setSelectedFile(null);
+    setActiveStep(0);
   };
 
   return (

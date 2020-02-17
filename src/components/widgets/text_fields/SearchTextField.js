@@ -1,6 +1,6 @@
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 /**
  * Create a new component that inherits the Material TextField component so we can update the colors

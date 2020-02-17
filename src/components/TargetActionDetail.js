@@ -3,19 +3,19 @@ import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
 
 import textStyles from "../styles/text";
-import MediumHeader from "./widgets/MediumHeader";
+import MediumHeader from "./widgets/headers/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
-import Spinner from "./widgets/Spinner";
+import Spinner from "./widgets/spinners/Spinner";
 
 /**
  * This component is responsible for displaying the details of a selected resource.
  **/
 export default function TargetActionDetail() {
   /** SELECTOR DEFINITIONS
-   * selectedSourceResource : Object of the resource details of the selected resource to display.
+   * selectedLeftResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /**
@@ -116,15 +116,15 @@ export default function TargetActionDetail() {
       ]}
     >
       {
-        pendingAPIOperations.includes(actionCreators.resources.selectSourceResource.toString())
+        pendingAPIOperations.includes(actionCreators.resources.selectResource.toString())
         ? <Spinner />
-        : pendingAPIOperations.includes(actionCreators.resources.loadFromSourceTargetSearch.toString())
+        : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null
-        : selectedSourceResource ? (
+        : selectedLeftResource ? (
           <div>
             <MediumHeader text="Resource Details" />
             <div css={{ paddingTop: 10 }}>
-              {detailsToRender(selectedSourceResource).map(resourceData =>
+              {detailsToRender(selectedLeftResource).map(resourceData =>
                 renderDetailItem(resourceData)
               )}
             </div>
