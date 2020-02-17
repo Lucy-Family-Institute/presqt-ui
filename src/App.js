@@ -4,6 +4,7 @@ import { jsx, css } from '@emotion/core';
 import './App.css';
 import PresQTHeader from './components/PresQTHeader';
 import AvailableConnections from './components/AvailableConnections';
+import TargetToots from './components/TargetToots';
 import TargetResourceBrowser from './components/TargetResourceBrowser';
 import TargetActionDetail from './components/TargetActionDetail';
 import TargetActions from './components/TargetActions';
@@ -22,12 +23,12 @@ const styles = {
     paddingBottom: 50,
     gridRowGap: 25,
     gridTemplateRows: '150px 125px 1fr 100px',
-    gridTemplateColumns: '450px 150px 1fr',
+    gridTemplateColumns: '450px 150px 400px 400px 150px 1fr',
     gridTemplateAreas: `
-        "headerLogo headerMenu headerMenu"
-        "targetResources targetActions targetActions"
-        "targetResources targetActionDetail targetActionDetail"
-        "availableConnections . developmentPartners"
+        "headerLogo headerMenu headerMenu headerMenu headerMenu headerMenu"
+        "targetResources targetActions targetActions targetActions targetActions targetToots"
+        "targetResources targetActionDetail targetActionDetail targetActionDetail targetActionDetail targetToots"
+        "availableConnections . developmentPartners . . ."
         `
   })
 };
@@ -41,6 +42,7 @@ function App() {
       <TargetResourceBrowser />
       <TargetActions />
       <TargetActionDetail />
+      <TargetToots />
       <AvailableConnections />
       <DevelopmentPartners />
 
