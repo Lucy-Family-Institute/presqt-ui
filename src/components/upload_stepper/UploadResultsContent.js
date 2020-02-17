@@ -24,14 +24,14 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                                                selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const sourceUploadStatus = useSelector(state => state.resources.sourceUploadStatus);
-  const sourceUploadData = useSelector(state => state.resources.sourceUploadData);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const uploadData = useSelector(state => state.resources.uploadData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const connection = useSelector(state => state.targets.source);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
   const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadToSourceTarget.toString());
+    element => element.action === actionCreators.resources.uploadToTarget.toString());
 
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.uploadJob.toString());
@@ -51,11 +51,11 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
-    if (sourceUploadStatus === 'success') {
-      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+    if (uploadStatus === 'success') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    else if (sourceUploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshSourceTarget(connection, token));
+    else if (uploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
       setStepThreeContent(
         <div>
           <p>Upload is being cancelled...</p>
@@ -66,14 +66,14 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
-    else if (sourceUploadStatus === 'finished') {
-      const failedFixityMessage = sourceUploadData.failed_fixity.length > 0
+    else if (uploadStatus === 'finished') {
+      const failedFixityMessage = uploadData.failed_fixity.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following files failed fixity checks: ${sourceUploadData.failed_fixity.join(', ')}`}
+            primary={`The following files failed fixity checks: ${uploadData.failed_fixity.join(', ')}`}
           />
         </ListItem>
         : <ListItem>
@@ -85,24 +85,24 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           />
         </ListItem>;
 
-      const resourcesIgnoredMessage = sourceUploadData.resources_ignored.length > 0
+      const resourcesIgnoredMessage = uploadData.resources_ignored.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following duplicate resources were ignored: ${sourceUploadData.resources_ignored.join(', ')}`}
+            primary={`The following duplicate resources were ignored: ${uploadData.resources_ignored.join(', ')}`}
           />
         </ListItem>
         : null;
 
-      const resourcesUpdatedMessage = sourceUploadData.resources_updated.length > 0
+      const resourcesUpdatedMessage = uploadData.resources_updated.length > 0
         ? <ListItem>
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>
           <ListItemText
-            primary={`The following duplicate resources were updated: ${sourceUploadData.resources_updated.join(', ')}`}
+            primary={`The following duplicate resources were updated: ${uploadData.resources_updated.join(', ')}`}
           />
         </ListItem>
         : null;
@@ -118,7 +118,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                   />
                 </ListItemIcon>
                 <ListItemText
-                  primary={sourceUploadData.message}
+                  primary={uploadData.message}
                 />
               </ListItem>
               {failedFixityMessage}
@@ -132,10 +132,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(successfulMessage);
     }
     // Upload Failed!
-    else if (sourceUploadStatus === 'failure' || sourceUploadStatus === 'cancelled') {
+    else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
-      if (sourceUploadStatus === 'cancelled') {
-        errorMessage = `${sourceUploadData.message}. Some resources may have still be uploaded.`
+      if (uploadStatus === 'cancelled') {
+        errorMessage = `${uploadData.message}. Some resources may have still be uploaded.`
       }
       // PresQT Upload Post error
       else if (uploadError) {
@@ -147,7 +147,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       }
       // Target error
       else {
-        errorMessage = `The Target returned an error status code ${sourceUploadData.status_code}: ${sourceUploadData.message}`;
+        errorMessage = `The Target returned an error status code ${uploadData.status_code}: ${uploadData.message}`;
       }
 
       setStepThreeContent(
@@ -181,7 +181,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </Fragment>
       );
     }
-  }, [sourceUploadStatus, apiOperationErrors]);
+  }, [uploadStatus, apiOperationErrors]);
 
   return(stepThreeContent)
 }

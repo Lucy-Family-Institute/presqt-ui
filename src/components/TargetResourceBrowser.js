@@ -31,31 +31,31 @@ export default function TargetResourceBrowser() {
   const sourceTargetToken = useSelector(state => state.targets.source
       ? state.authorization.apiTokens[state.targets.source.name]
       : null);
-  const sourceTargetResources = useSelector(state => state.resources.inSourceTarget);
+  const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
-  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
+  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
   const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTarget.toString());
+    element => element.action === actionCreators.resources.loadFromTarget.toString());
   const search_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromSourceTargetSearch.toString());
+    element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
    * Else dispatch the openContainer action to expand the container
-   * After the container action completes, dispatch selectSourceResource to fetch resource details
+   * After the container action completes, dispatch selectResource to fetch resource details
    *   -> Saga call to Resource Detail occurs here
-   *      -> On complete saga dispatches the selectSourceResourceSuccess action
+   *      -> On complete saga dispatches the selectResourceSuccess action
    */
-  const onResourceClicked = (resource, sourceTargetToken) => {
+  const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
-    dispatch(actionCreators.resources.selectSourceResource(resource, sourceTargetToken));
+    dispatch(actionCreators.resources.selectResource(resource, targetToken));
   };
 
   /**
@@ -86,7 +86,7 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (sourceTargetResources || sourceSearchValue || collection_error) {
+    if (leftTargetResources || leftSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -97,7 +97,7 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (sourceTargetResources || sourceSearchValue || collection_error) {
+    if (leftTargetResources || leftSearchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -110,22 +110,22 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!sourceSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!leftSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
   };
 
   useEffect(() => {
-    if (sourceTargetResources && sourceTargetResources.length > 0) {
+    if (leftTargetResources && leftTargetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, sourceTargetToken), sourceTargetResources))
+        resource => onResourceClicked(resource, sourceTargetToken), leftTargetResources))
     }
-    else if (sourceTargetResources && sourceTargetResources.length === 0 && sourceSearchValue) {
+    else if (leftTargetResources && leftTargetResources.length === 0 && leftSearchValue) {
       setMessage(`No ${sourceTarget.readable_name} resources found for search term 
-        "${sourceSearchValue}".`);
+        "${leftSearchValue}".`);
     }
-    else if (sourceTargetResources && sourceTargetResources.length === 0) {
+    else if (leftTargetResources && leftTargetResources.length === 0) {
       setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
     }
     else if (search_error) {
@@ -139,7 +139,7 @@ export default function TargetResourceBrowser() {
     else {
       setMessage('');
     }
-  }, [sourceTargetResources]);
+  }, [leftTargetResources]);
 
   return (
     <div
@@ -157,10 +157,10 @@ export default function TargetResourceBrowser() {
         {search()}
         {!sourceTarget ? null : upload()}
         {pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTarget.toString()
+          actionCreators.resources.loadFromTarget.toString()
         ) ||
         pendingAPIOperations.includes(
-          actionCreators.resources.loadFromSourceTargetSearch.toString()
+          actionCreators.resources.loadFromTargetSearch.toString()
         ) ? <Spinner />
           : (
           <div>

@@ -4,7 +4,7 @@ import {watchLoadTargets} from "./targets";
 import {
   watchRefreshSource,
   watchSearch,
-  watchSelectSourceResource,
+  watchSelectResource,
   watchSwitchSource
 } from "./resources";
 import {watchCancelDownload, watchSourceResourceDownload} from "./download";
@@ -15,7 +15,7 @@ export default function* rootSaga() {
   yield all([
     watchLoadTargets(),
     watchSwitchSource(),
-    watchSelectSourceResource(),
+    watchSelectResource(),
     watchSearch(),
     watchSourceResourceDownload(),
     watchSourceResourceUpload(),

@@ -14,16 +14,16 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  **/
 export default function TargetActions() {
   /** SELECTOR DEFINITIONS
-   * selectedSourceResource : Object of the resource details of the selected resource to display.
+   * selectedLeftResource : Object of the resource details of the selected resource to display.
    * pendingAPIOperations   : List of API operations currently in progress.
    **/
-  const selectedSourceResource = useSelector(state => state.resources.selectedInSource);
+  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const sourceSearchValue = useSelector(state => state.resources.sourceSearchValue);
+  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
   var buttonsList = [];
-  if (selectedSourceResource) {
-    for (var i = 0; i < selectedSourceResource.links.length; i++) {
-      buttonsList.push(selectedSourceResource.links[i].name);
+  if (selectedLeftResource) {
+    for (var i = 0; i < selectedLeftResource.links.length; i++) {
+      buttonsList.push(selectedLeftResource.links[i].name);
     }
   }
 
@@ -41,23 +41,23 @@ export default function TargetActions() {
             textStyles.largeHeader
           ]}
         >
-          {selectedSourceResource ? selectedSourceResource.title : null}
+          {selectedLeftResource ? selectedLeftResource.title : null}
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedSourceResource
+          {selectedLeftResource
             ? <DownloadActionButton
               key={"Download"}
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
-          {selectedSourceResource
+          {selectedLeftResource
           ? <UploadActionButton
               key={"UPLOAD"}
               text="Upload"
               type="EXISTING"
-              disabled={!sourceSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
-          {selectedSourceResource
+          {selectedLeftResource
           ? <TransferActionButton
               key={"Transfer"}
               disabled={true}
@@ -78,10 +78,10 @@ export default function TargetActions() {
       }}
     >
       {pendingAPIOperations.includes(
-        actionCreators.resources.selectSourceResource.toString()
+        actionCreators.resources.selectResource.toString()
       ) ||
       pendingAPIOperations.includes(
-        actionCreators.resources.loadFromSourceTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString()
       )
         ? null
         : DisplayTargetActions()}
