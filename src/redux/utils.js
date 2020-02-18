@@ -1,18 +1,18 @@
 /**
  * Add `element` to `array` if it is not already present.
  **/
-export function trackAction(actionCreator, array) {
-  return array.includes(actionCreator.toString())
+export function trackAction(action, array) {
+  return array.includes(action)
     ? array
-    : [...array, actionCreator.toString()];
+    : [...array, action];
 }
 
 /**
  * Remove 'element' from 'array'
  */
-export function untrackAction(actionCreator, array) {
+export function untrackAction(action, array) {
   return array.filter(arrayElement =>
-    arrayElement === actionCreator.toString() ? false : true
+    arrayElement === action ? false : true
   );
 }
 

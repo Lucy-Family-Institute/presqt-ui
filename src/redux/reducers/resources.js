@@ -32,11 +32,11 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromTarget]: state => ({
+    [actionCreators.resources.loadFromTarget]: (state, action) => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTarget,
+        actionCreators.resources.loadFromTarget.toString() + action.payload.side,
         state.pendingAPIOperations
       ),
     }),
@@ -50,7 +50,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTarget,
+          actionCreators.resources.loadFromTarget.toString() + action.payload.side,
           state.pendingAPIOperations
         ),
         leftTargetResources: action.payload.side === 'left' ? resourceHierarchy : state.leftTargetResources,
@@ -65,7 +65,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromTarget,
+        actionCreators.resources.loadFromTarget.toString() + action.payload.side,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -86,7 +86,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.loadFromTargetSearch,
+          actionCreators.resources.loadFromTargetSearch.toString() + action.payload.side,
           state.pendingAPIOperations
         ),
         selectedLeftResource: side === 'left' ? null : state.selectedLeftResource,
@@ -111,7 +111,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTargetSearch,
+          actionCreators.resources.loadFromTargetSearch.toString() + action.payload.side,
           state.pendingAPIOperations
         ),
         leftTargetResources: side === 'left' ? resourceHierarchy : state.leftTargetResources,
@@ -129,7 +129,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTargetSearch,
+          actionCreators.resources.loadFromTargetSearch.toString() + action.payload.side,
           state.pendingAPIOperations
         ),
         apiOperationErrors: trackError(
@@ -227,7 +227,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.selectResource,
+          actionCreators.resources.selectResource.toString(),
           state.pendingAPIOperations
         ),
         leftTargetResources: side === 'left' ? updateTargetResources(state.leftTargetResources) : state.leftTargetResources,
@@ -246,7 +246,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.selectResource,
+          actionCreators.resources.selectResource.toString(),
           state.pendingAPIOperations
         ),
         selectedLeftResource: side === 'left' ? action.payload.data : state.selectedLeftResource,
@@ -289,7 +289,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.resources.downloadResource.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -301,7 +301,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.resources.downloadResource.toString(),
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -315,7 +315,7 @@ export default handleActions(
       pendingAPIResponse: false,
       downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.resources.downloadResource.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -331,7 +331,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.resources.downloadJob.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -344,7 +344,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.resources.downloadJob.toString(),
         state.pendingAPIOperations
       ),
       downloadStatus: action.payload.status,
@@ -359,7 +359,7 @@ export default handleActions(
       pendingAPIResponse: false,
       downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.resources.downloadJob.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -375,7 +375,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.resources.cancelDownload.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -386,7 +386,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.resources.cancelDownload.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -399,7 +399,7 @@ export default handleActions(
       pendingAPIResponse: false,
       downloadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.resources.cancelDownload.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -441,7 +441,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.resources.uploadToTarget.toString(),
         state.pendingAPIOperations
       ),
       uploadStatus: 'pending'
@@ -454,7 +454,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.resources.uploadToTarget.toString(),
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -467,7 +467,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.resources.uploadToTarget.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -484,7 +484,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.resources.uploadJob.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -497,7 +497,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.resources.uploadJob.toString(),
         state.pendingAPIOperations
       ),
       uploadStatus: action.payload.status,
@@ -512,7 +512,7 @@ export default handleActions(
       pendingAPIResponse: false,
       uploadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.resources.uploadJob.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -552,7 +552,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.resources.cancelUpload.toString(),
         state.pendingAPIOperations
       )
     }),
@@ -563,7 +563,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.resources.cancelUpload.toString(),
         state.pendingAPIOperations
       ),
       sourceUploadStatus: 'cancelSuccess',
@@ -577,7 +577,7 @@ export default handleActions(
       pendingAPIResponse: false,
       uploadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.resources.cancelUpload.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
@@ -594,7 +594,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.refreshTarget,
+        actionCreators.resources.refreshTarget.toString(),
         state.pendingAPIOperations
       ),
     }),
@@ -608,7 +608,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.refreshTarget,
+          actionCreators.resources.refreshTarget.toString(),
           state.pendingAPIOperations
         ),
         leftTargetResources: resourceHierarchy,
@@ -623,7 +623,7 @@ export default handleActions(
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.refreshTarget,
+        actionCreators.resources.refreshTarget.toString(),
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(

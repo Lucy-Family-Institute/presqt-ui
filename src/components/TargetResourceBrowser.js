@@ -33,7 +33,6 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
     ? state.authorization.apiTokens[target.name] : null);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sideSelected = useSelector(state => state.resources.sideSelected);
   const searchValue = useSelector(state => side === 'left'
     ? state.resources.leftSearchValue : state.resources.rightSearchValue);
 
@@ -160,11 +159,9 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
         {search()}
         {/*{!target ? null : upload()}*/}
         {
-          side === sideSelected
-          &&
-          (pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString())
+          (pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString() + side)
           ||
-          pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()))
+          pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString() + side))
             ? <Spinner />
             : <div css={messageCss}>{message}</div>
         }
