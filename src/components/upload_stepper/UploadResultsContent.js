@@ -24,10 +24,12 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                                                selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
+  const sideSelected = useSelector(state => state.resources.sideSelected);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
   const uploadData = useSelector(state => state.resources.uploadData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const connection = useSelector(state => state.targets.leftTarget);
+  const connection = useSelector(state => sideSelected === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
   const uploadError = apiOperationErrors.find(
@@ -52,10 +54,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
    **/
   useEffect(() => {
     if (uploadStatus === 'success') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(sideSelected, connection, token));
     }
     else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(sideSelected, connection, token));
       setStepThreeContent(
         <div>
           <p>Upload is being cancelled...</p>

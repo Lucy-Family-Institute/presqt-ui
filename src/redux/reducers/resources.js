@@ -603,7 +603,9 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
     [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const side = action.payload.side;
+      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
+
       return {
         ...state,
         pendingAPIResponse: false,
@@ -611,7 +613,9 @@ export default handleActions(
           actionCreators.resources.refreshTarget.toString(),
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy,
+        leftTargetResources: side === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? resourceHierarchy : state.rightTargetResources,
+
         uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
@@ -619,20 +623,26 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshTargetFailure]: (state, action) => ({
-      ...state,
-      pendingAPIResponse: false,
-      pendingAPIOperations: untrackAction(
-        actionCreators.resources.refreshTarget.toString(),
-        state.pendingAPIOperations
-      ),
-      apiOperationErrors: trackError(
-        action,
-        actionCreators.resources.refreshTarget.toString(),
-        state.apiOperationErrors
-      ),
-      leftTargetResources: null
-    }),
+    [actionCreators.resources.refreshTargetFailure]: (state, action) => {
+      const side = action.payload.side;
+
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.refreshTarget.toString(),
+          state.pendingAPIOperations
+        ),
+        apiOperationErrors: trackError(
+          action,
+          actionCreators.resources.refreshTarget.toString(),
+          state.apiOperationErrors
+        ),
+
+        leftTargetResources: side === 'left' ? null : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? null : state.rightTargetResources
+      }
+    },
     /**
      * Clear the ticket number
      **/

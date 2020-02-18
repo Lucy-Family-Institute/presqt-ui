@@ -107,6 +107,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
       }
       return (
         <UploadActionButton
+          side={side}
           style={{ width: 250 }}
           text="Create New Project"
           type="NEW"
@@ -147,7 +148,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
     <div
       css={{
         gridArea: {gridArea},
-        paddingLeft: 50,
+        paddingLeft: 25,
         paddingBottom: 50,
         minHeight: "25vh",
         flex: 1,
@@ -157,7 +158,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader target={targetToken ? target : null}/>
         {search()}
-        {/*{!target ? null : upload()}*/}
+        {!target ? null : upload()}
         {
           (pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString() + side)
           ||

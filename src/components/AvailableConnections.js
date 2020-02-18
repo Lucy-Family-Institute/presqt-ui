@@ -20,8 +20,11 @@ export default function AvailableConnections({side, target, gridArea}) {
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
 
   const collection_error = apiOperationErrors.find(
+
     element => element.action === actionCreators.resources.loadFromTarget.toString());
 
   let tokenError;
@@ -89,7 +92,7 @@ export default function AvailableConnections({side, target, gridArea}) {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'? { opacity: 0.5 } : null
             ]}
             onClick={() => handleSwitchTarget(connection)}
             disabled={pendingAPIResponse}

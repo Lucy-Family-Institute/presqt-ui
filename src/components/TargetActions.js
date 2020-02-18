@@ -14,7 +14,6 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  **/
 export default function TargetActionsLeft({side, selectedResource, searchValue, customCSS}) {
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  console.log(selectedResource);
   let buttonsList = [];
   if (selectedResource) {
     for (let i = 0; i < selectedResource.links.length; i++) {
@@ -46,14 +45,15 @@ export default function TargetActionsLeft({side, selectedResource, searchValue, 
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
           {selectedResource
-          ? <UploadActionButton
+            ? <UploadActionButton
+              side={side}
               key={"UPLOAD"}
               text="Upload"
               type="EXISTING"
               disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
           {selectedResource
-          ? <TransferActionButton
+            ? <TransferActionButton
               key={"Transfer"}
               disabled={true}
             />: null}

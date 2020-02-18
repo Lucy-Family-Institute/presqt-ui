@@ -90,10 +90,11 @@ function* refreshTargetResources(action) {
       action.payload.target.name,
       action.payload.targetToken
     );
-    yield put(actionCreators.resources.refreshTargetSuccess(response.data));
+    yield put(actionCreators.resources.refreshTargetSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.refreshTargetFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );
