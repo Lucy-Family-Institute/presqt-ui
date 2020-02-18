@@ -27,7 +27,6 @@ export default function TargetSearch({side}) {
 
   const submitSearch = (event) => {
     event.preventDefault();
-    dispatch(actionCreators.resources.switchSide(side));
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTargetSearch.toString()
@@ -35,6 +34,7 @@ export default function TargetSearch({side}) {
     );
     dispatch(
       actionCreators.resources.loadFromTargetSearch(
+        side,
         target.name,
         token,
         searchValue

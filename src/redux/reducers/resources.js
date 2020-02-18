@@ -24,7 +24,6 @@ const initialState = {
   openLeftResources: [],
   openRightResources: [],
   activeTicketNumber: null,
-  sideSelected: null
 };
 
 export default handleActions(
@@ -46,7 +45,7 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -54,8 +53,8 @@ export default handleActions(
           actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: state.sideSelected === 'left' ? resourceHierarchy : state.leftTargetResources,
-        rightTargetResources: state.sideSelected === 'right' ? resourceHierarchy : state.rightTargetResources
+        leftTargetResources: action.payload.side === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: action.payload.side === 'right' ? resourceHierarchy : state.rightTargetResources
       };
     },
     /**
@@ -74,34 +73,40 @@ export default handleActions(
         actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      leftTargetResources: action.payload.side === 'left' ? null : state.leftTargetResources,
+      rightTargetResources: action.payload.side === 'right' ? null : state.rightTargetResources
     }),
     /**
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action with search parameter.
      **/
-    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
-      ...state,
-      pendingAPIResponse: true,
-      pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTargetSearch,
-        state.pendingAPIOperations
-      ),
-      selectedLeftResource: state.sideSelected === 'left' ? null : state.selectedLeftResource,
-      selectedRightResource: state.sideSelected === 'right' ? null : state.selectedRightResource,
+    [actionCreators.resources.loadFromTargetSearch]: (state, action) => {
+      const side = action.payload.side;
+      return {
+        ...state,
+        pendingAPIResponse: true,
+        pendingAPIOperations: trackAction(
+          actionCreators.resources.loadFromTargetSearch,
+          state.pendingAPIOperations
+        ),
+        selectedLeftResource: side === 'left' ? null : state.selectedLeftResource,
+        selectedRightResource: side === 'right' ? null : state.selectedRightResource,
 
-      leftSearchValue: state.sideSelected === 'left' ? action.payload.searchValue: state.leftSearchValue,
-      rightSearchValue: state.sideSelected === 'right' ? action.payload.searchValue: state.rightSearchValue,
+        leftSearchValue: side === 'left' ? action.payload.searchValue: state.leftSearchValue,
+        rightSearchValue: side === 'right' ? action.payload.searchValue: state.rightSearchValue,
 
-      openLeftResources: state.sideSelected === 'left' ? [] : state.openLeftResources,
-      openRightResources: state.sideSelected === 'right' ? [] : state.openRightResources
-    }),
+        openLeftResources: side === 'left' ? [] : state.openLeftResources,
+        openRightResources: side === 'right' ? [] : state.openRightResources
+      }
+    },
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
+      const side = action.payload.side;
+
       return {
         ...state,
         pendingAPIResponse: false,
@@ -109,29 +114,33 @@ export default handleActions(
           actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
-        leftTargetResources: state.sideSelected === 'left' ? resourceHierarchy : state.leftTargetResources,
-        rightTargetResources: state.sideSelected === 'right' ? resourceHierarchy : state.rightTargetResources
+        leftTargetResources: side === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? resourceHierarchy : state.rightTargetResources
       };
     },
     /**
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
-    [actionCreators.resources.loadFromTargetSearchFailure]: (state, action) => ({
-      ...state,
-      pendingAPIResponse: false,
-      pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromTargetSearch,
-        state.pendingAPIOperations
-      ),
-      apiOperationErrors: trackError(
-        action,
-        actionCreators.resources.loadFromTargetSearch,
-        state.apiOperationErrors
-      ),
-      leftTargetResources: state.sideSelected === 'left' ? null : state.leftTargetResources,
-      rightTargetResources: state.sideSelected === 'right' ? null : state.rightTargetResources
-    }),
+    [actionCreators.resources.loadFromTargetSearchFailure]: (state, action) => {
+      const side = action.payload.side;
+
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromTargetSearch,
+          state.pendingAPIOperations
+        ),
+        apiOperationErrors: trackError(
+          action,
+          actionCreators.resources.loadFromTargetSearch,
+          state.apiOperationErrors
+        ),
+        leftTargetResources: side === 'left' ? null : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? null : state.rightTargetResources
+      }
+    },
     [combineActions(
       /**
        * Open/Close Container Resources in UX.

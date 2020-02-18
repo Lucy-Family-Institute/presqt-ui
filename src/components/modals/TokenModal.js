@@ -64,7 +64,7 @@ export default function TokenModal() {
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
     dispatch(actionCreators.authorization.saveToken(target.name, token));
-    dispatch(actionCreators.resources.loadFromTarget(target, token));
+    dispatch(actionCreators.resources.loadFromTarget(sideSelected, target, token));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));

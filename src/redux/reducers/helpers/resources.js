@@ -53,11 +53,11 @@ function associateWithParentResource(openLeftResources, possibleParents, child) 
 /**
  * Sort the target's resources into their proper hierarchy
  **/
-export default function buildResourceHierarchy(state, action) {
+export default function buildResourceHierarchy(state, data) {
 
   let resourceHierarchy = [];
-  if (action.payload.length > 0) {
-    resourceHierarchy = action.payload.reduce(
+  if (data.length > 0) {
+    resourceHierarchy = data.reduce(
       (initial, resource, index, original) => {
         if (state.selectedLeftResource && resource.id === state.selectedLeftResource.id) {
           resource.active = true;

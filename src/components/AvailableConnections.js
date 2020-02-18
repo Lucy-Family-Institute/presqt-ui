@@ -63,7 +63,7 @@ export default function AvailableConnections({side, target, gridArea}) {
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name])
+        actionCreators.resources.loadFromTarget(side, connection, apiTokens[connection.name])
       );
     } else {
       setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);

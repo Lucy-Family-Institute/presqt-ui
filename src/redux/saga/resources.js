@@ -18,10 +18,11 @@ function* loadTargetResources(action) {
     action.payload.target.name,
     action.payload.targetToken
     );
-    yield put(actionCreators.resources.loadFromTargetSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );
@@ -44,10 +45,11 @@ function* loadTargetResourcesSearch(action) {
     action.payload.targetToken,
     action.payload.searchValue
     );
-    yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSearchSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetSearchFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );
