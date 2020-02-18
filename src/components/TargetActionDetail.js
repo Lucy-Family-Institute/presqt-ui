@@ -10,12 +10,7 @@ import Spinner from "./widgets/spinners/Spinner";
 /**
  * This component is responsible for displaying the details of a selected resource.
  **/
-export default function TargetActionDetailLeft() {
-  /** SELECTOR DEFINITIONS
-   * selectedLeftResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+export default function TargetActionDetailLeft({side, selectedResource, customCSS}) {
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /**
@@ -105,29 +100,18 @@ export default function TargetActionDetailLeft() {
 
   return (
     <div
-      css={[
-        css({
-          gridArea: "targetActionDetailLeft",
-          borderLeftColor: "#C5C5C5",
-          borderLeftWidth: 1,
-          borderLeftStyle: "solid",
-          paddingLeft: 25,
-          borderRightColor: "black",
-          borderRightWidth: 1,
-          borderRightStyle: "solid",
-        })
-      ]}
+      css={customCSS}
     >
       {
-        pendingAPIOperations.includes(actionCreators.resources.selectResource.toString())
+        pendingAPIOperations.includes(actionCreators.resources.selectResource.toString() + side)
         ? <Spinner />
-        : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
+        : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString() + side)
         ? null
-        : selectedLeftResource ? (
+        : selectedResource ? (
           <div>
             <MediumHeader text="Resource Details" />
             <div css={{ paddingTop: 10 }}>
-              {detailsToRender(selectedLeftResource).map(resourceData =>
+              {detailsToRender(selectedResource).map(resourceData =>
                 renderDetailItem(resourceData)
               )}
             </div>

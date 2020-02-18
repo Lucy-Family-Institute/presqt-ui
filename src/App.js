@@ -6,7 +6,7 @@ import PresQTHeader from './components/PresQTHeader';
 import AvailableConnectionsLeft from './components/left_components/AvailableConnectionsLeft';
 import TargetResourceBrowserRight from './components/right_components/TargetResourceBrowserRight';
 import TargetResourceBrowserLeft from './components/left_components/TargetResourceBrowserLeft';
-import TargetActionDetailLeft from './components/TargetActionDetailLeft';
+import TargetActionDetailLeft from './components/left_components/TargetActionDetailLeft';
 import TargetActionsLeft from './components/left_components/TargetActionsLeft';
 import HeaderMenu from './components/HeaderMenu';
 import DevelopmentPartners from './components/DevelopmentPartners';
@@ -16,7 +16,7 @@ import UploadModal from "./components/modals/UploadModal";
 import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
 import TargetActionsRight from "./components/right_components/TargetActionsRight";
-import TargetActionDetailRight from "./components/TargetActionDetailRight";
+import TargetActionDetailRight from "./components/right_components/TargetActionDetailRight";
 import AvailableConnectionsRight from "./components/right_components/AvailableConnectionsRight";
 import {Fragment} from "react";
 
