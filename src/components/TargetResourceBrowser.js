@@ -147,7 +147,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
   return (
     <div
       css={{
-        gridArea: {gridArea},
+        gridArea: gridArea,
         paddingLeft: 25,
         paddingBottom: 50,
         minHeight: "25vh",

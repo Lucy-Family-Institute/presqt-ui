@@ -27,12 +27,12 @@ const styles = {
     paddingBottom: 50,
     gridRowGap: 25,
     gridTemplateRows: '150px 125px 1fr 100px',
-    gridTemplateColumns: '1fr 150px 400px 400px 150px 1fr',
+    gridTemplateColumns: '1fr 550px 550px 1fr',
     gridTemplateAreas: `
-        "headerLogo headerMenu headerMenu headerMenu headerMenu headerMenu"
-        "targetResourcesLeft targetActionsLeft targetActionsLeft targetActionsRight targetActionsRight targetResourcesRight"
-        "targetResourcesLeft targetActionDetailLeft targetActionDetailLeft targetActionDetailRight targetActionDetailRight targetResourcesRight"
-        "availableConnectionsLeft . developmentPartners developmentPartners . availableConnectionsRight"
+        "headerLogo headerMenu headerMenu headerMenu"
+        "targetResourcesLeft targetActionsLeft targetActionsRight targetResourcesRight"
+        "targetResourcesLeft targetActionDetailLeft targetActionDetailRight targetResourcesRight"
+        "availableConnectionsLeft developmentPartners developmentPartners availableConnectionsRight"
         `
   })
 };
