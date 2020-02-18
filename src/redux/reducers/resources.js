@@ -13,6 +13,7 @@ const initialState = {
   selectedRightResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
+  rightSearchValue: null,
   downloadStatus: null,
   downloadData: null,
   downloadModalDisplay: false,
@@ -41,21 +42,6 @@ export default handleActions(
       ),
     }),
     /**
-     * Add API call to trackers.
-     * Saga call to Resource-Collection occurs with this action with search parameter.
-     **/
-    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
-      ...state,
-      pendingAPIResponse: true,
-      pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTargetSearch,
-        state.pendingAPIOperations
-      ),
-      selectedLeftResource: null,
-      leftSearchValue: action.payload.searchValue,
-      openLeftResources: []
-    }),
-    /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
@@ -70,22 +56,6 @@ export default handleActions(
         ),
         leftTargetResources: state.sideSelected === 'left' ? resourceHierarchy : state.leftTargetResources,
         rightTargetResources: state.sideSelected === 'right' ? resourceHierarchy : state.rightTargetResources
-      };
-    },
-    /**
-     * Sort the resources into the correct hierarchy.
-     * Dispatched via Saga call on successful Resource Collection with search call.
-     **/
-    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
-      return {
-        ...state,
-        pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTargetSearch,
-          state.pendingAPIOperations
-        ),
-        leftTargetResources: resourceHierarchy
       };
     },
     /**
@@ -107,6 +77,43 @@ export default handleActions(
       leftTargetResources: null
     }),
     /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action with search parameter.
+     **/
+    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromTargetSearch,
+        state.pendingAPIOperations
+      ),
+      selectedLeftResource: state.sideSelected === 'left' ? null : state.selectedLeftResource,
+      selectedRightResource: state.sideSelected === 'right' ? null : state.selectedRightResource,
+
+      leftSearchValue: state.sideSelected === 'left' ? action.payload.searchValue: state.leftSearchValue,
+      rightSearchValue: state.sideSelected === 'right' ? action.payload.searchValue: state.rightSearchValue,
+
+      openLeftResources: state.sideSelected === 'left' ? [] : state.openLeftResources,
+      openRightResources: state.sideSelected === 'right' ? [] : state.openRightResources
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection with search call.
+     **/
+    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(state, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromTargetSearch,
+          state.pendingAPIOperations
+        ),
+        leftTargetResources: state.sideSelected === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: state.sideSelected === 'right' ? resourceHierarchy : state.rightTargetResources
+      };
+    },
+    /**
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
      **/
@@ -122,7 +129,8 @@ export default handleActions(
         actionCreators.resources.loadFromTargetSearch,
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      leftTargetResources: state.sideSelected === 'left' ? null : state.leftTargetResources,
+      rightTargetResources: state.sideSelected === 'right' ? null : state.rightTargetResources
     }),
     [combineActions(
       /**
@@ -611,6 +619,9 @@ export default handleActions(
       ...state,
       activeTicketNumber: null
     }),
+    /**
+     * Switch which side is being handled
+     **/
     [actionCreators.resources.switchSide]: (state, action) => ({
       ...state,
       sideSelected: action.payload.side

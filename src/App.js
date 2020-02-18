@@ -58,8 +58,9 @@ function App() {
         <TargetResourceBrowserRight />
         <AvailableConnectionsRight />
       </div>
+
+      {/* Hidden Components */}
       <div id="hiddenComponents">
-        {/* Hidden Components */}
         <SnackBar />
         <UploadModal />
         <TokenModal />

@@ -15,22 +15,19 @@ const useStyles = makeStyles({
   }
 });
 
-export default function TargetSearch() {
+export default function TargetSearch({side}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const leftTarget = useSelector(state => state.targets.leftTarget);
+  const target = useSelector(state => side === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
+  const token = useSelector(state => state.authorization.apiTokens)[target.name];
 
-  /** STATE DEFINITIONS
-   * [searchValue, updateSearch] : Search value state
-   **/
   const [searchValue, setSearchValue] = useState('');
-
-  const token = apiTokens[leftTarget.name];
 
   const submitSearch = (event) => {
     event.preventDefault();
+    dispatch(actionCreators.resources.switchSide(side));
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTargetSearch.toString()
@@ -38,7 +35,7 @@ export default function TargetSearch() {
     );
     dispatch(
       actionCreators.resources.loadFromTargetSearch(
-        leftTarget.name,
+        target.name,
         token,
         searchValue
       )
@@ -57,7 +54,7 @@ export default function TargetSearch() {
           size="small"
           type="text"
           id="outlined-basic"
-          label={"Search " + leftTarget.readable_name}
+          label={"Search " + target.readable_name}
           variant="outlined"
           value={searchValue}
           onChange={event => setSearchValue(event.target.value)}
