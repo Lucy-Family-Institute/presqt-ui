@@ -69,7 +69,7 @@ function* loadResourceDetail(action) {
   );
 
   yield put(
-    actionCreators.resources.selectResourceSuccess(response.data)
+    actionCreators.resources.selectResourceSuccess(action.payload.side, response.data)
   );
 }
 

@@ -148,10 +148,11 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
+      const side = action.payload.side;
 
       let newOpenResources = state.openLeftResources;
       let targetResources = state.leftTargetResources;
-      if (state.sideSelected === 'right') {
+      if (side === 'right') {
         newOpenResources = state.openRightResources;
         targetResources =  state.rightTargetResources;
       }
@@ -194,10 +195,11 @@ export default handleActions(
 
       return {
         ...state,
-        leftTargetResources: state.sideSelected === 'left' ? updatedResources : state.leftTargetResources,
-        rightTargetResources: state.sideSelected === 'right' ? updatedResources : state.rightTargetResources,
-        openLeftResources: state.sideSelected === 'left' ?  newOpenResources : state.openLeftResources,
-        openRightResources: state.sideSelected === 'right' ?  newOpenResources : state.openRightResources
+        leftTargetResources: side === 'left' ? updatedResources : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? updatedResources : state.rightTargetResources,
+
+        openLeftResources: side === 'left' ?  newOpenResources : state.openLeftResources,
+        openRightResources: side === 'right' ?  newOpenResources : state.openRightResources
       };
     },
     /**
@@ -205,6 +207,8 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectResource]: (state, action) => {
+      const side = action.payload.side;
+
       const updateTargetResources = targetResources => {
         let resources = targetResources;
 
@@ -226,8 +230,8 @@ export default handleActions(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        leftTargetResources: state.sideSelected === 'left' ? updateTargetResources(state.leftTargetResources) : state.leftTargetResources,
-        rightTargetResources: state.sideSelected === 'right' ? updateTargetResources(state.rightTargetResources) : state.rightTargetResources
+        leftTargetResources: side === 'left' ? updateTargetResources(state.leftTargetResources) : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? updateTargetResources(state.rightTargetResources) : state.rightTargetResources
       };
     },
     /***
@@ -236,15 +240,17 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Detail call.
      **/
     [actionCreators.resources.selectResourceSuccess]: (state, action) => {
+      const side = action.payload.side;
+
       return {
         ...state,
-        selectedLeftResource: state.sideSelected === 'left' ? action.payload : state.selectedLeftResource,
-        selectedRightResource: state.sideSelected === 'right' ? action.payload : state.selectedRightResource,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
-        )
+        ),
+        selectedLeftResource: side === 'left' ? action.payload.data : state.selectedLeftResource,
+        selectedRightResource: side === 'right' ? action.payload.data : state.selectedRightResource
       };
     },
     /**
@@ -261,13 +267,19 @@ export default handleActions(
     /**
      * Clear source list and detail data
      **/
-    [actionCreators.resources.clearResources]: state => {
+    [actionCreators.resources.clearResources]: (state, action)=> {
+      const side = action.payload.side;
+
       return {
         ...state,
-        leftTargetResources: state.sideSelected === 'left' ? null : state.leftTargetResources,
-        rightTargetResources: state.sideSelected === 'right' ? null : state.rightTargetResources,
-        selectedLeftResource: null,
-        leftSearchValue: null
+        leftTargetResources: side === 'left' ? null : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? null : state.rightTargetResources,
+
+        selectedLeftResource: side === 'left' ? null : state.selectedLeftResource,
+        selectedRightResource: side === 'right' ? null : state.selectedRightResource,
+
+        leftSearchValue: side === 'left' ? null : state.leftSearchValue,
+        rightSearchValue: side === 'right' ? null : state.rightSearchValue
       };
     },
     /**

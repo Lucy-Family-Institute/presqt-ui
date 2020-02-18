@@ -58,7 +58,7 @@ export default function AvailableConnections({side, target, gridArea}) {
    */
   const handleSwitchTarget = connection => {
     dispatch(actionCreators.resources.switchSide(side));
-    dispatch(actionCreators.resources.clearResources());
+    dispatch(actionCreators.resources.clearResources(side));
     dispatch(actionCreators.targets.switchTarget(side, connection));
 
     if (connection.name in apiTokens) {

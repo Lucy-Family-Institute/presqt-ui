@@ -54,12 +54,11 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
    *      -> On complete saga dispatches the selectResourceSuccess action
    */
   const onResourceClicked = resource => {
-    dispatch(actionCreators.resources.switchSide(side));
     resource.kind === "container" && resource.open
-      ? dispatch(actionCreators.resources.closeContainer(resource))
-      : dispatch(actionCreators.resources.openContainer(resource));
+      ? dispatch(actionCreators.resources.closeContainer(side, resource))
+      : dispatch(actionCreators.resources.openContainer(side, resource));
 
-    dispatch(actionCreators.resources.selectResource(resource, targetToken));
+    dispatch(actionCreators.resources.selectResource(side, resource, targetToken));
   };
 
   /**
