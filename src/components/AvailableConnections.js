@@ -22,6 +22,8 @@ export default function AvailableConnections({side, target, gridArea}) {
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const oppositeSelectedTarget = useSelector(state => side === 'left'
+    ? state.targets.rightTarget : state.targets.leftTarget);
 
   const collection_error = apiOperationErrors.find(
 
@@ -92,10 +94,15 @@ export default function AvailableConnections({side, target, gridArea}) {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending'
+              || uploadStatus === 'pending' || oppositeSelectedTarget === connection
+                ? { opacity: 0.5 } : null
             ]}
             onClick={() => handleSwitchTarget(connection)}
-            disabled={pendingAPIResponse}
+            disabled={pendingAPIResponse
+            || downloadStatus === 'pending'
+            || uploadStatus === 'pending'
+            || oppositeSelectedTarget === connection}
           >
             <img
               src={require(`../images/available_connections/${connection.name}.png`)}
