@@ -43,7 +43,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
       <LeftSpinner />
       <div css={{ paddingTop: 15 }}>
-      <CancelButton actionType='UPLOAD' />
+      <CancelButton side={sideSelected} actionType='UPLOAD' />
       </div>
     </div>
   );
@@ -63,7 +63,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           <p>Upload is being cancelled...</p>
           <LeftSpinner />
           <div css={{ paddingTop: 15 }}>
-            <CancelButton actionType='UPLOAD' />
+            <CancelButton side={sideSelected} actionType='UPLOAD' />
           </div>
         </div>
       )

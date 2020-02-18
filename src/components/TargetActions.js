@@ -41,22 +41,24 @@ export default function TargetActionsLeft({side, selectedResource, searchValue, 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
           {selectedResource
             ? <DownloadActionButton
-              key={"Download"}
+              side={side}
+              key="Download"
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
           {selectedResource
             ? <UploadActionButton
               side={side}
-              key={"UPLOAD"}
+              key="UPLOAD"
               text="Upload"
               type="EXISTING"
               disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
           {selectedResource
             ? <TransferActionButton
-              key={"Transfer"}
+              key="Transfer"
               disabled={true}
-            />: null}
+            />: null
+          }
         </div>
       </div>
     );

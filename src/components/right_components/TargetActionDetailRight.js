@@ -15,7 +15,8 @@ export default function TargetActionDetailRight() {
         borderRightColor: "#C5C5C5",
         borderRightWidth: 1,
         borderRightStyle: "solid",
-        paddingLeft: 25
+        paddingLeft: 25,
+        paddingRight: 25
       }}
     />
   )

@@ -14,9 +14,11 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
   const classes = buttonStyles.RetryUpload();
   const dispatch = useDispatch();
 
-  const leftTargetToken =
-    useSelector(state => state.authorization.apiTokens[state.targets.leftTarget.name]);
-  const selectedTarget = useSelector(state => state.targets.leftTarget.name);
+  const sideSelected = useSelector(state => state.resources.sideSelected);
+  const targetSelected = useSelector(state => sideSelected === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget).name;
+  const targetToken =
+    useSelector(state => state.authorization.apiTokens[targetSelected]);
 
   const submitRetry = () => {
     dispatch(actionCreators.resources.clearUploadData());
@@ -27,11 +29,11 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
     );
     dispatch(
       actionCreators.resources.uploadToTarget(
-        selectedTarget,
+        targetSelected,
         selectedFile,
         selectedDuplicate,
         resourceToUploadTo,
-        leftTargetToken
+        targetToken
       )
     );
     setStepThreeContent(
@@ -39,7 +41,7 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
         <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
         <LeftSpinner />
         <div css={{ paddingTop: 15 }}>
-          <CancelButton actionType='UPLOAD' />
+          <CancelButton side={sideSelected} actionType='UPLOAD' />
         </div>
       </div>
     );

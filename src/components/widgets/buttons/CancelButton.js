@@ -7,12 +7,14 @@ import Button from "@material-ui/core/Button/Button";
 import {actionCreators} from "../../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 
-export default function CancelButton({actionType}) {
+export default function CancelButton({side, actionType}) {
   const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
-  const leftTarget = useSelector(state => state.targets.leftTarget);
+
+  const selectedTarget = useSelector(state => side === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
   const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
-  const targetToken = useSelector(state => state.authorization.apiTokens)[leftTarget.name];
+  const targetToken = useSelector(state => state.authorization.apiTokens)[selectedTarget.name];
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
 
   const submitCancel = () => {

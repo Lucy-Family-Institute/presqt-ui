@@ -12,20 +12,20 @@ import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 
-
-const modalDefaultMessage = (
-  <div>
-    <div css={{ paddingBottom: 15 }}>
-      <p>The download is being processed on the server.</p>
-    </div>
-    <Spinner />
-    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-      <CancelButton actionType='DOWNLOAD' />
-    </div>
-  </div>);
-
 export default function DownloadModal() {
   const dispatch = useDispatch();
+  const sideSelected = useSelector(state => state.resources.sideSelected);
+
+  const modalDefaultMessage = (
+    <div>
+      <div css={{ paddingBottom: 15 }}>
+        <p>The download is being processed on the server.</p>
+      </div>
+      <Spinner />
+      <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+        <CancelButton side={sideSelected} actionType='DOWNLOAD' />
+      </div>
+    </div>);
 
   const downloadData = useSelector(state => state.resources.downloadData);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
@@ -66,6 +66,7 @@ export default function DownloadModal() {
           <span css={{ marginLeft: 5 }}>{errorMessage}</span>
           <span css={{ marginLeft: 15 }}>
             <RetryDownloadButton
+              side={sideSelected}
               setModalContent={setModalContent}
               modalDefaultMessage={modalDefaultMessage}
             />
@@ -81,6 +82,7 @@ export default function DownloadModal() {
           <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
           <span css={{ marginLeft: 15 }}>
             <RetryDownloadButton
+              side={sideSelected}
               setModalContent={setModalContent}
               modalDefaultMessage={modalDefaultMessage}
             />
