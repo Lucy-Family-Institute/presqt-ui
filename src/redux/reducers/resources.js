@@ -227,7 +227,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.selectResource.toString(),
+          actionCreators.resources.selectResource.toString() + side,
           state.pendingAPIOperations
         ),
         leftTargetResources: side === 'left' ? updateTargetResources(state.leftTargetResources) : state.leftTargetResources,
@@ -246,7 +246,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.selectResource.toString(),
+          actionCreators.resources.selectResource.toString() + side,
           state.pendingAPIOperations
         ),
         selectedLeftResource: side === 'left' ? action.payload.data : state.selectedLeftResource,
