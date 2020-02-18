@@ -53,7 +53,9 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
    *   -> Saga call to Resource Detail occurs here
    *      -> On complete saga dispatches the selectResourceSuccess action
    */
-  const onResourceClicked = (resource, targetToken) => {
+  const onResourceClicked = resource => {
+    console.log(1, resource);
+    dispatch(actionCreators.resources.switchSide(side));
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
@@ -67,6 +69,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
    */
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
+      console.log(resource);
       return (
         <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
           <ResourceButton
@@ -122,7 +125,7 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
   useEffect(() => {
     if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, targetToken), targetResources))
+        resource => onResourceClicked(resource), targetResources))
     }
     else if (targetResources && targetResources.length === 0 && leftSearchValue) {
       setMessage(`No ${target.readable_name} resources found for search term 
@@ -157,8 +160,8 @@ export default function TargetResourceBrowser({side, gridArea, target, targetRes
     >
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader target={targetToken ? target : null}/>
-        {search()}
-        {!target ? null : upload()}
+        {/*{search()}*/}
+        {/*{!target ? null : upload()}*/}
         {
           side === sideSelected
           &&

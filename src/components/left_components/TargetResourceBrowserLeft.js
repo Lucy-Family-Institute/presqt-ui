@@ -10,10 +10,10 @@ export default function TargetResourceBrowserLeft() {
 
   return (
     <TargetResourceBrowser
-    side="left"
-    gridArea={"targetResourcesLeft"}
-    target={leftTarget}
-    targetResources={leftTargetResources}
+      side="left"
+      gridArea="targetResourcesLeft"
+      target={leftTarget}
+      targetResources={leftTargetResources}
     />
   )
 }

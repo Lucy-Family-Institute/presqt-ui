@@ -18,6 +18,7 @@ import DownloadModal from "./components/modals/DownloadModal";
 import TargetActionsRight from "./components/TargetActionsRight";
 import TargetActionDetailRight from "./components/TargetActionDetailRight";
 import AvailableConnectionsRight from "./components/right_components/AvailableConnectionsRight";
+import {Fragment} from "react";
 
 const styles = {
   app: css({
@@ -38,26 +39,34 @@ const styles = {
 
 function App() {
   return (
-    <div css={styles.app}>
-      <HeaderBackground />
-      <PresQTHeader />
-      <HeaderMenu />
-      <TargetResourceBrowserLeft />
-      <TargetActionsLeft />
-      <TargetActionDetailLeft />
-      <TargetActionsRight />
-      <TargetActionDetailRight />
-      <TargetResourceBrowserRight />
-      <AvailableConnectionsRight />
-      <AvailableConnectionsLeft />
-      <DevelopmentPartners />
+    <Fragment>
+      <div css={styles.app}>
+        <HeaderBackground />
+        <PresQTHeader />
+        <HeaderMenu />
+        <DevelopmentPartners />
 
-      {/* Hidden Components */}
-      <SnackBar />
-      <UploadModal />
-      <TokenModal />
-      <DownloadModal />
-    </div>
+        {/* Left Components */}
+        <TargetResourceBrowserLeft />
+        <TargetActionsLeft />
+        <TargetActionDetailLeft />
+        <AvailableConnectionsLeft />
+
+        {/* Right Components */}
+        <TargetActionsRight />
+        <TargetActionDetailRight />
+        <TargetResourceBrowserRight />
+        <AvailableConnectionsRight />
+      </div>
+      <div id="hiddenComponents">
+        {/* Hidden Components */}
+        <SnackBar />
+        <UploadModal />
+        <TokenModal />
+        <DownloadModal />
+      </div>
+    </Fragment>
+
   );
 }
 

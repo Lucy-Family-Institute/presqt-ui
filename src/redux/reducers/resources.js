@@ -10,6 +10,7 @@ const initialState = {
   leftTargetResources: null,
   rightTargetResources: null,
   selectedLeftResource: null,
+  selectedRightResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
   downloadStatus: null,
@@ -20,6 +21,7 @@ const initialState = {
   uploadModalDisplay: false,
   uploadType: null,
   openLeftResources: [],
+  openRightResources: [],
   activeTicketNumber: null,
   sideSelected: null
 };
@@ -58,7 +60,6 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
-      console.log(state);
       const resourceHierarchy = buildResourceHierarchy(state, action);
       return {
         ...state,
@@ -130,7 +131,13 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
-      let newopenLeftResources = state.openLeftResources;
+
+      let newOpenResources = state.openLeftResources;
+      let targetResources = state.leftTargetResources;
+      if (state.sideSelected === 'right') {
+        newOpenResources = state.openRightResources;
+        targetResources =  state.rightTargetResources;
+      }
 
       const searchForResourceInArray = (
         desiredContainer,
@@ -141,10 +148,10 @@ export default handleActions(
 
         if (updatedNode.id === desiredContainer.id) {
           if (openContainer) {
-            newopenLeftResources.push(desiredContainer.id)
+            newOpenResources.push(desiredContainer.id)
           }
           else{
-            newopenLeftResources = newopenLeftResources.filter(element => element !== desiredContainer.id)
+            newOpenResources = newOpenResources.filter(element => element !== desiredContainer.id)
           }
           return {
             ...updatedNode,
@@ -157,11 +164,10 @@ export default handleActions(
           );
           updatedNode.children = updatedChildren;
         }
-
         return updatedNode;
       };
 
-      const updatedSourceResources = state.leftTargetResources.map(topLevelNode => {
+      const updatedResources = targetResources.map(topLevelNode => {
         return searchForResourceInArray(
           action.payload.container,
           action.payload.open,
@@ -171,8 +177,10 @@ export default handleActions(
 
       return {
         ...state,
-        leftTargetResources: updatedSourceResources,
-        openLeftResources: newopenLeftResources
+        leftTargetResources: state.sideSelected === 'left' ? updatedResources : state.leftTargetResources,
+        rightTargetResources: state.sideSelected === 'right' ? updatedResources : state.rightTargetResources,
+        openLeftResources: state.sideSelected === 'left' ?  newOpenResources : state.openLeftResources,
+        openRightResources: state.sideSelected === 'right' ?  newOpenResources : state.openRightResources
       };
     },
     /**
@@ -180,17 +188,18 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectResource]: (state, action) => {
-      const updateLeftTargetResources = leftTargetResources => {
-        let sourceResources = leftTargetResources;
-        sourceResources.map(resource => {
+      const updateTargetResources = targetResources => {
+        let resources = targetResources;
+
+        resources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updateLeftTargetResources(resource.children);
+              updateTargetResources(resource.children);
             }
           }
         });
-        return sourceResources;
+        return resources;
       };
 
       return {
@@ -200,7 +209,8 @@ export default handleActions(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        leftTargetResources: updateLeftTargetResources(state.leftTargetResources)
+        leftTargetResources: state.sideSelected === 'left' ? updateTargetResources(state.leftTargetResources) : state.leftTargetResources,
+        rightTargetResources: state.sideSelected === 'right' ? updateTargetResources(state.rightTargetResources) : state.rightTargetResources
       };
     },
     /***
@@ -211,7 +221,8 @@ export default handleActions(
     [actionCreators.resources.selectResourceSuccess]: (state, action) => {
       return {
         ...state,
-        selectedLeftResource: action.payload,
+        selectedLeftResource: state.sideSelected === 'left' ? action.payload : state.selectedLeftResource,
+        selectedRightResource: state.sideSelected === 'right' ? action.payload : state.selectedRightResource,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
           actionCreators.resources.selectResource,

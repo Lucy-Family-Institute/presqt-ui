@@ -11,7 +11,7 @@ export default function TargetResourceBrowserRight() {
   return (
     <TargetResourceBrowser
       side="right"
-      gridArea={"targetResourcesRight"}
+      gridArea="targetResourcesRight"
       target={rightTarget}
       targetResources={rightTargetResources}
     />

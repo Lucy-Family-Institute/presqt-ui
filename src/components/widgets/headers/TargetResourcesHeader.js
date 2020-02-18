@@ -15,7 +15,6 @@ const fadeIn = keyframes`
 `;
 
 function TargetResourcesHeader({target}) {
-  console.log(target);
   let headerMessage = 'Resources';
   if (target) {
     headerMessage = `${target.readable_name} Resources`;
