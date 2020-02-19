@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import React, { useEffect, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
 import FileSaver from "file-saver";
@@ -13,24 +13,25 @@ import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadBu
 import CancelButton from "../widgets/buttons/CancelButton";
 
 export default function DownloadModal() {
+
   const dispatch = useDispatch();
   const sideSelected = useSelector(state => state.resources.sideSelected);
-
-  const modalDefaultMessage = (
-    <div>
-      <div css={{ paddingBottom: 15 }}>
-        <p>The download is being processed on the server.</p>
-      </div>
-      <Spinner />
-      <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-        <CancelButton side={sideSelected} actionType='DOWNLOAD' />
-      </div>
-    </div>);
 
   const downloadData = useSelector(state => state.resources.downloadData);
   const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
+
+  const modalDefaultMessage = (
+    <div>
+      <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+        <p>The download is being processed on the server</p>
+      </div>
+      <Spinner />
+      <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+        <CancelButton actionType='DOWNLOAD' />
+      </div>
+    </div>);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
@@ -60,34 +61,38 @@ export default function DownloadModal() {
       }
 
       setModalContent(
-        <div
-          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{ marginLeft: 5 }}>{errorMessage}</span>
-          <span css={{ marginLeft: 15 }}>
-            <RetryDownloadButton
-              side={sideSelected}
-              setModalContent={setModalContent}
-              modalDefaultMessage={modalDefaultMessage}
-            />
-          </span>
-        </div>
+        <Fragment>
+          <div
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error"/>
+            <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+          </div>
+          <div css={{justifyContent: 'center', display: 'flex'}}>
+              <RetryDownloadButton
+                side={sideSelected}
+                setModalContent={setModalContent}
+                modalDefaultMessage={modalDefaultMessage}
+              />
+          </div>
+        </Fragment>
       )
     }
     else if (downloadStatus === 'cancelled') {
       setModalContent(
-        <div
-          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
-          <span css={{ marginLeft: 15 }}>
-            <RetryDownloadButton
-              side={sideSelected}
-              setModalContent={setModalContent}
-              modalDefaultMessage={modalDefaultMessage}
-            />
-          </span>
-        </div>
+        <Fragment>
+          <div
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error"/>
+            <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
+          </div>
+          <div css={{justifyContent: 'center', display: 'flex'}}>
+              <RetryDownloadButton
+                side={sideSelected}
+                setModalContent={setModalContent}
+                modalDefaultMessage={modalDefaultMessage}
+              />
+          </div>
+        </Fragment>
       )
     }
 

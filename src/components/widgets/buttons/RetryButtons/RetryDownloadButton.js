@@ -16,7 +16,6 @@ export default function RetryDownloadButton({side, setModalContent, modalDefault
   const classes = buttonStyles.RetryDownload();
   const dispatch = useDispatch();
 
-  // Download specific Selectors
   const selectedTarget = useSelector(state => side === 'left'
     ? state.targets.leftTarget : state.targets.rightTarget);
   const targetToken = useSelector(state => state.authorization.apiTokens[selectedTarget.name]);
@@ -35,7 +34,7 @@ export default function RetryDownloadButton({side, setModalContent, modalDefault
   return (
     <Fragment>
       <Button variant="contained" color="primary" className={classes.button} onClick={submitRetry}>
-        <span css={textStyles.buttonText}>Retry Download</span>
+        <span css={textStyles.buttonText}>Retry</span>
       </Button>
     </Fragment>
   );

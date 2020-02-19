@@ -24,6 +24,7 @@ const initialState = {
   openLeftResources: [],
   openRightResources: [],
   activeTicketNumber: null,
+  sideSelected: null
 };
 
 export default handleActions(
