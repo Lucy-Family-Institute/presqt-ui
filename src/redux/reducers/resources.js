@@ -45,7 +45,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
+      const side = action.payload.side;
+      const resourceHierarchy = buildResourceHierarchy(side, state, action.payload.data);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -53,8 +54,8 @@ export default handleActions(
           actionCreators.resources.loadFromTarget.toString() + action.payload.side,
           state.pendingAPIOperations
         ),
-        leftTargetResources: action.payload.side === 'left' ? resourceHierarchy : state.leftTargetResources,
-        rightTargetResources: action.payload.side === 'right' ? resourceHierarchy : state.rightTargetResources
+        leftTargetResources: side === 'left' ? resourceHierarchy : state.leftTargetResources,
+        rightTargetResources: side === 'right' ? resourceHierarchy : state.rightTargetResources
       };
     },
     /**
@@ -104,8 +105,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
       const side = action.payload.side;
+      const resourceHierarchy = buildResourceHierarchy(side, state, action.payload.data);
 
       return {
         ...state,
@@ -604,7 +605,7 @@ export default handleActions(
      **/
     [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
       const side = action.payload.side;
-      const resourceHierarchy = buildResourceHierarchy(state, action.payload.data);
+      const resourceHierarchy = buildResourceHierarchy(side, state, action.payload.data);
 
       return {
         ...state,
