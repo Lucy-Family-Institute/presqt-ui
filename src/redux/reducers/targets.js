@@ -10,7 +10,6 @@ const initialState = {
 
 export default handleActions(
   {
-    // Targets Actions
     [actionCreators.targets.switchTarget]: (state, action) => ({
       ...state,
       leftTarget: action.payload.side === 'left' ? action.payload.targetData : state.leftTarget,
@@ -19,6 +18,11 @@ export default handleActions(
     [actionCreators.targets.loadSuccess]: (state, action) => ({
       ...state,
       available: action.payload
+    }),
+    [actionCreators.targets.clearTarget]: (state, action) => ({
+      ...state,
+      leftTarget: action.payload.side === 'left' ? null : state.leftTarget,
+      rightTarget: action.payload.side === 'right' ? null : state.rightTarget,
     }),
   },
   initialState

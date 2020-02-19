@@ -61,5 +61,6 @@ export const actionCreators = createActions({
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
         SWITCH_TARGET: (side, targetData) => ({side, targetData}),
+        CLEAR_TARGET: (side) => ({side})
     }
 });

@@ -46,6 +46,10 @@ export default function TokenModal() {
    *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const handleClose = () => {
+    if (!apiTokens[target.name]){
+      dispatch(actionCreators.targets.clearTarget(sideSelected))
+    }
+
     dispatch(actionCreators.authorization.hideTokenModal());
     if (apiOperationErrors.length > 0 && error) {
       dispatch(actionCreators.resources.removeFromErrorList(
