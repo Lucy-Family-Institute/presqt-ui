@@ -5,7 +5,7 @@ import { actionCreators } from '../actionCreators';
 const initialState = {
   leftTarget: null,
   rightTarget: null,
-  available: [],
+  available: []
 };
 
 export default handleActions(
@@ -23,7 +23,7 @@ export default handleActions(
       ...state,
       leftTarget: action.payload.side === 'left' ? null : state.leftTarget,
       rightTarget: action.payload.side === 'right' ? null : state.rightTarget,
-    }),
+    })
   },
   initialState
 );

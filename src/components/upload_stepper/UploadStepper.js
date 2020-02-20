@@ -16,7 +16,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import UploadStepperBackButton from "./UploadStepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
 import colors from "../../styles/colors";
-import {useSelector} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   root: {

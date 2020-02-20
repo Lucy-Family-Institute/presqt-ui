@@ -34,7 +34,7 @@ export default function RetryDownloadButton({side, setModalContent, modalDefault
   return (
     <Fragment>
       <Button variant="contained" color="primary" className={classes.button} onClick={submitRetry}>
-        <span css={textStyles.buttonText}>Retry</span>
+        <span css={textStyles.buttonText}>Retry Download</span>
       </Button>
     </Fragment>
   );
