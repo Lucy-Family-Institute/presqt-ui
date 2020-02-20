@@ -3,25 +3,26 @@ import {actionCreators} from "../actionCreators";
 import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
 
 /** Resource Collection **/
-export function* watchSwitchSource() {
-  yield takeEvery(actionCreators.resources.loadFromTarget, loadSourceTargetResources);
+export function* watchSwitchTarget() {
+  yield takeEvery(actionCreators.resources.loadFromTarget, loadTargetResources);
 }
 
  /**
  * Make an Axios request to Resource Collection.
  * Dispatch either the success or failure actions accordingly.
  **/
-function* loadSourceTargetResources(action) {
+function* loadTargetResources(action) {
   try {
     const response = yield call(
     getTargetResources,
     action.payload.target.name,
     action.payload.targetToken
     );
-    yield put(actionCreators.resources.loadFromTargetSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );
@@ -44,10 +45,11 @@ function* loadTargetResourcesSearch(action) {
     action.payload.targetToken,
     action.payload.searchValue
     );
-    yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
+    yield put(actionCreators.resources.loadFromTargetSearchSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetSearchFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );
@@ -67,7 +69,7 @@ function* loadResourceDetail(action) {
   );
 
   yield put(
-    actionCreators.resources.selectResourceSuccess(response.data)
+    actionCreators.resources.selectResourceSuccess(action.payload.side, response.data)
   );
 }
 
@@ -88,10 +90,11 @@ function* refreshTargetResources(action) {
       action.payload.target.name,
       action.payload.targetToken
     );
-    yield put(actionCreators.resources.refreshTargetSuccess(response.data));
+    yield put(actionCreators.resources.refreshTargetSuccess(action.payload.side, response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.refreshTargetFailure(
+      action.payload.side,
       error.response.status,
       error.response.data.error)
     );

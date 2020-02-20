@@ -15,7 +15,10 @@ export default function DevelopmentPartners() {
   return (
     <div
       css={{
-        gridArea: "developmentPartners"
+        display: "grid",
+        gridArea: "developmentPartners",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
       <img

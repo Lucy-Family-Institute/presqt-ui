@@ -7,17 +7,18 @@ import { actionCreators } from "../../redux/actionCreators";
 import ActionButton from "../widgets/buttons/ActionButton";
 
 /**
- * This component handles the download action button in the TargetActions component.
+ * This component handles the download action button in the TargetActionsLeft component.
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function DownloadActionButton({ disabled }) {
+export default function DownloadActionButton({side, disabled}) {
   const dispatch = useDispatch();
 
-  const targetToken = useSelector(state =>
-    state.authorization.apiTokens[state.targets.source.name]);
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
-
+  const selectedTarget = useSelector(state => side === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
+  const targetToken = useSelector(state => state.authorization.apiTokens[selectedTarget.name]);
+  const selectedResource = useSelector(state => side === 'left'
+    ? state.resources.selectedLeftResource : state.resources.selectedRightResource);
 
   /**
    * Open the modal.
@@ -27,7 +28,7 @@ export default function DownloadActionButton({ disabled }) {
    **/
   const submitDownload = () => {
     dispatch(actionCreators.resources.displayDownloadModal());
-    dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
+    dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
   };
 
   return (

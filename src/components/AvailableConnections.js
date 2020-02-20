@@ -11,23 +11,29 @@ import { basicFadeIn } from '../styles/animations';
 /**
  * This component displays the various targets that a user can connect with.
  * It's responsible for switching targets, handing off resource loading, and handing off modal work
- * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
+ * It's also responsible for broadcasting (via Redux) what the currently selected "Target" is.
  */
-export default function AvailableConnections() {
+export default function AvailableConnections({side, target, gridArea}) {
   const dispatch = useDispatch();
 
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const sourceTarget = useSelector(state => state.targets.source);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const oppositeSelectedTarget = useSelector(state => side === 'left'
+    ? state.targets.rightTarget : state.targets.leftTarget);
+
   const collection_error = apiOperationErrors.find(
+
     element => element.action === actionCreators.resources.loadFromTarget.toString());
-  
+
   let tokenError;
   if (collection_error) {
     tokenError = collection_error.status === 401;
   }
+
   /**
    * Dispatch load action on page-load.
    * Saga call to Target-Collection occurs with this action.
@@ -43,7 +49,7 @@ export default function AvailableConnections() {
     if (
       apiOperationErrors.length > 0 &&
       tokenError) {
-        dispatch(actionCreators.authorization.displayTokenModal());
+      dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
 
@@ -55,13 +61,14 @@ export default function AvailableConnections() {
    *        -> Saga function dispatches loadFromTargetFailure action if not successful.
    * Else display the modal.
    */
-  const handleSwitchSourceTarget = connection => {
-    dispatch(actionCreators.resources.clearResources());
-    dispatch(actionCreators.targets.switchSource(connection));
+  const handleSwitchTarget = connection => {
+    dispatch(actionCreators.resources.switchSide(side));
+    dispatch(actionCreators.resources.clearResources(side));
+    dispatch(actionCreators.targets.switchTarget(side, connection));
 
     if (connection.name in apiTokens) {
       dispatch(
-        actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name])
+        actionCreators.resources.loadFromTarget(side, connection, apiTokens[connection.name])
       );
     } else {
       setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);
@@ -71,7 +78,7 @@ export default function AvailableConnections() {
   return (
     <div
       css={{
-        gridArea: 'availableConnections',
+        gridArea: gridArea,
         paddingLeft: 50
       }}
     >
@@ -87,16 +94,21 @@ export default function AvailableConnections() {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending'
+              || uploadStatus === 'pending' || oppositeSelectedTarget === connection
+                ? { opacity: 0.5 } : null
             ]}
-            onClick={() => handleSwitchSourceTarget(connection)}
-            disabled={pendingAPIResponse}
+            onClick={() => handleSwitchTarget(connection)}
+            disabled={pendingAPIResponse
+            || downloadStatus === 'pending'
+            || uploadStatus === 'pending'
+            || oppositeSelectedTarget === connection}
           >
             <img
               src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
-            {sourceTarget && sourceTarget.name === connection.name ? (
+            {target && target.name === connection.name ? (
               <div
                 css={{
                   minHeight: 5,

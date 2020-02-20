@@ -23,8 +23,10 @@ export default function UploadButton({selectedFile, selectedDuplicate,
                                        handleNext, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.source.name);
-  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  const sideSelected = useSelector(state => state.resources.sideSelected);
+  const selectedTarget = useSelector(state => sideSelected === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
+  const targetToken = useSelector(state => state.authorization.apiTokens[selectedTarget.name]);
 
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper
@@ -32,12 +34,12 @@ export default function UploadButton({selectedFile, selectedDuplicate,
    **/
   const submitUpload = () => {
     dispatch(actionCreators.resources.uploadToTarget(
-      selectedTarget,
+      selectedTarget.name,
       selectedFile,
       selectedDuplicate,
       resourceToUploadTo,
-      targetToken));
-
+      targetToken)
+    );
       handleNext()
   };
 

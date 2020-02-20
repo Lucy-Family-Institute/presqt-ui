@@ -14,11 +14,16 @@ const fadeIn = keyframes`
   }
 `;
 
-function TargetResourcesHeader() {
+function TargetResourcesHeader({target}) {
+  let headerMessage = 'Resources';
+  if (target) {
+    headerMessage = `${target.readable_name} Resources`;
+  }
+
   return (
-    <div css={{ display: 'flex', alignItems: 'center' }}>
+    <div css={{ display: 'flex'}}>
       <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
-        Resources
+        {headerMessage}
       </span>
     </div>
   );

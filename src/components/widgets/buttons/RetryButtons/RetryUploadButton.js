@@ -8,15 +8,18 @@ import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import LeftSpinner from "../../spinners/LeftSpinner";
 import CancelButton from "../CancelButton";
+import Spinner from "../../spinners/Spinner";
 
 export default function RetryUploadButton({selectedFile, selectedDuplicate,
                                            setStepThreeContent, resourceToUploadTo}) {
   const classes = buttonStyles.RetryUpload();
   const dispatch = useDispatch();
 
-  const sourceTargetToken =
-    useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
-  const selectedTarget = useSelector(state => state.targets.source.name);
+  const sideSelected = useSelector(state => state.resources.sideSelected);
+  const targetSelected = useSelector(state => sideSelected === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget).name;
+  const targetToken =
+    useSelector(state => state.authorization.apiTokens[targetSelected]);
 
   const submitRetry = () => {
     dispatch(actionCreators.resources.clearUploadData());
@@ -27,18 +30,18 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
     );
     dispatch(
       actionCreators.resources.uploadToTarget(
-        selectedTarget,
+        targetSelected,
         selectedFile,
         selectedDuplicate,
         resourceToUploadTo,
-        sourceTargetToken
+        targetToken
       )
     );
     setStepThreeContent(
       <div>
-        <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
-        <LeftSpinner />
-        <div css={{ paddingTop: 15 }}>
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The upload is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
+        <Spinner />
+        <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
           <CancelButton actionType='UPLOAD' />
         </div>
       </div>

@@ -12,18 +12,12 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  * Component for target action buttons on the detail page. It is responsible for the rendering of
  * the html element, and rendering the correct component for each action.
  **/
-export default function TargetActions() {
-  /** SELECTOR DEFINITIONS
-   * selectedLeftResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+export default function TargetActionsLeft({side, selectedResource, searchValue, customCSS}) {
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
-  var buttonsList = [];
-  if (selectedLeftResource) {
-    for (var i = 0; i < selectedLeftResource.links.length; i++) {
-      buttonsList.push(selectedLeftResource.links[i].name);
+  let buttonsList = [];
+  if (selectedResource) {
+    for (let i = 0; i < selectedResource.links.length; i++) {
+      buttonsList.push(selectedResource.links[i].name);
     }
   }
 
@@ -41,27 +35,30 @@ export default function TargetActions() {
             textStyles.largeHeader
           ]}
         >
-          {selectedLeftResource ? selectedLeftResource.title : null}
+          {selectedResource ? selectedResource.title : null}
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedLeftResource
+          {selectedResource
             ? <DownloadActionButton
-              key={"Download"}
+              side={side}
+              key="Download"
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
-          {selectedLeftResource
-          ? <UploadActionButton
-              key={"UPLOAD"}
+          {selectedResource
+            ? <UploadActionButton
+              side={side}
+              key="UPLOAD"
               text="Upload"
               type="EXISTING"
-              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
-          {selectedLeftResource
-          ? <TransferActionButton
-              key={"Transfer"}
+          {selectedResource
+            ? <TransferActionButton
+              key="Transfer"
               disabled={true}
-            />: null}
+            />: null
+          }
         </div>
       </div>
     );
@@ -69,19 +66,13 @@ export default function TargetActions() {
 
   return (
     <div
-      css={{
-        gridArea: "targetActions",
-        borderLeftColor: "#979797",
-        borderLeftWidth: 1,
-        borderLeftStyle: "solid",
-        paddingLeft: 25
-      }}
+      css={customCSS}
     >
       {pendingAPIOperations.includes(
-        actionCreators.resources.selectResource.toString()
+        actionCreators.resources.selectResource.toString() + side
       ) ||
       pendingAPIOperations.includes(
-        actionCreators.resources.loadFromTargetSearch.toString()
+        actionCreators.resources.loadFromTargetSearch.toString() + side
       )
         ? null
         : DisplayTargetActions()}

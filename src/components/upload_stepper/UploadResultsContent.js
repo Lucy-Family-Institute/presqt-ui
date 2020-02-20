@@ -15,6 +15,7 @@ import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
+import Spinner from "../widgets/spinners/Spinner";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -24,10 +25,12 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                                                selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
+  const sideSelected = useSelector(state => state.resources.sideSelected);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
   const uploadData = useSelector(state => state.resources.uploadData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const connection = useSelector(state => state.targets.source);
+  const connection = useSelector(state => sideSelected === 'left'
+    ? state.targets.leftTarget : state.targets.rightTarget);
   const token = useSelector(state => state.authorization.apiTokens)[connection.name];
 
   const uploadError = apiOperationErrors.find(
@@ -38,11 +41,11 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
-      <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
-      <LeftSpinner />
-      <div css={{ paddingTop: 15 }}>
-      <CancelButton actionType='UPLOAD' />
-      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The upload is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
+        <Spinner />
+        <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+          <CancelButton actionType='UPLOAD' />
+        </div>
     </div>
   );
 
@@ -52,15 +55,15 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
    **/
   useEffect(() => {
     if (uploadStatus === 'success') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(sideSelected, connection, token));
     }
     else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+      dispatch(actionCreators.resources.refreshTarget(sideSelected, connection, token));
       setStepThreeContent(
         <div>
-          <p>Upload is being cancelled...</p>
-          <LeftSpinner />
-          <div css={{ paddingTop: 15 }}>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>Upload is being cancelled...</div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
             <CancelButton actionType='UPLOAD' />
           </div>
         </div>
@@ -152,19 +155,14 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
 
       setStepThreeContent(
         <Fragment>
-          <Grid item md={12}>
-            <div>
-              <List dense={true}>
-                <ListItem>
-                  <ListItemIcon>
-                    <ErrorOutlineIcon color="error" />
-                  </ListItemIcon>
-                  <ListItemText primary={errorMessage} />
-                </ListItem>
-              </List>
-            </div>
-          </Grid>
-          <div css={{height: 36.5}}>
+          <div
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <ErrorOutlineIcon color="error" />
+            <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+          </div>
+          <div css={{justifyContent: 'center', display: 'flex'}}
+          >
             <RetryStartUploadOverButton
               setActiveStep={setActiveStep}
               setSelectedFile={setSelectedFile}
