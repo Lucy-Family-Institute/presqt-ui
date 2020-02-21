@@ -19,7 +19,7 @@ export default function TargetActions() {
    **/
   const selectedResource = useSelector(state => state.resources.selectedResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  const searchValue = useSelector(state => state.resources.searchValue);
   var buttonsList = [];
   if (selectedResource) {
     for (var i = 0; i < selectedResource.links.length; i++) {
@@ -55,7 +55,7 @@ export default function TargetActions() {
               key={"UPLOAD"}
               text="Upload"
               type="EXISTING"
-              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
           {selectedResource
           ? <TransferActionButton

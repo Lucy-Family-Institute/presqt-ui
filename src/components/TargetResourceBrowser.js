@@ -35,7 +35,7 @@ export default function TargetResourceBrowser() {
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const sourceTarget = useSelector(state => state.targets.source);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  const searchValue = useSelector(state => state.resources.searchValue);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
   const search_error = apiOperationErrors.find(
@@ -86,7 +86,7 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (targetResources || leftSearchValue || collection_error) {
+    if (targetResources || searchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -97,7 +97,7 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (targetResources || leftSearchValue || collection_error) {
+    if (targetResources || searchValue || collection_error) {
       if (collection_error) {
         if (collection_error.status === 401) {
           return null;
@@ -110,7 +110,7 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!leftSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!searchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
@@ -121,9 +121,9 @@ export default function TargetResourceBrowser() {
       setMessage(resourceHierarchy(
         resource => onResourceClicked(resource, sourceTargetToken), targetResources))
     }
-    else if (targetResources && targetResources.length === 0 && leftSearchValue) {
+    else if (targetResources && targetResources.length === 0 && searchValue) {
       setMessage(`No ${sourceTarget.readable_name} resources found for search term 
-        "${leftSearchValue}".`);
+        "${searchValue}".`);
     }
     else if (targetResources && targetResources.length === 0) {
       setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
