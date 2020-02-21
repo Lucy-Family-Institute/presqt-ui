@@ -8,7 +8,7 @@ const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
   targetResources: null,
-  selectedLeftResource: null,
+  selectedResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
   downloadStatus: null,
@@ -48,7 +48,7 @@ export default handleActions(
         actionCreators.resources.loadFromTargetSearch,
         state.pendingAPIOperations
       ),
-      selectedLeftResource: null,
+      selectedResource: null,
       leftSearchValue: action.payload.searchValue,
       openLeftResources: []
     }),
@@ -202,13 +202,13 @@ export default handleActions(
     },
     /***
      * Untrack API call.
-     * Add resource details to selectedLeftResource.
+     * Add resource details to selectedResource.
      * Dispatched via Saga call on successful Resource Detail call.
      **/
     [actionCreators.resources.selectResourceSuccess]: (state, action) => {
       return {
         ...state,
-        selectedLeftResource: action.payload,
+        selectedResource: action.payload,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
           actionCreators.resources.selectResource,
@@ -234,7 +234,7 @@ export default handleActions(
       return {
         ...state,
         targetResources: null,
-        selectedLeftResource: null,
+        selectedResource: null,
         leftSearchValue: null
       };
     },
