@@ -16,7 +16,7 @@ export default function DownloadActionButton({ disabled }) {
 
   const targetToken = useSelector(state =>
     state.authorization.apiTokens[state.targets.source.name]);
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+  const selectedResource = useSelector(state => state.resources.selectedResource);
 
 
   /**
@@ -27,7 +27,7 @@ export default function DownloadActionButton({ disabled }) {
    **/
   const submitDownload = () => {
     dispatch(actionCreators.resources.displayDownloadModal());
-    dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
+    dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
   };
 
   return (
