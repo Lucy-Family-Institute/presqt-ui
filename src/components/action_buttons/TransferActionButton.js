@@ -86,7 +86,7 @@ const PresQTButtonGroup = withStyles({
   }
 })(ButtonGroup);
 
-export default function TransferActionButton({ disabled }) {
+export default function TransferActionButton({ disabled, optionDisabled }) {
   const options = ['Transfer to Existing', 'Transfer New Resource'];
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -133,7 +133,8 @@ export default function TransferActionButton({ disabled }) {
                     {options.map((option, index) => (
                       <MenuItem
                         key={option}
-                        selected={index === selectedIndex}
+                        disabled={index === 1 ? optionDisabled : false}
+                        // selected={index === selectedIndex}
                         onClick={event => handleMenuItemClick(event, index)}
                       >
                         {option}
