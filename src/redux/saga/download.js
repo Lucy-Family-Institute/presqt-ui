@@ -6,11 +6,11 @@ import {
   resourceDownloadJob
 } from "../../api/resources";
 
-export function* watchSourceResourceDownload() {
-  yield takeEvery(actionCreators.resources.downloadResource, downloadSourceTargetResource)
+export function* watchResourceDownload() {
+  yield takeEvery(actionCreators.resources.downloadResource, downloadTargetResource)
 }
 
-function* downloadSourceTargetResource(action) {
+function* downloadTargetResource(action) {
   try {
     const response = yield call(
       getResourceDownload,
