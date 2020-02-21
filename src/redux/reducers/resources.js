@@ -7,7 +7,7 @@ import buildResourceHierarchy from "./helpers/resources";
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
-  leftTargetResources: null,
+  targetResources: null,
   selectedLeftResource: null,
   apiOperationErrors: [],
   leftSearchValue: null,
@@ -35,7 +35,7 @@ export default handleActions(
         actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Add API call to trackers.
@@ -65,7 +65,7 @@ export default handleActions(
           actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy
+        targetResources: resourceHierarchy
       };
     },
     /**
@@ -81,7 +81,7 @@ export default handleActions(
           actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy
+        targetResources: resourceHierarchy
       };
     },
     /**
@@ -100,7 +100,7 @@ export default handleActions(
         actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Untrack API search call and track failure that occurred.
@@ -118,7 +118,7 @@ export default handleActions(
         actionCreators.resources.loadFromTargetSearch,
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     [combineActions(
       /**
@@ -158,7 +158,7 @@ export default handleActions(
         return updatedNode;
       };
 
-      const updatedSourceResources = state.leftTargetResources.map(topLevelNode => {
+      const updatedSourceResources = state.targetResources.map(topLevelNode => {
         return searchForResourceInArray(
           action.payload.container,
           action.payload.open,
@@ -168,7 +168,7 @@ export default handleActions(
 
       return {
         ...state,
-        leftTargetResources: updatedSourceResources,
+        targetResources: updatedSourceResources,
         openLeftResources: newopenLeftResources
       };
     },
@@ -177,13 +177,13 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectResource]: (state, action) => {
-      const updateLeftTargetResources = leftTargetResources => {
-        let sourceResources = leftTargetResources;
+      const updatetargetResources = targetResources => {
+        let sourceResources = targetResources;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updateLeftTargetResources(resource.children);
+              updatetargetResources(resource.children);
             }
           }
         });
@@ -197,7 +197,7 @@ export default handleActions(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        leftTargetResources: updateLeftTargetResources(state.leftTargetResources)
+        targetResources: updatetargetResources(state.targetResources)
       };
     },
     /***
@@ -233,7 +233,7 @@ export default handleActions(
     [actionCreators.resources.clearResources]: state => {
       return {
         ...state,
-        leftTargetResources: null,
+        targetResources: null,
         selectedLeftResource: null,
         leftSearchValue: null
       };
@@ -567,7 +567,7 @@ export default handleActions(
           actionCreators.resources.refreshTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy,
+        targetResources: resourceHierarchy,
         uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
@@ -587,7 +587,7 @@ export default handleActions(
         actionCreators.resources.refreshTarget.toString(),
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Clear the ticket number
