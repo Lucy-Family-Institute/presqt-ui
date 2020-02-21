@@ -19,19 +19,11 @@ export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  /** SELECTOR DEFINITIONS
-   * apiTokens    : Object of <targets: tokens> submitted in the current session
-   * sourceTarget : Object of the current source selected
-   **/
-  const apiTokens = useSelector(state => state.authorization.apiTokens);
   const sourceTarget = useSelector(state => state.targets.source);
+  const token = useSelector(state => state.authorization.apiTokens)[sourceTarget.name];
 
-  /** STATE DEFINITIONS
-   * [searchValue, updateSearch] : Search value state
-   **/
   const [searchValue, setSearchValue] = useState('');
 
-  const token = apiTokens[sourceTarget.name];
 
   const submitSearch = (event) => {
     event.preventDefault();
