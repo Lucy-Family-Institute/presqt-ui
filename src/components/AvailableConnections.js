@@ -23,6 +23,8 @@ export default function AvailableConnections() {
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
   
   let tokenError;
   if (collection_error) {
@@ -87,10 +89,13 @@ export default function AvailableConnections() {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending'
+              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
             ]}
             onClick={() => handleSwitchSourceTarget(connection)}
-            disabled={pendingAPIResponse}
+            disabled={
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+            }
           >
             <img
               src={require(`../images/available_connections/${connection.name}.png`)}
