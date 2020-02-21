@@ -11,18 +11,20 @@ import { basicFadeIn } from '../styles/animations';
 /**
  * This component displays the various targets that a user can connect with.
  * It's responsible for switching targets, handing off resource loading, and handing off modal work
- * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
+ * It's also responsible for broadcasting (via Redux) what the currently selected "selectedTarget" is.
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
 
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const sourceTarget = useSelector(state => state.targets.source);
+  const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const availableTargets = useSelector(state => state.targets.available);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
+  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const uploadStatus = useSelector(state => state.resources.uploadStatus);
   
   let tokenError;
   if (collection_error) {
@@ -55,9 +57,9 @@ export default function AvailableConnections() {
    *        -> Saga function dispatches loadFromTargetFailure action if not successful.
    * Else display the modal.
    */
-  const handleSwitchSourceTarget = connection => {
+  const handleSwitchTarget = connection => {
     dispatch(actionCreators.resources.clearResources());
-    dispatch(actionCreators.targets.switchSource(connection));
+    dispatch(actionCreators.targets.switchTarget(connection));
 
     if (connection.name in apiTokens) {
       dispatch(
@@ -87,16 +89,19 @@ export default function AvailableConnections() {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending'
+              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
             ]}
-            onClick={() => handleSwitchSourceTarget(connection)}
-            disabled={pendingAPIResponse}
+            onClick={() => handleSwitchTarget(connection)}
+            disabled={
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+            }
           >
             <img
               src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
-            {sourceTarget && sourceTarget.name === connection.name ? (
+            {selectedTarget && selectedTarget.name === connection.name ? (
               <div
                 css={{
                   minHeight: 5,

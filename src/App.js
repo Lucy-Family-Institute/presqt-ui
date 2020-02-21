@@ -14,6 +14,7 @@ import SnackBar from "./components/SnackBar";
 import UploadModal from "./components/modals/UploadModal";
 import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
+import {Fragment} from "react";
 
 const styles = {
   app: css({
@@ -34,22 +35,27 @@ const styles = {
 
 function App() {
   return (
-    <div css={styles.app}>
-      <HeaderBackground />
-      <PresQTHeader />
-      <HeaderMenu />
-      <TargetResourceBrowser />
-      <TargetActions />
-      <TargetActionDetail />
-      <AvailableConnections />
-      <DevelopmentPartners />
+    <Fragment>
+      <div css={styles.app}>
+        <HeaderBackground />
+        <PresQTHeader />
+        <HeaderMenu />
+        <TargetResourceBrowser />
+        <TargetActions />
+        <TargetActionDetail />
+        <AvailableConnections />
+        <DevelopmentPartners />
+      </div>
 
       {/* Hidden Components */}
-      <SnackBar />
-      <UploadModal />
-      <TokenModal />
-      <DownloadModal />
-    </div>
+      <div id="hiddenComponents">
+        <SnackBar />
+        <UploadModal />
+        <TokenModal />
+        <DownloadModal />
+      </div>
+    </Fragment>
+
   );
 }
 

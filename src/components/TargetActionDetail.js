@@ -11,10 +11,6 @@ import Spinner from "./widgets/spinners/Spinner";
  * This component is responsible for displaying the details of a selected resource.
  **/
 export default function TargetActionDetail() {
-  /** SELECTOR DEFINITIONS
-   * selectedResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
   const selectedResource = useSelector(state => state.resources.selectedResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 

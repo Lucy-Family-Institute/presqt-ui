@@ -5,20 +5,20 @@ import {
   watchRefreshSource,
   watchSearch,
   watchSelectResource,
-  watchSwitchSource
+  watchSwitchTarget
 } from "./resources";
-import {watchCancelDownload, watchSourceResourceDownload} from "./download";
-import {watchCancelUpload, watchSourceResourceUpload} from "./upload";
+import {watchCancelDownload, watchResourceDownload} from "./download";
+import {watchCancelUpload, watchResourceUpload} from "./upload";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
   yield all([
     watchLoadTargets(),
-    watchSwitchSource(),
+    watchSwitchTarget(),
     watchSelectResource(),
     watchSearch(),
-    watchSourceResourceDownload(),
-    watchSourceResourceUpload(),
+    watchResourceDownload(),
+    watchResourceUpload(),
     watchRefreshSource(),
     watchCancelDownload(),
     watchCancelUpload()

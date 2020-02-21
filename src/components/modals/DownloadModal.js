@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import React, { useEffect, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
 import FileSaver from "file-saver";
@@ -15,11 +15,11 @@ import CancelButton from "../widgets/buttons/CancelButton";
 
 const modalDefaultMessage = (
   <div>
-    <div css={{ paddingBottom: 15 }}>
+    <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
       <p>The download is being processed on the server.</p>
     </div>
     <Spinner />
-    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
       <CancelButton actionType='DOWNLOAD' />
     </div>
   </div>);
@@ -60,32 +60,35 @@ export default function DownloadModal() {
       }
 
       setModalContent(
-        <div
-          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{ marginLeft: 5 }}>{errorMessage}</span>
-          <span css={{ marginLeft: 15 }}>
-            <RetryDownloadButton
-              setModalContent={setModalContent}
-              modalDefaultMessage={modalDefaultMessage}
-            />
-          </span>
-        </div>
+        <Fragment>
+          <div
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>              <ErrorOutlineIcon color="error"/>
+              <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+          </div>
+          <div css={{justifyContent: 'center', display: 'flex'}}>
+              <RetryDownloadButton
+                setModalContent={setModalContent}
+                modalDefaultMessage={modalDefaultMessage}
+              />
+          </div>
+        </Fragment>
+
       )
     }
     else if (downloadStatus === 'cancelled') {
       setModalContent(
-        <div
-          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <ErrorOutlineIcon color="error"/>
-          <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
-          <span css={{ marginLeft: 15 }}>
-            <RetryDownloadButton
-              setModalContent={setModalContent}
-              modalDefaultMessage={modalDefaultMessage}
-            />
-          </span>
-        </div>
+        <Fragment>
+          <div
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>              <ErrorOutlineIcon color="error"/>
+              <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
+          </div>
+          <div css={{justifyContent: 'center', display: 'flex'}}>
+              <RetryDownloadButton
+                setModalContent={setModalContent}
+                modalDefaultMessage={modalDefaultMessage}
+              />
+          </div>
+        </Fragment>
       )
     }
 

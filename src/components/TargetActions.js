@@ -13,16 +13,13 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  * the html element, and rendering the correct component for each action.
  **/
 export default function TargetActions() {
-  /** SELECTOR DEFINITIONS
-   * selectedResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
   const selectedResource = useSelector(state => state.resources.selectedResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const searchValue = useSelector(state => state.resources.searchValue);
-  var buttonsList = [];
+
+  let buttonsList = [];
   if (selectedResource) {
-    for (var i = 0; i < selectedResource.links.length; i++) {
+    for (let i = 0; i < selectedResource.links.length; i++) {
       buttonsList.push(selectedResource.links[i].name);
     }
   }
@@ -52,14 +49,14 @@ export default function TargetActions() {
             /> : null}
           {selectedResource
           ? <UploadActionButton
-              key={"UPLOAD"}
+              key="UPLOAD"
               text="Upload"
               type="EXISTING"
               disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
           {selectedResource
           ? <TransferActionButton
-              key={"Transfer"}
+              key="Transfer"
               disabled={true}
             />: null}
         </div>
