@@ -1,13 +1,13 @@
 /** @jsx jsx */
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../../../styles/text";
 import buttonStyles from "../../../../styles/buttons";
 import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
-import LeftSpinner from "../../spinners/LeftSpinner";
 import CancelButton from "../CancelButton";
+import Spinner from "../../spinners/Spinner";
 
 export default function RetryUploadButton({selectedFile, selectedDuplicate,
                                            setStepThreeContent, resourceToUploadTo}) {
@@ -36,9 +36,9 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
     );
     setStepThreeContent(
       <div>
-        <p>The upload is being processed on the server. If you refresh or leave the page the upload will <strong>still</strong> continue.</p>
-        <LeftSpinner />
-        <div css={{ paddingTop: 15 }}>
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The upload is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
+        <Spinner />
+        <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
           <CancelButton actionType='UPLOAD' />
         </div>
       </div>
