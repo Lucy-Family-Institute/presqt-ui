@@ -3,15 +3,15 @@ import {actionCreators} from "../actionCreators";
 import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
 
 /** Resource Collection **/
-export function* watchSwitchSource() {
-  yield takeEvery(actionCreators.resources.loadFromTarget, loadSourceTargetResources);
+export function* watchSwitchTarget() {
+  yield takeEvery(actionCreators.resources.loadFromTarget, loadTargetResources);
 }
 
  /**
  * Make an Axios request to Resource Collection.
  * Dispatch either the success or failure actions accordingly.
  **/
-function* loadSourceTargetResources(action) {
+function* loadTargetResources(action) {
   try {
     const response = yield call(
     getTargetResources,

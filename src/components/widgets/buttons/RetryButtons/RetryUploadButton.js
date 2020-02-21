@@ -14,9 +14,9 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
   const classes = buttonStyles.RetryUpload();
   const dispatch = useDispatch();
 
-  const sourceTargetToken =
-    useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
-  const selectedTarget = useSelector(state => state.targets.source.name);
+  const targetToken =
+    useSelector(state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
+  const selectedTarget = useSelector(state => state.targets.selectedTarget.name);
 
   const submitRetry = () => {
     dispatch(actionCreators.resources.clearUploadData());
@@ -31,7 +31,7 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
         selectedFile,
         selectedDuplicate,
         resourceToUploadTo,
-        sourceTargetToken
+        targetToken
       )
     );
     setStepThreeContent(

@@ -3,6 +3,7 @@ import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
 
 import textStyles from '../../../styles/text';
+import {useSelector} from "react-redux";
 
 const fadeIn = keyframes`
   0% {
@@ -15,10 +16,17 @@ const fadeIn = keyframes`
 `;
 
 function TargetResourcesHeader() {
+  const target = useSelector(state => state.targets.selectedTarget);
+
+  let headerMessage = 'Resources';
+  if (target) {
+    headerMessage = `${target.readable_name} Resources`;
+  }
+
   return (
-    <div css={{ display: 'flex', alignItems: 'center' }}>
+    <div css={{ display: 'flex' }}>
       <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
-        Resources
+        {headerMessage}
       </span>
     </div>
   );

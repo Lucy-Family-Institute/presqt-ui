@@ -17,9 +17,9 @@ export default function TokenModal() {
 
   const apiTokens = useSelector(state => state.authorization.apiTokens);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.source);
+  const sourceTarget = useSelector(state => state.targets.selectedTarget);
   const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
-  const connection = useSelector(state => state.targets.source);
+  const connection = useSelector(state => state.targets.selectedTarget);
 
 
   const [token, setToken] = useState('');

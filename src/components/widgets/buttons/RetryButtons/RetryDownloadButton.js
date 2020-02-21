@@ -15,13 +15,9 @@ import Button from "@material-ui/core/Button/Button";
 export default function RetryDownloadButton({setModalContent, modalDefaultMessage}) {
   const classes = buttonStyles.RetryDownload();
   const dispatch = useDispatch();
-  /** SELECTOR DEFINITIONS
-   * sourceTargetToken : String user token for the source target
-   * selectedResource  : Object representing the selected resource's details
-   **/
   // Download specific Selectors
   const targetToken = useSelector(
-    state => state.authorization.apiTokens[state.targets.source.name]);
+    state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
   const selectedResource = useSelector(state => state.resources.selectedResource);
 
   const submitRetry = () => {

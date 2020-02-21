@@ -19,8 +19,8 @@ export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const sourceTarget = useSelector(state => state.targets.source);
-  const token = useSelector(state => state.authorization.apiTokens)[sourceTarget.name];
+  const selectedTarget = useSelector(state => state.targets.selectedTarget);
+  const token = useSelector(state => state.authorization.apiTokens)[selectedTarget.name];
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -34,7 +34,7 @@ export default function TargetSearch() {
     );
     dispatch(
       actionCreators.resources.loadFromTargetSearch(
-        sourceTarget.name,
+        selectedTarget.name,
         token,
         searchValue
       )
@@ -53,7 +53,7 @@ export default function TargetSearch() {
           size="small"
           type="text"
           id="outlined-basic"
-          label={"Search " + sourceTarget.readable_name}
+          label={"Search " + selectedTarget.readable_name}
           variant="outlined"
           value={searchValue}
           onChange={event => setSearchValue(event.target.value)}

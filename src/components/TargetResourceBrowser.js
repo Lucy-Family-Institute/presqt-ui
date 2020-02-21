@@ -28,13 +28,13 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
-  const sourceTargetToken = useSelector(state => state.targets.source
-      ? state.authorization.apiTokens[state.targets.source.name]
+  const targetToken = useSelector(state => state.targets.selectedTarget
+      ? state.authorization.apiTokens[state.targets.selectedTarget.name]
       : null);
   const targetResources = useSelector(state => state.resources.targetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.source);
+  const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const searchValue = useSelector(state => state.resources.searchValue);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
@@ -110,7 +110,7 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!searchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!searchValue && selectedTarget.supported_actions["resource_upload"] === true ? false : true}
         />
       );
     }
@@ -119,14 +119,14 @@ export default function TargetResourceBrowser() {
   useEffect(() => {
     if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, sourceTargetToken), targetResources))
+        resource => onResourceClicked(resource, targetToken), targetResources))
     }
     else if (targetResources && targetResources.length === 0 && searchValue) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for search term 
+      setMessage(`No ${selectedTarget.readable_name} resources found for search term 
         "${searchValue}".`);
     }
     else if (targetResources && targetResources.length === 0) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
+      setMessage(`No ${selectedTarget.readable_name} resources found for this user.`);
     }
     else if (search_error) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
@@ -155,7 +155,7 @@ export default function TargetResourceBrowser() {
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}
-        {!sourceTarget ? null : upload()}
+        {!selectedTarget ? null : upload()}
         {pendingAPIOperations.includes(
           actionCreators.resources.loadFromTarget.toString()
         ) ||
