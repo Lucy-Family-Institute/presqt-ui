@@ -57,7 +57,7 @@ export default function TargetActions() {
           {selectedResource
           ? <TransferActionButton
               key="Transfer"
-              disabled={true}
+              disabled={false}
             />: null}
         </div>
       </div>
