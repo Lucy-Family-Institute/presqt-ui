@@ -14,6 +14,7 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  **/
 export default function TargetActions() {
   const selectedResource = useSelector(state => state.resources.selectedResource);
+  const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const searchValue = useSelector(state => state.resources.searchValue);
 
@@ -57,7 +58,8 @@ export default function TargetActions() {
           {selectedResource
           ? <TransferActionButton
               key="Transfer"
-              disabled={true}
+              disabled={!selectedTarget.supported_actions.resource_transfer_out}
+              optionDisabled={selectedResource.kind === 'item'}
             />: null}
         </div>
       </div>
