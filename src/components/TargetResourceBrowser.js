@@ -163,9 +163,7 @@ export default function TargetResourceBrowser() {
           actionCreators.resources.loadFromTargetSearch.toString()
         ) ? <Spinner />
           : (
-          <div>
             <div css={messageCss}>{message}</div>
-          </div>
         )}
       </div>
     </div>
