@@ -7,10 +7,10 @@ import buildResourceHierarchy from "./helpers/resources";
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
-  leftTargetResources: null,
-  selectedLeftResource: null,
+  targetResources: null,
+  selectedResource: null,
   apiOperationErrors: [],
-  leftSearchValue: null,
+  searchValue: null,
   downloadStatus: null,
   downloadData: null,
   downloadModalDisplay: false,
@@ -18,7 +18,7 @@ const initialState = {
   uploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openLeftResources: [],
+  openResources: [],
   activeTicketNumber: null
 };
 
@@ -35,7 +35,7 @@ export default handleActions(
         actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Add API call to trackers.
@@ -48,9 +48,9 @@ export default handleActions(
         actionCreators.resources.loadFromTargetSearch,
         state.pendingAPIOperations
       ),
-      selectedLeftResource: null,
-      leftSearchValue: action.payload.searchValue,
-      openLeftResources: []
+      selectedResource: null,
+      searchValue: action.payload.searchValue,
+      openResources: []
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -65,7 +65,7 @@ export default handleActions(
           actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy
+        targetResources: resourceHierarchy
       };
     },
     /**
@@ -81,7 +81,7 @@ export default handleActions(
           actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy
+        targetResources: resourceHierarchy
       };
     },
     /**
@@ -100,7 +100,7 @@ export default handleActions(
         actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Untrack API search call and track failure that occurred.
@@ -118,7 +118,7 @@ export default handleActions(
         actionCreators.resources.loadFromTargetSearch,
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     [combineActions(
       /**
@@ -127,7 +127,7 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
-      let newopenLeftResources = state.openLeftResources;
+      let newopenResources = state.openResources;
 
       const searchForResourceInArray = (
         desiredContainer,
@@ -138,10 +138,10 @@ export default handleActions(
 
         if (updatedNode.id === desiredContainer.id) {
           if (openContainer) {
-            newopenLeftResources.push(desiredContainer.id)
+            newopenResources.push(desiredContainer.id)
           }
           else{
-            newopenLeftResources = newopenLeftResources.filter(element => element !== desiredContainer.id)
+            newopenResources = newopenResources.filter(element => element !== desiredContainer.id)
           }
           return {
             ...updatedNode,
@@ -158,7 +158,7 @@ export default handleActions(
         return updatedNode;
       };
 
-      const updatedSourceResources = state.leftTargetResources.map(topLevelNode => {
+      const updatedSourceResources = state.targetResources.map(topLevelNode => {
         return searchForResourceInArray(
           action.payload.container,
           action.payload.open,
@@ -168,8 +168,8 @@ export default handleActions(
 
       return {
         ...state,
-        leftTargetResources: updatedSourceResources,
-        openLeftResources: newopenLeftResources
+        targetResources: updatedSourceResources,
+        openResources: newopenResources
       };
     },
     /**
@@ -177,13 +177,13 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectResource]: (state, action) => {
-      const updateLeftTargetResources = leftTargetResources => {
-        let sourceResources = leftTargetResources;
+      const updatetargetResources = targetResources => {
+        let sourceResources = targetResources;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updateLeftTargetResources(resource.children);
+              updatetargetResources(resource.children);
             }
           }
         });
@@ -197,18 +197,18 @@ export default handleActions(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        leftTargetResources: updateLeftTargetResources(state.leftTargetResources)
+        targetResources: updatetargetResources(state.targetResources)
       };
     },
     /***
      * Untrack API call.
-     * Add resource details to selectedLeftResource.
+     * Add resource details to selectedResource.
      * Dispatched via Saga call on successful Resource Detail call.
      **/
     [actionCreators.resources.selectResourceSuccess]: (state, action) => {
       return {
         ...state,
-        selectedLeftResource: action.payload,
+        selectedResource: action.payload,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
           actionCreators.resources.selectResource,
@@ -233,9 +233,9 @@ export default handleActions(
     [actionCreators.resources.clearResources]: state => {
       return {
         ...state,
-        leftTargetResources: null,
-        selectedLeftResource: null,
-        leftSearchValue: null
+        targetResources: null,
+        selectedResource: null,
+        searchValue: null
       };
     },
     /**
@@ -567,7 +567,7 @@ export default handleActions(
           actionCreators.resources.refreshTarget,
           state.pendingAPIOperations
         ),
-        leftTargetResources: resourceHierarchy,
+        targetResources: resourceHierarchy,
         uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
@@ -587,7 +587,7 @@ export default handleActions(
         actionCreators.resources.refreshTarget.toString(),
         state.apiOperationErrors
       ),
-      leftTargetResources: null
+      targetResources: null
     }),
     /**
      * Clear the ticket number

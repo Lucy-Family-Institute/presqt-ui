@@ -11,7 +11,7 @@ import Spinner from "./widgets/spinners/Spinner";
  * This component is responsible for displaying the details of a selected resource.
  **/
 export default function TargetActionDetail() {
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+  const selectedResource = useSelector(state => state.resources.selectedResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
 
   /**
@@ -116,11 +116,11 @@ export default function TargetActionDetail() {
         ? <Spinner />
         : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null
-        : selectedLeftResource ? (
+        : selectedResource ? (
           <div>
             <MediumHeader text="Resource Details" />
             <div css={{ paddingTop: 10 }}>
-              {detailsToRender(selectedLeftResource).map(resourceData =>
+              {detailsToRender(selectedResource).map(resourceData =>
                 renderDetailItem(resourceData)
               )}
             </div>

@@ -13,15 +13,14 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  * the html element, and rendering the correct component for each action.
  **/
 export default function TargetActions() {
-
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+  const selectedResource = useSelector(state => state.resources.selectedResource);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
+  const searchValue = useSelector(state => state.resources.searchValue);
 
   let buttonsList = [];
-  if (selectedLeftResource) {
-    for (let i = 0; i < selectedLeftResource.links.length; i++) {
-      buttonsList.push(selectedLeftResource.links[i].name);
+  if (selectedResource) {
+    for (let i = 0; i < selectedResource.links.length; i++) {
+      buttonsList.push(selectedResource.links[i].name);
     }
   }
 
@@ -39,23 +38,23 @@ export default function TargetActions() {
             textStyles.largeHeader
           ]}
         >
-          {selectedLeftResource ? selectedLeftResource.title : null}
+          {selectedResource ? selectedResource.title : null}
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedLeftResource
+          {selectedResource
             ? <DownloadActionButton
               key={"Download"}
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
-          {selectedLeftResource
+          {selectedResource
           ? <UploadActionButton
               key="UPLOAD"
               text="Upload"
               type="EXISTING"
-              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
             /> : null}
-          {selectedLeftResource
+          {selectedResource
           ? <TransferActionButton
               key="Transfer"
               disabled={true}

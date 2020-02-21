@@ -17,18 +17,18 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
   const dispatch = useDispatch();
   /** SELECTOR DEFINITIONS
    * sourceTargetToken : String user token for the source target
-   * selectedLeftResource  : Object representing the selected resource's details
+   * selectedResource  : Object representing the selected resource's details
    **/
   // Download specific Selectors
   const targetToken = useSelector(
     state => state.authorization.apiTokens[state.targets.source.name]);
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
+  const selectedResource = useSelector(state => state.resources.selectedResource);
 
   const submitRetry = () => {
       dispatch(actionCreators.resources.clearDownloadData());
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.downloadResource.toString()));
-      dispatch(actionCreators.resources.downloadResource(selectedLeftResource, targetToken));
+      dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
 
       setModalContent(modalDefaultMessage);
     };
