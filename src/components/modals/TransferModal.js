@@ -5,9 +5,18 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import {actionCreators} from "../../redux/actionCreators";
 import TransferStepper from "../transfer_stepper/TransferStepper";
+import Grid from "@material-ui/core/Grid";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    borderRight: 'solid 1px #979797',
+  }
+}));
 
 export default function TransferModal() {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const transferModalDisplay = useSelector(state => state.resources.transferModalDisplay);
   const selectedResource = useSelector(state => state.resources.selectedResource);
@@ -36,8 +45,14 @@ export default function TransferModal() {
           Transfer Resource: {selectedResource.title}
         </DialogTitle>
         <DialogContent>
-          {/*<UploadStepper resourceToUploadTo={resourceToUploadTo} uploadType={uploadType}/>*/}
-          <TransferStepper />
+          <Grid container>
+            <Grid item xs={6} className={classes.root}>
+                <TransferStepper />
+            </Grid>
+            <Grid item xs={6}>
+              Resources Go Here
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
     </div>

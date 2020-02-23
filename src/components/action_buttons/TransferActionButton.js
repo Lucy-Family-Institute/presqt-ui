@@ -22,7 +22,7 @@ export default function TransferActionButton({disabled}) {
       onClick={submitUpload}
       disabled={disabled}
     >
-      <span css={textStyles.buttonText}>Transfer</span>
+      <span css={textStyles.buttonText}>Transfer Out</span>
     </ActionButton>
   );
 }
