@@ -19,7 +19,8 @@ const initialState = {
   uploadModalDisplay: false,
   uploadType: null,
   openResources: [],
-  activeTicketNumber: null
+  activeTicketNumber: null,
+  transferModalDisplay: false
 };
 
 export default handleActions(
@@ -595,7 +596,21 @@ export default handleActions(
     [actionCreators.resources.clearActiveTicketNumber]: state => ({
       ...state,
       activeTicketNumber: null
-    })
+    }),
+    /**
+     * Display the Transfer Modal
+     **/
+    [actionCreators.resources.displayTransferModal]: state => ({
+      ...state,
+      transferModalDisplay: true,
+    }),
+    /**
+     * Hide the Transfer Modal
+     **/
+    [actionCreators.resources.hideTransferModal]: state => ({
+      ...state,
+      transferModalDisplay: false,
+    }),
   },
   initialState
 );

@@ -53,7 +53,9 @@ export const actionCreators = createActions({
         REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
-        CLEAR_ACTIVE_TICKET_NUMBER: undefined
+        CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        DISPLAY_TRANSFER_MODAL: undefined,
+        HIDE_TRANSFER_MODAL: undefined
     },
     TARGETS: {
         LOAD: undefined,
