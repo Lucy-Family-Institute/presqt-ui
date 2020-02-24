@@ -52,13 +52,12 @@ const steps = [
 ];
 
 
-export default function TransferStepper() {
+export default function TransferStepper({setDestinationTarget, setDestinationToken}) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
-  const [destinationTarget, setDestinationTarget] = useState('');
-  const [destinationToken, setDestinationToken] = useState('');
+
 
   /**
    * Decrement the step count when the Back button is pressed

@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import React from "react";
+import React, {useState} from "react";
 import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,6 +7,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import TransferStepper from "../transfer_stepper/TransferStepper";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import TransferResourceBrowser from "../transfer_stepper/TransferResourceBrowser";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +21,9 @@ export default function TransferModal() {
 
   const transferModalDisplay = useSelector(state => state.resources.transferModalDisplay);
   const selectedResource = useSelector(state => state.resources.selectedResource);
+
+  const [destinationTarget, setDestinationTarget] = useState('');
+  const [destinationToken, setDestinationToken] = useState('');
 
   const handleClose = () => {
     dispatch(actionCreators.resources.hideTransferModal());
@@ -47,10 +51,16 @@ export default function TransferModal() {
         <DialogContent>
           <Grid container>
             <Grid item xs={6} className={classes.root}>
-                <TransferStepper />
+                <TransferStepper
+                  setDestinationTarget={setDestinationTarget}
+                  setDestinationToken={setDestinationToken}
+                />
             </Grid>
             <Grid item xs={6}>
-              Resources Go Here
+              <TransferResourceBrowser
+                destinationTarget={destinationTarget}
+                destinationToken={destinationToken}
+              />
             </Grid>
           </Grid>
         </DialogContent>
