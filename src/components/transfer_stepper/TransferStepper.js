@@ -98,7 +98,8 @@ export default function TransferStepper() {
         />
       }
       case 4: {
-        return <TransferStepperTransferButton />
+        return <TransferStepperTransferButton
+          handleNext={handleNext}/>
       }
       case 5: {
         return <TransferStepperResults />
@@ -127,16 +128,18 @@ export default function TransferStepper() {
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    <UploadStepperBackButton// RENAME SO IT'S REUSABLE
+                    <UploadStepperBackButton // RENAME SO IT'S REUSABLE
                       handleBack={handleBack}
                       activeStep={activeStep}
                     />
-                    <UploadStepperNextButton // RENAME SO IT'S REUSABLE OR CREATE NEW? THERE'S LOGIC IN HERE WE DONT NEED
-                      handleNext={handleNext}
-                      activeStep={activeStep}
-                      selectedFile={true} // DON'T NEED
-                      steps={steps}
-                    />
+                    {steps.indexOf(label) !== 4
+                    ? <UploadStepperNextButton
+                          handleNext={handleNext}
+                          activeStep={activeStep}
+                          selectedFile={true}
+                          steps={steps}
+                        />
+                  : null }
                   </div>
                 </div>
               </Typography>
