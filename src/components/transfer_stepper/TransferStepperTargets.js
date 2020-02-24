@@ -5,22 +5,23 @@ import { useState } from 'react';
 import { basicFadeIn } from '../../styles/animations';
 import colors from '../../styles/colors';
 
-export default function TransferStepperTargets({setDestinationTarget}) {
+export default function TransferStepperTargets({ setDestinationTarget }) {
+  const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const availableTargets = useSelector(state => state.targets.available);
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const [switchCss, setSwitchCss] = useState('');
   
   let destinationTarget;
   const handleSwitchTarget = connection => {
-    setDestinationTarget(connection.name);
-    setSwitchCss(connection.name);
+    setDestinationTarget(connection);
+    setSwitchCss(connection);
   };
-
+  
   return (
     <div css={{ display: 'flex', flexDirection: 'row', paddingTop: 10 }}>
-        {availableTargets.map(connection => (
+        {selectedTarget.supported_transfer_partners.transfer_out.map(connection => (
           <button
-            key={connection.name}
+            key={connection}
             css={[
               {
                 backgroundColor: 'white',
@@ -34,10 +35,10 @@ export default function TransferStepperTargets({setDestinationTarget}) {
             disabled={pendingAPIResponse}
           >
             <img
-              src={require(`../../images/available_connections/${connection.name}.png`)}
-              alt={connection.readable_name}
+              src={require(`../../images/available_connections/${connection}.png`)}
+              alt={connection}
             />
-            {switchCss === connection.name ? (
+            {switchCss === connection ? (
               <div
                 css={{
                   minHeight: 5,
