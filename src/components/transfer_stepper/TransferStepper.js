@@ -57,6 +57,7 @@ export default function TransferStepper() {
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
+  const [destinationTarget, setDestinationTarget] = useState('');
 
   /**
    * Decrement the step count when the Back button is pressed
@@ -79,7 +80,8 @@ export default function TransferStepper() {
   function getStepContent(step) {
     switch (step) {
       case 0: {
-        return <TransferStepperTargets />
+        return <TransferStepperTargets
+          setDestinationTarget={setDestinationTarget}/>
       }
       case 1: {
         return <TransferStepperToken />
@@ -101,7 +103,6 @@ export default function TransferStepper() {
       }
     }
   }
-
   return (
     <div>
       <Stepper
