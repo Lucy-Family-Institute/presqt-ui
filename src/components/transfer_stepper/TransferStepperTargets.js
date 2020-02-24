@@ -7,11 +7,9 @@ import colors from '../../styles/colors';
 
 export default function TransferStepperTargets({ setDestinationTarget }) {
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const availableTargets = useSelector(state => state.targets.available);
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const [switchCss, setSwitchCss] = useState('');
   
-  let destinationTarget;
   const handleSwitchTarget = connection => {
     setDestinationTarget(connection);
     setSwitchCss(connection);
@@ -29,10 +27,8 @@ export default function TransferStepperTargets({ setDestinationTarget }) {
                 paddingLeft: 0,
                 paddingRight: 10
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
             ]}
             onClick={() => handleSwitchTarget(connection)}
-            disabled={pendingAPIResponse}
           >
             <img
               src={require(`../../images/available_connections/${connection}.png`)}

@@ -16,7 +16,9 @@ import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import UploadDuplicateActionRadioButtons from "../upload_stepper/UploadDuplicateActionRadioButtons";
 import UploadStepperNextButton from "../upload_stepper/UploadStepperNextButton";
 import UploadStepperBackButton from "../upload_stepper/UploadStepperBackButton";
-import {jsx} from "@emotion/core";
+import {useDispatch} from "react-redux";
+import { actionCreators } from "../../redux/actionCreators";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,8 +54,10 @@ const steps = [
 ];
 
 
-export default function TransferStepper({setDestinationTarget, setDestinationToken}) {
+export default function TransferStepper({setDestinationTarget, destinationTarget,
+                                         setDestinationToken, destinationToken}) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
@@ -70,6 +74,10 @@ export default function TransferStepper({setDestinationTarget, setDestinationTok
    * Increment the step count when the Back button is pressed
    **/
   const handleNext = () => {
+    if (activeStep === 1) {
+      dispatch(actionCreators.resources.loadFromTransferTarget(
+        destinationTarget, destinationToken));
+    }
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 

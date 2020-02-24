@@ -20,7 +20,9 @@ const initialState = {
   uploadType: null,
   openResources: [],
   activeTicketNumber: null,
-  transferModalDisplay: false
+  transferModalDisplay: false,
+  transferTargetResources: null,
+  selectedTransferResource: null
 };
 
 export default handleActions(
@@ -611,6 +613,18 @@ export default handleActions(
       ...state,
       transferModalDisplay: false,
     }),
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    [actionCreators.resources.loadFromTransferTarget]: state => ({
+      ...state,
+        pendingAPIResponse: true,
+        pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromTransferTarget,
+        state.pendingAPIOperations
+      )
+    })
   },
   initialState
 );

@@ -9,7 +9,7 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken,}),
+        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
         LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue) => ({
@@ -55,7 +55,8 @@ export const actionCreators = createActions({
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
         DISPLAY_TRANSFER_MODAL: undefined,
-        HIDE_TRANSFER_MODAL: undefined
+        HIDE_TRANSFER_MODAL: undefined,
+        LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken})
     },
     TARGETS: {
         LOAD: undefined,
