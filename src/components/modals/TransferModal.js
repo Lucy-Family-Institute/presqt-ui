@@ -18,7 +18,7 @@ const leftGrid = makeStyles(theme => ({
 const RightGrid = makeStyles(theme => ({
   root: {
     paddingLeft: 25,
-    paddingTop: 20
+    paddingTop: 15
   }
 }));
 
@@ -58,7 +58,7 @@ export default function TransferModal() {
         </DialogTitle>
         <DialogContent>
           <Grid container>
-            <Grid item xs={6} className={leftGridClasses.root}>
+            <Grid item xs={7} className={leftGridClasses.root}>
               <TransferStepper
                   destinationTarget={destinationTarget}
                   setDestinationTarget={setDestinationTarget}
@@ -66,7 +66,7 @@ export default function TransferModal() {
                   setDestinationToken={setDestinationToken}
                 />
             </Grid>
-            <Grid className={RightGridClasses.root} item xs={6}>
+            <Grid className={RightGridClasses.root} item xs={5}>
               <TransferResourceBrowser
                 destinationTarget={destinationTarget}
                 destinationToken={destinationToken}

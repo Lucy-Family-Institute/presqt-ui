@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import React, {useEffect, useState} from "react";
-import { jsx } from "@emotion/core";
+import { jsx, } from "@emotion/core";
 import {actionCreators} from "../../redux/actionCreators";
 import Spinner from "../widgets/spinners/Spinner";
 import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
 import { keyframes } from "emotion";
-import { Fragment } from "react";
 import TransferResourcesHeader from "./TransferResourcesHeader";
 
 const fadeIn = keyframes`
@@ -49,7 +48,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
       return (
-        <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
+        <div key={resource.id} css={{ paddingTop: 10, animation: `${fadeIn} .5s ease` }}>
           <ResourceButton
             browserType="transfer"
             resource={resource}
@@ -78,9 +77,12 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   }, [transferTargetResources]);
 
   return (
-    <div>
-      <TransferResourcesHeader destinationTarget={destinationTarget} />
-      <div>
+    <div css={{
+      minHeight: "25vh",
+      flex: 1,
+      display: "flex"}}>
+      <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <TransferResourcesHeader destinationTarget={destinationTarget} />
         {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
           ? <Spinner />
           :
