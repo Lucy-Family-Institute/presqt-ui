@@ -89,3 +89,50 @@ export function resourceUploadJob(uploadJobURL, targetToken) {
 export function cancelResourceUploadJob(ticketNumber, targetToken) {
   return axios.patch(`${apiURLBase}uploads/${ticketNumber}/`, null, { headers: { 'presqt-destination-token': targetToken }});
 }
+
+/**
+ * Resource Transfer Endpoint
+ **/
+export function postResourceUpload(destinationTarget, destinationToken, resource, duplicateAction,
+                                   resourceToUploadTo, target, targetToken) {
+  let resourceUploadURL;
+  if (!resourceToUploadTo) {
+    resourceUploadURL = `${apiURLBase}targets/${destinationTarget}/resources/`;
+  }
+  else {
+    resourceUploadURL = `${apiURLBase}targets/${destinationTarget}/resources/${resourceToUploadTo}`;
+  }
+  const bodyFormData = new FormData();
+
+  bodyFormData.set('source-target-name', target);
+  bodyFormData.set('source_resource_id', resource);
+  
+  return axios.post(resourceUploadURL,
+    bodyFormData,
+    {
+      headers: {
+        'presqt-destination-token': destinationToken,
+        'presqt-source-token': targetToken,
+        'presqt-file-duplicate-action': duplicateAction,
+        'Content-Type': 'application/json'
+      }
+    }
+    )
+}
+
+/**
+ * Resource Transfer Job Endpoint
+ **/
+export function resourceTransferJob(transferJobURL, targetToken) {
+  return axios.get(
+    transferJobURL,
+    { headers: { 'presqt-destination-token': targetToken }});
+}
+
+/**
+ * Cancel Upload Job Endpoint
+ **/
+export function cancelResourceTransferJob(ticketNumber, targetToken) {
+  return axios.patch(`${apiURLBase}transfers/${ticketNumber}/`,
+    null, { headers: { 'presqt-destination-token': targetToken } });
+}
