@@ -51,6 +51,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
       return (
         <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
           <ResourceButton
+            browserType="transfer"
             resource={resource}
             level={level}
             onClick={onResourceClicked}
@@ -77,17 +78,17 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   }, [transferTargetResources]);
 
   return (
-      <Fragment>
-        <TransferResourcesHeader destinationTarget={destinationTarget} />
-        <div>
-          {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
+    <div>
+      <TransferResourcesHeader destinationTarget={destinationTarget} />
+      <div>
+        {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
           ? <Spinner />
           :
-          <div>
-            {message}
-          </div>
-          }
-          </div>
-        </Fragment>
+            <div>
+              {message}
+            </div>
+        }
+      </div>
+    </div>
   )
 }
