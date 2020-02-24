@@ -31,6 +31,7 @@ export default function TransferStepperTransferButton({handleNext, destinationTa
    * When the upload button is pushed, dispatch the Upload action and update the stepper
    * index to move forward.
    **/
+
   const submitTransfer = () => {
     dispatch(actionCreators.resources.transferResource(
       destinationTarget,

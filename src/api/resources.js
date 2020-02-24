@@ -95,12 +95,13 @@ export function cancelResourceUploadJob(ticketNumber, targetToken) {
  **/
 export function postResourceTransfer(destinationTarget, destinationToken, sourceResource, duplicateAction,
                                    resourceToTransferTo, sourceTarget, sourceTargetToken) {
+
   let resourceTransferURL;
   if (!resourceToTransferTo) {
     resourceTransferURL = `${apiURLBase}targets/${destinationTarget}/resources/`;
   }
   else {
-    resourceTransferURL = `${apiURLBase}targets/${destinationTarget}/resources/${resourceToTransferTo}`;
+    resourceTransferURL = `${apiURLBase}targets/${destinationTarget}/resources/${resourceToTransferTo.id}/`;
   }
   const bodyFormData = new FormData();
 

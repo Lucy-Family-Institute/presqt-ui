@@ -1,10 +1,10 @@
 import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
-  getResourceDownload,
+  getResourceDetail,
   getTargetResources,
-  postResourceTransfer, resourceTransferJob,
-  resourceUploadJob
+  postResourceTransfer,
+  resourceTransferJob
 } from "../../api/resources";
 
 /** Resource Collection For Transfer Resource Browser **/
@@ -31,6 +31,23 @@ function* loadTransferTargetResources(action) {
       error.response.data.error)
     );
   }
+}
+
+/** Resource Detail for transfer**/
+export function* watchSelectTransferResource() {
+  yield takeEvery(actionCreators.resources.selectTransferResource, loadTransferResourceDetail);
+}
+
+function* loadTransferResourceDetail(action) {
+  const response = yield call(
+    getResourceDetail,
+    action.payload.resource,
+    action.payload.targetToken
+  );
+
+  yield put(
+    actionCreators.resources.selectTransferResourceSuccess(response.data)
+  );
 }
 
 export function* watchResourceTransfer() {
