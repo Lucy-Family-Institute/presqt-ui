@@ -106,7 +106,11 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
       }
       case 4: {
         return <TransferStepperTransferButton
-          handleNext={handleNext}/>
+          handleNext={handleNext}
+          destinationTarget={destinationTarget}
+          destinationToken={destinationToken}
+          selectedDuplicate={selectedDuplicate}
+        />
       }
       case 5: {
         return <TransferStepperResults />

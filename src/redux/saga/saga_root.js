@@ -9,7 +9,7 @@ import {
 } from "./resources";
 import {watchCancelDownload, watchResourceDownload} from "./download";
 import {watchCancelUpload, watchResourceUpload} from "./upload";
-import {watchSwitchTransferTarget} from "./transfer";
+import {watchResourceTransfer, watchSwitchTransferTarget} from "./transfer";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -23,6 +23,7 @@ export default function* rootSaga() {
     watchRefreshSource(),
     watchCancelDownload(),
     watchCancelUpload(),
-    watchSwitchTransferTarget()
+    watchSwitchTransferTarget(),
+    watchResourceTransfer()
   ]);
 }
