@@ -2,7 +2,7 @@
 import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 
-import textStyles from "../../../styles/text";
+import textStyles from "../../styles/text";
 import { useSelector } from "react-redux";
 
 const fadeIn = keyframes`

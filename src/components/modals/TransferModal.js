@@ -4,10 +4,10 @@ import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import {actionCreators} from "../../redux/actionCreators";
-import TransferStepper from "../transfer_stepper/TransferStepper";
+import TransferStepper from "../transfer/stepper/TransferStepper";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import TransferResourceBrowser from "../transfer_stepper/TransferResourceBrowser";
+import TransferResourceBrowser from "../transfer/TransferResourceBrowser";
 
 const useStyles = makeStyles(theme => ({
   root: {

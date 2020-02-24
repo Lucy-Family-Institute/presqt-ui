@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
 import { keyframes } from "emotion";
 import { Fragment } from "react";
-import TransferResourcesHeader from "../widgets/headers/TransferResourcesHeader";
+import TransferResourcesHeader from "./TransferResourcesHeader";
 
 const fadeIn = keyframes`
   0% {

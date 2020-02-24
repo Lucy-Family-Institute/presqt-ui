@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import Stepper from "@material-ui/core/Stepper";
-import UploadStepConnector from "../upload_stepper/UploadStepConnector";
+import UploadStepConnector from "../../upload_stepper/UploadStepConnector";
 import StepLabel from "@material-ui/core/StepLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 import Step from "@material-ui/core/Step";
 import withStyles from "@material-ui/core/styles/withStyles";
 import StepContent from "@material-ui/core/StepContent";
@@ -13,11 +13,11 @@ import TransferStepperToken from "./TransferStepperToken";
 import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
-import UploadDuplicateActionRadioButtons from "../upload_stepper/UploadDuplicateActionRadioButtons";
+import UploadDuplicateActionRadioButtons from "../../upload_stepper/UploadDuplicateActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
-import UploadStepperBackButton from "../upload_stepper/UploadStepperBackButton";
+import UploadStepperBackButton from "../../upload_stepper/UploadStepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
-import { actionCreators } from "../../redux/actionCreators";
+import { actionCreators } from "../../../redux/actionCreators";
 
 
 const useStyles = makeStyles(theme => ({

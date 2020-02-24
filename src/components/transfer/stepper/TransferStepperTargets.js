@@ -2,8 +2,8 @@
 import { jsx } from '@emotion/core';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { basicFadeIn } from '../../styles/animations';
-import colors from '../../styles/colors';
+import { basicFadeIn } from '../../../styles/animations';
+import colors from '../../../styles/colors';
 
 export default function TransferStepperTargets({ setDestinationTarget, destinationTarget }) {
   const selectedTarget = useSelector(state => state.targets.selectedTarget);

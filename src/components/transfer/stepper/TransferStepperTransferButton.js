@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import {jsx} from "@emotion/core";
 import {useDispatch, useSelector} from "react-redux";
-import {actionCreators} from "../../redux/actionCreators";
+import {actionCreators} from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 const CustomTransferButton = withStyles({
   root: {
