@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function TransferStepperNextButton({ handleNext, activeStep, destinationTarget,
-                                                    destinationToken, steps }) {
+                                                    destinationToken, transferTargetResources,
+                                                    steps }) {
   const classes = useStyles();
 
     return(
@@ -24,7 +25,10 @@ export default function TransferStepperNextButton({ handleNext, activeStep, dest
         color="primary"
         onClick={handleNext}
         className={classes.button}
-        disabled={(activeStep === 0 ? !destinationTarget : false) || (activeStep === 1 ? !destinationToken : false)}
+        disabled={
+          (activeStep === 0 ? !destinationTarget : false) ||
+          (activeStep === 1 ? !destinationToken : false) ||
+          (activeStep === 2 ? !transferTargetResources : false)}
 
       >
         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

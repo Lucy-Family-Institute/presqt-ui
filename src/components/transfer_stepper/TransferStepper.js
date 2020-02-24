@@ -16,7 +16,7 @@ import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import UploadDuplicateActionRadioButtons from "../upload_stepper/UploadDuplicateActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
 import UploadStepperBackButton from "../upload_stepper/UploadStepperBackButton";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 
 
@@ -59,6 +59,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 
@@ -144,6 +145,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
                           activeStep={activeStep}
                           destinationTarget={destinationTarget}
                           destinationToken={destinationToken}
+                          transferTargetResources={transferTargetResources}
                           steps={steps}
                         />
                   : null }
