@@ -8,7 +8,7 @@ import { actionCreators } from "../../redux/actionCreators";
 /**
  * This component is responsible for initializing and opening the upload modal
  **/
-export default function UploadActionButton({style, type, disabled}) {
+export default function UploadActionButton({style, text, type, disabled}) {
   const dispatch = useDispatch();
 
   const submitUpload = () => {
@@ -23,7 +23,7 @@ export default function UploadActionButton({style, type, disabled}) {
       onClick={submitUpload}
       disabled={disabled}
     >
-      <span css={textStyles.buttonText}>Upload</span>
+      <span css={textStyles.buttonText}>{text}</span>
     </ActionButton>
   );
 }

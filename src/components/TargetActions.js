@@ -53,6 +53,7 @@ export default function TargetActions() {
               key="UPLOAD"
               type="EXISTING"
               disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              text="Upload"
             /> : null}
           {selectedResource
           ? <TransferActionButton
