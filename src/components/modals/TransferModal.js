@@ -51,11 +51,11 @@ export default function TransferModal() {
         <DialogContent>
           <Grid container>
             <Grid item xs={6} className={classes.root}>
-                <TransferStepper
-                  setDestinationTarget={setDestinationTarget}
+              <TransferStepper
                   destinationTarget={destinationTarget}
-                  setDestinationToken={setDestinationToken}
+                  setDestinationTarget={setDestinationTarget}
                   destinationToken={destinationToken}
+                  setDestinationToken={setDestinationToken}
                 />
             </Grid>
             <Grid item xs={6}>

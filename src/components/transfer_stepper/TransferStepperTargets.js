@@ -9,7 +9,7 @@ export default function TransferStepperTargets({ setDestinationTarget }) {
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const [switchCss, setSwitchCss] = useState('');
-  
+
   const handleSwitchTarget = connection => {
     setDestinationTarget(connection);
     setSwitchCss(connection);
@@ -26,7 +26,7 @@ export default function TransferStepperTargets({ setDestinationTarget }) {
                 border: 'none',
                 paddingLeft: 0,
                 paddingRight: 10
-              },
+              }
             ]}
             onClick={() => handleSwitchTarget(connection)}
           >
