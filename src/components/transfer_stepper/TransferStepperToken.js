@@ -10,16 +10,14 @@ const TokenTextField = withStyles({
   }
 })(SearchTextField);
 
-export default function TransferStepperToken({ setDestinationToken }) {
-  const [token, setToken] = useState('');
-
+export default function TransferStepperToken({ setDestinationToken, destinationToken }) {
   return (
     <TokenTextField
       size="small"
       type='text'
-      value={setDestinationToken(token)}
+      value={destinationToken}
       label="Insert API Token Here"
-      onChange={event => setToken(event.target.value)}
+      onChange={event => setDestinationToken(event.target.value)}
     />
   )
 }
