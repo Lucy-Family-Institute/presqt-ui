@@ -5,7 +5,9 @@ import {actionCreators} from "../../redux/actionCreators";
 import Spinner from "../widgets/spinners/Spinner";
 import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
-import {keyframes} from "emotion";
+import { keyframes } from "emotion";
+import { Fragment } from "react";
+import TransferResourcesHeader from "../widgets/headers/TransferResourcesHeader";
 
 const fadeIn = keyframes`
   0% {
@@ -76,6 +78,8 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
 
   return (
     destinationToken ?
+      <Fragment>
+      <TransferResourcesHeader destinationTarget={destinationTarget} />
       <div>
         {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
         ? <Spinner />
@@ -84,7 +88,8 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
           {message}
         </div>
         }
-      </div>
+        </div>
+        </Fragment>
     : null
   )
 }
