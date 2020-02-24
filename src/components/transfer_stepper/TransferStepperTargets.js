@@ -5,9 +5,8 @@ import { useState } from 'react';
 import { basicFadeIn } from '../../styles/animations';
 import colors from '../../styles/colors';
 
-export default function TransferStepperTargets({ setDestinationTarget }) {
+export default function TransferStepperTargets({ setDestinationTarget, destinationTarget }) {
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
   const [switchCss, setSwitchCss] = useState('');
 
   const handleSwitchTarget = connection => {
@@ -34,7 +33,7 @@ export default function TransferStepperTargets({ setDestinationTarget }) {
               src={require(`../../images/available_connections/${connection}.png`)}
               alt={connection}
             />
-            {switchCss === connection ? (
+            {switchCss === connection || destinationTarget === connection ? (
               <div
                 css={{
                   minHeight: 5,

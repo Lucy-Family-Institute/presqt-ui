@@ -89,6 +89,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
     switch (step) {
       case 0: {
         return <TransferStepperTargets
+          destinationTarget={destinationTarget}
           setDestinationTarget={setDestinationTarget}/>
       }
       case 1: {
