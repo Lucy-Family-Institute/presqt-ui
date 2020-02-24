@@ -3,26 +3,35 @@ import { handleActions, combineActions } from "redux-actions";
 import { actionCreators } from "../actionCreators";
 import { trackAction, trackError, untrackAction } from "../utils";
 import buildResourceHierarchy from "./helpers/resources";
+import updateOpenClose from "./helpers/updateOpenClose";
 
 const initialState = {
   pendingAPIResponse: false,
   pendingAPIOperations: [],
+  apiOperationErrors: [],
+  activeTicketNumber: null,
+  /** Resources **/
   targetResources: null,
   selectedResource: null,
-  apiOperationErrors: [],
   searchValue: null,
+  openResources: [],
+  /** Download **/
   downloadStatus: null,
   downloadData: null,
   downloadModalDisplay: false,
+  /** Upload **/
   uploadStatus: null,
   uploadData: null,
   uploadModalDisplay: false,
   uploadType: null,
-  openResources: [],
-  activeTicketNumber: null,
-  transferModalDisplay: false,
+  /** Transfer **/
   transferTargetResources: null,
-  selectedTransferResource: null
+  selectedTransferResource: null,
+  openTransferResources: [],
+  transferStatus: null,
+  transferData: null,
+  transferModalDisplay: false,
+
 };
 
 export default handleActions(
@@ -130,49 +139,13 @@ export default handleActions(
       actionCreators.resources.openContainer,
       actionCreators.resources.closeContainer
     )]: (state, action) => {
-      let newopenResources = state.openResources;
-
-      const searchForResourceInArray = (
-        desiredContainer,
-        openContainer,
-        possibleMatches
-      ) => {
-        const updatedNode = possibleMatches;
-
-        if (updatedNode.id === desiredContainer.id) {
-          if (openContainer) {
-            newopenResources.push(desiredContainer.id)
-          }
-          else{
-            newopenResources = newopenResources.filter(element => element !== desiredContainer.id)
-          }
-          return {
-            ...updatedNode,
-            open: openContainer
-          };
-        } else if (updatedNode.children) {
-          // Somehow we need to consider each of the children...
-          const updatedChildren = updatedNode.children.map(childNode =>
-            searchForResourceInArray(desiredContainer, openContainer, childNode)
-          );
-          updatedNode.children = updatedChildren;
-        }
-
-        return updatedNode;
-      };
-
-      const updatedSourceResources = state.targetResources.map(topLevelNode => {
-        return searchForResourceInArray(
-          action.payload.container,
-          action.payload.open,
-          topLevelNode
-        );
-      });
+      const [newOpenResources, updatedSourceResources] =
+        updateOpenClose(state.openResources, state.targetResources, action);
 
       return {
         ...state,
-        targetResources: updatedSourceResources,
-        openResources: newopenResources
+        openResources: newOpenResources,
+        targetResources: updatedSourceResources
       };
     },
     /**
@@ -180,13 +153,13 @@ export default handleActions(
      * Saga call to Resource-Detail occurs with this action.
      **/
     [actionCreators.resources.selectResource]: (state, action) => {
-      const updatetargetResources = targetResources => {
+      const updateTargetResources = targetResources => {
         let sourceResources = targetResources;
         sourceResources.map(resource => {
           resource.active = resource.id === action.payload.resource.id;
           if (resource.kind === "container") {
             if (resource.children) {
-              updatetargetResources(resource.children);
+              updateTargetResources(resource.children);
             }
           }
         });
@@ -200,7 +173,7 @@ export default handleActions(
           actionCreators.resources.selectResource,
           state.pendingAPIOperations
         ),
-        targetResources: updatetargetResources(state.targetResources)
+        targetResources: updateTargetResources(state.targetResources)
       };
     },
     /***
@@ -624,7 +597,228 @@ export default handleActions(
         actionCreators.resources.loadFromTransferTarget,
         state.pendingAPIOperations
       )
-    })
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Transfer Resource Collection call.
+     **/
+    [actionCreators.resources.loadFromTransferTargetSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(state, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromTransferTarget,
+          state.pendingAPIOperations
+        ),
+        transferTargetResources: resourceHierarchy
+      };
+    },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Transfer Resource Collection call.
+     **/
+    [actionCreators.resources.loadFromTransferTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.loadFromTransferTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.loadFromTransferTarget.toString(),
+        state.apiOperationErrors
+      ),
+      transferTargetResources: null
+    }),
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Detail occurs with this action for transfer.
+     **/
+    [actionCreators.resources.selectTransferResource]: (state, action) => {
+      const updateTargetResources = transferTargetResources => {
+        let sourceResources = transferTargetResources;
+        sourceResources.map(resource => {
+          resource.active = resource.id === action.payload.resource.id;
+          if (resource.kind === "container") {
+            if (resource.children) {
+              updateTargetResources(resource.children);
+            }
+          }
+        });
+        return sourceResources;
+      };
+
+      return {
+        ...state,
+        pendingAPIResponse: true,
+        pendingAPIOperations: trackAction(
+          actionCreators.resources.selectTransferResource,
+          state.pendingAPIOperations
+        ),
+        transferTargetResources: updateTargetResources(state.transferTargetResources)
+      };
+    },
+    /***
+     * Untrack API call.
+     * Add resource details to selectedTransferResource.
+     * Dispatched via Saga call on successful Resource Detail call for transfer.
+     **/
+    [actionCreators.resources.selectTransferResourceSuccess]: (state, action) => {
+      return {
+        ...state,
+        selectedTransferResource: action.payload,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.selectTransferResource,
+          state.pendingAPIOperations
+        )
+      };
+    },
+    [combineActions(
+      /**
+       * Open/Close Container Resources in UX for transfer.
+       **/
+      actionCreators.resources.openTransferContainer,
+      actionCreators.resources.closeTransferContainer
+    )]: (state, action) => {
+      const [newOpenResources, updatedSourceResources] =
+        updateOpenClose(state.openTransferResources, state.transferTargetResources, action);
+
+      return {
+        ...state,
+        openTransferResources: newOpenResources,
+        transferTargetResources: updatedSourceResources
+      };
+    },
+    /**
+     * Register resource transfer operation.
+     **/
+    [actionCreators.resources.transferResource]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.transferResource,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     * Dispatched via Saga call on successful transfer call.
+     **/
+    [actionCreators.resources.transferSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.transferResource,
+        state.pendingAPIOperations
+      ),
+      activeTicketNumber: action.payload.data.ticket_number
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed transfer call.
+     **/
+    [actionCreators.resources.transferFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      transferStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.transferResource,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.transferResource.toString(),
+        state.apiOperationErrors
+      )
+    }),
+    /**
+     * Register transfer job operation.
+     **/
+    [actionCreators.resources.transferJob]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.transferJob,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     * Add the download job status to transferStatus.
+     * Add the download job contents to transferData.
+     **/
+    [actionCreators.resources.transferJobSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.transferJob,
+        state.pendingAPIOperations
+      ),
+      transferStatus: action.payload.status,
+      transferData: action.payload.data
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed transfer job call.
+     **/
+    [actionCreators.resources.transferJobFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      transferStatus: 'failure',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.transferJob,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.transferJob.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    /**
+     * Cancel the transfer
+     **/
+    [actionCreators.resources.cancelTransfer]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.cancelTransfer,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call.
+     **/
+    [actionCreators.resources.cancelTransferSuccess]: state => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelTransfer,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed cancel transfer call.
+     **/
+    [actionCreators.resources.cancelTransferFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      transferStatus: 'cancelled',
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.cancelTransfer,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.cancelTransfer.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+
   },
   initialState
 );

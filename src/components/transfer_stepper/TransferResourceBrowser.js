@@ -3,10 +3,23 @@ import React, {useEffect, useState} from "react";
 import { jsx } from "@emotion/core";
 import {actionCreators} from "../../redux/actionCreators";
 import Spinner from "../widgets/spinners/Spinner";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
+import {keyframes} from "emotion";
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  
+  100% {
+    opacity: 100;
+  }
+`;
 
 export default function TransferResourceBrowser({destinationTarget, destinationToken}) {
+  const dispatch = useDispatch();
+
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
 
@@ -21,10 +34,10 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
    */
   const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
-      ? dispatch(actionCreators.resources.closeContainer(resource))
-      : dispatch(actionCreators.resources.openContainer(resource));
+      ? dispatch(actionCreators.resources.closeTransferContainer(resource))
+      : dispatch(actionCreators.resources.openTransferContainer(resource));
 
-    dispatch(actionCreators.resources.selectResource(resource, targetToken));
+    dispatch(actionCreators.resources.selectTransferResource(resource, targetToken));
   };
 
   /**
@@ -53,7 +66,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   useEffect(() => {
     if (transferTargetResources && transferTargetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, destinationTargetToken),
+        resource => onResourceClicked(resource, destinationToken),
         transferTargetResources))
     }
     else {

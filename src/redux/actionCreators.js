@@ -1,4 +1,3 @@
-// TODO: Need something in here to handle pending operations.
 import {createActions} from 'redux-actions';
 
 export const actionCreators = createActions({
@@ -56,7 +55,22 @@ export const actionCreators = createActions({
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
         DISPLAY_TRANSFER_MODAL: undefined,
         HIDE_TRANSFER_MODAL: undefined,
-        LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken})
+        LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
+        LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+        SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
+        OPEN_TRANSFER_CONTAINER: container => ({container, open: true}),
+        CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
+        TRANSFER_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        TRANSFER_SUCCESS: (data) => ({data}),
+        TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        TRANSFER_JOB: undefined,
+        TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
+        TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
+        CANCEL_TRANSFER: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_TRANSFER_SUCCESS: undefined,
+        CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
     },
     TARGETS: {
         LOAD: undefined,
