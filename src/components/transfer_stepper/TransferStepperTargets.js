@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { useSelector, useDispatch } from 'react-redux';
-import React, {useState} from 'react';
-import text from '../../styles/text';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { basicFadeIn } from '../../styles/animations';
 import colors from '../../styles/colors';
 
