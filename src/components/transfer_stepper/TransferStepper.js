@@ -14,7 +14,7 @@ import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import UploadDuplicateActionRadioButtons from "../upload_stepper/UploadDuplicateActionRadioButtons";
-import UploadStepperNextButton from "../upload_stepper/UploadStepperNextButton";
+import TransferStepperNextButton from "./TransferStepperNextButton";
 import UploadStepperBackButton from "../upload_stepper/UploadStepperBackButton";
 import {jsx} from "@emotion/core";
 
@@ -52,12 +52,12 @@ const steps = [
 ];
 
 
-export default function TransferStepper({setDestinationTarget, setDestinationToken}) {
+export default function TransferStepper({ setDestinationTarget, destinationTarget,
+                                          setDestinationToken, destinationToken }) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
-
 
   /**
    * Decrement the step count when the Back button is pressed
@@ -132,10 +132,11 @@ export default function TransferStepper({setDestinationTarget, setDestinationTok
                       activeStep={activeStep}
                     />
                     {steps.indexOf(label) !== 4
-                    ? <UploadStepperNextButton
+                      ? <TransferStepperNextButton
                           handleNext={handleNext}
                           activeStep={activeStep}
-                          selectedFile={true}
+                          destinationTarget={destinationTarget}
+                          destinationToken={destinationToken}
                           steps={steps}
                         />
                   : null }

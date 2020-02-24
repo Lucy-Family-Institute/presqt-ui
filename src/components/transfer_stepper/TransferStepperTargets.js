@@ -28,11 +28,9 @@ export default function TransferStepperTargets({ setDestinationTarget }) {
                 border: 'none',
                 paddingLeft: 0,
                 paddingRight: 10
-              },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              }
             ]}
             onClick={() => handleSwitchTarget(connection)}
-            disabled={pendingAPIResponse}
           >
             <img
               src={require(`../../images/available_connections/${connection}.png`)}
