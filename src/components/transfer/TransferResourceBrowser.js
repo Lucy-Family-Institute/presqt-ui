@@ -77,19 +77,17 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   }, [transferTargetResources]);
 
   return (
-    destinationToken ?
       <Fragment>
-      <TransferResourcesHeader destinationTarget={destinationTarget} />
-      <div>
-        {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
-        ? <Spinner />
-        :
+        <TransferResourcesHeader destinationTarget={destinationTarget} />
         <div>
-          {message}
-        </div>
-        }
-        </div>
+          {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
+          ? <Spinner />
+          :
+          <div>
+            {message}
+          </div>
+          }
+          </div>
         </Fragment>
-    : null
   )
 }

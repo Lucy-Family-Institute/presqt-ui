@@ -15,21 +15,18 @@ const fadeIn = keyframes`
   }
 `;
 
-function TransferResourcesHeader({ destinationTarget }) {
-
+export default function TransferResourcesHeader({ destinationTarget }) {
   const available = useSelector(state => state.targets.available);
-  console.log(available);
-
+  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
   let headerTarget = null;
-  for (var i = 0; i <= available.length; i++) {
-    console.log(available[i].name)
-    // if (available[i].name === destinationTarget) {
-    //   headerTarget = available[i].readable_name
-    // }
-  }
 
   let headerMessage = "Resources";
-  if (destinationTarget) {
+  if (transferTargetResources) {
+    for (let i = 0; i < available.length; i++) {
+      if (available[i].name === destinationTarget) {
+        headerTarget = available[i].readable_name
+      }
+    }
     headerMessage = `${headerTarget} Resources`;
   }
 
@@ -41,5 +38,3 @@ function TransferResourcesHeader({ destinationTarget }) {
     </div>
   );
 } 
-
-export default TransferResourcesHeader;

@@ -30,7 +30,7 @@ export default function TransferStepperTargets({ setDestinationTarget, destinati
             onClick={() => handleSwitchTarget(connection)}
           >
             <img
-              src={require(`../../images/available_connections/${connection}.png`)}
+              src={require(`../../../images/available_connections/${connection}.png`)}
               alt={connection}
             />
             {switchCss === connection || destinationTarget === connection ? (
