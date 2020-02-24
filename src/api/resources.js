@@ -93,7 +93,7 @@ export function cancelResourceUploadJob(ticketNumber, targetToken) {
 /**
  * Resource Transfer Endpoint
  **/
-export function postResourceUpload(destinationTarget, destinationToken, resource, duplicateAction,
+export function postResourceTransfer(destinationTarget, destinationToken, resource, duplicateAction,
                                    resourceToUploadTo, target, targetToken) {
   let resourceUploadURL;
   if (!resourceToUploadTo) {
