@@ -498,7 +498,7 @@ export default handleActions(
         actionCreators.resources.cancelUpload,
         state.pendingAPIOperations
       ),
-      sourceUploadStatus: 'cancelSuccess',
+      uploadStatus: 'cancelSuccess',
     }),
     /** 
     * Untrack API call and track failure that occurred.
