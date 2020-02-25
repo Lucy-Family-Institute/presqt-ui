@@ -75,6 +75,7 @@ export const actionCreators = createActions({
         CANCEL_TRANSFER: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
         CANCEL_TRANSFER_SUCCESS: undefined,
         CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        CLEAR_TRANSFER_DATA: undefined,
     },
     TARGETS: {
         LOAD: undefined,
