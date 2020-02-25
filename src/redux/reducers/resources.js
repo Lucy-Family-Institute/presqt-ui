@@ -27,6 +27,7 @@ const initialState = {
   /** Transfer **/
   transferTargetResources: null,
   selectedTransferResource: null,
+  selectedTransferResourceName: null,
   openTransferResources: [],
   transferStatus: null,
   transferData: null,
@@ -657,6 +658,7 @@ export default handleActions(
           actionCreators.resources.selectTransferResource,
           state.pendingAPIOperations
         ),
+        selectedTransferResourceName: action.payload.resource.title,
         transferTargetResources: updateTargetResources(state.transferTargetResources)
       };
     },
@@ -824,7 +826,11 @@ export default handleActions(
     [actionCreators.resources.clearTransferData]: state => ({
       ...state,
       transferStatus: null,
-      transferData: null
+      transferData: null,
+      selectedTransferResourceName: null,
+      selectedTransferResource: null,
+      openTransferResources: null,
+      transferTargetResources: null
     }),
   },
   initialState
