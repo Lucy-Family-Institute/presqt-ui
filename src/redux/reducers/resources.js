@@ -818,7 +818,14 @@ export default handleActions(
         state.apiOperationErrors
       ),
     }),
-
+    /**
+     * Clear the transfer data so a new transfer can be attempted.
+     **/
+    [actionCreators.resources.clearTransferData]: state => ({
+      ...state,
+      transferStatus: null,
+      transferData: null
+    }),
   },
   initialState
 );
