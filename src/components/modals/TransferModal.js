@@ -18,7 +18,6 @@ const leftGrid = makeStyles(theme => ({
 const RightGrid = makeStyles(theme => ({
   root: {
     paddingLeft: 25,
-    paddingTop: 15
   }
 }));
 

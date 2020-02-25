@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
 import { keyframes } from "emotion";
 import TransferResourcesHeader from "./TransferResourcesHeader";
+import textStyles from "../../styles/text";
 
 const fadeIn = keyframes`
   0% {
@@ -21,9 +22,15 @@ const fadeIn = keyframes`
 export default function TransferResourceBrowser({destinationTarget, destinationToken}) {
   const dispatch = useDispatch();
 
+  const available = useSelector(state => state.targets.available);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
+  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
+  const collectionError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.loadFromTransferTarget.toString());
+
+  const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 15 }]);
   const [message, setMessage] = useState("");
 
   /**
@@ -71,10 +78,23 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
         resource => onResourceClicked(resource, destinationToken),
         transferTargetResources))
     }
+    else if (transferTargetResources && transferTargetResources.length === 0) {
+      let targetReadableName = '';
+      for (let i = 0; i < available.length; i++) {
+        if (available[i].name === destinationTarget) {
+          targetReadableName = available[i].readable_name
+        }
+      }
+      setMessage(`No ${targetReadableName} resources found for this user.`);
+    }
+    else if (collectionError){
+      setMessageCss([textStyles.body, { marginTop: 15 }, textStyles.cubsRed]);
+      setMessage(`${collectionError.data}`);
+    }
     else {
       setMessage('');
     }
-  }, [transferTargetResources]);
+  }, [transferTargetResources, collectionError]);
 
   return (
     <div css={{
@@ -86,7 +106,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
         {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
           ? <Spinner />
           :
-            <div>
+            <div css={messageCss}>
               {message}
             </div>
         }

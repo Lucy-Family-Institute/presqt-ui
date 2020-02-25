@@ -5,9 +5,16 @@ import { apiURLBase } from '../config';
  * Resource Collection Endpoint
  **/
 export function getTargetResources(target, targetToken) {
-  return axios.get(`${apiURLBase}targets/${target}/resources/`, {
-    headers: { 'presqt-source-token': targetToken }
-  });
+  if (target === 'osf') {
+    return axios.get(`${apiURLBase}targets/poop/resources/`, {
+      headers: {'presqt-source-token': targetToken}
+    });
+  }
+  else {
+    return axios.get(`${apiURLBase}targets/${target}/resources/`, {
+      headers: {'presqt-source-token': targetToken}
+    });
+  }
 }
 
 /**
