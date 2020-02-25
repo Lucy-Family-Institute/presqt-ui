@@ -803,7 +803,8 @@ export default handleActions(
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelTransfer,
         state.pendingAPIOperations
-      )
+      ),
+      transferStatus: 'cancelSuccess',
     }),
     /**
      * Untrack API call and track failure that occurred.

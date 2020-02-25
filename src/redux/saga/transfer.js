@@ -125,10 +125,19 @@ function* transferTargetResource(action) {
     }
     // Transfer failed because of target API error
     catch(error){
-      yield put(actionCreators.resources.transferJobFailure(
-        error.response.status,
-        error.response.data.error)
-      )
+      if (error.response.status === 500) {
+        if (error.response.data.status_code === '499'){
+          yield put(actionCreators.resources.transferJobSuccess(error.response.data, 'cancelSuccess'));
+        }
+        else {
+          yield put(actionCreators.resources.transferJobSuccess(error.response.data, 'failure'));
+        }
+      }
+      else {
+        yield put(actionCreators.resources.transferJobFailure(
+          error.response.status,
+          error.response.data.error)
+      )}
     }
   }
   // Transfer failed because of PresQT API error
