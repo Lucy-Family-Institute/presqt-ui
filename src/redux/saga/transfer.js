@@ -1,6 +1,8 @@
 import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
+  cancelResourceTransferJob,
+  cancelResourceUploadJob,
   getResourceDetail,
   getTargetResources,
   postResourceTransfer,
@@ -132,6 +134,32 @@ function* transferTargetResource(action) {
   // Transfer failed because of PresQT API error
   catch(error){
     yield put(actionCreators.resources.transferFailure(
+      error.response.status,
+      error.response.data.error)
+    )
+  }
+}
+
+// Cancel Upload
+export function* watchCancelTransfer() {
+  yield takeEvery(actionCreators.resources.cancelTransfer, cancelTransfer)
+}
+
+function* cancelTransfer(action) {
+  try {
+    yield call(
+      cancelResourceTransferJob,
+      action.payload.ticketNumber,
+      action.payload.sourceToken,
+      action.payload.destinationToken
+    );
+
+    yield put(actionCreators.resources.cancelTransferSuccess())
+
+  }
+
+  catch (error) {
+    yield put(actionCreators.resources.cancelTransferFailure(
       error.response.status,
       error.response.data.error)
     )

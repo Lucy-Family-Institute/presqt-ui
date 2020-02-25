@@ -124,18 +124,18 @@ export function postResourceTransfer(destinationTarget, destinationToken, source
 /**
  * Resource Transfer Job Endpoint
  **/
-export function resourceTransferJob(transferJobURL, targetToken, destinationToken) {
+export function resourceTransferJob(transferJobURL, sourceToken, destinationToken) {
   return axios.get(
     transferJobURL,
-    { headers: { 'presqt-source-token': targetToken,
+    { headers: { 'presqt-source-token': sourceToken,
         'presqt-destination-token': destinationToken}});
 }
 
 /**
- * Cancel Upload Job Endpoint
+ * Cancel Transfer Job Endpoint
  **/
-export function cancelResourceTransferJob(ticketNumber, targetToken, destinationToken) {
+export function cancelResourceTransferJob(ticketNumber, sourceToken, destinationToken) {
   return axios.patch(`${apiURLBase}transfers/${ticketNumber}/`,
-    null, { headers: { 'presqt-source-token': targetToken,
+    null, { headers: { 'presqt-source-token': sourceToken,
         'presqt-destination-token': destinationToken} });
 }

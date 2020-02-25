@@ -72,7 +72,8 @@ export const actionCreators = createActions({
         TRANSFER_JOB: undefined,
         TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
         TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
-        CANCEL_TRANSFER: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_TRANSFER: (ticketNumber, sourceToken, destinationToken) =>
+          ({ticketNumber, sourceToken, destinationToken}),
         CANCEL_TRANSFER_SUCCESS: undefined,
         CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
         CLEAR_TRANSFER_DATA: undefined,

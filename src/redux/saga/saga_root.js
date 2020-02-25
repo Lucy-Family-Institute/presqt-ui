@@ -10,6 +10,7 @@ import {
 import {watchCancelDownload, watchResourceDownload} from "./download";
 import {watchCancelUpload, watchResourceUpload} from "./upload";
 import {
+  watchCancelTransfer,
   watchResourceTransfer,
   watchSelectTransferResource,
   watchSwitchTransferTarget, watchTransferRefreshSource
@@ -30,6 +31,7 @@ export default function* rootSaga() {
     watchSwitchTransferTarget(),
     watchResourceTransfer(),
     watchSelectTransferResource(),
-    watchTransferRefreshSource()
+    watchTransferRefreshSource(),
+    watchCancelTransfer()
   ]);
 }

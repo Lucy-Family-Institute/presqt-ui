@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button/Button";
 import {actionCreators} from "../../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 
-export default function CancelButton({actionType}) {
+export default function CancelButton({actionType, destinationToken}) {
   const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
@@ -23,7 +23,7 @@ export default function CancelButton({actionType}) {
       dispatch(actionCreators.resources.cancelUpload(ticketNumber, targetToken))
     }
     else if (actionType === 'TRANSFER') {
-      dispatch(actionCreators.resources.canceltransfer(ticketNumber, targetToken))
+      dispatch(actionCreators.resources.cancelTransfer(ticketNumber, targetToken, destinationToken))
     }
   };
 

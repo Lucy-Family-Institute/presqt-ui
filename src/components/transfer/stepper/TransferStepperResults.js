@@ -34,7 +34,7 @@ export default function TransferStepperResults({destinationTarget, destinationTo
       </div>
       <Spinner />
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-        <CancelButton actionType='TRANSFER' />
+        <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
       </div>
     </div>
   );
