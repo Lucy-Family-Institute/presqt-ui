@@ -6,7 +6,7 @@ import { apiURLBase } from '../config';
  **/
 export function getTargetResources(target, targetToken) {
   if (target === 'osf') {
-    return axios.get(`${apiURLBase}targets/poop/resources/`, {
+    return axios.get(`${apiURLBase}targets/${target}/resources/`, {
       headers: {'presqt-source-token': targetToken}
     });
   }
