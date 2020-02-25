@@ -95,7 +95,8 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
       case 1: {
         return <TransferStepperToken
           destinationToken={destinationToken}
-          setDestinationToken={setDestinationToken}/>
+          setDestinationToken={setDestinationToken}
+          handleNext={handleNext}/>
       }
       case 2: {
         return <TransferStepperSelectResource />

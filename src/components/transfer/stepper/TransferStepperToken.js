@@ -10,7 +10,7 @@ const TokenTextField = withStyles({
   }
 })(SearchTextField);
 
-export default function TransferStepperToken({ setDestinationToken, destinationToken }) {
+export default function TransferStepperToken({ setDestinationToken, destinationToken, handleNext }) {
   return (
     <TokenTextField
       size="small"
@@ -18,6 +18,8 @@ export default function TransferStepperToken({ setDestinationToken, destinationT
       value={destinationToken}
       label="Insert API Token Here"
       onChange={event => setDestinationToken(event.target.value)}
+      // If the enter button is pressed (code 13), go to the next step.
+      onKeyDown={(event) => { if (event.keyCode === 13) {handleNext()} }}
     />
   )
 }
