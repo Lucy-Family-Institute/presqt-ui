@@ -140,7 +140,7 @@ function* transferTargetResource(action) {
   }
 }
 
-// Cancel Upload
+// Cancel Transfer
 export function* watchCancelTransfer() {
   yield takeEvery(actionCreators.resources.cancelTransfer, cancelTransfer)
 }
