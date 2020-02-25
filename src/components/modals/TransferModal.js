@@ -37,6 +37,8 @@ export default function TransferModal() {
   const handleClose = () => {
     dispatch(actionCreators.resources.hideTransferModal());
     dispatch(actionCreators.resources.clearTransferData());
+    setDestinationTarget(null);
+    setDestinationToken(null);
   };
 
   return transferModalDisplay
@@ -49,12 +51,12 @@ export default function TransferModal() {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        disableEscapeKeyDown={transferStatus === 'pending'} //|| transferStatus === 'success'}
+        disableEscapeKeyDown={transferStatus === 'pending' || transferStatus === 'success'}
       >
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={transferStatus === 'pending'} // || transferStatus === 'success'}
+          disabled={transferStatus === 'pending' || transferStatus === 'success'}
         >
           Transfer Resource: {selectedResource.title}
         </DialogTitle>
