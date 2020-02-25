@@ -15,12 +15,13 @@ import RetryUploadButton from "../../widgets/buttons/RetryButtons/RetryUploadBut
 import RetryStartUploadOverButton from "../../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
+import TransferStartOverButton from "../TransferStartOverButton";
+import TransferRetryButton from "../TransferRetryButton";
 
 
-export default function TransferStepperResults({destinationTarget, destinationToken}) {
-  console.log(destinationTarget);
-  console.log(destinationToken);
-
+export default function TransferStepperResults(
+  {destinationTarget, destinationToken, setActiveStep, setDestinationTarget,
+    setDestinationToken, selectedDuplicate}) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.resources.transferStatus);
@@ -108,6 +109,7 @@ export default function TransferStepperResults({destinationTarget, destinationTo
       setStepThreeContent(successfulMessage);
     }
     else if (transferStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
       setStepThreeContent(
         <div>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
@@ -148,16 +150,17 @@ export default function TransferStepperResults({destinationTarget, destinationTo
           </div>
           <div css={{justifyContent: 'center', display: 'flex'}}
           >
-            <RetryStartUploadOverButton
+            <TransferStartOverButton
               setActiveStep={setActiveStep}
-              setSelectedFile={setSelectedFile}
+              setDestinationTarget={setDestinationTarget}
+              setDestinationToken={setDestinationToken}
             />
             <span css={{ marginLeft: 5 }}>
-              <RetryUploadButton
-                selectedFile={selectedFile}
+              <TransferRetryButton
+                destinationTarget={destinationTarget}
+                destinationToken={destinationToken}
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
-                resourceToUploadTo={resourceToUploadTo}
               />
             </span>
           </div>

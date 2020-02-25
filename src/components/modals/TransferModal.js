@@ -36,9 +36,9 @@ export default function TransferModal() {
 
   const handleClose = () => {
     dispatch(actionCreators.resources.hideTransferModal());
-    dispatch(actionCreators.resources.clearTransferData());
-    setDestinationTarget(null);
-    setDestinationToken(null);
+    dispatch(actionCreators.resources.clearTransferModalData());
+    setDestinationTarget('');
+    setDestinationToken('');
   };
 
   return transferModalDisplay

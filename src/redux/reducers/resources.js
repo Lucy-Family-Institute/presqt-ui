@@ -825,9 +825,9 @@ export default handleActions(
       ),
     }),
     /**
-     * Clear the transfer data so a new transfer can be attempted.
+     * Clear all the transfer modal data so the modal starts fresh.
      **/
-    [actionCreators.resources.clearTransferData]: state => ({
+    [actionCreators.resources.clearTransferModalData]: state => ({
       ...state,
       transferStatus: null,
       transferData: null,
@@ -835,6 +835,14 @@ export default handleActions(
       selectedTransferResource: null,
       openTransferResources: null,
       transferTargetResources: null
+    }),
+    /**
+     * Clear the transfer data so a transfer can retried
+     **/
+    [actionCreators.resources.clearTransferData]: state => ({
+      ...state,
+      transferStatus: null,
+      transferData: null
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.

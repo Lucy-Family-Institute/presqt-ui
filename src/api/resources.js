@@ -135,7 +135,6 @@ export function resourceTransferJob(transferJobURL, sourceToken, destinationToke
  * Cancel Transfer Job Endpoint
  **/
 export function cancelResourceTransferJob(ticketNumber, sourceToken, destinationToken) {
-  console.log(`${apiURLBase}transfers/${ticketNumber}/`);
   return axios.patch(`${apiURLBase}transfers/${ticketNumber}/`,
     null, { headers: { 'presqt-source-token': sourceToken,
         'presqt-destination-token': destinationToken} });

@@ -119,6 +119,10 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
         return <TransferStepperResults
           destinationTarget={destinationTarget}
           destinationToken={destinationToken}
+          setActiveStep={setActiveStep}
+          setDestinationTarget={setDestinationTarget}
+          setDestinationToken={setDestinationToken}
+          selectedDuplicate={selectedDuplicate}
         />
       }
     }
