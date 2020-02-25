@@ -152,6 +152,7 @@ export default function TargetResourceBrowser() {
         display: "flex"
       }}
     >
+
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}

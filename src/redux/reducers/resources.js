@@ -861,7 +861,7 @@ export default handleActions(
           actionCreators.resources.refreshTransferTarget,
           state.pendingAPIOperations
         ),
-        targetResources: resourceHierarchy,
+        transferTargetResources: resourceHierarchy,
         transferStatus: state.transferStatus === 'success' ? "finished" : 'cancelled'
       };
     },

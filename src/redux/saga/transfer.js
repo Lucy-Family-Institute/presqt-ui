@@ -47,7 +47,7 @@ function* refreshTransferTargetResources(action) {
   try {
     const response = yield call(
       getTargetResources,
-      action.payload.target.name,
+      action.payload.target,
       action.payload.targetToken
     );
     yield put(actionCreators.resources.refreshTransferTargetSuccess(response.data));

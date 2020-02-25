@@ -17,7 +17,10 @@ import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
 
 
-export default function TransferStepperResults() {
+export default function TransferStepperResults({destinationTarget, destinationToken}) {
+  console.log(destinationTarget);
+  console.log(destinationToken);
+
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.resources.transferStatus);
@@ -38,6 +41,9 @@ export default function TransferStepperResults() {
 
   useEffect(() => {
     if (transferStatus === 'success') {
+      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
+    }
+    else if (transferStatus === 'finished') {
       const failedFixityMessage = transferData.failed_fixity.length > 0
         ? <ListItem>
           <ListItemIcon>
@@ -101,7 +107,7 @@ export default function TransferStepperResults() {
       );
       setStepThreeContent(successfulMessage);
     }
-  }, [transferStatus, apiOperationErrors]) 
+  }, [transferStatus, apiOperationErrors]);
 
   return (stepThreeContent);
 }
