@@ -833,7 +833,7 @@ export default handleActions(
       transferData: null,
       selectedTransferResourceName: null,
       selectedTransferResource: null,
-      openTransferResources: null,
+      openTransferResources: [],
       transferTargetResources: null
     }),
     /**
