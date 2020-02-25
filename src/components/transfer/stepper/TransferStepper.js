@@ -144,11 +144,14 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    <UploadStepperBackButton // RENAME SO IT'S REUSABLE
-                      handleBack={handleBack}
-                      activeStep={activeStep}
-                    />
-                    {steps.indexOf(label) !== 4
+                    {index !== 5
+                    ? <UploadStepperBackButton // RENAME SO IT'S REUSABLE
+                        handleBack={handleBack}
+                        activeStep={activeStep}
+                      />
+                    : null
+                    }
+                    {index !== 4 && index !== 5
                       ? <TransferStepperNextButton
                           handleNext={handleNext}
                           activeStep={activeStep}
