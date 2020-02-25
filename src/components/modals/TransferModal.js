@@ -29,6 +29,7 @@ export default function TransferModal() {
 
   const transferModalDisplay = useSelector(state => state.resources.transferModalDisplay);
   const selectedResource = useSelector(state => state.resources.selectedResource);
+  const transferStatus = useSelector(state => state.resources.transferStatus);
 
   const [destinationTarget, setDestinationTarget] = useState('');
   const [destinationToken, setDestinationToken] = useState('');
@@ -47,12 +48,12 @@ export default function TransferModal() {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        // disableEscapeKeyDown={uploadStatus === 'pending' || uploadStatus === 'success'}
+        disableEscapeKeyDown={transferStatus === 'pending'} //|| transferStatus === 'success'}
       >
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          // disabled={uploadStatus === 'pending' || uploadStatus === 'success'}
+          disabled={transferStatus === 'pending'} // || transferStatus === 'success'}
         >
           Transfer Resource: {selectedResource.title}
         </DialogTitle>
