@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/styles";
 
 const TokenTextField = withStyles({
   root: {
-    width: 300,
+    width: '90%',
   }
 })(SearchTextField);
 
