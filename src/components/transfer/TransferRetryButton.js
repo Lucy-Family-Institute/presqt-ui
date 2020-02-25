@@ -44,7 +44,7 @@ export default function TransferRetryButton(
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The transfer is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
         <Spinner />
         <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-          <CancelButton actionType='TRANSFER' />
+          <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
         </div>
       </div>
     );

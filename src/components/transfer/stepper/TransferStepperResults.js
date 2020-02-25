@@ -11,8 +11,6 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../../redux/actionCreators";
 import colors from "../../../styles/colors";
-import RetryUploadButton from "../../widgets/buttons/RetryButtons/RetryUploadButton";
-import RetryStartUploadOverButton from "../../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
 import TransferStartOverButton from "../TransferStartOverButton";
@@ -27,6 +25,16 @@ export default function TransferStepperResults(
   const transferStatus = useSelector(state => state.resources.transferStatus);
   const transferData = useSelector(state => state.resources.transferData);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+
+  const transferError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.transferResource.toString());
+
+  const transferJobError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.transferJob.toString());
+
+  const transferCancelError = apiOperationErrors.find(
+    element => element.action === actionCreators.resources.cancelTransfer.toString());
+
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -117,7 +125,7 @@ export default function TransferStepperResults(
           </div>
           <Spinner />
           <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='TRANSFER' />
+            <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
           </div>
         </div>
       )
@@ -125,11 +133,15 @@ export default function TransferStepperResults(
     else if (transferStatus === 'failure' || transferStatus === 'cancelled') {
       let errorMessage;
       if (transferStatus === 'cancelled') {
-        errorMessage = `${transferData.message}. Some resources may have still be transfered.`
+        errorMessage = `${transferData.message}. Some resources may have still be transferred.`
       }
       // PresQT transfer Post error
       else if (transferError) {
         errorMessage = `PresQT API returned an error status code ${transferError.status}: ${transferError.data}`;
+      }
+      // PresQT transfer Post error
+      else if (transferCancelError) {
+        errorMessage = `PresQT API returned an error status code ${transferCancelError.status}: ${transferCancelError.data}`;
       }
       // PresQT transfer Job error
       else if (transferJobError) {

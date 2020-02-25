@@ -10,10 +10,10 @@ import {useDispatch, useSelector} from "react-redux";
 export default function CancelButton({actionType, destinationToken}) {
   const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
+
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
-  // const targetToken = useSelector(state => state.authorization.apiTokens)[selectedTarget.name];
-  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
+  const targetToken = useSelector(state => state.authorization.apiTokens[selectedTarget.name]);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
   const transferStatus = useSelector(state => state.resources.transferStatus);
   

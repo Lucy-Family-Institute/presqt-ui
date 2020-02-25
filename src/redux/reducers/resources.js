@@ -813,7 +813,7 @@ export default handleActions(
     [actionCreators.resources.cancelTransferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: 'cancelled',
+      transferStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.resources.cancelTransfer,
         state.pendingAPIOperations
