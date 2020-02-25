@@ -53,13 +53,13 @@ function associateWithParentResource(openResources, possibleParents, child) {
 /**
  * Sort the target's resources into their proper hierarchy
  **/
-export default function buildResourceHierarchy(state, action) {
+export default function buildResourceHierarchy(openResources, selectedResource, action) {
 
   let resourceHierarchy = [];
   if (action.payload.length > 0) {
     resourceHierarchy = action.payload.reduce(
       (initial, resource, index, original) => {
-        if (state.selectedResource && resource.id === state.selectedResource.id) {
+        if (selectedResource && resource.id === selectedResource.id) {
           resource.active = true;
         }
 
@@ -69,17 +69,17 @@ export default function buildResourceHierarchy(state, action) {
           // Check if there is anything already in the
           // unsorted array that should be attached
           // to this container.
-          findUnsortedChildren(state.openResources, initial.unsorted, resource);
+          findUnsortedChildren(openResources, initial.unsorted, resource);
 
-          resource.open = state.openResources.indexOf(resource.id) > -1;
+          resource.open = openResources.indexOf(resource.id) > -1;
 
           // Push onto the hierarchy object
           initial.sorted.push(resource);
         } else {
-          const parentFound = associateWithParentResource(state.openResources, initial.sorted, resource);
+          const parentFound = associateWithParentResource(openResources, initial.sorted, resource);
 
           if (parentFound) {
-            findUnsortedChildren(state.openResources, initial.unsorted, resource);
+            findUnsortedChildren(openResources, initial.unsorted, resource);
           } else {
             // Add the resource to the unsorted array
             // where it will be considered in each future

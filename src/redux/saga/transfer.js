@@ -33,6 +33,33 @@ function* loadTransferTargetResources(action) {
   }
 }
 
+/** Refresh Resource Collection for transfer **/
+export function* watchTransferRefreshSource() {
+  yield takeEvery(actionCreators.resources.refreshTransferTarget, refreshTransferTargetResources);
+}
+
+/**
+ * Make an Axios request to Resource Collection for transfer.
+ * Dispatch either the success or failure actions accordingly.
+ **/
+function* refreshTransferTargetResources(action) {
+
+  try {
+    const response = yield call(
+      getTargetResources,
+      action.payload.target.name,
+      action.payload.targetToken
+    );
+    yield put(actionCreators.resources.refreshTransferTargetSuccess(response.data));
+  }
+  catch (error) {
+    yield put(actionCreators.resources.refreshTransferTargetFailure(
+      error.response.status,
+      error.response.data.error)
+    );
+  }
+}
+
 /** Resource Detail for transfer**/
 export function* watchSelectTransferResource() {
   yield takeEvery(actionCreators.resources.selectTransferResource, loadTransferResourceDetail);

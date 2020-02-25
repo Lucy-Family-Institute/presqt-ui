@@ -70,7 +70,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openResources, state.selectedResource, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -86,7 +87,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openResources, state.selectedResource, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -536,7 +538,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
     [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openResources, state.selectedResource, action);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -604,8 +607,8 @@ export default handleActions(
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
     [actionCreators.resources.loadFromTransferTargetSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(state, action);
-      return {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openTransferResources, state.selectedTransferResource, action);      return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
@@ -830,6 +833,54 @@ export default handleActions(
       selectedTransferResourceName: null,
       selectedTransferResource: null,
       openTransferResources: null,
+      transferTargetResources: null
+    }),
+    /**
+     * Refresh the resources in the Transfer Resource Browser.
+     * Saga call to Resource-Collection occurs with this action.
+     **/
+    [actionCreators.resources.refreshTransferTarget]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.refreshTransferTarget,
+        state.pendingAPIOperations
+      ),
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Transfer Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshTransferTargetSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openTransferResources, state.selectedTransferResource, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.refreshTransferTarget,
+          state.pendingAPIOperations
+        ),
+        targetResources: resourceHierarchy,
+        transferStatus: state.transferStatus === 'success' ? "finished" : 'cancelled'
+      };
+    },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Transfer Resource Collection Refresh call.
+     **/
+    [actionCreators.resources.refreshTransferTargetFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.refreshTransferTarget,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.refreshTransferTarget.toString(),
+        state.apiOperationErrors
+      ),
       transferTargetResources: null
     }),
   },
