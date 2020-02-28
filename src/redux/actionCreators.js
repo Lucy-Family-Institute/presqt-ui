@@ -8,7 +8,6 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        /************ RESOURCES ************/
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
