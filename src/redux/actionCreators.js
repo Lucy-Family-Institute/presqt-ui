@@ -6,6 +6,8 @@ export const actionCreators = createActions({
         REMOVE_TOKEN: (target) => ({target: target}),
         DISPLAY_TOKEN_MODAL: undefined,
         HIDE_TOKEN_MODAL: undefined,
+        DISPLAY_ISSUE_MODAL: undefined,
+        HIDE_ISSUE_MODAL: undefined,
     },
     RESOURCES: {
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),

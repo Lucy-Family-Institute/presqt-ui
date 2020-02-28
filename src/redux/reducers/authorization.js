@@ -7,6 +7,7 @@ import { actionCreators } from '../actionCreators';
 const initialState = {
   apiTokens: {},
   tokenModalDisplay: false,
+  issueModalDisplay: false
 };
 
 export default handleActions(
@@ -44,6 +45,20 @@ export default handleActions(
     [actionCreators.authorization.hideTokenModal]: state => ({
       ...state,
       tokenModalDisplay: false,
+    }),
+    /**
+     * Display the Token Modal
+     **/
+    [actionCreators.authorization.displayIssueModal]: state => ({
+      ...state,
+      issueModalDisplay: true,
+    }),
+    /**
+     * Hide the Token Modal
+     **/
+    [actionCreators.authorization.hideIssueModal]: state => ({
+      ...state,
+      issueModalDisplay: false,
     }),
   },
   initialState

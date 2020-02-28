@@ -1,10 +1,12 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-
+import { useDispatch } from 'react-redux';
 import textStyles from "../styles/text";
+import { actionCreators } from "../redux/actionCreators";
 
 const imageHoverStyle = css({
-  transform: 'scale(1.1)'
+  transform: 'scale(1.1)',
+  cursor: "pointer"
 });
 
 const imageHoverOrFocus = css({
@@ -12,6 +14,10 @@ const imageHoverOrFocus = css({
 });
 
 export default function HeaderMenu() {
+  const dispatch = useDispatch();
+  const displayIssueModal = () => {
+    dispatch(actionCreators.authorization.displayIssueModal());
+  }
   return (
     <div
       css={{
@@ -41,9 +47,9 @@ export default function HeaderMenu() {
           { textDecoration: "none", marginLeft: 25 },
           imageHoverOrFocus,
         ]}
-        href="https://github.com/ndlib/presqt-ui/issues/new"
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => displayIssueModal()}
       >
         Submit Feedback
       </a>
