@@ -1,16 +1,11 @@
-import { handleActions } from 'redux-actions';
-import {pick} from "lodash";
+import {actionCreators} from "../actionCreators";
 
-
-import { actionCreators } from '../actionCreators';
-
-const initialState = {
-  apiTokens: {},
-  tokenModalDisplay: false,
-};
-
-export default handleActions(
-  {
+export const authorizationReducers = {
+  initialState: {
+    apiTokens: {},
+    tokenModalDisplay: false,
+  },
+  reducers: {
     /**
      * Save the target token pair to apiTokens.
      **/
@@ -45,6 +40,5 @@ export default handleActions(
       ...state,
       tokenModalDisplay: false,
     }),
-  },
-  initialState
-);
+  }
+};

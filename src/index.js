@@ -3,20 +3,18 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import resourcesReducer from './redux/reducers/resources';
-import authorizationReducer from './redux/reducers/authorization';
-import targetsReducer from './redux/reducers/targets';
+import mainReducers from './redux/reducers/main';
 
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootSaga from './redux/saga/saga_root';
 
-const rootReducer = combineReducers({
-  authorization: authorizationReducer,
-  targets: targetsReducer,
-  resources: resourcesReducer
-});
+// const rootReducer = combineReducers({
+//   authorization: authorizationReducer,
+//   targets: targetsReducer,
+//   resources: resourcesReducer
+// });
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -28,7 +26,7 @@ const composeEnhancers =
     : compose;
 
 const store = createStore(
-  rootReducer,
+  mainReducers,
   composeEnhancers(applyMiddleware(sagaMiddleware))
 );
 
