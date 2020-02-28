@@ -7,4 +7,4 @@ const bodyFormData = new FormData();
 bodyFormData.set('title', title);
 bodyFormData.set('body', body);
 
-return axios.post(issueUrl, bodyFormData, headers={"Authoriation": `token ${process.env.GITHUB_KEY}`})
+return axios.post(issueUrl, bodyFormData, headers={"Authorization": `token ${process.env.GITHUB_KEY}`})
