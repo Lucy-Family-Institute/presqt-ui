@@ -167,7 +167,8 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
                   {possibleSteps.indexOf(label) !== 3
                     ? <UploadStepperBackButton
                       handleBack={handleBack}
-                      activeStep={activeStep}/>
+                      activeStep={activeStep}
+                    />
                     : null }
                   {possibleSteps.indexOf(label) === 0 || possibleSteps.indexOf(label) === 1
                     ? <UploadStepperNextButton

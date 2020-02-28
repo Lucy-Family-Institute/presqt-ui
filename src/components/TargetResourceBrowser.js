@@ -31,15 +31,18 @@ export default function TargetResourceBrowser() {
   const targetToken = useSelector(state => state.targets.selectedTarget
       ? state.authorization.apiTokens[state.targets.selectedTarget.name]
       : null);
+
   const targetResources = useSelector(state => state.resources.targetResources);
   const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
   const selectedTarget = useSelector(state => state.targets.selectedTarget);
   const searchValue = useSelector(state => state.resources.searchValue);
-  const collection_error = apiOperationErrors.find(
+
+  const collectionError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
-  const search_error = apiOperationErrors.find(
+  const searchError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
+
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
@@ -86,9 +89,9 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (targetResources || searchValue || collection_error) {
-      if (collection_error) {
-        if (collection_error.status === 401) {
+    if (targetResources || searchValue || collectionError) {
+      if (collectionError) {
+        if (collectionError.status === 401) {
           return null;
         }
       }
@@ -97,9 +100,9 @@ export default function TargetResourceBrowser() {
   };
 
   const upload = () => {
-    if (targetResources || searchValue || collection_error) {
-      if (collection_error) {
-        if (collection_error.status === 401) {
+    if (targetResources || searchValue || collectionError) {
+      if (collectionError) {
+        if (collectionError.status === 401) {
           return null;
         }
       }
@@ -128,18 +131,18 @@ export default function TargetResourceBrowser() {
     else if (targetResources && targetResources.length === 0) {
       setMessage(`No ${selectedTarget.readable_name} resources found for this user.`);
     }
-    else if (search_error) {
+    else if (searchError) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
-      setMessage(`${search_error.data}`);
+      setMessage(`${searchError.data}`);
     }
-    else if (collection_error && collection_error.status !== 401) {
+    else if (collectionError && collectionError.status !== 401) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
-      setMessage(`${collection_error.data}`);
+      setMessage(`${collectionError.data}`);
     }
     else {
       setMessage('');
     }
-  }, [targetResources]);
+  }, [targetResources, apiOperationErrors]);
 
   return (
     <div
@@ -152,6 +155,7 @@ export default function TargetResourceBrowser() {
         display: "flex"
       }}
     >
+
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}

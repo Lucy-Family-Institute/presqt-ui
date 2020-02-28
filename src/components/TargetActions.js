@@ -51,15 +51,14 @@ export default function TargetActions() {
           {selectedResource
           ? <UploadActionButton
               key="UPLOAD"
-              text="Upload"
               type="EXISTING"
               disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              text="Upload"
             /> : null}
           {selectedResource
           ? <TransferActionButton
               key="Transfer"
               disabled={!selectedTarget.supported_actions.resource_transfer_out}
-              optionDisabled={selectedResource.kind === 'item'}
             />: null}
         </div>
       </div>

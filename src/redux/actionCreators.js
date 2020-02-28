@@ -1,4 +1,3 @@
-// TODO: Need something in here to handle pending operations.
 import {createActions} from 'redux-actions';
 
 export const actionCreators = createActions({
@@ -9,7 +8,7 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken,}),
+        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
         LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue) => ({
@@ -53,7 +52,35 @@ export const actionCreators = createActions({
         REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
-        CLEAR_ACTIVE_TICKET_NUMBER: undefined
+        CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        DISPLAY_TRANSFER_MODAL: undefined,
+        HIDE_TRANSFER_MODAL: undefined,
+        LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
+        LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+        SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
+        OPEN_TRANSFER_CONTAINER: container => ({container, open: true}),
+        CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
+        TRANSFER_RESOURCE: (
+          destinationTarget, destinationToken, sourceResource, duplicateAction,
+          resourceToTransferTo, sourceTarget, sourceTargetToken, ) => ({
+            destinationTarget, destinationToken, sourceResource,
+            duplicateAction, resourceToTransferTo, sourceTarget, sourceTargetToken}),
+        TRANSFER_SUCCESS: (data) => ({data}),
+        TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        TRANSFER_JOB: undefined,
+        TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
+        TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
+        CANCEL_TRANSFER: (ticketNumber, sourceToken, destinationToken) =>
+          ({ticketNumber, sourceToken, destinationToken}),
+        CANCEL_TRANSFER_SUCCESS: undefined,
+        CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        CLEAR_TRANSFER_MODAL_DATA: undefined,
+        CLEAR_TRANSFER_DATA: undefined,
+        REFRESH_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
+        REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
     },
     TARGETS: {
         LOAD: undefined,

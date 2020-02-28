@@ -60,5 +60,16 @@ export default {
     fontWeight: 500,
     fontSize: 12,
     textTransform: "uppercase"
-  })
+  }),
+  selectedResource: css({
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 14,
+    color: colors.presqtBlue
+  }),
+  noSelectedResource: css({
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 14
+  }),
 };
