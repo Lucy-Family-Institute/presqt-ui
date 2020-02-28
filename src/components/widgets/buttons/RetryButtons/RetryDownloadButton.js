@@ -21,10 +21,10 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
   const selectedResource = useSelector(state => state.resources.selectedResource);
 
   const submitRetry = () => {
-      dispatch(actionCreators.resources.clearDownloadData());
+      dispatch(actionCreators.download.clearDownloadData());
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.downloadResource.toString()));
-      dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
+        actionCreators.download.downloadResource.toString()));
+      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
 
       setModalContent(modalDefaultMessage);
     };

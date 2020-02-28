@@ -220,11 +220,11 @@ export default handleActions(
     /**
      * Register resource download operation.
      **/
-    [actionCreators.resources.downloadResource]: state => ({
+    [actionCreators.download.downloadResource]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.download.downloadResource,
         state.pendingAPIOperations
       )
     }),
@@ -232,11 +232,11 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful download call.
      **/
-    [actionCreators.resources.downloadFromTargetSuccess]: (state, action) => ({
+    [actionCreators.download.downloadFromTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.download.downloadResource,
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -245,28 +245,28 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed download call.
      **/
-    [actionCreators.resources.downloadFromTargetFailure]: (state, action) => ({
+    [actionCreators.download.downloadFromTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadResource,
+        actionCreators.download.downloadResource,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.downloadResource.toString(),
+        actionCreators.download.downloadResource.toString(),
         state.apiOperationErrors
       )
     }),
     /**
      * Register download job operation.
      **/
-    [actionCreators.resources.downloadJob]: state => ({
+    [actionCreators.download.downloadJob]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.download.downloadJob,
         state.pendingAPIOperations
       )
     }),
@@ -275,11 +275,11 @@ export default handleActions(
      * Add the download job status to downloadStatus.
      * Add the download job contents to downloadData.
      **/
-    [actionCreators.resources.downloadJobSuccess]: (state, action) => ({
+    [actionCreators.download.downloadJobSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.download.downloadJob,
         state.pendingAPIOperations
       ),
       downloadStatus: action.payload.status,
@@ -289,39 +289,39 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed download job call.
      **/
-    [actionCreators.resources.downloadJobFailure]: (state, action) => ({
+    [actionCreators.download.downloadJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       downloadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.downloadJob,
+        actionCreators.download.downloadJob,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.downloadJob.toString(),
+        actionCreators.download.downloadJob.toString(),
         state.apiOperationErrors
       ),
     }),
     /**
      * Cancel the download
      **/
-    [actionCreators.resources.cancelDownload]: state => ({
+    [actionCreators.download.cancelDownload]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.download.cancelDownload,
         state.pendingAPIOperations
       )
     }),
     /**
      * Untrack API call.
      **/
-    [actionCreators.resources.cancelDownloadSuccess]: state => ({
+    [actionCreators.download.cancelDownloadSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.download.cancelDownload,
         state.pendingAPIOperations
       )
     }),
@@ -329,17 +329,17 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed cancel download call.
      **/
-    [actionCreators.resources.cancelDownloadFailure]: (state, action) => ({
+    [actionCreators.download.cancelDownloadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       downloadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelDownload,
+        actionCreators.download.cancelDownload,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.cancelDownload.toString(),
+        actionCreators.download.cancelDownload.toString(),
         state.apiOperationErrors
       ),
     }),
@@ -350,7 +350,7 @@ export default handleActions(
     /**
      * Clear the download data so a new download can be attempted.
      **/
-    [actionCreators.resources.clearDownloadData]: state => ({
+    [actionCreators.download.clearDownloadData]: state => ({
       ...state,
       downloadStatus: null,
       downloadData: null
@@ -358,14 +358,14 @@ export default handleActions(
     /**
      * Display the Download Modal
      **/
-    [actionCreators.resources.displayDownloadModal]: state => ({
+    [actionCreators.download.displayDownloadModal]: state => ({
       ...state,
       downloadModalDisplay: true,
     }),
     /**
      * Hide the Download Modal
      **/
-    [actionCreators.resources.hideDownloadModal]: state => ({
+    [actionCreators.download.hideDownloadModal]: state => ({
       ...state,
       downloadModalDisplay: false,
     }),

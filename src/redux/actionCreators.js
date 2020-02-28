@@ -8,6 +8,7 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
+        /************ RESOURCES ************/
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
@@ -24,18 +25,7 @@ export const actionCreators = createActions({
         SELECT_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         SELECT_RESOURCE_SUCCESS: undefined,
         CLEAR_RESOURCES: undefined,
-        DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
-        DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
-        DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
-        DOWNLOAD_JOB: undefined,
-        DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
-        DOWNLOAD_JOB_FAILURE: (status, data) => ({status, data}),
-        CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
-        CANCEL_DOWNLOAD_SUCCESS: undefined,
-        CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
-        CLEAR_DOWNLOAD_DATA: undefined,
-        DISPLAY_DOWNLOAD_MODAL: undefined,
-        HIDE_DOWNLOAD_MODAL: undefined,
+        /************ UPLOAD ************/
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
           ({target, file, duplicateAction, resourceToUploadTo, targetToken}),
         UPLOAD_TO_TARGET_SUCCESS: (data) => ({data}),
@@ -53,6 +43,7 @@ export const actionCreators = createActions({
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        /************ TRANSFER ************/
         DISPLAY_TRANSFER_MODAL: undefined,
         HIDE_TRANSFER_MODAL: undefined,
         LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
@@ -81,6 +72,20 @@ export const actionCreators = createActions({
         REFRESH_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+    },
+    DOWNLOAD: {
+        DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
+        DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
+        DOWNLOAD_JOB: undefined,
+        DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
+        DOWNLOAD_JOB_FAILURE: (status, data) => ({status, data}),
+        CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_DOWNLOAD_SUCCESS: undefined,
+        CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
+        CLEAR_DOWNLOAD_DATA: undefined,
+        DISPLAY_DOWNLOAD_MODAL: undefined,
+        HIDE_DOWNLOAD_MODAL: undefined,
     },
     TARGETS: {
         LOAD: undefined,

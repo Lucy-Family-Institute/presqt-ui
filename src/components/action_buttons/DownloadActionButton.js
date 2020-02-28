@@ -26,8 +26,8 @@ export default function DownloadActionButton({ disabled }) {
    *     -> On complete saga dispatches the ResourceDownloadSuccess action
    **/
   const submitDownload = () => {
-    dispatch(actionCreators.resources.displayDownloadModal());
-    dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
+    dispatch(actionCreators.download.displayDownloadModal());
+    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
   };
 
   return (

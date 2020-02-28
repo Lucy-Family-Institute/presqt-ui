@@ -35,10 +35,10 @@ export default function DownloadModal() {
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 
   const downloadError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.downloadResource.toString());
+    element => element.action === actionCreators.download.downloadResource.toString());
 
   const downloadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.downloadJob.toString());
+    element => element.action === actionCreators.download.downloadJob.toString());
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.
@@ -95,8 +95,8 @@ export default function DownloadModal() {
     // Download successful
     else if (downloadStatus === "success") {
       FileSaver.saveAs(downloadData, "PresQT_Download.zip");
-      dispatch(actionCreators.resources.hideDownloadModal());
-      dispatch(actionCreators.resources.clearDownloadData());
+      dispatch(actionCreators.download.hideDownloadModal());
+      dispatch(actionCreators.download.clearDownloadData());
     }
   }, [downloadStatus]);
 
@@ -105,12 +105,12 @@ export default function DownloadModal() {
    *  Dispatch clearDownloadData to clear download data from state.
    **/
   const handleClose = () => {
-    dispatch(actionCreators.resources.hideDownloadModal());
+    dispatch(actionCreators.download.hideDownloadModal());
     setModalContent(modalDefaultMessage);
-    dispatch(actionCreators.resources.clearDownloadData());
+    dispatch(actionCreators.download.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.downloadResource.toString()
+        actionCreators.download.downloadResource.toString()
       )
     );
     dispatch(actionCreators.resources.clearActiveTicketNumber());

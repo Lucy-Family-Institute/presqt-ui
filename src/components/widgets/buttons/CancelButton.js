@@ -19,7 +19,7 @@ export default function CancelButton({actionType, destinationToken}) {
   
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
-      dispatch(actionCreators.resources.cancelDownload(ticketNumber, targetToken))
+      dispatch(actionCreators.download.cancelDownload(ticketNumber, targetToken))
     }
     else if (actionType === 'UPLOAD') {
       dispatch(actionCreators.resources.cancelUpload(ticketNumber, targetToken))
