@@ -27,7 +27,7 @@ export default function TokenModal() {
   };
 
   const modalSubmit = () => {
-    postGithubIssue(title, body);
+    dispatch(actionCreators.authorization.submitGithubIssue(title, body)) 
     dispatch(actionCreators.authorization.hideIssueModal());
     setTitle("");
     setBody("");

@@ -7,7 +7,11 @@ import { actionCreators } from '../actionCreators';
 const initialState = {
   apiTokens: {},
   tokenModalDisplay: false,
-  issueModalDisplay: false
+  issueModalDisplay: false,
+  githubIssueData: null,
+  githubIssueError: null,
+  pendingGithubResponse: false,
+  githubStatus: null
 };
 
 export default handleActions(
@@ -47,19 +51,37 @@ export default handleActions(
       tokenModalDisplay: false,
     }),
     /**
-     * Display the Token Modal
+     * Display the Issue Modal
      **/
     [actionCreators.authorization.displayIssueModal]: state => ({
       ...state,
       issueModalDisplay: true,
     }),
     /**
-     * Hide the Token Modal
+     * Hide the Issue Modal
      **/
     [actionCreators.authorization.hideIssueModal]: state => ({
       ...state,
       issueModalDisplay: false,
+      githubIssueData: null,
+      githubIssueError: null
     }),
+    [actionCreators.authorization.submitGithubIssue]: state => ({
+      ...state,
+      pendingGithubResponse: true
+    }),
+    [actionCreators.authorization.submitGithubIssueSuccess]: (state, action) => ({
+      ...state,
+      pendingGithubResponse: false,
+      githubIssueData: action.payload,
+      githubStatus: 'success'
+    }),
+    [actionCreators.authorization.submitGithubIssueFailure]: (state, action) => ({
+      ...state,
+      pendingGithubResponse: false,
+      githubIssueError: action.payload,
+      githubStatus: 'failure'
+    })
   },
   initialState
 );

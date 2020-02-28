@@ -8,6 +8,9 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
         DISPLAY_ISSUE_MODAL: undefined,
         HIDE_ISSUE_MODAL: undefined,
+        SUBMIT_GITHUB_ISSUE: (title, body) => ({ title, body }),
+        SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
+        SUBMIT_GITHUB_ISSUE_FAILURE: undefined
     },
     RESOURCES: {
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),

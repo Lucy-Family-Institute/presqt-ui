@@ -6,6 +6,6 @@ export function postGithubIssue(title, body) {
   const bodyJSON = `{"title": "${title}", "body": "${body}"}`;
 
   return axios.post(issueUrl, JSON.parse(bodyJSON), {
-    headers: { Authorization: `token ${githubToken}` }
+    headers: { "Authorization": `token ${githubToken}` }
   });
 }

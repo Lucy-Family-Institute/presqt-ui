@@ -15,9 +15,7 @@ const imageHoverOrFocus = css({
 
 export default function HeaderMenu() {
   const dispatch = useDispatch();
-  const displayIssueModal = () => {
-    dispatch(actionCreators.authorization.displayIssueModal());
-  }
+
   return (
     <div
       css={{
@@ -49,7 +47,7 @@ export default function HeaderMenu() {
         ]}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => displayIssueModal()}
+        onClick={() => dispatch(actionCreators.authorization.displayIssueModal())}
       >
         Submit Feedback
       </a>
