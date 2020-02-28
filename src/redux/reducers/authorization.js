@@ -1,4 +1,5 @@
 import {actionCreators} from "../actionCreators";
+import {pick} from "lodash";
 
 export const authorizationReducers = {
   initialState: {

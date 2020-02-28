@@ -1,15 +1,7 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
-
+import { jsx } from "@emotion/core";
 import textStyles from "../styles/text";
-
-const imageHoverStyle = css({
-  transform: 'scale(1.1)'
-});
-
-const imageHoverOrFocus = css({
-  ":hover": imageHoverStyle
-});
+import mainStyles from "../styles/main";
 
 export default function HeaderMenu() {
   return (
@@ -27,7 +19,7 @@ export default function HeaderMenu() {
         css={[
           textStyles.globalNav,
           { textDecoration: "none" },
-          imageHoverOrFocus
+          mainStyles.hoverOrFocusTransform
         ]}
         href="https://presqt.crc.nd.edu"
         target="_blank"
@@ -39,7 +31,7 @@ export default function HeaderMenu() {
         css={[
           textStyles.globalNav,
           { textDecoration: "none", marginLeft: 25 },
-          imageHoverOrFocus,
+          mainStyles.hoverOrFocusTransform,
         ]}
         href="https://github.com/ndlib/presqt-ui/issues/new"
         target="_blank"

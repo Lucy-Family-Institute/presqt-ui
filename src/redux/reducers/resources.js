@@ -26,21 +26,6 @@ export const resourceReducers = {
       targetResources: null
     }),
     /**
-     * Add API call to trackers.
-     * Saga call to Resource-Collection occurs with this action with search parameter.
-     **/
-    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
-      ...state,
-      pendingAPIResponse: true,
-      pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTargetSearch,
-        state.pendingAPIOperations
-      ),
-      selectedResource: null,
-      searchValue: action.payload.searchValue,
-      openResources: []
-    }),
-    /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Resource Collection call.
      **/
@@ -52,23 +37,6 @@ export const resourceReducers = {
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
           actionCreators.resources.loadFromTarget,
-          state.pendingAPIOperations
-        ),
-        targetResources: resourceHierarchy
-      };
-    },
-    /**
-     * Sort the resources into the correct hierarchy.
-     * Dispatched via Saga call on successful Resource Collection with search call.
-     **/
-    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      const resourceHierarchy = buildResourceHierarchy(
-        state.openResources, state.selectedResource, action);
-      return {
-        ...state,
-        pendingAPIResponse: false,
-        pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
         targetResources: resourceHierarchy
@@ -92,6 +60,38 @@ export const resourceReducers = {
       ),
       targetResources: null
     }),
+    /**
+     * Add API call to trackers.
+     * Saga call to Resource-Collection occurs with this action with search parameter.
+     **/
+    [actionCreators.resources.loadFromTargetSearch]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromTargetSearch,
+        state.pendingAPIOperations
+      ),
+      selectedResource: null,
+      searchValue: action.payload.searchValue,
+      openResources: []
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection with search call.
+     **/
+    [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openResources, state.selectedResource, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromTargetSearch,
+          state.pendingAPIOperations
+        ),
+        targetResources: resourceHierarchy
+      };
+    },
     /**
      * Untrack API search call and track failure that occurred.
      * Dispatched via Saga call on failed Resource Collection search call.
