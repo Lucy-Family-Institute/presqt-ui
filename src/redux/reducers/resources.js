@@ -1,8 +1,8 @@
 import {actionCreators} from "../actionCreators";
-import {trackAction, trackError, untrackAction} from "../utils";
 import buildResourceHierarchy from "./helpers/resources";
 import {combineActions} from "redux-actions";
 import updateOpenClose from "./helpers/updateOpenClose";
+import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 
 export const resourceReducers = {
   initialState: {

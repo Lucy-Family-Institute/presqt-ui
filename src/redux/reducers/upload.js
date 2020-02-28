@@ -1,5 +1,5 @@
 import {actionCreators} from "../actionCreators";
-import {trackAction, trackError, untrackAction} from "../utils";
+import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 
 export const uploadReducers = {
   initialState: {
