@@ -75,8 +75,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
    **/
   const handleNext = () => {
     if (activeStep === 1) {
-      dispatch(actionCreators.resources.loadFromTransferTarget(
-        destinationTarget, destinationToken));
+      dispatch(actionCreators.transfer.loadFromTransferTarget(destinationTarget, destinationToken));
     }
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };

@@ -25,7 +25,7 @@ export default function CancelButton({actionType, destinationToken}) {
       dispatch(actionCreators.upload.cancelUpload(ticketNumber, targetToken))
     }
     else if (actionType === 'TRANSFER') {
-      dispatch(actionCreators.resources.cancelTransfer(ticketNumber, targetToken, destinationToken))
+      dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, destinationToken))
     }
   };
 

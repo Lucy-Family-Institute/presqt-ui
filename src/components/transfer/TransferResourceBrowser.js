@@ -28,7 +28,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
   const collectionError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTransferTarget.toString());
+    element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 15 }]);
   const [message, setMessage] = useState("");
@@ -42,10 +42,10 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
    */
   const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
-      ? dispatch(actionCreators.resources.closeTransferContainer(resource))
-      : dispatch(actionCreators.resources.openTransferContainer(resource));
+      ? dispatch(actionCreators.transfer.closeTransferContainer(resource))
+      : dispatch(actionCreators.transfer.openTransferContainer(resource));
 
-    dispatch(actionCreators.resources.selectTransferResource(resource, targetToken));
+    dispatch(actionCreators.transfer.selectTransferResource(resource, targetToken));
   };
 
   /**
@@ -103,7 +103,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
       display: "flex"}}>
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TransferResourcesHeader destinationTarget={destinationTarget} />
-        {pendingAPIOperations.includes(actionCreators.resources.loadFromTransferTarget.toString())
+        {pendingAPIOperations.includes(actionCreators.transfer.loadFromTransferTarget.toString())
           ? <Spinner />
           :
             <div css={messageCss}>

@@ -33,7 +33,7 @@ export default function TransferStepperTransferButton({handleNext, destinationTa
    **/
 
   const submitTransfer = () => {
-    dispatch(actionCreators.resources.transferResource(
+    dispatch(actionCreators.transfer.transferResource(
       destinationTarget,
       destinationToken,
       sourceResource,

@@ -21,15 +21,15 @@ export default function TransferRetryButton(
   const selectedTransferResource = useSelector(state =>
     state.resources.selectedTransferResource);
   const submitRetry = () => {
-    dispatch(actionCreators.resources.clearTransferData());
+    dispatch(actionCreators.transfer.clearTransferData());
 
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.transferResource.toString()
+        actionCreators.transfer.transferResource.toString()
       )
     );
     dispatch(
-      actionCreators.resources.transferResource(
+      actionCreators.transfer.transferResource(
         destinationTarget,
         destinationToken,
         selectedResource,

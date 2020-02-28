@@ -579,14 +579,14 @@ export default handleActions(
     /**
      * Display the Transfer Modal
      **/
-    [actionCreators.resources.displayTransferModal]: state => ({
+    [actionCreators.transfer.displayTransferModal]: state => ({
       ...state,
       transferModalDisplay: true,
     }),
     /**
      * Hide the Transfer Modal
      **/
-    [actionCreators.resources.hideTransferModal]: state => ({
+    [actionCreators.transfer.hideTransferModal]: state => ({
       ...state,
       transferModalDisplay: false,
     }),
@@ -594,11 +594,11 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.loadFromTransferTarget]: state => ({
+    [actionCreators.transfer.loadFromTransferTarget]: state => ({
       ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTransferTarget,
+        actionCreators.transfer.loadFromTransferTarget,
         state.pendingAPIOperations
       )
     }),
@@ -606,13 +606,13 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
-    [actionCreators.resources.loadFromTransferTargetSuccess]: (state, action) => {
+    [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
         state.openTransferResources, state.selectedTransferResource, action);      return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTransferTarget,
+          actionCreators.transfer.loadFromTransferTarget,
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy
@@ -622,16 +622,16 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection call.
      **/
-    [actionCreators.resources.loadFromTransferTargetFailure]: (state, action) => ({
+    [actionCreators.transfer.loadFromTransferTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromTransferTarget,
+        actionCreators.transfer.loadFromTransferTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromTransferTarget.toString(),
+        actionCreators.transfer.loadFromTransferTarget.toString(),
         state.apiOperationErrors
       ),
       transferTargetResources: null
@@ -640,7 +640,7 @@ export default handleActions(
      * Add API call to trackers.
      * Saga call to Resource-Detail occurs with this action for transfer.
      **/
-    [actionCreators.resources.selectTransferResource]: (state, action) => {
+    [actionCreators.transfer.selectTransferResource]: (state, action) => {
       const updateTargetResources = transferTargetResources => {
         let sourceResources = transferTargetResources;
         sourceResources.map(resource => {
@@ -658,7 +658,7 @@ export default handleActions(
         ...state,
         pendingAPIResponse: true,
         pendingAPIOperations: trackAction(
-          actionCreators.resources.selectTransferResource,
+          actionCreators.transfer.selectTransferResource,
           state.pendingAPIOperations
         ),
         selectedTransferResourceName: action.payload.resource.title,
@@ -670,13 +670,13 @@ export default handleActions(
      * Add resource details to selectedTransferResource.
      * Dispatched via Saga call on successful Resource Detail call for transfer.
      **/
-    [actionCreators.resources.selectTransferResourceSuccess]: (state, action) => {
+    [actionCreators.transfer.selectTransferResourceSuccess]: (state, action) => {
       return {
         ...state,
         selectedTransferResource: action.payload,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.selectTransferResource,
+          actionCreators.transfer.selectTransferResource,
           state.pendingAPIOperations
         )
       };
@@ -685,8 +685,8 @@ export default handleActions(
       /**
        * Open/Close Container Resources in UX for transfer.
        **/
-      actionCreators.resources.openTransferContainer,
-      actionCreators.resources.closeTransferContainer
+      actionCreators.transfer.openTransferContainer,
+      actionCreators.transfer.closeTransferContainer
     )]: (state, action) => {
       const [newOpenResources, updatedSourceResources] =
         updateOpenClose(state.openTransferResources, state.transferTargetResources, action);
@@ -700,11 +700,11 @@ export default handleActions(
     /**
      * Register resource transfer operation.
      **/
-    [actionCreators.resources.transferResource]: state => ({
+    [actionCreators.transfer.transferResource]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.transferResource,
+        actionCreators.transfer.transferResource,
         state.pendingAPIOperations
       )
     }),
@@ -712,11 +712,11 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful transfer call.
      **/
-    [actionCreators.resources.transferSuccess]: (state, action) => ({
+    [actionCreators.transfer.transferSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.transferResource,
+        actionCreators.transfer.transferResource,
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -725,28 +725,28 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed transfer call.
      **/
-    [actionCreators.resources.transferFailure]: (state, action) => ({
+    [actionCreators.transfer.transferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       transferStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.transferResource,
+        actionCreators.transfer.transferResource,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.transferResource.toString(),
+        actionCreators.transfer.transferResource.toString(),
         state.apiOperationErrors
       )
     }),
     /**
      * Register transfer job operation.
      **/
-    [actionCreators.resources.transferJob]: state => ({
+    [actionCreators.transfer.transferJob]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.transferJob,
+        actionCreators.transfer.transferJob,
         state.pendingAPIOperations
       )
     }),
@@ -755,11 +755,11 @@ export default handleActions(
      * Add the download job status to transferStatus.
      * Add the download job contents to transferData.
      **/
-    [actionCreators.resources.transferJobSuccess]: (state, action) => ({
+    [actionCreators.transfer.transferJobSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.transferJob,
+        actionCreators.transfer.transferJob,
         state.pendingAPIOperations
       ),
       transferStatus: action.payload.status,
@@ -769,39 +769,39 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed transfer job call.
      **/
-    [actionCreators.resources.transferJobFailure]: (state, action) => ({
+    [actionCreators.transfer.transferJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       transferStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.transferJob,
+        actionCreators.transfer.transferJob,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.transferJob.toString(),
+        actionCreators.transfer.transferJob.toString(),
         state.apiOperationErrors
       ),
     }),
     /**
      * Cancel the transfer
      **/
-    [actionCreators.resources.cancelTransfer]: state => ({
+    [actionCreators.transfer.cancelTransfer]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.cancelTransfer,
+        actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       )
     }),
     /**
      * Untrack API call.
      **/
-    [actionCreators.resources.cancelTransferSuccess]: state => ({
+    [actionCreators.transfer.cancelTransferSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelTransfer,
+        actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       ),
       transferStatus: 'cancelSuccess',
@@ -810,24 +810,24 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed cancel transfer call.
      **/
-    [actionCreators.resources.cancelTransferFailure]: (state, action) => ({
+    [actionCreators.transfer.cancelTransferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       transferStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelTransfer,
+        actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.cancelTransfer.toString(),
+        actionCreators.transfer.cancelTransfer.toString(),
         state.apiOperationErrors
       ),
     }),
     /**
      * Clear all the transfer modal data so the modal starts fresh.
      **/
-    [actionCreators.resources.clearTransferModalData]: state => ({
+    [actionCreators.transfer.clearTransferModalData]: state => ({
       ...state,
       transferStatus: null,
       transferData: null,
@@ -839,7 +839,7 @@ export default handleActions(
     /**
      * Clear the transfer data so a transfer can retried
      **/
-    [actionCreators.resources.clearTransferData]: state => ({
+    [actionCreators.transfer.clearTransferData]: state => ({
       ...state,
       transferStatus: null,
       transferData: null
@@ -848,11 +848,11 @@ export default handleActions(
      * Refresh the resources in the Transfer Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.resources.refreshTransferTarget]: state => ({
+    [actionCreators.transfer.refreshTransferTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.refreshTransferTarget,
+        actionCreators.transfer.refreshTransferTarget,
         state.pendingAPIOperations
       ),
     }),
@@ -860,14 +860,14 @@ export default handleActions(
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshTransferTargetSuccess]: (state, action) => {
+    [actionCreators.transfer.refreshTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
         state.openTransferResources, state.selectedTransferResource, action);
       return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.refreshTransferTarget,
+          actionCreators.transfer.refreshTransferTarget,
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
@@ -878,16 +878,16 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection Refresh call.
      **/
-    [actionCreators.resources.refreshTransferTargetFailure]: (state, action) => ({
+    [actionCreators.transfer.refreshTransferTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.refreshTransferTarget,
+        actionCreators.transfer.refreshTransferTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.refreshTransferTarget.toString(),
+        actionCreators.transfer.refreshTransferTarget.toString(),
         state.apiOperationErrors
       ),
       transferTargetResources: null

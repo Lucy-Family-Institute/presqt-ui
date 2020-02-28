@@ -12,7 +12,7 @@ export default function TransferActionButton({disabled}) {
   const dispatch = useDispatch();
 
   const submitUpload = () => {
-    dispatch(actionCreators.resources.displayTransferModal());
+    dispatch(actionCreators.transfer.displayTransferModal());
   };
 
   return (

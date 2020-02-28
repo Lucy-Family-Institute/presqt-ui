@@ -13,12 +13,12 @@ export default function TransferStartOverButton(
   const dispatch = useDispatch();
 
   const submitRetry = () => {
-    dispatch(actionCreators.resources.clearTransferModalData());
+    dispatch(actionCreators.transfer.clearTransferModalData());
     setDestinationTarget('');
     setDestinationToken('');
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.transferResource.toString()
+        actionCreators.transfer.transferResource.toString()
       )
     );
     setActiveStep(0);

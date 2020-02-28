@@ -27,13 +27,13 @@ export default function TransferStepperResults(
   const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
 
   const transferError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.transferResource.toString());
+    element => element.action === actionCreators.transfer.transferResource.toString());
 
   const transferJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.transferJob.toString());
+    element => element.action === actionCreators.transfer.transferJob.toString());
 
   const transferCancelError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.cancelTransfer.toString());
+    element => element.action === actionCreators.transfer.cancelTransfer.toString());
 
 
   const [stepThreeContent, setStepThreeContent] = useState(
@@ -50,7 +50,7 @@ export default function TransferStepperResults(
 
   useEffect(() => {
     if (transferStatus === 'success') {
-      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
+      dispatch(actionCreators.transfer.refreshTransferTarget(destinationTarget, destinationToken))
     }
     else if (transferStatus === 'finished') {
       const failedFixityMessage = transferData.failed_fixity.length > 0
@@ -117,7 +117,7 @@ export default function TransferStepperResults(
       setStepThreeContent(successfulMessage);
     }
     else if (transferStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
+      dispatch(actionCreators.transfer.refreshTransferTarget(destinationTarget, destinationToken))
       setStepThreeContent(
         <div>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
