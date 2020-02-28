@@ -1,6 +1,6 @@
 import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {cancelResourceUploadJob, postResourceUpload, resourceUploadJob} from "../../api/resources";
+import {cancelResourceUploadJob, postResourceUpload, resourceUploadJob} from "../../api/upload";
 
 export function* watchResourceUpload() {
   yield takeEvery(actionCreators.resources.uploadToTarget, uploadTargetResource)

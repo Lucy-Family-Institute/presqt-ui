@@ -1,13 +1,14 @@
 import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
-  cancelResourceTransferJob,
-  cancelResourceUploadJob,
   getResourceDetail,
-  getTargetResources,
+  getTargetResources
+} from "../../api/resources";
+import {
+  cancelResourceTransferJob,
   postResourceTransfer,
   resourceTransferJob
-} from "../../api/resources";
+} from "../../api/transfer";
 
 /** Resource Collection For Transfer Resource Browser **/
 export function* watchSwitchTransferTarget() {

@@ -4,7 +4,7 @@ import {
   cancelResourceDownloadJob,
   getResourceDownload,
   resourceDownloadJob
-} from "../../api/resources";
+} from "../../api/download";
 
 export function* watchResourceDownload() {
   yield takeEvery(actionCreators.resources.downloadResource, downloadTargetResource)
