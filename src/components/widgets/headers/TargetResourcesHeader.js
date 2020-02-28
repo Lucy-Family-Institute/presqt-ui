@@ -16,7 +16,7 @@ const fadeIn = keyframes`
 `;
 
 function TargetResourcesHeader() {
-  const target = useSelector(state => state.targets.selectedTarget);
+  const target = useSelector(state => state.selectedTarget);
 
   let headerMessage = 'Resources';
   if (target) {

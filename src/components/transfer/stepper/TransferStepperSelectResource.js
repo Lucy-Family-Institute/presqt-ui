@@ -5,7 +5,7 @@ import text from '../../../styles/text';
 
 export default function TransferStepperSelectResource() {
   const selectedTransferResourceName = useSelector(state =>
-    state.resources.selectedTransferResourceName);
+    state.selectedTransferResourceName);
 
   if (selectedTransferResourceName) {
     return (

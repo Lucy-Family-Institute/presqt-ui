@@ -28,15 +28,15 @@ const fadeIn = keyframes`
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
-  const targetToken = useSelector(state => state.targets.selectedTarget
-      ? state.authorization.apiTokens[state.targets.selectedTarget.name]
+  const targetToken = useSelector(state => state.selectedTarget
+      ? state.apiTokens[state.selectedTarget.name]
       : null);
 
-  const targetResources = useSelector(state => state.resources.targetResources);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const searchValue = useSelector(state => state.resources.searchValue);
+  const targetResources = useSelector(state => state.targetResources);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const searchValue = useSelector(state => state.searchValue);
 
   const collectionError = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());

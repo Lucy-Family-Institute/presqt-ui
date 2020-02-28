@@ -22,10 +22,10 @@ const fadeIn = keyframes`
 export default function TransferResourceBrowser({destinationTarget, destinationToken}) {
   const dispatch = useDispatch();
 
-  const available = useSelector(state => state.targets.available);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const available = useSelector(state => state.available);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
   const collectionError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());

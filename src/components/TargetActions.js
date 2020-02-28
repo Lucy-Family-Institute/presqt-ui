@@ -13,10 +13,10 @@ import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
  * the html element, and rendering the correct component for each action.
  **/
 export default function TargetActions() {
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const searchValue = useSelector(state => state.resources.searchValue);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+  const searchValue = useSelector(state => state.searchValue);
 
   let buttonsList = [];
   if (selectedResource) {

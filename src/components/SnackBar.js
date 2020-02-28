@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 export default function SnackBar() {
   const classes = useStyles();
 
-  const downloadStatus = useSelector(state => state.resources.downloadStatus);
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const downloadStatus = useSelector(state => state.downloadStatus);
+  const uploadStatus = useSelector(state => state.uploadStatus);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');

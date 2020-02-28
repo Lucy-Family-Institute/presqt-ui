@@ -15,11 +15,10 @@ export default function TransferRetryButton(
   const dispatch = useDispatch();
 
   const sourceToken =
-    useSelector(state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
-  const sourceTarget = useSelector(state => state.targets.selectedTarget.name);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const selectedTransferResource = useSelector(state =>
-    state.resources.selectedTransferResource);
+    useSelector(state => state.apiTokens[state.selectedTarget.name]);
+  const sourceTarget = useSelector(state => state.selectedTarget.name);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const selectedTransferResource = useSelector(state => state.selectedTransferResource);
   const submitRetry = () => {
     dispatch(actionCreators.transfer.clearTransferData());
 

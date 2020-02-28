@@ -11,11 +11,11 @@ export default function CancelButton({actionType, destinationToken}) {
   const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const ticketNumber = useSelector(state => state.resources.activeTicketNumber);
-  const targetToken = useSelector(state => state.authorization.apiTokens[selectedTarget.name]);
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
-  const transferStatus = useSelector(state => state.resources.transferStatus);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const ticketNumber = useSelector(state => state.activeTicketNumber);
+  const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
+  const uploadStatus = useSelector(state => state.uploadStatus);
+  const transferStatus = useSelector(state => state.transferStatus);
   
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {

@@ -26,9 +26,9 @@ export default function TransferModal() {
   const leftGridClasses = leftGrid();
   const RightGridClasses = RightGrid();
 
-  const transferModalDisplay = useSelector(state => state.resources.transferModalDisplay);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const transferStatus = useSelector(state => state.resources.transferStatus);
+  const transferModalDisplay = useSelector(state => state.transferModalDisplay);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const transferStatus = useSelector(state => state.transferStatus);
 
   const [destinationTarget, setDestinationTarget] = useState('');
   const [destinationToken, setDestinationToken] = useState('');

@@ -6,7 +6,7 @@ import { basicFadeIn } from '../../../styles/animations';
 import colors from '../../../styles/colors';
 
 export default function TransferStepperTargets({ setDestinationTarget, destinationTarget }) {
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
+  const selectedTarget = useSelector(state => state.selectedTarget);
   const [switchCss, setSwitchCss] = useState('');
 
   const handleSwitchTarget = connection => {

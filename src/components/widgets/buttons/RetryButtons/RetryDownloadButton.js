@@ -17,8 +17,8 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
   const dispatch = useDispatch();
   // Download specific Selectors
   const targetToken = useSelector(
-    state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
+    state => state.apiTokens[state.selectedTarget.name]);
+  const selectedResource = useSelector(state => state.selectedResource);
 
   const submitRetry = () => {
       dispatch(actionCreators.download.clearDownloadData());

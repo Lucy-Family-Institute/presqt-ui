@@ -12,10 +12,10 @@ import {actionCreators} from "../../redux/actionCreators";
 export default function UploadModal()  {
   const dispatch = useDispatch();
 
-  const uploadModalDisplay = useSelector(state => state.resources.uploadModalDisplay);
-  const uploadType = useSelector(state => state.resources.uploadType);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const uploadModalDisplay = useSelector(state => state.uploadModalDisplay);
+  const uploadType = useSelector(state => state.uploadType);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const uploadStatus = useSelector(state => state.uploadStatus);
   /**
    * When the 'x' is pressed on the modal clear the upload data, remove the upload error
    * from APIOperationErrors if it exists, and toggle the modal.

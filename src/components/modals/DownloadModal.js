@@ -27,10 +27,10 @@ const modalDefaultMessage = (
 export default function DownloadModal() {
   const dispatch = useDispatch();
 
-  const downloadData = useSelector(state => state.resources.downloadData);
-  const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const downloadData = useSelector(state => state.downloadData);
+  const downloadModalDisplay = useSelector(state => state.downloadModalDisplay);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.downloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
 

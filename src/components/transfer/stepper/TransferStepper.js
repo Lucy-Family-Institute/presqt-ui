@@ -59,7 +59,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 

@@ -15,11 +15,11 @@ import DialogTitle from "./modalHeader";
 export default function TokenModal() {
   const dispatch = useDispatch();
 
-  const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.selectedTarget);
-  const tokenModalDisplay = useSelector(state => state.authorization.tokenModalDisplay);
-  const connection = useSelector(state => state.targets.selectedTarget);
+  const apiTokens = useSelector(state => state.apiTokens);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const sourceTarget = useSelector(state => state.selectedTarget);
+  const tokenModalDisplay = useSelector(state => state.tokenModalDisplay);
+  const connection = useSelector(state => state.selectedTarget);
 
 
   const [token, setToken] = useState('');

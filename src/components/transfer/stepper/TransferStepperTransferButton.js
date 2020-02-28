@@ -23,10 +23,10 @@ export default function TransferStepperTransferButton({handleNext, destinationTa
                                                         destinationToken, selectedDuplicate}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.selectedTarget.name);
-  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
-  const sourceResource = useSelector(state => state.resources.selectedResource);
-  const selectedTransferResource = useSelector(state => state.resources.selectedTransferResource);
+  const selectedTarget = useSelector(state => state.selectedTarget.name);
+  const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
+  const sourceResource = useSelector(state => state.selectedResource);
+  const selectedTransferResource = useSelector(state => state.selectedTransferResource);
   /**
    * When the transfer button is pushed, dispatch the Transfer action and transfer the stepper
    * index to move forward.

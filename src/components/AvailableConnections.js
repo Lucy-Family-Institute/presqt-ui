@@ -16,15 +16,15 @@ import { basicFadeIn } from '../styles/animations';
 export default function AvailableConnections() {
   const dispatch = useDispatch();
 
-  const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
-  const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const availableTargets = useSelector(state => state.targets.available);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const pendingAPIResponse = useSelector(state => state.pendingAPIResponse);
+  const apiTokens = useSelector(state => state.apiTokens);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const availableTargets = useSelector(state => state.available);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const collection_error = apiOperationErrors.find(
     element => element.action === actionCreators.resources.loadFromTarget.toString());
-  const downloadStatus = useSelector(state => state.resources.downloadStatus);
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const downloadStatus = useSelector(state => state.downloadStatus);
+  const uploadStatus = useSelector(state => state.uploadStatus);
   
   let tokenError;
   if (collection_error) {

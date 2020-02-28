@@ -22,9 +22,9 @@ export default function TransferStepperResults(
     setDestinationToken, selectedDuplicate}) {
   const dispatch = useDispatch();
 
-  const transferStatus = useSelector(state => state.resources.transferStatus);
-  const transferData = useSelector(state => state.resources.transferData);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const transferStatus = useSelector(state => state.transferStatus);
+  const transferData = useSelector(state => state.transferData);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
   const transferError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.transferResource.toString());

@@ -11,8 +11,8 @@ import Spinner from "./widgets/spinners/Spinner";
  * This component is responsible for displaying the details of a selected resource.
  **/
 export default function TargetActionDetail() {
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.

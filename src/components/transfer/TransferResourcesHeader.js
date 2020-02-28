@@ -16,8 +16,8 @@ const fadeIn = keyframes`
 `;
 
 export default function TransferResourcesHeader({ destinationTarget }) {
-  const available = useSelector(state => state.targets.available);
-  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
+  const available = useSelector(state => state.available);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
   let headerTarget = null;
 
   let headerMessage = "Resources";
