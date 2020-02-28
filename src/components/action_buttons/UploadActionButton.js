@@ -12,7 +12,7 @@ export default function UploadActionButton({style, text, type, disabled}) {
   const dispatch = useDispatch();
 
   const submitUpload = () => {
-    dispatch(actionCreators.resources.displayUploadModal(type));
+    dispatch(actionCreators.upload.displayUploadModal(type));
   };
 
   return (

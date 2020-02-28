@@ -31,7 +31,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
    * index to move forward.
    **/
   const submitUpload = () => {
-    dispatch(actionCreators.resources.uploadToTarget(
+    dispatch(actionCreators.upload.uploadToTarget(
       selectedTarget,
       selectedFile,
       selectedDuplicate,

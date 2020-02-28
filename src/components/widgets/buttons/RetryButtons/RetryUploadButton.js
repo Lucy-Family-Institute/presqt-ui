@@ -19,14 +19,14 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
   const selectedTarget = useSelector(state => state.targets.selectedTarget.name);
 
   const submitRetry = () => {
-    dispatch(actionCreators.resources.clearUploadData());
+    dispatch(actionCreators.upload.clearUploadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.uploadToTarget.toString()
+        actionCreators.upload.uploadToTarget.toString()
       )
     );
     dispatch(
-      actionCreators.resources.uploadToTarget(
+      actionCreators.upload.uploadToTarget(
         selectedTarget,
         selectedFile,
         selectedDuplicate,

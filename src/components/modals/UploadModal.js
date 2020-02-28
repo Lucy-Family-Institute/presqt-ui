@@ -21,10 +21,10 @@ export default function UploadModal()  {
    * from APIOperationErrors if it exists, and toggle the modal.
    **/
   const handleClose = () => {
-    dispatch(actionCreators.resources.hideUploadModal());
-    dispatch(actionCreators.resources.clearUploadData());
+    dispatch(actionCreators.upload.hideUploadModal());
+    dispatch(actionCreators.upload.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
-      actionCreators.resources.uploadToTarget.toString()));
+      actionCreators.upload.uploadToTarget.toString()));
     dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
 

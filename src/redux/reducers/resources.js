@@ -372,11 +372,11 @@ export default handleActions(
     /**
      * Register resource upload operation.
      **/
-    [actionCreators.resources.uploadToTarget]: state => ({
+    [actionCreators.upload.uploadToTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
       ),
       uploadStatus: 'pending'
@@ -385,11 +385,11 @@ export default handleActions(
      * Untrack API call.
      * Dispatched via Saga call on successful upload call.
      **/
-    [actionCreators.resources.uploadToTargetSuccess]: (state, action) => ({
+    [actionCreators.upload.uploadToTargetSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
       ),
       activeTicketNumber: action.payload.data.ticket_number
@@ -398,16 +398,16 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed upload call.
      **/
-    [actionCreators.resources.uploadToTargetFailure]: (state, action) => ({
+    [actionCreators.upload.uploadToTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadToTarget,
+        actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.uploadToTarget.toString(),
+        actionCreators.upload.uploadToTarget.toString(),
         state.apiOperationErrors
       ),
       uploadStatus: 'failure'
@@ -415,11 +415,11 @@ export default handleActions(
     /**
      * Register upload job operation.
      **/
-    [actionCreators.resources.uploadJob]: state => ({
+    [actionCreators.upload.uploadJob]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.upload.uploadJob,
         state.pendingAPIOperations
       )
     }),
@@ -428,11 +428,11 @@ export default handleActions(
      * Add the upload job status to uploadStatus.
      * Add the upload job contents to uploadData.
      **/
-    [actionCreators.resources.uploadJobSuccess]: (state, action) => ({
+    [actionCreators.upload.uploadJobSuccess]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.upload.uploadJob,
         state.pendingAPIOperations
       ),
       uploadStatus: action.payload.status,
@@ -442,24 +442,24 @@ export default handleActions(
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed upload job call.
      **/
-    [actionCreators.resources.uploadJobFailure]: (state, action) => ({
+    [actionCreators.upload.uploadJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       uploadStatus: 'failure',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.uploadJob,
+        actionCreators.upload.uploadJob,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.uploadJob.toString(),
+        actionCreators.upload.uploadJob.toString(),
         state.apiOperationErrors
       ),
     }),
     /**
      * Clear the upload data so a new upload can be attempted.
      **/
-    [actionCreators.resources.clearUploadData]: state => ({
+    [actionCreators.upload.clearUploadData]: state => ({
       ...state,
       uploadStatus: null,
       uploadData: null
@@ -467,7 +467,7 @@ export default handleActions(
     /**
      * Display the Upload Modal
      **/
-    [actionCreators.resources.displayUploadModal]: (state, action) => ({
+    [actionCreators.upload.displayUploadModal]: (state, action) => ({
       ...state,
       uploadModalDisplay: true,
       uploadType: action.payload.uploadType
@@ -475,7 +475,7 @@ export default handleActions(
     /**
      * Hide the Upload Modal
      **/
-    [actionCreators.resources.hideUploadModal]: state => ({
+    [actionCreators.upload.hideUploadModal]: state => ({
       ...state,
       uploadModalDisplay: false,
       uploadType: null
@@ -483,22 +483,22 @@ export default handleActions(
     /**
      * Cancel the upload
      **/
-    [actionCreators.resources.cancelUpload]: state => ({
+    [actionCreators.upload.cancelUpload]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
       )
     }),
     /**
      * Untrack API call.
      **/
-    [actionCreators.resources.cancelUploadSuccess]: state => ({
+    [actionCreators.upload.cancelUploadSuccess]: state => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
       ),
       uploadStatus: 'cancelSuccess',
@@ -507,17 +507,17 @@ export default handleActions(
     * Untrack API call and track failure that occurred.
     * Dispatched via Saga call on failed cancel upload call.
     **/
-    [actionCreators.resources.cancelUploadFailure]: (state, action) => ({
+    [actionCreators.upload.cancelUploadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       uploadStatus: 'cancelled',
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.cancelUpload,
+        actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.cancelUpload.toString(),
+        actionCreators.upload.cancelUpload.toString(),
         state.apiOperationErrors
       ),
     }),
