@@ -45,11 +45,11 @@ const PresQTStepContent = withStyles({
 })(StepContent);
 
 const steps = [
-  'Select Destination Target',
-  'Input Token',
-  'Select Resource or select nothing to create a new project',
+  'Select destination target',
+  'Input destination target token',
+  'Select resource or select nothing to create a new project',
   'Select the action to occur when a duplicate resource is found',
-  'Initiate Transfer',
+  'Initiate transfer',
   'Results'
 ];
 

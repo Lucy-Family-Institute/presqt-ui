@@ -16,8 +16,8 @@ const CustomTransferButton = withStyles({
 })(Button);
 
 /**
- * Component responsible for rendering the upload button in the upload stepper and passing the
- * selected file to the Upload API endpoint
+ * Component responsible for rendering the transfer button in the transfer stepper and passing the
+ * selected file to the Transfer API endpoint
  **/
 export default function TransferStepperTransferButton({handleNext, destinationTarget,
                                                         destinationToken, selectedDuplicate}) {
@@ -28,7 +28,7 @@ export default function TransferStepperTransferButton({handleNext, destinationTa
   const sourceResource = useSelector(state => state.resources.selectedResource);
   const selectedTransferResource = useSelector(state => state.resources.selectedTransferResource);
   /**
-   * When the upload button is pushed, dispatch the Upload action and update the stepper
+   * When the transfer button is pushed, dispatch the Transfer action and transfer the stepper
    * index to move forward.
    **/
 
