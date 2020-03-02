@@ -49,6 +49,12 @@ export default function AvailableConnections() {
    */
   const handleSwitchTarget = connection => {
     dispatch(actionCreators.resources.clearResources());
+
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.loadFromTarget.toString()));
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.loadFromTargetSearch.toString()));
+
     dispatch(actionCreators.targets.switchTarget(connection));
 
     if (connection.name in apiTokens) {
