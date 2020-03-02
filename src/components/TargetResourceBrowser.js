@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actionCreators";
@@ -10,16 +9,7 @@ import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, React, useEffect } from "react";
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  
-  100% {
-    opacity: 100;
-  }
-`;
+import {basicFadeIn} from "../styles/animations";
 
 /**
  * This component handles actions within the resource browser. It will open/close containers,
@@ -68,7 +58,7 @@ export default function TargetResourceBrowser() {
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
       return (
-        <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
+        <div key={resource.id} css={{ animation: `${basicFadeIn} .5s ease` }}>
           <ResourceButton
             resource={resource}
             level={level}

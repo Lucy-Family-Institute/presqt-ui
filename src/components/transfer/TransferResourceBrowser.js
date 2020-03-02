@@ -5,19 +5,9 @@ import {actionCreators} from "../../redux/actionCreators";
 import Spinner from "../widgets/spinners/Spinner";
 import {useDispatch, useSelector} from "react-redux";
 import ResourceButton from "../widgets/buttons/ResourceButton";
-import { keyframes } from "emotion";
 import TransferResourcesHeader from "./TransferResourcesHeader";
 import textStyles from "../../styles/text";
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  
-  100% {
-    opacity: 100;
-  }
-`;
+import {basicFadeIn} from "../../styles/animations";
 
 export default function TransferResourceBrowser({destinationTarget, destinationToken}) {
   const dispatch = useDispatch();
@@ -55,7 +45,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
       return (
-        <div key={resource.id} css={{ paddingTop: 10, animation: `${fadeIn} .5s ease` }}>
+        <div key={resource.id} css={{ paddingTop: 10, animation: `${basicFadeIn} .5s ease` }}>
           <ResourceButton
             browserType="transfer"
             resource={resource}
