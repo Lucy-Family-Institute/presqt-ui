@@ -1,8 +1,11 @@
+/** @jsx jsx */
 import Button from "@material-ui/core/Button/Button";
-import React, {useEffect} from "react";
+import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../styles/colors";
 import {useSelector} from "react-redux";
+import textStyles from "../../../styles/text";
+import { jsx } from "@emotion/core";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -32,7 +35,7 @@ export default function TransferStepperNextButton({ handleNext, activeStep,
         (activeStep === 1 && transferDestinationToken === '') ||
         (activeStep === 2 && !transferTargetResources)}
     >
-      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+      <span css={textStyles.buttonText}>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</span>
     </Button>
   )
 }
