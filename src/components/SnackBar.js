@@ -24,6 +24,8 @@ export default function SnackBar() {
 
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const githubStatus = useSelector(state => state.authorization.githubStatus);
+  const githubIssueData = useSelector(state => state.authorization.githubIssueData);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
@@ -60,6 +62,19 @@ export default function SnackBar() {
       setSnackBarClass(classes.failure);
     }
   }, [uploadStatus]);
+
+  useEffect(() => {
+    if (githubStatus === 'success') {
+      setSnackBarOpen(true);
+      setSnackBarText(`Issue #${githubIssueData.number} Created Successfully`);
+      setSnackBarClass(classes.success);
+    }
+    else if (githubStatus === 'failure') {
+      setSnackBarOpen(true);
+      setSnackBarText('GitHub Issue Failed to Create');
+      setSnackBarClass(classes.failure);
+    }
+  }, [githubStatus])
 
   return (
     <Snackbar
