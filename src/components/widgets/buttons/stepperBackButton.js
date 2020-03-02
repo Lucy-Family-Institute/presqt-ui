@@ -1,7 +1,10 @@
+/** @jsx jsx */
 import Button from "@material-ui/core/Button/Button";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../styles/colors";
+import textStyles from "../../../styles/text";
+import {jsx} from "@emotion/core";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -21,7 +24,7 @@ export default function StepperBackButton({handleBack, activeStep}) {
       color="primary"
       className={classes.button}
     >
-      Back
+      <span css={textStyles.buttonText}>Back</span>
     </Button>
   )
 }

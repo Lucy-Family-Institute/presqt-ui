@@ -5,6 +5,7 @@ import {actionCreators} from "../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
+import textStyles from "../../../styles/text";
 
 const CustomTransferButton = withStyles({
   root: {
@@ -54,7 +55,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       variant="contained"
       color="primary"
     >
-    Transfer File
+      <span css={textStyles.buttonText}>Transfer File</span>
     </CustomTransferButton>
   )
 }

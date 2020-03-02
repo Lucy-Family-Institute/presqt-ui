@@ -1,7 +1,10 @@
+/** @jsx jsx */
 import Button from "@material-ui/core/Button/Button";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../styles/colors";
+import textStyles from "../../styles/text";
+import {jsx} from "@emotion/core";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -26,7 +29,7 @@ export default function UploadStepperNextButton({handleNext, activeStep, selecte
         disabled={activeStep === 0 ? !selectedFile : false}
 
       >
-        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+        <span css={textStyles.buttonText}>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</span>
       </Button>
     )
 }

@@ -58,7 +58,7 @@ export default {
   buttonText: css({
     fontFamily: "Roboto",
     fontWeight: 500,
-    fontSize: 12,
+    fontSize: 13,
     textTransform: "uppercase"
   }),
   selectedResource: css({
