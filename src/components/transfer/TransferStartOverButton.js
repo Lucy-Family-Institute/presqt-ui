@@ -27,17 +27,15 @@ export default function TransferStartOverButton(
   if (step === 4) {
     classes = useStyles();
   }
+  
   const dispatch = useDispatch();
 
   const submitRetry = () => {
     dispatch(actionCreators.resources.clearTransferModalData());
     setDestinationTarget('');
     setDestinationToken('');
-    dispatch(
-      actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.transferResource.toString()
-      )
-    );
+    dispatch(actionCreators.resources.removeFromErrorList(
+        actionCreators.resources.transferResource.toString()));
     setActiveStep(0);
   };
 
