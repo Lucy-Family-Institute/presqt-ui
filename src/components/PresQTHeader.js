@@ -22,7 +22,9 @@ export default function PresQTHeader() {
           justifyContent: 'flex-start'
         }}
       >
-        <span css={textStyles.presqtLogo}>PresQT</span>
+        <span css={textStyles.presqtLogo}>
+          PresQT
+        </span>
         <span css={textStyles.presqtLogoSubtext}>
           Preservation Quality Tools
         </span>

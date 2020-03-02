@@ -17,14 +17,14 @@ export default function RetryDownloadButton({setModalContent, modalDefaultMessag
   const dispatch = useDispatch();
   // Download specific Selectors
   const targetToken = useSelector(
-    state => state.authorization.apiTokens[state.targets.selectedTarget.name]);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
+    state => state.apiTokens[state.selectedTarget.name]);
+  const selectedResource = useSelector(state => state.selectedResource);
 
   const submitRetry = () => {
-      dispatch(actionCreators.resources.clearDownloadData());
+      dispatch(actionCreators.download.clearDownloadData());
       dispatch(actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.downloadResource.toString()));
-      dispatch(actionCreators.resources.downloadResource(selectedResource, targetToken));
+        actionCreators.download.downloadResource.toString()));
+      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
 
       setModalContent(modalDefaultMessage);
     };

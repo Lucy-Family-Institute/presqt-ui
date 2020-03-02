@@ -11,15 +11,15 @@ import { actionCreators } from "../../redux/actionCreators";
 export default function TransferActionButton({disabled}) {
   const dispatch = useDispatch();
 
-  const submitUpload = () => {
-    dispatch(actionCreators.resources.displayTransferModal());
+  const submitTransfer = () => {
+    dispatch(actionCreators.transfer.displayTransferModal());
   };
 
   return (
     <ActionButton
       elevation={0}
       variant="contained"
-      onClick={submitUpload}
+      onClick={submitTransfer}
       disabled={disabled}
     >
       <span css={textStyles.buttonText}>Transfer Out</span>

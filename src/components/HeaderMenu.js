@@ -1,17 +1,9 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
-import { useDispatch } from 'react-redux';
+import { jsx } from "@emotion/core";
 import textStyles from "../styles/text";
+import mainStyles from "../styles/main";
 import { actionCreators } from "../redux/actionCreators";
-
-const imageHoverStyle = css({
-  transform: 'scale(1.1)',
-  cursor: "pointer"
-});
-
-const imageHoverOrFocus = css({
-  ":hover": imageHoverStyle
-});
+import { useDispatch } from 'react-redux';
 
 export default function HeaderMenu() {
   const dispatch = useDispatch();
@@ -31,7 +23,7 @@ export default function HeaderMenu() {
         css={[
           textStyles.globalNav,
           { textDecoration: "none" },
-          imageHoverOrFocus
+          mainStyles.hoverOrFocusTransform
         ]}
         href="https://presqt.crc.nd.edu"
         target="_blank"
@@ -43,11 +35,11 @@ export default function HeaderMenu() {
         css={[
           textStyles.globalNav,
           { textDecoration: "none", marginLeft: 25 },
-          imageHoverOrFocus,
+          mainStyles.hoverOrFocusTransform,
         ]}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => dispatch(actionCreators.authorization.displayIssueModal())}
+        onClick={() => dispatch(actionCreators.github.displayIssueModal())}
       >
         Submit Feedback
       </a>

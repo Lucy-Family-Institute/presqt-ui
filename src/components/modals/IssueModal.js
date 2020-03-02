@@ -16,22 +16,22 @@ import Spinner from "../widgets/spinners/Spinner";
 export default function TokenModal() {
   const dispatch = useDispatch();
 
-  const issueModalDisplay = useSelector(state => state.authorization.issueModalDisplay);
-  const githubStatus = useSelector(state => state.authorization.githubStatus);
-  const githubIssueData = useSelector(state => state.authorization.githubIssueData);
+  const issueModalDisplay = useSelector(state => state.issueModalDisplay);
+  const githubStatus = useSelector(state => state.githubStatus);
+  const githubIssueData = useSelector(state => state.githubIssueData);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const handleClose = () => {
-    dispatch(actionCreators.authorization.hideIssueModal());
-    dispatch(actionCreators.authorization.clearGithubIssue());
+    dispatch(actionCreators.github.hideIssueModal());
+    dispatch(actionCreators.github.clearGithubIssue());
     setTitle("");
     setBody("");
   };
 
   const modalSubmit = () => {
-    dispatch(actionCreators.authorization.submitGithubIssue(title, body));
+    dispatch(actionCreators.github.submitGithubIssue(title, body));
   };
 
   const getContent = () => {

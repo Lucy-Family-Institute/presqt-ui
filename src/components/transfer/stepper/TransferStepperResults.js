@@ -17,23 +17,23 @@ import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
 
 
-export default function TransferStepperResults(
-  {destinationTarget, destinationToken, setActiveStep, setDestinationTarget,
-    setDestinationToken, selectedDuplicate}) {
+export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
   const dispatch = useDispatch();
 
-  const transferStatus = useSelector(state => state.resources.transferStatus);
-  const transferData = useSelector(state => state.resources.transferData);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
+  const transferStatus = useSelector(state => state.transferStatus);
+  const transferData = useSelector(state => state.transferData);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
   const transferError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.transferResource.toString());
+    element => element.action === actionCreators.transfer.transferResource.toString());
 
   const transferJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.transferJob.toString());
+    element => element.action === actionCreators.transfer.transferJob.toString());
 
   const transferCancelError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.cancelTransfer.toString());
+    element => element.action === actionCreators.transfer.cancelTransfer.toString());
 
 
   const [stepThreeContent, setStepThreeContent] = useState(
@@ -43,14 +43,14 @@ export default function TransferStepperResults(
       </div>
       <Spinner />
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-        <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
+        <CancelButton actionType='TRANSFER' />
       </div>
     </div>
   );
 
   useEffect(() => {
     if (transferStatus === 'success') {
-      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
+      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     else if (transferStatus === 'finished') {
       const failedFixityMessage = transferData.failed_fixity.length > 0
@@ -117,7 +117,7 @@ export default function TransferStepperResults(
       setStepThreeContent(successfulMessage);
     }
     else if (transferStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTransferTarget(destinationTarget, destinationToken))
+      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken));
       setStepThreeContent(
         <div>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
@@ -125,7 +125,7 @@ export default function TransferStepperResults(
           </div>
           <Spinner />
           <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
+            <CancelButton actionType='TRANSFER' />
           </div>
         </div>
       )
@@ -164,13 +164,9 @@ export default function TransferStepperResults(
           >
             <TransferStartOverButton
               setActiveStep={setActiveStep}
-              setDestinationTarget={setDestinationTarget}
-              setDestinationToken={setDestinationToken}
             />
             <span css={{ marginLeft: 5 }}>
               <TransferRetryButton
-                destinationTarget={destinationTarget}
-                destinationToken={destinationToken}
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
               />

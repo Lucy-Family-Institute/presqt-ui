@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import {jsx} from "@emotion/core";
-import { useState } from "react";
+import {actionCreators} from "../../../redux/actionCreators";
 import SearchTextField from "../../widgets/text_fields/SearchTextField";
 import { withStyles } from "@material-ui/styles";
+import {useDispatch} from "react-redux";
 
 const TokenTextField = withStyles({
   root: {
@@ -10,14 +11,15 @@ const TokenTextField = withStyles({
   }
 })(SearchTextField);
 
-export default function TransferStepperToken({ setDestinationToken, destinationToken, handleNext }) {
+export default function TransferStepperToken({ handleNext }) {
+  const dispatch = useDispatch();
+
   return (
     <TokenTextField
       size="small"
       type='text'
-      value={destinationToken}
       label="Insert API Token Here"
-      onChange={event => setDestinationToken(event.target.value)}
+      onChange={event => dispatch(actionCreators.transfer.saveTransferToken(event.target.value))}
       // If the enter button is pressed (code 13), go to the next step.
       onKeyDown={(event) => {if (event.keyCode === 13 && destinationToken !== '') {handleNext()}}}
     />

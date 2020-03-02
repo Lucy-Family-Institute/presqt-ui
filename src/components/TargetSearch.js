@@ -19,8 +19,8 @@ export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.selectedTarget);
-  const token = useSelector(state => state.authorization.apiTokens)[selectedTarget.name];
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const token = useSelector(state => state.apiTokens)[selectedTarget.name];
 
   const [searchValue, setSearchValue] = useState('');
 

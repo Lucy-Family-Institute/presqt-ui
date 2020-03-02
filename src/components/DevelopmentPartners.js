@@ -1,23 +1,12 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
-
+import { jsx } from "@emotion/core";
 import developmentPartners from "../images/headers/developmentPartners.png";
+import mainStyles from "../styles/main";
 
-const imageHoverStyle = css({
-  transform: 'scale(1.1)'
-});
-
-const imageHoverOrFocus = css({
-  ":hover": imageHoverStyle
-});
 
 export default function DevelopmentPartners() {
   return (
-    <div
-      css={{
-        gridArea: "developmentPartners"
-      }}
-    >
+    <div css={{gridArea: "developmentPartners"}} >
       <img
         src={developmentPartners}
         alt="Available Connections"
@@ -30,7 +19,7 @@ export default function DevelopmentPartners() {
           paddingTop: 5
         }}
       >
-        <a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer" css={imageHoverOrFocus}>
+        <a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer" css={mainStyles.hoverOrFocusTransform}>
           <img
             src={require("../images/development_partners/notreDameAcademicMark.png")}
             alt="Notre Dame Academic Mark"
@@ -42,7 +31,7 @@ export default function DevelopmentPartners() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={require("../images/development_partners/IMLS.png")} alt="IMLS Logo" css={imageHoverOrFocus}/>
+          <img src={require("../images/development_partners/IMLS.png")} alt="IMLS Logo" css={mainStyles.hoverOrFocusTransform}/>
         </a>
       </div>
     </div>

@@ -1,29 +1,20 @@
 /** @jsx jsx */
-import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
-
 import textStyles from "../../styles/text";
 import { useSelector } from "react-redux";
+import {basicFadeIn} from "../../styles/animations";
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
+export default function TransferResourcesHeader( ) {
+  const available = useSelector(state => state.available);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
-  100% {
-    opacity: 100;
-  }
-`;
-
-export default function TransferResourcesHeader({ destinationTarget }) {
-  const available = useSelector(state => state.targets.available);
-  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
   let headerTarget = null;
 
   let headerMessage = "Resources";
   if (transferTargetResources) {
     for (let i = 0; i < available.length; i++) {
-      if (available[i].name === destinationTarget) {
+      if (available[i].name === transferDestinationTarget) {
         headerTarget = available[i].readable_name
       }
     }
@@ -32,7 +23,7 @@ export default function TransferResourcesHeader({ destinationTarget }) {
 
   return (
     <div css={{ display: "flex" }}>
-      <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
+      <span css={[textStyles.largeHeader, { animation: `${basicFadeIn} 1s ease` }]}>
         {headerMessage}
       </span>
     </div>

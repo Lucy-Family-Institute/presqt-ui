@@ -27,18 +27,19 @@ const modalDefaultMessage = (
 export default function DownloadModal() {
   const dispatch = useDispatch();
 
-  const downloadData = useSelector(state => state.resources.downloadData);
-  const downloadModalDisplay = useSelector(state => state.resources.downloadModalDisplay);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const downloadStatus = useSelector(state => state.resources.downloadStatus);
+  const downloadData = useSelector(state => state.downloadData);
+  const downloadModalDisplay = useSelector(state => state.downloadModalDisplay);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.downloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
+  const [modalHeader, setModalHeader] = useState('Download In Progress');
 
   const downloadError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.downloadResource.toString());
+    element => element.action === actionCreators.download.downloadResource.toString());
 
   const downloadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.downloadJob.toString());
+    element => element.action === actionCreators.download.downloadJob.toString());
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.
@@ -46,12 +47,15 @@ export default function DownloadModal() {
    * If 'success' then use FileSaver to download the file and transition the modal to close.
    **/
   useEffect(() => {
-    // Download failed
     let errorMessage;
     if (downloadStatus === "failure") {
+      setModalHeader('Download Failed!');
+      // Initial download failed
       if (downloadError) {
         errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
-      } else if (downloadJobError) {
+      }
+      // Download job failed
+      else if (downloadJobError) {
         errorMessage = `PresQT API returned an error with status code ${downloadJobError.status}: ${downloadJobError.data}`
       }
       // Target error
@@ -72,10 +76,10 @@ export default function DownloadModal() {
               />
           </div>
         </Fragment>
-
       )
     }
     else if (downloadStatus === 'cancelled') {
+      setModalHeader('Download Cancelled');
       setModalContent(
         <Fragment>
           <div
@@ -95,8 +99,8 @@ export default function DownloadModal() {
     // Download successful
     else if (downloadStatus === "success") {
       FileSaver.saveAs(downloadData, "PresQT_Download.zip");
-      dispatch(actionCreators.resources.hideDownloadModal());
-      dispatch(actionCreators.resources.clearDownloadData());
+      dispatch(actionCreators.download.hideDownloadModal());
+      dispatch(actionCreators.download.clearDownloadData());
     }
   }, [downloadStatus]);
 
@@ -105,12 +109,12 @@ export default function DownloadModal() {
    *  Dispatch clearDownloadData to clear download data from state.
    **/
   const handleClose = () => {
-    dispatch(actionCreators.resources.hideDownloadModal());
+    dispatch(actionCreators.download.hideDownloadModal());
     setModalContent(modalDefaultMessage);
-    dispatch(actionCreators.resources.clearDownloadData());
+    dispatch(actionCreators.download.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.downloadResource.toString()
+        actionCreators.download.downloadResource.toString()
       )
     );
     dispatch(actionCreators.resources.clearActiveTicketNumber());
@@ -132,11 +136,7 @@ export default function DownloadModal() {
           onClose={handleClose}
           disabled={downloadStatus === 'pending'}
         >
-          {downloadStatus === "failure"
-            ? "Download Failed!"
-            : downloadStatus === "cancelled"
-            ? "Download Cancelled"
-            : "Download In Progress"}
+          {modalHeader}
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>
             {modalContent}
