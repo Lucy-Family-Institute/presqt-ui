@@ -9,13 +9,15 @@ import TransferResourcesHeader from "./TransferResourcesHeader";
 import textStyles from "../../styles/text";
 import {basicFadeIn} from "../../styles/animations";
 
-export default function TransferResourceBrowser({destinationTarget, destinationToken}) {
+export default function TransferResourceBrowser() {
   const dispatch = useDispatch();
 
   const available = useSelector(state => state.available);
   const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
   const transferTargetResources = useSelector(state => state.transferTargetResources);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
   const collectionError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
@@ -65,13 +67,13 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
   useEffect(() => {
     if (transferTargetResources && transferTargetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, destinationToken),
+        resource => onResourceClicked(resource, transferDestinationToken),
         transferTargetResources))
     }
     else if (transferTargetResources && transferTargetResources.length === 0) {
       let targetReadableName = '';
       for (let i = 0; i < available.length; i++) {
-        if (available[i].name === destinationTarget) {
+        if (available[i].name === transferDestinationTarget) {
           targetReadableName = available[i].readable_name
         }
       }
@@ -92,7 +94,7 @@ export default function TransferResourceBrowser({destinationTarget, destinationT
       flex: 1,
       display: "flex"}}>
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <TransferResourcesHeader destinationTarget={destinationTarget} />
+        <TransferResourcesHeader />
         {pendingAPIOperations.includes(actionCreators.transfer.loadFromTransferTarget.toString())
           ? <Spinner />
           :

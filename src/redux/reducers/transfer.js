@@ -12,9 +12,19 @@ export const transferReducers = {
     openTransferResources: [],
     transferStatus: null,
     transferData: null,
-    transferModalDisplay: false
+    transferModalDisplay: false,
+    transferDestinationTarget: null,
+    transferDestinationToken: ''
   },
   reducers: {
+    [actionCreators.transfer.saveTransferToken]: (state, action) => ({
+      ...state,
+      transferDestinationToken: action.payload.targetToken
+    }),
+    [actionCreators.transfer.saveTransferDestinationTarget]: (state, action) => ({
+      ...state,
+      transferDestinationTarget: action.payload.target
+    }),
     /**
      * Display the Transfer Modal
      **/
@@ -33,13 +43,13 @@ export const transferReducers = {
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.transfer.loadFromTransferTarget]: state => ({
+    [actionCreators.transfer.loadFromTransferTarget]: (state, action) => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.transfer.loadFromTransferTarget,
         state.pendingAPIOperations
-      )
+      ),
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -273,7 +283,9 @@ export const transferReducers = {
       selectedTransferResourceName: null,
       selectedTransferResource: null,
       openTransferResources: [],
-      transferTargetResources: null
+      transferTargetResources: null,
+      transferDestinationTarget: null,
+      transferDestinationToken: ''
     }),
     /**
      * Clear the transfer data so a transfer can retried

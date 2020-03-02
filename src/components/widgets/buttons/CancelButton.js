@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button/Button";
 import {actionCreators} from "../../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
 
-export default function CancelButton({actionType, destinationToken}) {
+export default function CancelButton({actionType}) {
   const classes = buttonStyles.CancelButton();
   const dispatch = useDispatch();
 
@@ -16,7 +16,8 @@ export default function CancelButton({actionType, destinationToken}) {
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const uploadStatus = useSelector(state => state.uploadStatus);
   const transferStatus = useSelector(state => state.transferStatus);
-  
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
       dispatch(actionCreators.download.cancelDownload(ticketNumber, targetToken))
@@ -25,7 +26,7 @@ export default function CancelButton({actionType, destinationToken}) {
       dispatch(actionCreators.upload.cancelUpload(ticketNumber, targetToken))
     }
     else if (actionType === 'TRANSFER') {
-      dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, destinationToken))
+      dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, transferDestinationToken))
     }
   };
 

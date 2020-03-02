@@ -9,8 +9,7 @@ import Button from "@material-ui/core/Button/Button";
 import Spinner from "../widgets/spinners/Spinner";
 import CancelButton from "../widgets/buttons/CancelButton";
 
-export default function TransferRetryButton(
-  {destinationTarget, destinationToken, selectedDuplicate, setStepThreeContent}) {
+export default function TransferRetryButton({selectedDuplicate, setStepThreeContent}) {
   const classes = buttonStyles.RetryUpload();
   const dispatch = useDispatch();
 
@@ -19,6 +18,9 @@ export default function TransferRetryButton(
   const sourceTarget = useSelector(state => state.selectedTarget.name);
   const selectedResource = useSelector(state => state.selectedResource);
   const selectedTransferResource = useSelector(state => state.selectedTransferResource);
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+
   const submitRetry = () => {
     dispatch(actionCreators.transfer.clearTransferData());
 
@@ -29,8 +31,8 @@ export default function TransferRetryButton(
     );
     dispatch(
       actionCreators.transfer.transferResource(
-        destinationTarget,
-        destinationToken,
+        transferDestinationTarget,
+        transferDestinationToken,
         selectedResource,
         selectedDuplicate,
         selectedTransferResource,
@@ -43,7 +45,7 @@ export default function TransferRetryButton(
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The transfer is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
         <Spinner />
         <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-          <CancelButton actionType='TRANSFER' destinationToken={destinationToken}/>
+          <CancelButton actionType='TRANSFER' />
         </div>
       </div>
     );

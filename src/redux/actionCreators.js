@@ -59,6 +59,8 @@ export const actionCreators = createActions({
         HIDE_UPLOAD_MODAL: undefined,
     },
     TRANSFER: {
+        SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),
+        SAVE_TRANSFER_DESTINATION_TARGET: (target) => ({target}),
         LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
         LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),

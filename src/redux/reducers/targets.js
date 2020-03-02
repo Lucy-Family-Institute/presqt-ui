@@ -6,7 +6,6 @@ export const targetsReducers = {
     available: []
   },
   reducers: {
-      // Targets Actions
       [actionCreators.targets.switchTarget]: (state, action) => ({
         ...state,
         selectedTarget: action.payload
