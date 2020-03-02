@@ -6,10 +6,27 @@ import buttonStyles from "../../styles/buttons";
 import { actionCreators } from "../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import textStyles from "../../styles/text";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../../styles/colors";
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    backgroundColor: colors.presqtBlue,
+    '&:hover': {
+      backgroundColor: '#0a4996',
+    },
+    color: 'white'
+  }
+}));
 
 export default function TransferStartOverButton(
-  {setActiveStep, setDestinationTarget, setDestinationToken}) {
-  const classes = buttonStyles.RetryStartUploadOver();
+  {setActiveStep, setDestinationTarget, setDestinationToken, step}) {
+  let classes = buttonStyles.RetryStartUploadOver();
+  if (step === 4) {
+    classes = useStyles();
+  }
   const dispatch = useDispatch();
 
   const submitRetry = () => {

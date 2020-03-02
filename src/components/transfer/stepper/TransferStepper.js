@@ -18,6 +18,7 @@ import TransferStepperNextButton from "./TransferStepperNextButton";
 import UploadStepperBackButton from "../../upload_stepper/UploadStepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
+import TransferStartOverButton from "../TransferStartOverButton";
 
 
 const useStyles = makeStyles(theme => ({
@@ -156,16 +157,23 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
                       />
                     : null
                     }
-                    {index !== 4 && index !== 5
-                      ? <TransferStepperNextButton
-                          handleNext={handleNext}
-                          activeStep={activeStep}
-                          destinationTarget={destinationTarget}
-                          destinationToken={destinationToken}
-                          transferTargetResources={transferTargetResources}
+                    {index === 4
+                      ? <TransferStartOverButton
+                        setActiveStep={setActiveStep}
+                        setDestinationTarget={setDestinationTarget}
+                        setDestinationToken={setDestinationToken}
+                        step={index}
+                        />
+                      : index !== 5 
+                        ? <TransferStepperNextButton
+                        handleNext={handleNext}
+                        activeStep={activeStep}
+                        destinationTarget={destinationTarget}
+                        destinationToken={destinationToken}
+                        transferTargetResources={transferTargetResources}
                           steps={steps}
                         />
-                  : null }
+                        : null }
                   </div>
                 </div>
               </Typography>

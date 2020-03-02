@@ -19,7 +19,7 @@ export default function TransferStepperToken({ setDestinationToken, destinationT
       label="Insert API Token Here"
       onChange={event => setDestinationToken(event.target.value)}
       // If the enter button is pressed (code 13), go to the next step.
-      onKeyDown={(event) => { if (event.keyCode === 13) {handleNext()} }}
+      onKeyDown={(event) => {if (event.keyCode === 13 && destinationToken !== '') {handleNext()}}}
     />
   )
 }
