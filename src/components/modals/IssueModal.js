@@ -24,14 +24,14 @@ export default function TokenModal() {
   const [body, setBody] = useState("");
 
   const handleClose = () => {
-    dispatch(actionCreators.authorization.hideIssueModal());
-    dispatch(actionCreators.authorization.clearGithubIssue());
+    dispatch(actionCreators.github.hideIssueModal());
+    dispatch(actionCreators.github.clearGithubIssue());
     setTitle("");
     setBody("");
   };
 
   const modalSubmit = () => {
-    dispatch(actionCreators.authorization.submitGithubIssue(title, body));
+    dispatch(actionCreators.github.submitGithubIssue(title, body));
   };
 
   const getContent = () => {

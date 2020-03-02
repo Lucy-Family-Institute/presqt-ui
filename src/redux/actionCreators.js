@@ -6,12 +6,6 @@ export const actionCreators = createActions({
         REMOVE_TOKEN: (target) => ({target: target}),
         DISPLAY_TOKEN_MODAL: undefined,
         HIDE_TOKEN_MODAL: undefined,
-        DISPLAY_ISSUE_MODAL: undefined,
-        HIDE_ISSUE_MODAL: undefined,
-        SUBMIT_GITHUB_ISSUE: (title, body) => ({ title, body }),
-        SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
-        SUBMIT_GITHUB_ISSUE_FAILURE: undefined,
-        CLEAR_GITHUB_ISSUE: undefined
     },
     RESOURCES: {
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
@@ -100,5 +94,13 @@ export const actionCreators = createActions({
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
         SWITCH_TARGET: undefined
+    },
+    GITHUB: {
+        DISPLAY_ISSUE_MODAL: undefined,
+        HIDE_ISSUE_MODAL: undefined,
+        SUBMIT_GITHUB_ISSUE: (title, body) => ({ title, body }),
+        SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
+        SUBMIT_GITHUB_ISSUE_FAILURE: undefined,
+        CLEAR_GITHUB_ISSUE: undefined
     }
 });

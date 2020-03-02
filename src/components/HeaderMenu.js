@@ -39,7 +39,7 @@ export default function HeaderMenu() {
         ]}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => dispatch(actionCreators.authorization.displayIssueModal())}
+        onClick={() => dispatch(actionCreators.github.displayIssueModal())}
       >
         Submit Feedback
       </a>
