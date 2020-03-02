@@ -15,6 +15,7 @@ import {
   watchSelectTransferResource,
   watchSwitchTransferTarget, watchTransferRefreshSource
 } from "./transfer";
+import { watchSubmitIssue } from "./github";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -32,6 +33,7 @@ export default function* rootSaga() {
     watchResourceTransfer(),
     watchSelectTransferResource(),
     watchTransferRefreshSource(),
-    watchCancelTransfer()
+    watchCancelTransfer(),
+    watchSubmitIssue()
   ]);
 }

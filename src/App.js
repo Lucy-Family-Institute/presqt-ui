@@ -16,6 +16,7 @@ import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
 import {Fragment} from "react";
 import TransferModal from "./components/modals/TransferModal";
+import IssueModal from "./components/modals/IssueModal";
 
 const styles = {
   app: css({
@@ -55,6 +56,7 @@ function App() {
         <TokenModal />
         <DownloadModal />
         <TransferModal />
+        <IssueModal />
       </div>
     </Fragment>
 

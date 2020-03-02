@@ -2,8 +2,12 @@
 import { jsx } from "@emotion/core";
 import textStyles from "../styles/text";
 import mainStyles from "../styles/main";
+import { actionCreators } from "../redux/actionCreators";
+import { useDispatch } from 'react-redux';
 
 export default function HeaderMenu() {
+  const dispatch = useDispatch();
+
   return (
     <div
       css={{
@@ -33,9 +37,9 @@ export default function HeaderMenu() {
           { textDecoration: "none", marginLeft: 25 },
           mainStyles.hoverOrFocusTransform,
         ]}
-        href="https://github.com/ndlib/presqt-ui/issues/new"
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => dispatch(actionCreators.authorization.displayIssueModal())}
       >
         Submit Feedback
       </a>
