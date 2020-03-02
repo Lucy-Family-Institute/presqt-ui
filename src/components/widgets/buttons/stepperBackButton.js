@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button/Button";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UploadStepperBackButton({handleBack, activeStep}) {
+export default function StepperBackButton({handleBack, activeStep}) {
   const classes = useStyles();
 
   return(

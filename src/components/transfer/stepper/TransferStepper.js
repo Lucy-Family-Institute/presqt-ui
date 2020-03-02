@@ -13,9 +13,9 @@ import TransferStepperToken from "./TransferStepperToken";
 import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
-import UploadDuplicateActionRadioButtons from "../../upload_stepper/UploadDuplicateActionRadioButtons";
+import DuplicateActionRadioButtons from "../../widgets/buttons/duplicateActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
-import UploadStepperBackButton from "../../upload_stepper/UploadStepperBackButton";
+import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
 
@@ -100,7 +100,7 @@ export default function TransferStepper() {
         return <TransferStepperSelectResource />
       }
       case 3: {
-        return <UploadDuplicateActionRadioButtons // RENAME SO IT'S REUSABLE
+        return <DuplicateActionRadioButtons
           selectedDuplicate={selectedDuplicate}
           setSelectedDuplicate={setSelectedDuplicate}
         />
@@ -142,7 +142,7 @@ export default function TransferStepper() {
                 <div className={classes.actionsContainer}>
                   <div>
                     {index !== 5
-                    ? <UploadStepperBackButton // RENAME SO IT'S REUSABLE
+                    ? <StepperBackButton // RENAME SO IT'S REUSABLE
                         handleBack={handleBack}
                         activeStep={activeStep}
                       />
