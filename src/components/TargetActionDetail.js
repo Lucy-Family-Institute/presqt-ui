@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
-
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/headers/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
@@ -16,7 +15,7 @@ export default function TargetActionDetail() {
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
-   * We exclude the following keys: ['links', 'open', 'children', 'count']
+   * We exclude the following keys certain keys.
    */
   const detailsToRender = resource => {
     return Object.entries(resource)
@@ -116,7 +115,8 @@ export default function TargetActionDetail() {
         ? <Spinner />
         : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null
-        : selectedResource ? (
+        : selectedResource
+        ? (
           <div>
             <MediumHeader text="Resource Details" />
             <div css={{ paddingTop: 10 }}>
