@@ -1,7 +1,8 @@
 import Button from "@material-ui/core/Button/Button";
-import React from "react";
+import React, {useEffect} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../styles/colors";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -14,24 +15,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransferStepperNextButton({ handleNext, activeStep, destinationTarget,
-                                                    destinationToken, transferTargetResources,
-                                                    steps }) {
+export default function TransferStepperNextButton({ handleNext, activeStep,
+                                                    transferTargetResources, steps }) {
   const classes = useStyles();
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
-    return(
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleNext}
-        className={classes.button}
-        disabled={
-          (activeStep === 0 ? !destinationTarget : false) ||
-          (activeStep === 1 ? !destinationToken : false) ||
-          (activeStep === 2 ? !transferTargetResources : false)}
-
-      >
-        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-      </Button>
-    )
+  return(
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleNext}
+      className={classes.button}
+      disabled={
+        (activeStep === 0 && !transferDestinationTarget) ||
+        (activeStep === 1 && transferDestinationToken === '') ||
+        (activeStep === 2 && !transferTargetResources)}
+    >
+      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+    </Button>
+  )
 }

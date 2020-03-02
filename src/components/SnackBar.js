@@ -22,11 +22,11 @@ const useStyles = makeStyles(theme => ({
 export default function SnackBar() {
   const classes = useStyles();
 
-  const downloadStatus = useSelector(state => state.resources.downloadStatus);
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
-  const transferStatus = useSelector(state => state.resources.transferStatus);
-  const githubStatus = useSelector(state => state.authorization.githubStatus);
-  const githubIssueData = useSelector(state => state.authorization.githubIssueData);
+  const downloadStatus = useSelector(state => state.downloadStatus);
+  const uploadStatus = useSelector(state => state.uploadStatus);
+  const transferStatus = useSelector(state => state.transferStatus);
+  const githubStatus = useSelector(state => state.githubStatus);
+  const githubIssueData = useSelector(state => state.githubIssueData);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
@@ -73,7 +73,7 @@ export default function SnackBar() {
       setSnackBarClass(classes.failure);
     }
   }, [uploadStatus]);
-  
+
   useEffect(() => {
     if (transferStatus === 'finished') {
       setSnackBarOpen(true);

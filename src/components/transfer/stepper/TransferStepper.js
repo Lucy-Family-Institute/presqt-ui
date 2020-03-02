@@ -13,9 +13,9 @@ import TransferStepperToken from "./TransferStepperToken";
 import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
-import UploadDuplicateActionRadioButtons from "../../upload_stepper/UploadDuplicateActionRadioButtons";
+import DuplicateActionRadioButtons from "../../widgets/buttons/duplicateActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
-import UploadStepperBackButton from "../../upload_stepper/UploadStepperBackButton";
+import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
 
@@ -54,12 +54,14 @@ const steps = [
 ];
 
 
-export default function TransferStepper({ setDestinationTarget, destinationTarget,
-                                          setDestinationToken, destinationToken }) {
+export default function TransferStepper() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const transferTargetResources = useSelector(state => state.resources.transferTargetResources);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 
@@ -75,8 +77,8 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
    **/
   const handleNext = () => {
     if (activeStep === 1) {
-      dispatch(actionCreators.resources.loadFromTransferTarget(
-        destinationTarget, destinationToken));
+      dispatch(actionCreators.transfer.loadFromTransferTarget(
+        transferDestinationTarget, transferDestinationToken));
     }
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
@@ -88,21 +90,17 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
   function getStepContent(step) {
     switch (step) {
       case 0: {
-        return <TransferStepperTargets
-          destinationTarget={destinationTarget}
-          setDestinationTarget={setDestinationTarget}/>
+        return <TransferStepperTargets />
       }
       case 1: {
         return <TransferStepperToken
-          destinationToken={destinationToken}
-          setDestinationToken={setDestinationToken}
           handleNext={handleNext}/>
       }
       case 2: {
         return <TransferStepperSelectResource />
       }
       case 3: {
-        return <UploadDuplicateActionRadioButtons // RENAME SO IT'S REUSABLE
+        return <DuplicateActionRadioButtons
           selectedDuplicate={selectedDuplicate}
           setSelectedDuplicate={setSelectedDuplicate}
         />
@@ -110,18 +108,12 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
       case 4: {
         return <TransferStepperTransferButton
           handleNext={handleNext}
-          destinationTarget={destinationTarget}
-          destinationToken={destinationToken}
           selectedDuplicate={selectedDuplicate}
         />
       }
       case 5: {
         return <TransferStepperResults
-          destinationTarget={destinationTarget}
-          destinationToken={destinationToken}
           setActiveStep={setActiveStep}
-          setDestinationTarget={setDestinationTarget}
-          setDestinationToken={setDestinationToken}
           selectedDuplicate={selectedDuplicate}
         />
       }
@@ -150,7 +142,7 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
                 <div className={classes.actionsContainer}>
                   <div>
                     {index !== 5
-                    ? <UploadStepperBackButton // RENAME SO IT'S REUSABLE
+                    ? <StepperBackButton // RENAME SO IT'S REUSABLE
                         handleBack={handleBack}
                         activeStep={activeStep}
                       />
@@ -160,8 +152,6 @@ export default function TransferStepper({ setDestinationTarget, destinationTarge
                       ? <TransferStepperNextButton
                           handleNext={handleNext}
                           activeStep={activeStep}
-                          destinationTarget={destinationTarget}
-                          destinationToken={destinationToken}
                           transferTargetResources={transferTargetResources}
                           steps={steps}
                         />

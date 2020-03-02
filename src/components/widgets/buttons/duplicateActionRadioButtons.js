@@ -4,7 +4,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * Component for the duplicate action radio buttons in the upload stepper
+ * Component for the duplicate action radio buttons in the upload/transfer stepper
  **/
-export default function UploadDuplicateActionRadioButtons({selectedDuplicate, setSelectedDuplicate}) {
+export default function DuplicateActionRadioButtons({selectedDuplicate, setSelectedDuplicate}) {
   const classes = useStyles();
 
   /**

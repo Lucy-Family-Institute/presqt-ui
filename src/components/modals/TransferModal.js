@@ -26,18 +26,13 @@ export default function TransferModal() {
   const leftGridClasses = leftGrid();
   const RightGridClasses = RightGrid();
 
-  const transferModalDisplay = useSelector(state => state.resources.transferModalDisplay);
-  const selectedResource = useSelector(state => state.resources.selectedResource);
-  const transferStatus = useSelector(state => state.resources.transferStatus);
-
-  const [destinationTarget, setDestinationTarget] = useState('');
-  const [destinationToken, setDestinationToken] = useState('');
+  const transferModalDisplay = useSelector(state => state.transferModalDisplay);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const transferStatus = useSelector(state => state.transferStatus);
 
   const handleClose = () => {
-    dispatch(actionCreators.resources.hideTransferModal());
-    dispatch(actionCreators.resources.clearTransferModalData());
-    setDestinationTarget('');
-    setDestinationToken('');
+    dispatch(actionCreators.transfer.hideTransferModal());
+    dispatch(actionCreators.transfer.clearTransferModalData());
   };
 
   return transferModalDisplay
@@ -62,18 +57,10 @@ export default function TransferModal() {
         <DialogContent>
           <Grid container>
             <Grid item xs={7} className={leftGridClasses.root}>
-              <TransferStepper
-                  destinationTarget={destinationTarget}
-                  setDestinationTarget={setDestinationTarget}
-                  destinationToken={destinationToken}
-                  setDestinationToken={setDestinationToken}
-                />
+              <TransferStepper/>
             </Grid>
             <Grid className={RightGridClasses.root} item xs={5}>
-              <TransferResourceBrowser
-                destinationTarget={destinationTarget}
-                destinationToken={destinationToken}
-              />
+              <TransferResourceBrowser/>
             </Grid>
           </Grid>
         </DialogContent>

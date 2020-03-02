@@ -24,17 +24,17 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                                                selectedFile, selectedDuplicate, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const uploadStatus = useSelector(state => state.resources.uploadStatus);
-  const uploadData = useSelector(state => state.resources.uploadData);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const connection = useSelector(state => state.targets.selectedTarget);
-  const token = useSelector(state => state.authorization.apiTokens)[connection.name];
+  const uploadStatus = useSelector(state => state.uploadStatus);
+  const uploadData = useSelector(state => state.uploadData);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const connection = useSelector(state => state.selectedTarget);
+  const token = useSelector(state => state.apiTokens)[connection.name];
 
   const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadToTarget.toString());
+    element => element.action === actionCreators.upload.uploadToTarget.toString());
 
   const uploadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.uploadJob.toString());
+    element => element.action === actionCreators.upload.uploadJob.toString());
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>

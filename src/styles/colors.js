@@ -7,6 +7,5 @@ export default {
   presqtTintedBlue: '#CEDCED',
   cubsRed: '#CC3433',  //GoCubsGo
   chevelleRed: '#DD412D', // It filters through
-  
   presqtBlueHover: '#0a4996'
 };

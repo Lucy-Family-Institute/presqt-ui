@@ -4,10 +4,10 @@ import {
   cancelResourceDownloadJob,
   getResourceDownload,
   resourceDownloadJob
-} from "../../api/resources";
+} from "../../api/download";
 
 export function* watchResourceDownload() {
-  yield takeEvery(actionCreators.resources.downloadResource, downloadTargetResource)
+  yield takeEvery(actionCreators.download.downloadResource, downloadTargetResource)
 }
 
 function* downloadTargetResource(action) {
@@ -18,7 +18,7 @@ function* downloadTargetResource(action) {
       action.payload.targetToken
     );
 
-    yield put(actionCreators.resources.downloadFromTargetSuccess(response.data));
+    yield put(actionCreators.download.downloadFromTargetSuccess(response.data));
 
     // Kick off the download job endpoint check-in
     try {
@@ -26,7 +26,7 @@ function* downloadTargetResource(action) {
 
       // Keep checking in on the download job endpoint until the download finishes or fails
       while (!downloadFinished) {
-        yield put(actionCreators.resources.downloadJob());
+        yield put(actionCreators.download.downloadJob());
 
         const downloadJobResponse = yield call(
           resourceDownloadJob,
@@ -40,12 +40,12 @@ function* downloadTargetResource(action) {
             [downloadJobResponse.data],
             {type : 'application/json'}
           );
-          yield put(actionCreators.resources.downloadJobSuccess(downloadJobResponseData, 'success'));
+          yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseData, 'success'));
           downloadFinished = true;
         }
         // Download pending!
         else {
-          yield put(actionCreators.resources.downloadJobSuccess(null, 'pending'));
+          yield put(actionCreators.download.downloadJobSuccess(null, 'pending'));
           yield delay(1000);
         }
       }
@@ -59,10 +59,10 @@ function* downloadTargetResource(action) {
         );
         const errorData = yield call(getErrorData, downloadJobResponseData);
         if (JSON.parse(errorData).status_code === '499') {
-          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'cancelled'));
+          yield put(actionCreators.download.downloadJobSuccess(JSON.parse(errorData), 'cancelled'));
         }
         else {
-          yield put(actionCreators.resources.downloadJobSuccess(JSON.parse(errorData), 'failure'));
+          yield put(actionCreators.download.downloadJobSuccess(JSON.parse(errorData), 'failure'));
         }
       }
       else {
@@ -71,14 +71,14 @@ function* downloadTargetResource(action) {
           {type : 'application/json'}
         );
         const errorData = yield call(getErrorData, downloadJobResponseData);
-        yield put(actionCreators.resources.downloadJobFailure(
+        yield put(actionCreators.download.downloadJobFailure(
           error.response.status,
           JSON.parse(errorData).error));
       }
     }
   }
   catch (error) {
-    yield put(actionCreators.resources.downloadFromTargetFailure(
+    yield put(actionCreators.download.downloadFromTargetFailure(
       error.response.status,
       error.response.data.error)
     );
@@ -91,7 +91,7 @@ function getErrorData(downloadJobResponseData) {
 
 // Cancel Download
 export function* watchCancelDownload() {
-  yield takeEvery(actionCreators.resources.cancelDownload, cancelDownload)
+  yield takeEvery(actionCreators.download.cancelDownload, cancelDownload)
 }
 
 function* cancelDownload(action) {
@@ -102,12 +102,12 @@ function* cancelDownload(action) {
       action.payload.targetToken
     );
 
-    yield put(actionCreators.resources.cancelDownloadSuccess())
+    yield put(actionCreators.download.cancelDownloadSuccess())
 
   }
 
   catch (error) {
-    yield put(actionCreators.resources.cancelDownloadFailure(
+    yield put(actionCreators.download.cancelDownloadFailure(
       error.response.status,
       error.response.data.error)
     )

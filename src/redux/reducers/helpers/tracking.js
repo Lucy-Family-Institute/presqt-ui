@@ -20,12 +20,9 @@ export function untrackAction(actionCreator, array) {
  * Add error object to state.apiOperationErrors
  **/
 export function trackError(actionCreator, action, array) {
-  return  [...array, {
-        'action': action.toString(),
-        'status': actionCreator.payload.status,
-        'data': actionCreator.payload.data,
-      }]
+  return [...array, {
+    'action': action.toString(),
+    'status': actionCreator.payload.status,
+    'data': actionCreator.payload.data,
+  }]
 }
-
-
-

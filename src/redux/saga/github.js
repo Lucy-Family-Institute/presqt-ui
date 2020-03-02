@@ -3,7 +3,7 @@ import { actionCreators } from "../actionCreators";
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 
 export function* watchSubmitIssue() {
-  yield takeEvery(actionCreators.authorization.submitGithubIssue, submitGithubIssue);
+  yield takeEvery(actionCreators.github.submitGithubIssue, submitGithubIssue);
 }
 
 function* submitGithubIssue(action) {
@@ -13,9 +13,9 @@ function* submitGithubIssue(action) {
       action.payload.title,
       action.payload.body
     );
-    yield put(actionCreators.authorization.submitGithubIssueSuccess(response.data));
+    yield put(actionCreators.github.submitGithubIssueSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.authorization.submitGithubIssueFailure(error.response));
+    yield put(actionCreators.github.submitGithubIssueFailure(error.response));
   }
 }

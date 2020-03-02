@@ -1,17 +1,18 @@
 import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
-  cancelResourceTransferJob,
-  cancelResourceUploadJob,
   getResourceDetail,
-  getTargetResources,
+  getTargetResources
+} from "../../api/resources";
+import {
+  cancelResourceTransferJob,
   postResourceTransfer,
   resourceTransferJob
-} from "../../api/resources";
+} from "../../api/transfer";
 
 /** Resource Collection For Transfer Resource Browser **/
 export function* watchSwitchTransferTarget() {
-  yield takeEvery(actionCreators.resources.loadFromTransferTarget, loadTransferTargetResources);
+  yield takeEvery(actionCreators.transfer.loadFromTransferTarget, loadTransferTargetResources);
 }
 
 /**
@@ -25,10 +26,10 @@ function* loadTransferTargetResources(action) {
       action.payload.target,
       action.payload.targetToken
     );
-    yield put(actionCreators.resources.loadFromTransferTargetSuccess(response.data));
+    yield put(actionCreators.transfer.loadFromTransferTargetSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.loadFromTransferTargetFailure(
+    yield put(actionCreators.transfer.loadFromTransferTargetFailure(
       error.response.status,
       error.response.data.error)
     );
@@ -37,7 +38,7 @@ function* loadTransferTargetResources(action) {
 
 /** Refresh Resource Collection for transfer **/
 export function* watchTransferRefreshSource() {
-  yield takeEvery(actionCreators.resources.refreshTransferTarget, refreshTransferTargetResources);
+  yield takeEvery(actionCreators.transfer.refreshTransferTarget, refreshTransferTargetResources);
 }
 
 /**
@@ -52,10 +53,10 @@ function* refreshTransferTargetResources(action) {
       action.payload.target,
       action.payload.targetToken
     );
-    yield put(actionCreators.resources.refreshTransferTargetSuccess(response.data));
+    yield put(actionCreators.transfer.refreshTransferTargetSuccess(response.data));
   }
   catch (error) {
-    yield put(actionCreators.resources.refreshTransferTargetFailure(
+    yield put(actionCreators.transfer.refreshTransferTargetFailure(
       error.response.status,
       error.response.data.error)
     );
@@ -64,7 +65,7 @@ function* refreshTransferTargetResources(action) {
 
 /** Resource Detail for transfer**/
 export function* watchSelectTransferResource() {
-  yield takeEvery(actionCreators.resources.selectTransferResource, loadTransferResourceDetail);
+  yield takeEvery(actionCreators.transfer.selectTransferResource, loadTransferResourceDetail);
 }
 
 function* loadTransferResourceDetail(action) {
@@ -75,12 +76,12 @@ function* loadTransferResourceDetail(action) {
   );
 
   yield put(
-    actionCreators.resources.selectTransferResourceSuccess(response.data)
+    actionCreators.transfer.selectTransferResourceSuccess(response.data)
   );
 }
 
 export function* watchResourceTransfer() {
-  yield takeEvery(actionCreators.resources.transferResource, transferTargetResource)
+  yield takeEvery(actionCreators.transfer.transferResource, transferTargetResource)
 }
 
 function* transferTargetResource(action) {
@@ -96,14 +97,14 @@ function* transferTargetResource(action) {
       action.payload.sourceTargetToken
     );
 
-    yield put(actionCreators.resources.transferSuccess(response.data));
+    yield put(actionCreators.transfer.transferSuccess(response.data));
 
     // Kick off the transfer job endpoint check-in
     try {
       let transferFinished = false;
 
       while (!transferFinished) {
-        yield put(actionCreators.resources.transferJob());
+        yield put(actionCreators.transfer.transferJob());
 
         const transferJobResponse = yield call(
           resourceTransferJob,
@@ -114,11 +115,11 @@ function* transferTargetResource(action) {
 
         // transfer successful!
         if (transferJobResponse.status === 200) {
-          yield put(actionCreators.resources.transferJobSuccess(transferJobResponse.data, 'success'));
+          yield put(actionCreators.transfer.transferJobSuccess(transferJobResponse.data, 'success'));
           transferFinished = true;
         }
         else {
-          yield put(actionCreators.resources.transferJobSuccess(null, 'pending'));
+          yield put(actionCreators.transfer.transferJobSuccess(null, 'pending'));
           yield delay(1000);
         }
       }
@@ -127,14 +128,14 @@ function* transferTargetResource(action) {
     catch(error){
       if (error.response.status === 500) {
         if (error.response.data.status_code === '499'){
-          yield put(actionCreators.resources.transferJobSuccess(error.response.data, 'cancelSuccess'));
+          yield put(actionCreators.transfer.transferJobSuccess(error.response.data, 'cancelSuccess'));
         }
         else {
-          yield put(actionCreators.resources.transferJobSuccess(error.response.data, 'failure'));
+          yield put(actionCreators.transfer.transferJobSuccess(error.response.data, 'failure'));
         }
       }
       else {
-        yield put(actionCreators.resources.transferJobFailure(
+        yield put(actionCreators.transfer.transferJobFailure(
           error.response.status,
           error.response.data.error)
       )}
@@ -142,7 +143,7 @@ function* transferTargetResource(action) {
   }
   // Transfer failed because of PresQT API error
   catch(error){
-    yield put(actionCreators.resources.transferFailure(
+    yield put(actionCreators.transfer.transferFailure(
       error.response.status,
       error.response.data.error)
     )
@@ -151,7 +152,7 @@ function* transferTargetResource(action) {
 
 // Cancel Transfer
 export function* watchCancelTransfer() {
-  yield takeEvery(actionCreators.resources.cancelTransfer, cancelTransfer)
+  yield takeEvery(actionCreators.transfer.cancelTransfer, cancelTransfer)
 }
 
 function* cancelTransfer(action) {
@@ -163,12 +164,12 @@ function* cancelTransfer(action) {
       action.payload.destinationToken
     );
 
-    yield put(actionCreators.resources.cancelTransferSuccess())
+    yield put(actionCreators.transfer.cancelTransferSuccess())
 
   }
 
   catch (error) {
-    yield put(actionCreators.resources.cancelTransferFailure(
+    yield put(actionCreators.transfer.cancelTransferFailure(
       error.response.status,
       error.response.data.error)
     )
