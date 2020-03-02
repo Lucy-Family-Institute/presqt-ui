@@ -5,6 +5,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
+import textStyles from "../../styles/text";
 
 const CustomUploadButton = withStyles({
   root: {
@@ -47,7 +48,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
       variant="contained"
       color="primary"
     >
-    Upload File
+      <span css={textStyles.buttonText}>Upload File</span>
     </CustomUploadButton>
   )
 }

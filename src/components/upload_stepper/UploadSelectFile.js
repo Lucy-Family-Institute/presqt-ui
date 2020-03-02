@@ -5,6 +5,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
+import textStyles from "../../styles/text";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,7 +59,7 @@ export default function UploadSelectFile({selectedFile, setSelectedFile}) {
               endIcon={<CloudUploadIcon />}
               onAnimationEnd={(event) => {event.stopPropagation()}}
             >
-              Select File
+              <span css={textStyles.buttonText}>Select File</span>
             </CustomButton>
           </label>
         </div>
