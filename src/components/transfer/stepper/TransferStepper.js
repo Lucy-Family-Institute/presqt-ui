@@ -149,14 +149,19 @@ export default function TransferStepper() {
                       />
                     : null
                     }
-                    {index !== 4 && index !== 5
-                      ? <TransferStepperNextButton
-                          handleNext={handleNext}
-                          activeStep={activeStep}
-                          transferTargetResources={transferTargetResources}
-                          steps={steps}
-                        />
-                        : null }
+                    {index === 4 
+                      ? <TransferStartOverButton
+                        setActiveStep={setActiveStep}
+                        step={index}
+                      />
+                      : index !== 5
+                        ? <TransferStepperNextButton
+                        handleNext={handleNext}
+                        activeStep={activeStep}
+                        transferTargetResources={transferTargetResources}
+                        steps={steps}
+                      />
+                      : null }
                   </div>
                 </div>
               </Typography>

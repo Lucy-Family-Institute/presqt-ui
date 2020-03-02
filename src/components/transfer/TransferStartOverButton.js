@@ -20,8 +20,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransferStartOverButton({setActiveStep}) {
-  const classes = buttonStyles.RetryStartUploadOver();
+export default function TransferStartOverButton({setActiveStep, step}) {
+  let classes = buttonStyles.RetryStartUploadOver();
+  if (step === 4) {
+    classes = useStyles();
+  }
+  
   const dispatch = useDispatch();
 
   const submitRetry = () => {
