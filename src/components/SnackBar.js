@@ -31,8 +31,6 @@ export default function SnackBar() {
   const [snackBarText, setSnackBarText] = useState('');
   const [snackBarClass, setSnackBarClass] = useState('');
 
-  console.log(githubIssueData);
-
   /**
    * DOWNLOAD
    **/
