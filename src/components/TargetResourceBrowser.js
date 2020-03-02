@@ -40,9 +40,7 @@ export default function TargetResourceBrowser() {
    * If clicked container is open then dispatch the closeContainer action to minimize the container
    * Else dispatch the openContainer action to expand the container
    * After the container action completes, dispatch selectResource to fetch resource details
-   *   -> Saga call to Resource Detail occurs here
-   *      -> On complete saga dispatches the selectResourceSuccess action
-   */
+   **/
   const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
@@ -54,7 +52,7 @@ export default function TargetResourceBrowser() {
   /**
    * Recursively called function which is used to display the resource
    * hierarchy of a given target.
-   */
+   **/
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
       return (
@@ -79,23 +77,19 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (targetResources || searchValue || collectionError) {
-      if (collectionError) {
-        if (collectionError.status === 401) {
-          return null;
-        }
-      }
+    if (collectionError && collectionError.status === 401) {
+      return null;
+    }
+    else if (targetResources || searchValue) {
       return <TargetSearch />;
     }
   };
 
   const upload = () => {
-    if (targetResources || searchValue || collectionError) {
-      if (collectionError) {
-        if (collectionError.status === 401) {
-          return null;
-        }
-      }
+    if (collectionError && collectionError.status === 401) {
+      return null;
+    }
+    else if (targetResources || searchValue) {
       return (
         <UploadActionButton
           style={{ width: 250 }}
@@ -103,28 +97,33 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!searchValue && selectedTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!searchValue && selectedTarget.supported_actions["resource_upload"] ? false : true}
         />
       );
     }
   };
 
   useEffect(() => {
+    // If resources exist
     if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
         resource => onResourceClicked(resource, targetToken), targetResources))
     }
+    // Search returned no results
     else if (targetResources && targetResources.length === 0 && searchValue) {
       setMessage(`No ${selectedTarget.readable_name} resources found for search term 
         "${searchValue}".`);
     }
+    // No resources exist
     else if (targetResources && targetResources.length === 0) {
       setMessage(`No ${selectedTarget.readable_name} resources found for this user.`);
     }
+    // Searched returned an error
     else if (searchError) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
       setMessage(`${searchError.data}`);
     }
+    // Resource collection returns an error
     else if (collectionError && collectionError.status !== 401) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
       setMessage(`${collectionError.data}`);
