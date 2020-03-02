@@ -33,6 +33,7 @@ export default function DownloadModal() {
   const downloadStatus = useSelector(state => state.downloadStatus);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
+  const [modalHeader, setModalHeader] = useState('Download In Progress');
 
   const downloadError = apiOperationErrors.find(
     element => element.action === actionCreators.download.downloadResource.toString());
@@ -46,12 +47,15 @@ export default function DownloadModal() {
    * If 'success' then use FileSaver to download the file and transition the modal to close.
    **/
   useEffect(() => {
-    // Download failed
     let errorMessage;
     if (downloadStatus === "failure") {
+      setModalHeader('Download Failed!');
+      // Initial download failed
       if (downloadError) {
         errorMessage = `PresQT API returned an error with status code ${downloadError.status}: ${downloadError.data}`
-      } else if (downloadJobError) {
+      }
+      // Download job failed
+      else if (downloadJobError) {
         errorMessage = `PresQT API returned an error with status code ${downloadJobError.status}: ${downloadJobError.data}`
       }
       // Target error
@@ -72,10 +76,10 @@ export default function DownloadModal() {
               />
           </div>
         </Fragment>
-
       )
     }
     else if (downloadStatus === 'cancelled') {
+      setModalHeader('Download Cancelled');
       setModalContent(
         <Fragment>
           <div
@@ -132,11 +136,7 @@ export default function DownloadModal() {
           onClose={handleClose}
           disabled={downloadStatus === 'pending'}
         >
-          {downloadStatus === "failure"
-            ? "Download Failed!"
-            : downloadStatus === "cancelled"
-            ? "Download Cancelled"
-            : "Download In Progress"}
+          {modalHeader}
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>
             {modalContent}
