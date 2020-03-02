@@ -24,6 +24,7 @@ export default function SnackBar() {
 
   const downloadStatus = useSelector(state => state.resources.downloadStatus);
   const uploadStatus = useSelector(state => state.resources.uploadStatus);
+  const transferStatus = useSelector(state => state.resources.transferStatus);
   const githubStatus = useSelector(state => state.authorization.githubStatus);
   const githubIssueData = useSelector(state => state.authorization.githubIssueData);
 
@@ -75,6 +76,19 @@ export default function SnackBar() {
       setSnackBarClass(classes.failure);
     }
   }, [githubStatus])
+
+  useEffect(() => {
+    if (transferStatus === 'finished') {
+      setSnackBarOpen(true);
+      setSnackBarText('Transfer Successful!');
+      setSnackBarClass(classes.success);
+    }
+    else if (transferStatus === 'failure') {
+      setSnackBarOpen(true);
+      setSnackBarText('Transfer Failed!');
+      setSnackBarClass(classes.failure);
+    }
+  }, [transferStatus])
 
   return (
     <Snackbar
