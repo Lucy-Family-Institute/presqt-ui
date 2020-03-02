@@ -16,13 +16,9 @@ import Spinner from "../widgets/spinners/Spinner";
 export default function TokenModal() {
   const dispatch = useDispatch();
 
-  const issueModalDisplay = useSelector(
-    state => state.authorization.issueModalDisplay
-  );
+  const issueModalDisplay = useSelector(state => state.authorization.issueModalDisplay);
   const githubStatus = useSelector(state => state.authorization.githubStatus);
-  const githubIssueData = useSelector(
-    state => state.authorization.githubIssueData
-  );
+  const githubIssueData = useSelector(state => state.authorization.githubIssueData);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -39,134 +35,98 @@ export default function TokenModal() {
     setBody("");
   };
 
-  return issueModalDisplay && !githubStatus ? (
-    <div>
-      <Dialog
-        maxWidth="md"
-        fullWidth={true}
-        open={issueModalDisplay}
-        onClose={handleClose}
-        aria-labelledby={"form-dialog-title"}
-      >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Create an Issue on GitHub
-        </DialogTitle>
-        <DialogContent>
-          <div>
-            <div
-              css={{
-                paddingTop: 5,
-                paddingBottom: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <TokenTextField
-                variant="outlined"
-                size="small"
-                type="text"
-                value={title}
-                label="Insert Title of The Issue Here..."
-                onChange={event => setTitle(event.target.value)}
-                onAnimationEnd={event => {
-                  event.stopPropagation();
-                }}
-                // If the enter button is pressed (code 13), submit the modal.
-                onKeyDown={event => {
-                  if (event.keyCode === 13) {
-                    modalSubmit();
-                  }
-                }}
-              />
-            </div>
-            <div
-              css={{
-                paddingTop: 10,
-                paddingBottom: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <TokenTextField
-                id="outlined-multiline-static"
-                label="Insert Content of The Issue Here..."
-                onChange={event => setBody(event.target.value)}
-                value={body}
-                multiline
-                rows="4"
-                variant="outlined"
-              />
-            </div>
-            <div
-              css={{
-                paddingTop: 10,
-                paddingBottom: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <ModalSubmitButton
-                variant="contained"
-                css={[
-                  title ? modalStyles.button : modalStyles.disabledButton,
-                  modalStyles.buttonText
-                ]}
-                onClick={() => modalSubmit()}
-                disabled={!title || !body}
-              >
-                Submit Issue
-              </ModalSubmitButton>
-            </div>
+  const getContent = () => {
+    return (
+      !githubStatus
+        ? <div>
+          <div
+            css={{
+              paddingTop: 5,
+              paddingBottom: 10,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <TokenTextField
+              variant="outlined"
+              size="small"
+              type="text"
+              value={title}
+              label="Insert Title of The Issue Here..."
+              onChange={event => setTitle(event.target.value)}
+              onAnimationEnd={event => event.stopPropagation()}
+            />
           </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  ) : githubStatus === "pending" ? (
-    <div>
-      <Dialog
-        maxWidth="md"
-        fullWidth={true}
-        open={issueModalDisplay}
-        onClose={handleClose}
-        aria-labelledby={"form-dialog-title"}
-      >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Create an Issue on GitHub
-        </DialogTitle>
-        <DialogContent>
-          <Spinner />
-        </DialogContent>
-      </Dialog>
-    </div>
-  ) : githubStatus === "failure" ? (
-    <div>
-      <Dialog
-        maxWidth="md"
-        fullWidth={true}
-        open={issueModalDisplay}
-        onClose={handleClose}
-        aria-labelledby={"form-dialog-title"}
-      >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Create an Issue on GitHub
-        </DialogTitle>
-        <DialogContent>
-          <div>
-            <div
-              css={{
-                paddingTop: 5,
-                paddingBottom: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <p>Github returned an error trying to post the issue.</p>
-            </div>
+          <div
+            css={{
+              paddingTop: 10,
+              paddingBottom: 10,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <TokenTextField
+              id="outlined-multiline-static"
+              label="Insert Content of The Issue Here..."
+              onChange={event => setBody(event.target.value)}
+              value={body}
+              multiline
+              rows="4"
+              variant="outlined"
+            />
           </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  ) : githubStatus === "success" ? (
+          <div
+            css={{
+              paddingTop: 10,
+              paddingBottom: 10,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <ModalSubmitButton
+              variant="contained"
+              css={[
+                title ? modalStyles.button : modalStyles.disabledButton,
+                modalStyles.buttonText
+              ]}
+              onClick={() => modalSubmit()}
+              disabled={!title || !body}
+            >
+              Submit Issue
+            </ModalSubmitButton>
+          </div>
+        </div>
+        : githubStatus === 'pending'
+        ? <Spinner/>
+        : githubStatus === "failure"
+          ? <div
+            css={{
+              paddingTop: 5,
+              paddingBottom: 10,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <p>Github returned an error trying to post the issue.</p>
+          </div>
+          :
+          <div
+            css={{
+              paddingTop: 5,
+              paddingBottom: 10,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <p>
+              Github issue #{githubIssueData.number} created successfully. You
+              can find your issue <a href={`${githubIssueData.html_url}`} target='_blank'>here.</a>
+            </p>
+          </div>
+    )
+  };
+
+  return issueModalDisplay ? (
     <div>
       <Dialog
         maxWidth="md"
@@ -179,21 +139,7 @@ export default function TokenModal() {
           Create an Issue on GitHub
         </DialogTitle>
         <DialogContent>
-          <div>
-            <div
-              css={{
-                paddingTop: 5,
-                paddingBottom: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <p>
-                Github issue #{githubIssueData.number} created successfully. You
-                can find your issue <a href={`${githubIssueData.html_url}`} target='_blank'>here.</a>
-              </p>
-            </div>
-          </div>
+          {getContent()}
         </DialogContent>
       </Dialog>
     </div>
