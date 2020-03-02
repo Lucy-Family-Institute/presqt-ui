@@ -26,13 +26,12 @@ export default function TokenModal() {
   const handleClose = () => {
     dispatch(actionCreators.authorization.hideIssueModal());
     dispatch(actionCreators.authorization.clearGithubIssue());
+    setTitle("");
+    setBody("");
   };
 
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.submitGithubIssue(title, body));
-    // 
-    setTitle("");
-    setBody("");
   };
 
   const getContent = () => {

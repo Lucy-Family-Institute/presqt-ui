@@ -62,9 +62,7 @@ export default handleActions(
      **/
     [actionCreators.authorization.hideIssueModal]: state => ({
       ...state,
-      issueModalDisplay: false,
-      githubIssueData: null,
-      githubIssueError: null
+      issueModalDisplay: false
     }),
     [actionCreators.authorization.submitGithubIssue]: state => ({
       ...state,
@@ -83,11 +81,12 @@ export default handleActions(
       githubIssueError: action.payload,
       githubStatus: 'failure'
     }),
-    [actionCreators.authorization.clearGithubIssue]: (state, action) => ({
+    [actionCreators.authorization.clearGithubIssue]: state => ({
       ...state,
       pendingGithubResponse: false,
       githubIssueError: null,
-      githubStatus: null
+      githubStatus: null,
+      githubIssueData: null
     }),
   },
   initialState
