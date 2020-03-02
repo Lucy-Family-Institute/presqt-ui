@@ -68,7 +68,8 @@ export default handleActions(
     }),
     [actionCreators.authorization.submitGithubIssue]: state => ({
       ...state,
-      pendingGithubResponse: true
+      pendingGithubResponse: true,
+      githubStatus: 'pending'
     }),
     [actionCreators.authorization.submitGithubIssueSuccess]: (state, action) => ({
       ...state,
@@ -81,7 +82,13 @@ export default handleActions(
       pendingGithubResponse: false,
       githubIssueError: action.payload,
       githubStatus: 'failure'
-    })
+    }),
+    [actionCreators.authorization.clearGithubIssue]: (state, action) => ({
+      ...state,
+      pendingGithubResponse: false,
+      githubIssueError: null,
+      githubStatus: null
+    }),
   },
   initialState
 );

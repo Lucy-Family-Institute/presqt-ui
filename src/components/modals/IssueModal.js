@@ -11,6 +11,7 @@ import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import { actionCreators } from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
 import { postGithubIssue } from "../../api/github_issues";
+import Spinner from "../widgets/spinners/Spinner";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -18,22 +19,27 @@ export default function TokenModal() {
   const issueModalDisplay = useSelector(
     state => state.authorization.issueModalDisplay
   );
+  const githubStatus = useSelector(state => state.authorization.githubStatus);
+  const githubIssueData = useSelector(
+    state => state.authorization.githubIssueData
+  );
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const handleClose = () => {
     dispatch(actionCreators.authorization.hideIssueModal());
+    dispatch(actionCreators.authorization.clearGithubIssue());
   };
 
   const modalSubmit = () => {
-    dispatch(actionCreators.authorization.submitGithubIssue(title, body)) 
-    dispatch(actionCreators.authorization.hideIssueModal());
+    dispatch(actionCreators.authorization.submitGithubIssue(title, body));
+    // 
     setTitle("");
     setBody("");
   };
 
-  return issueModalDisplay ? (
+  return issueModalDisplay && !githubStatus ? (
     <div>
       <Dialog
         maxWidth="md"
@@ -51,7 +57,7 @@ export default function TokenModal() {
               css={{
                 paddingTop: 5,
                 paddingBottom: 10,
-                display: 'flex',
+                display: "flex",
                 justifyContent: "center"
               }}
             >
@@ -73,30 +79,32 @@ export default function TokenModal() {
                 }}
               />
             </div>
-              <div
-                css={{
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  display: 'flex',
-                  justifyContent: "center"
-                }}
-              >
-                <TokenTextField
-                  id="outlined-multiline-static"
-                  label="Insert Content of The Issue Here..."
-                  onChange={event => setBody(event.target.value)}
-                  value={body}
-                  multiline
-                  rows="4"
-                  variant="outlined"
-                />
+            <div
+              css={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <TokenTextField
+                id="outlined-multiline-static"
+                label="Insert Content of The Issue Here..."
+                onChange={event => setBody(event.target.value)}
+                value={body}
+                multiline
+                rows="4"
+                variant="outlined"
+              />
             </div>
-            <div css={{
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  display: 'flex',
-                  justifyContent: "center"
-                }}>
+            <div
+              css={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
               <ModalSubmitButton
                 variant="contained"
                 css={[
@@ -108,6 +116,82 @@ export default function TokenModal() {
               >
                 Submit Issue
               </ModalSubmitButton>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  ) : githubStatus === "pending" ? (
+    <div>
+      <Dialog
+        maxWidth="md"
+        fullWidth={true}
+        open={issueModalDisplay}
+        onClose={handleClose}
+        aria-labelledby={"form-dialog-title"}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Create an Issue on GitHub
+        </DialogTitle>
+        <DialogContent>
+          <Spinner />
+        </DialogContent>
+      </Dialog>
+    </div>
+  ) : githubStatus === "failure" ? (
+    <div>
+      <Dialog
+        maxWidth="md"
+        fullWidth={true}
+        open={issueModalDisplay}
+        onClose={handleClose}
+        aria-labelledby={"form-dialog-title"}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Create an Issue on GitHub
+        </DialogTitle>
+        <DialogContent>
+          <div>
+            <div
+              css={{
+                paddingTop: 5,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <p>Github returned an error trying to post the issue.</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  ) : githubStatus === "success" ? (
+    <div>
+      <Dialog
+        maxWidth="md"
+        fullWidth={true}
+        open={issueModalDisplay}
+        onClose={handleClose}
+        aria-labelledby={"form-dialog-title"}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Create an Issue on GitHub
+        </DialogTitle>
+        <DialogContent>
+          <div>
+            <div
+              css={{
+                paddingTop: 5,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <p>
+                Github issue #{githubIssueData.number} created successfully. You
+                can find your issue <a href={`${githubIssueData.html_url}`} target='_blank'>here.</a>
+              </p>
             </div>
           </div>
         </DialogContent>

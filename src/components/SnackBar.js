@@ -7,7 +7,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import {useSelector} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../styles/colors";
-import { githubToken } from '../config';
 
 const useStyles = makeStyles(theme => ({
   success: {
