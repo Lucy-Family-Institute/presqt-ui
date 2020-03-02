@@ -46,6 +46,11 @@ export default function SnackBar() {
       setSnackBarText('Download Failed!');
       setSnackBarClass(classes.failure);
     }
+    else if (downloadStatus === 'cancelled') {
+      setSnackBarOpen(true);
+      setSnackBarText('Download Cancelled!');
+      setSnackBarClass(classes.failure);
+    }
   }, [downloadStatus]);
 
   /**
@@ -62,7 +67,30 @@ export default function SnackBar() {
       setSnackBarText('Upload Failed!');
       setSnackBarClass(classes.failure);
     }
+    else if (uploadStatus === 'cancelled') {
+      setSnackBarOpen(true);
+      setSnackBarText('Upload Cancelled!');
+      setSnackBarClass(classes.failure);
+    }
   }, [uploadStatus]);
+  
+  useEffect(() => {
+    if (transferStatus === 'finished') {
+      setSnackBarOpen(true);
+      setSnackBarText('Transfer Successful!');
+      setSnackBarClass(classes.success);
+    }
+    else if (transferStatus === 'failure') {
+      setSnackBarOpen(true);
+      setSnackBarText('Transfer Failed!');
+      setSnackBarClass(classes.failure);
+    }
+    else if (transferStatus === 'cancelled') {
+      setSnackBarOpen(true);
+      setSnackBarText('Transfer Cancelled!');
+      setSnackBarClass(classes.failure);
+    }
+  }, [transferStatus]);
 
   useEffect(() => {
     if (githubStatus === 'success') {
@@ -75,20 +103,8 @@ export default function SnackBar() {
       setSnackBarText('GitHub Issue Failed to Create');
       setSnackBarClass(classes.failure);
     }
-  }, [githubStatus])
+  }, [githubStatus]);
 
-  useEffect(() => {
-    if (transferStatus === 'finished') {
-      setSnackBarOpen(true);
-      setSnackBarText('Transfer Successful!');
-      setSnackBarClass(classes.success);
-    }
-    else if (transferStatus === 'failure') {
-      setSnackBarOpen(true);
-      setSnackBarText('Transfer Failed!');
-      setSnackBarClass(classes.failure);
-    }
-  }, [transferStatus])
 
   return (
     <Snackbar
