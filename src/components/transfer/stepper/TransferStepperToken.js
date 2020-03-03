@@ -4,7 +4,7 @@ import {actionCreators} from "../../../redux/actionCreators";
 import SearchTextField from "../../widgets/text_fields/SearchTextField";
 import { withStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import {testTokens, testTokenCommand} from "../../../config";
+import testTokenFinder from  "../../../helperFunctions/testTokenFinder"
 
 const TokenTextField = withStyles({
   root: {
@@ -18,15 +18,8 @@ export default function TransferStepperToken({ handleNext }) {
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
   const tokenSubmit = (value) => {
-    let finalValue = value;
-    if (value === testTokenCommand) {
-      for (var key in testTokens) {
-        if (key === transferDestinationTarget) {
-          finalValue = testTokens[key]
-        }
-      }
-    };
-    dispatch(actionCreators.transfer.saveTransferToken(finalValue))
+    let token = testTokenFinder(transferDestinationTarget, transferDestinationToken)
+    dispatch(actionCreators.transfer.saveTransferToken(token))
   };
 
   return (
