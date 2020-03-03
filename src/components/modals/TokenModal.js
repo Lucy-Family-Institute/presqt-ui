@@ -11,6 +11,7 @@ import React, {useEffect, useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
+import {testTokens, testTokenCommand} from "../../config";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -61,8 +62,16 @@ export default function TokenModal() {
    */
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
-    dispatch(actionCreators.authorization.saveToken(connection.name, token));
-    dispatch(actionCreators.resources.loadFromTarget(connection, token));
+    let goodToken = token;
+    if (token === testTokenCommand) {
+      for (var key in testTokens) {
+        if (key === connection.name) {
+          goodToken = testTokens[key]
+        }
+      }
+    }
+    dispatch(actionCreators.authorization.saveToken(connection.name, goodToken));
+    dispatch(actionCreators.resources.loadFromTarget(connection, goodToken));
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
