@@ -18,7 +18,7 @@ export default function TransferStepperToken({ handleNext }) {
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
   const tokenSubmit = (value) => {
-    let token = testTokenFinder(transferDestinationTarget, transferDestinationToken)
+    let token = testTokenFinder(transferDestinationTarget, value)
     dispatch(actionCreators.transfer.saveTransferToken(token))
   };
 
