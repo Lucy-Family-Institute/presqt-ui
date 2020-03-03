@@ -5,7 +5,7 @@ import text from '../../../styles/text';
 import { useEffect } from 'react';
 import { actionCreators } from '../../../redux/actionCreators';
 
-export default function TransferStepperSelectResource({ setActiveStep }) {
+export default function TransferStepperSelectResource() {
   const selectedTransferResourceName = useSelector(state => state.selectedTransferResourceName);
 
   if (selectedTransferResourceName) {

@@ -98,8 +98,7 @@ export default function TransferStepper() {
           handleNext={handleNext}/>
       }
       case 2: {
-        return <TransferStepperSelectResource
-          setActiveStep={setActiveStep}/>
+        return <TransferStepperSelectResource />
       }
       case 3: {
         return <DuplicateActionRadioButtons
