@@ -22,7 +22,7 @@ export default {
   selectedTransferListItem: css({
     fontSize: 14,
     fontFamily: "Roboto",
-    color: colors.presqtBlue
+    color: "#181818"
   }),
   globalNav: css({
     fontSize: 16,
