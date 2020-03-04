@@ -1,9 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector} from "react-redux";
 import text from '../../../styles/text';
-import { useEffect } from 'react';
-import { actionCreators } from '../../../redux/actionCreators';
 
 export default function TransferStepperSelectResource() {
   const selectedTransferResourceName = useSelector(state => state.selectedTransferResourceName);
