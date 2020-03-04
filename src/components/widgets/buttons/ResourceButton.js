@@ -2,6 +2,8 @@
 import { jsx } from "@emotion/core";
 
 import textStyles from "../../../styles/text";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const closedFolderIcon = require("../../../images/icons/closedFolder.png");
 const openFolderIcon = require("../../../images/icons/openFolder.png");
@@ -12,7 +14,22 @@ const fileSelectedIcon = require("../../../images/icons/fileSelected.png");
 const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile.png");
 const presqtMetadataFileIconSelected = require("../../../images/icons/presqtMetadataFileSelected.png");
 
-export default function ResourceButton({browserType, resource, level, onClick}) {
+export default function ResourceButton({ browserType, resource, level, onClick }) {
+  // TRANSFER SPECIFIC CODE
+  const transferStepInModal = useSelector(state => state.transferStepInModal);
+  const [disabled, setDisabled] = useState(false);
+  
+  useEffect(() => {
+    if (transferStepInModal) {
+      if (transferStepInModal.step === 3 || transferStepInModal.step === 4) {
+        setDisabled(true);
+      }
+      else if (transferStepInModal.step !== 3 || transferStepInModal.step !== 4) {
+        setDisabled(false);
+      }
+    }
+  }, [transferStepInModal])
+  // END OF TRANSFER SPECIFIC CODE
 
   const iconSelector = () => {
     if (resource.kind === "container") {
@@ -49,7 +66,7 @@ export default function ResourceButton({browserType, resource, level, onClick}) 
 
   return (
     <button
-      disabled={ browserType === "transfer" && resource.kind === 'item'}
+      disabled={ browserType === "transfer" && resource.kind === 'item' || disabled}
       css={[{
         display: "flex",
         flexDirection: "row",

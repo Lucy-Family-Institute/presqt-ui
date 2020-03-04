@@ -71,6 +71,7 @@ export default function TransferStepper() {
    **/
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
+    dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
   };
 
   /**
@@ -82,6 +83,7 @@ export default function TransferStepper() {
         transferDestinationTarget, transferDestinationToken));
     }
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    dispatch(actionCreators.transfer.stepInTransferModal(activeStep + 1));
   };
 
   /**
