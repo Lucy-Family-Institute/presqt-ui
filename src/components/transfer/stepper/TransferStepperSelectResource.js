@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import text from '../../../styles/text';
 
 export default function TransferStepperSelectResource() {
