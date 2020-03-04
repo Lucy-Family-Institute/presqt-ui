@@ -2,48 +2,30 @@
 import { jsx } from "@emotion/core";
 
 import textStyles from "../../../styles/text";
+import {Fragment} from "react";
 
 const closedFolderIcon = require("../../../images/icons/closedFolder.png");
 const openFolderIcon = require("../../../images/icons/openFolder.png");
-const openFolderSelectedIcon = require("../../../images/icons/openFolderSelected.png");
-const closedFolderSelectedIcon = require("../../../images/icons/closedFolderSelected.png");
 const fileIcon = require("../../../images/icons/file.png");
-const fileSelectedIcon = require("../../../images/icons/fileSelected.png");
 const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile.png");
-const presqtMetadataFileIconSelected = require("../../../images/icons/presqtMetadataFileSelected.png");
+const rectangle = require("../../../images/icons/rectangle.png");
 
 export default function ResourceButton({browserType, resource, level, onClick}) {
 
   const iconSelector = () => {
     if (resource.kind === "container") {
-      if (resource.open && resource.active) {
-        return openFolderSelectedIcon;
-      }
-      else if (resource.open && !resource.active) {
+      if (resource.open) {
         return openFolderIcon;
-      }
-      else if (!resource.open && resource.active) {
-        return closedFolderSelectedIcon;
       }
       else {
         return closedFolderIcon;
       }
     }
     else if (resource.title === "PRESQT_FTS_METADATA.json" || resource.title === "INVALID_PRESQT_FTS_METADATA.json") {
-      if (resource.active) {
-        return presqtMetadataFileIconSelected;
-      }
-      else {
         return presqtMetadataFileIcon;
-      }
     }
     else {
-      if (resource.active) {
-        return fileSelectedIcon;
-      }
-      else {
         return fileIcon;
-      }
     }
   };
 
@@ -65,11 +47,29 @@ export default function ResourceButton({browserType, resource, level, onClick}) 
       ]}
       onClick={() => onClick(resource)}
     >
-      <img
-        src={iconSelector()}
-        alt="Resource Icon"
-        css={{ paddingRight: 10, height: 25 }}
-      />
+      {
+        resource.active
+        ? <Fragment>
+            <img
+              src={rectangle}
+              alt={"Rectangle Icon"}
+              css={{marginLeft: -7, height: 25}}
+            />
+            <img
+              id="selectedIcon"
+              src={iconSelector()}
+              alt="Resource Icon"
+              css={{ marginLeft: 4.33, paddingRight: 10, height: 25 }}
+            />
+        </Fragment>
+        : <img
+            src={iconSelector()}
+            alt="Resource Icon"
+            css={{ paddingRight: 10, height: 25 }}
+          />
+      }
+
+
       <span css={textStyles.listItem}>{resource.title}</span>
     </button>
   );
