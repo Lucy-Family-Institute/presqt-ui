@@ -88,7 +88,8 @@ export const actionCreators = createActions({
         CLEAR_TRANSFER_DATA: undefined,
         REFRESH_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
-        REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+        REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
     },
     TARGETS: {
         LOAD: undefined,

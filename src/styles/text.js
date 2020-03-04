@@ -19,6 +19,11 @@ export default {
     fontSize: 14,
     fontFamily: "Roboto"
   }),
+  selectedTransferListItem: css({
+    fontSize: 14,
+    fontFamily: "Roboto",
+    color: "#181818"
+  }),
   globalNav: css({
     fontSize: 16,
     fontFamily: "Raleway",

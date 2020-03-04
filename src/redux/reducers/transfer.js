@@ -14,7 +14,8 @@ export const transferReducers = {
     transferData: null,
     transferModalDisplay: false,
     transferDestinationTarget: null,
-    transferDestinationToken: ''
+    transferDestinationToken: '',
+    transferStepInModal: null
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -285,7 +286,8 @@ export const transferReducers = {
       openTransferResources: [],
       transferTargetResources: null,
       transferDestinationTarget: null,
-      transferDestinationToken: ''
+      transferDestinationToken: '',
+      transferStepInModal: null
     }),
     /**
      * Clear the transfer data so a transfer can retried
@@ -343,6 +345,10 @@ export const transferReducers = {
       ),
       transferTargetResources: null
     }),
+    [actionCreators.transfer.stepInTransferModal]: (state, action) => ({
+      ...state,
+      transferStepInModal: action.payload
+    })
   }
 
 };

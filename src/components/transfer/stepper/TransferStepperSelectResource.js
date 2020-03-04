@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 import text from '../../../styles/text';
 
 export default function TransferStepperSelectResource() {
-  const selectedTransferResourceName = useSelector(state =>
-    state.selectedTransferResourceName);
+  const selectedTransferResourceName = useSelector(state => state.selectedTransferResourceName);
 
   if (selectedTransferResourceName) {
     return (
