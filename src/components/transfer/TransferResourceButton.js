@@ -94,7 +94,9 @@ export default function TransferResourceButton({resource, level, onClick }) {
       }
 
 
-      <span css={resource.active ? textStyles.selectedTransferListItem : textStyles.listItem}>{resource.title}</span>
+      <span css={resource.active ? textStyles.selectedTransferListItem : textStyles.listItem}>
+        {resource.title}
+      </span>
     </button>
   );
 }
