@@ -2,8 +2,6 @@
 import { jsx } from "@emotion/core";
 
 import textStyles from "../../../styles/text";
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import {Fragment} from "react";
 
 const closedFolderIcon = require("../../../images/icons/closedFolder.png");
@@ -12,23 +10,7 @@ const fileIcon = require("../../../images/icons/file.png");
 const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile.png");
 const rectangle = require("../../../images/icons/rectangle.png");
 
-export default function ResourceButton({ browserType, resource, level, onClick }) {
-  // TRANSFER SPECIFIC CODE
-  const transferStepInModal = useSelector(state => state.transferStepInModal);
-  const [disabled, setDisabled] = useState(false);
-  
-  useEffect(() => {
-    if (transferStepInModal) {
-      if (transferStepInModal.step === 3 || transferStepInModal.step === 4) {
-        setDisabled(true);
-      }
-      else if (transferStepInModal.step !== 3 || transferStepInModal.step !== 4) {
-        setDisabled(false);
-      }
-    }
-  }, [transferStepInModal])
-  // END OF TRANSFER SPECIFIC CODE
-
+export default function ResourceButton({resource, level, onClick }) {
   const iconSelector = () => {
     if (resource.kind === "container") {
       if (resource.open) {
@@ -48,7 +30,6 @@ export default function ResourceButton({ browserType, resource, level, onClick }
 
   return (
     <button
-      disabled={ browserType === "transfer" && resource.kind === 'item' || disabled}
       css={[{
         display: "flex",
         flexDirection: "row",
@@ -60,7 +41,7 @@ export default function ResourceButton({ browserType, resource, level, onClick }
         overflowWrap: "anywhere",
         textAlign: "left",
       },
-        browserType === "transfer" && resource.kind === 'item' ? { opacity: 0.5 } : null
+        resource.kind === 'item' ? { opacity: 0.5 } : null
       ]}
       onClick={() => onClick(resource)}
     >
