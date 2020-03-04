@@ -13,7 +13,7 @@ const TokenTextField = withStyles({
 
 export default function TransferStepperToken({ handleNext }) {
   const dispatch = useDispatch();
-  const transferDestinationToken = useSelector(state => state.transferDestinationToken)
+  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
 
   return (
     <TokenTextField

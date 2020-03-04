@@ -50,6 +50,10 @@ export const transferReducers = {
         actionCreators.transfer.loadFromTransferTarget,
         state.pendingAPIOperations
       ),
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString()),
+      selectedTransferResource: null,
+      selectedTransferResourceName: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -285,7 +289,9 @@ export const transferReducers = {
       openTransferResources: [],
       transferTargetResources: null,
       transferDestinationTarget: null,
-      transferDestinationToken: ''
+      transferDestinationToken: '',
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
     }),
     /**
      * Clear the transfer data so a transfer can retried
@@ -293,7 +299,9 @@ export const transferReducers = {
     [actionCreators.transfer.clearTransferData]: state => ({
       ...state,
       transferStatus: null,
-      transferData: null
+      transferData: null,
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -343,6 +351,11 @@ export const transferReducers = {
       ),
       transferTargetResources: null
     }),
+    /** Clear the Transfer Token **/
+    [actionCreators.transfer.clearTransferToken]: state => ({
+      ...state,
+      transferDestinationToken: ''
+    })
   }
 
 };
