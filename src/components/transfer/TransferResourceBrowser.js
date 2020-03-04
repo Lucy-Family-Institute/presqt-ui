@@ -4,7 +4,7 @@ import { jsx, } from "@emotion/core";
 import {actionCreators} from "../../redux/actionCreators";
 import Spinner from "../widgets/spinners/Spinner";
 import {useDispatch, useSelector} from "react-redux";
-import ResourceButton from "../widgets/buttons/ResourceButton";
+import TransferResourceButton from "./TransferResourceButton";
 import TransferResourcesHeader from "./TransferResourcesHeader";
 import textStyles from "../../styles/text";
 import {basicFadeIn} from "../../styles/animations";
@@ -48,8 +48,7 @@ export default function TransferResourceBrowser() {
     return resources.map(resource => {
       return (
         <div key={resource.id} css={{ paddingTop: 10, animation: `${basicFadeIn} .5s ease` }}>
-          <ResourceButton
-            browserType="transfer"
+          <TransferResourceButton
             resource={resource}
             level={level}
             onClick={onResourceClicked}
