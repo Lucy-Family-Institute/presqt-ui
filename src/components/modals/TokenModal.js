@@ -15,7 +15,6 @@ import DialogTitle from "./modalHeader";
 export default function TokenModal() {
   const dispatch = useDispatch();
 
-  const apiTokens = useSelector(state => state.apiTokens);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const sourceTarget = useSelector(state => state.selectedTarget);
   const tokenModalDisplay = useSelector(state => state.tokenModalDisplay);
@@ -28,20 +27,9 @@ export default function TokenModal() {
     element => element.action === actionCreators.resources.loadFromTarget.toString());
 
   /**
-   * Add errors to the token state if they exist.
-   **/
-  useEffect(() => {
-    if (tokenModalDisplay) {
-      setToken(apiTokens[sourceTarget.name] ? apiTokens[sourceTarget.name]: '');
-    }
-  }, [tokenModalDisplay]);
-
-  /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
    * Dispatch loadFromTarget action.
-   *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const handleClose = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
@@ -56,8 +44,6 @@ export default function TokenModal() {
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
    * Dispatch loadFromTarget action.
-   *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatched loadFromTargetSuccess action when finished.
    */
   const modalSubmit = () => {
     dispatch(actionCreators.authorization.hideTokenModal());
