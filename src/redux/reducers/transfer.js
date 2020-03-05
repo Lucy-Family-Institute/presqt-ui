@@ -363,6 +363,11 @@ export const transferReducers = {
     [actionCreators.transfer.stepInTransferModal]: (state, action) => ({
       ...state,
       transferStepInModal: action.payload
+    }),
+    [actionCreators.transfer.clearTransferResource]: state => ({
+      ...state,
+      selectedTransferResource: null,
+      selectedTransferResourceName: null
     })
   }
 

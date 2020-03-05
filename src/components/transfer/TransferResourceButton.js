@@ -53,6 +53,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
     }
   };
 
+  console.log(resource);
   return (
     <button
       disabled={resource.kind === 'item' || disabled}

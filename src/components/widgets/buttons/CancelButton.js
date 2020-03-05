@@ -28,6 +28,9 @@ export default function CancelButton({actionType}) {
     else if (actionType === 'TRANSFER') {
       dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, transferDestinationToken))
     }
+    else if (actionType === 'REMOVE_RESOURCE') {
+      dispatch(actionCreators.transfer.clearTransferResource());
+    }
   };
 
   return (
@@ -37,7 +40,7 @@ export default function CancelButton({actionType}) {
         color="primary"
         className={classes.button}
         onClick={submitCancel}
-        disabled={!ticketNumber || uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess'}
+        disabled={uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess'}
       >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>
