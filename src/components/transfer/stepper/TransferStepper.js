@@ -82,7 +82,8 @@ export default function TransferStepper() {
     if (activeStep === 2){
       dispatch(actionCreators.transfer.clearTransferToken());
     }
-      setActiveStep(prevActiveStep => prevActiveStep - 1);
+    dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
   /** Increment the step count when the Back button is pressed **/
@@ -92,6 +93,7 @@ export default function TransferStepper() {
         transferDestinationTarget, transferDestinationToken));
     }
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    dispatch(actionCreators.transfer.stepInTransferModal(activeStep + 1));
   };
 
   /**

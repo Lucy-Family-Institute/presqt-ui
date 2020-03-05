@@ -10,8 +10,7 @@ const fileIcon = require("../../../images/icons/file.png");
 const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile.png");
 const rectangle = require("../../../images/icons/rectangle.png");
 
-export default function ResourceButton({browserType, resource, level, onClick}) {
-
+export default function ResourceButton({resource, level, onClick }) {
   const iconSelector = () => {
     if (resource.kind === "container") {
       if (resource.open) {
@@ -31,7 +30,6 @@ export default function ResourceButton({browserType, resource, level, onClick}) 
 
   return (
     <button
-      disabled={ browserType === "transfer" && resource.kind === 'item'}
       css={[{
         display: "flex",
         flexDirection: "row",
@@ -43,7 +41,7 @@ export default function ResourceButton({browserType, resource, level, onClick}) 
         overflowWrap: "anywhere",
         textAlign: "left",
       },
-        browserType === "transfer" && resource.kind === 'item' ? { opacity: 0.5 } : null
+        resource.kind === 'item' ? { opacity: 0.5 } : null
       ]}
       onClick={() => onClick(resource)}
     >

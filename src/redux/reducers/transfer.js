@@ -14,7 +14,8 @@ export const transferReducers = {
     transferData: null,
     transferModalDisplay: false,
     transferDestinationTarget: null,
-    transferDestinationToken: ''
+    transferDestinationToken: '',
+    transferStepInModal: null
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -292,6 +293,7 @@ export const transferReducers = {
       transferTargetResources: null,
       transferDestinationTarget: null,
       transferDestinationToken: '',
+      transferStepInModal: null,
       apiOperationErrors: state.apiOperationErrors.filter(
         item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
     }),
@@ -357,6 +359,10 @@ export const transferReducers = {
     [actionCreators.transfer.clearTransferToken]: state => ({
       ...state,
       transferDestinationToken: ''
+    }),
+    [actionCreators.transfer.stepInTransferModal]: (state, action) => ({
+      ...state,
+      transferStepInModal: action.payload
     })
   }
 
