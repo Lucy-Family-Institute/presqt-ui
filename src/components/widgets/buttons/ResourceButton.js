@@ -30,7 +30,7 @@ export default function ResourceButton({resource, level, onClick }) {
 
   return (
     <button
-      css={[{
+      css={{
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -40,9 +40,7 @@ export default function ResourceButton({resource, level, onClick }) {
         backgroundColor: "#FFFFFF",
         overflowWrap: "anywhere",
         textAlign: "left",
-      },
-        resource.kind === 'item' ? { opacity: 0.5 } : null
-      ]}
+      }}
       onClick={() => onClick(resource)}
     >
       {
