@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Stepper from "@material-ui/core/Stepper";
 import UploadStepConnector from "../../upload_stepper/UploadStepConnector";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -62,21 +62,31 @@ export default function TransferStepper() {
   const transferTargetResources = useSelector(state => state.transferTargetResources);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+
+  const collectionError = apiOperationErrors.find(
+    element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 
-  /**
-   * Decrement the step count when the Back button is pressed
-   **/
+  /**  If the token given is invalid then step back to the token step **/
+  useEffect(() => {
+    if (activeStep === 2 && collectionError) {
+      handleBack();
+    }
+  }, [apiOperationErrors]);
+
+  /** Decrement the step count when the Back button is pressed **/
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    if (activeStep === 2){
+      dispatch(actionCreators.transfer.clearTransferToken());
+    }
     dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  /**
-   * Increment the step count when the Back button is pressed
-   **/
+  /** Increment the step count when the Back button is pressed **/
   const handleNext = () => {
     if (activeStep === 1) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
@@ -97,7 +107,8 @@ export default function TransferStepper() {
       }
       case 1: {
         return <TransferStepperToken
-          handleNext={handleNext}/>
+          handleNext={handleNext}
+        />
       }
       case 2: {
         return <TransferStepperSelectResource />
@@ -145,7 +156,7 @@ export default function TransferStepper() {
                 <div className={classes.actionsContainer}>
                   <div>
                     {index !== 5
-                    ? <StepperBackButton // RENAME SO IT'S REUSABLE
+                    ? <StepperBackButton
                         handleBack={handleBack}
                         activeStep={activeStep}
                       />
