@@ -43,7 +43,7 @@ export const transferReducers = {
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.transfer.loadFromTransferTarget]: (state, action) => ({
+    [actionCreators.transfer.loadFromTransferTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
@@ -53,7 +53,9 @@ export const transferReducers = {
       apiOperationErrors: state.apiOperationErrors.filter(
         item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString()),
       selectedTransferResource: null,
-      selectedTransferResourceName: null
+      selectedTransferResourceName: null,
+      transferTargetResources: null,
+
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -87,7 +89,7 @@ export const transferReducers = {
         actionCreators.transfer.loadFromTransferTarget.toString(),
         state.apiOperationErrors
       ),
-      transferTargetResources: null
+      transferDestinationToken: ''
     }),
     /**
      * Add API call to trackers.

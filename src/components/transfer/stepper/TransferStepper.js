@@ -70,17 +70,14 @@ export default function TransferStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
 
-  // If the token given is invalid then step back to the token step
+  /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
     if (activeStep === 2 && collectionError) {
-      dispatch(actionCreators.transfer.clearTransferToken());
       handleBack();
     }
   }, [apiOperationErrors]);
 
-  /**
-   * Decrement the step count when the Back button is pressed
-   **/
+  /** Decrement the step count when the Back button is pressed **/
   const handleBack = () => {
     if (activeStep === 2){
       dispatch(actionCreators.transfer.clearTransferToken());
@@ -88,9 +85,7 @@ export default function TransferStepper() {
       setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  /**
-   * Increment the step count when the Back button is pressed
-   **/
+  /** Increment the step count when the Back button is pressed **/
   const handleNext = () => {
     if (activeStep === 1) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
@@ -110,7 +105,8 @@ export default function TransferStepper() {
       }
       case 1: {
         return <TransferStepperToken
-          handleNext={handleNext}/>
+          handleNext={handleNext}
+        />
       }
       case 2: {
         return <TransferStepperSelectResource />
