@@ -71,8 +71,18 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       )
     }
     else if (uploadStatus === 'finished') {
-      const failedFixityMessage = uploadData.failed_fixity.length > 0
+      console.log(connection);
+      const failedFixityMessage = uploadData.failed_fixity.length > 0 && connection.name === 'github'
         ? <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+          <ListItemText
+          primary='Fixity check can not be performed as Github does not expose file checksums. '
+        />
+      </ListItem>
+        : uploadData.failed_fixity.length > 0
+        ? < ListItem >
           <ListItemIcon>
             <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
           </ListItemIcon>

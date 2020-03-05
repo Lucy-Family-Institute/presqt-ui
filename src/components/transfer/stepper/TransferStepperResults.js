@@ -25,6 +25,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+  const connection = useSelector(state => state.selectedTarget);
 
   const transferError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.transferResource.toString());
@@ -53,23 +54,32 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     else if (transferStatus === 'finished') {
-      const failedFixityMessage = transferData.failed_fixity.length > 0
+      const failedFixityMessage = transferData.failed_fixity.length > 0 && (connection.name === 'github' || transferDestinationTarget === 'github')
         ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following files failed fixity checks: ${transferData.failed_fixity.join(', ')}`}
-          />
-        </ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='Fixity check can not be performed as Github does not expose file checksums. '
+            />
+          </ListItem>
+        : uploadData.failed_fixity.length > 0
+        ? < ListItem >
+            <ListItemIcon>
+              <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary={`The following files failed fixity checks: ${uploadData.failed_fixity.join(', ')}`}
+            />
+          </ListItem>
         : <ListItem>
-          <ListItemIcon>
-            <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary='All files passed fixity checks'
-          />
-        </ListItem>;
+            <ListItemIcon>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='All files passed fixity checks'
+            />
+          </ListItem>;
 
       const resourcesIgnoredMessage = transferData.resources_ignored.length > 0
         ? <ListItem>
