@@ -44,13 +44,19 @@ export const transferReducers = {
      * Add API call to trackers.
      * Saga call to Resource-Collection occurs with this action.
      **/
-    [actionCreators.transfer.loadFromTransferTarget]: (state, action) => ({
+    [actionCreators.transfer.loadFromTransferTarget]: state => ({
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
         actionCreators.transfer.loadFromTransferTarget,
         state.pendingAPIOperations
       ),
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString()),
+      selectedTransferResource: null,
+      selectedTransferResourceName: null,
+      transferTargetResources: null,
+
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -84,7 +90,7 @@ export const transferReducers = {
         actionCreators.transfer.loadFromTransferTarget.toString(),
         state.apiOperationErrors
       ),
-      transferTargetResources: null
+      transferDestinationToken: ''
     }),
     /**
      * Add API call to trackers.
@@ -287,7 +293,9 @@ export const transferReducers = {
       transferTargetResources: null,
       transferDestinationTarget: null,
       transferDestinationToken: '',
-      transferStepInModal: null
+      transferStepInModal: null,
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
     }),
     /**
      * Clear the transfer data so a transfer can retried
@@ -295,7 +303,9 @@ export const transferReducers = {
     [actionCreators.transfer.clearTransferData]: state => ({
       ...state,
       transferStatus: null,
-      transferData: null
+      transferData: null,
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -344,6 +354,11 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferTargetResources: null
+    }),
+    /** Clear the Transfer Token **/
+    [actionCreators.transfer.clearTransferToken]: state => ({
+      ...state,
+      transferDestinationToken: ''
     }),
     [actionCreators.transfer.stepInTransferModal]: (state, action) => ({
       ...state,

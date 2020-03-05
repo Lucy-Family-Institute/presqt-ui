@@ -64,11 +64,13 @@ export default function TransferResourceBrowser() {
   };
 
   useEffect(() => {
+    // Display Resources
     if (transferTargetResources && transferTargetResources.length > 0) {
       setMessage(resourceHierarchy(
         resource => onResourceClicked(resource, transferDestinationToken),
         transferTargetResources))
     }
+    // No resources exist
     else if (transferTargetResources && transferTargetResources.length === 0) {
       let targetReadableName = '';
       for (let i = 0; i < available.length; i++) {
@@ -78,6 +80,7 @@ export default function TransferResourceBrowser() {
       }
       setMessage(`No ${targetReadableName} resources found for this user.`);
     }
+    // Collection error occurred
     else if (collectionError){
       setMessageCss([textStyles.body, { marginTop: 15 }, textStyles.cubsRed]);
       setMessage(`${collectionError.data}`);
