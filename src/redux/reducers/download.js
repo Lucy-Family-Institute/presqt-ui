@@ -73,7 +73,10 @@ export const downloadReducers = {
       actionCreators.download.downloadJob,
       state.pendingAPIOperations
     ),
-    downloadStatus: action.payload.status,
+    downloadStatus:
+      state.downloadStatus === 'cancelPending' && action.payload.status === 'pending'
+        ? state.downloadStatus
+        : action.payload.status,
     downloadData: action.payload.data
   }),
     /**
@@ -103,7 +106,8 @@ export const downloadReducers = {
     pendingAPIOperations: trackAction(
       actionCreators.download.cancelDownload,
       state.pendingAPIOperations
-    )
+    ),
+    downloadStatus: 'cancelPending'
   }),
     /**
      * Untrack API call.
@@ -123,7 +127,7 @@ export const downloadReducers = {
     [actionCreators.download.cancelDownloadFailure]: (state, action) => ({
     ...state,
     pendingAPIResponse: false,
-    downloadStatus: 'cancelled',
+    downloadStatus: 'failure',
     pendingAPIOperations: untrackAction(
       actionCreators.download.cancelDownload,
       state.pendingAPIOperations

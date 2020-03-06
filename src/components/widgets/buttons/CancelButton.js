@@ -15,7 +15,7 @@ export default function CancelButton({actionType}) {
   const ticketNumber = useSelector(state => state.activeTicketNumber);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const uploadStatus = useSelector(state => state.uploadStatus);
-  
+  const downloadStatus = useSelector(state => state.downloadStatus);
   const transferStatus = useSelector(state => state.transferStatus);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferTargetResources = useSelector(state => state.transferTargetResources);
@@ -43,7 +43,7 @@ export default function CancelButton({actionType}) {
         color="primary"
         className={classes.button}
         onClick={submitCancel}
-        disabled={uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess'}
+        disabled={!ticketNumber || uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess' || downloadStatus === 'cancelPending'}
       >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>

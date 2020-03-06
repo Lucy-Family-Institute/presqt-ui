@@ -150,7 +150,7 @@ export const uploadReducers = {
     [actionCreators.upload.cancelUploadFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      uploadStatus: 'cancelled',
+      uploadStatus: 'failure',
       pendingAPIOperations: untrackAction(
         actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
