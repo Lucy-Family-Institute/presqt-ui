@@ -9,14 +9,14 @@ export default function TransferStepperSelectResource() {
 
   if (selectedTransferResourceName) {
     return (
-      <div css={text.body}>Selected Resource: <span css={text.selectedResource}>{selectedTransferResourceName}
+      <div css={text.transferResource}>Selected Resource: <span css={text.selectedResource}>{selectedTransferResourceName}
         <TransferCancelSelectionButton disabled={false} />
       </span>
       </div>
       )
   }
   return (
-    <div css={text.noSelectedResource}>
+    <div css={text.transferResource}>
         No Resource Selected
         <span>
         <TransferCancelSelectionButton disabled={true} />
