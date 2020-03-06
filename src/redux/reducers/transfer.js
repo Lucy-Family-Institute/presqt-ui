@@ -380,10 +380,7 @@ export const transferReducers = {
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection Refresh call.
      **/
-    [actionCreators.transfer.refreshTransferTargetFailure]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.transfer.refreshTransferTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
