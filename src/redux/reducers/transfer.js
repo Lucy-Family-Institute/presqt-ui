@@ -22,10 +22,7 @@ export const transferReducers = {
       ...state,
       transferDestinationToken: action.payload.targetToken
     }),
-    [actionCreators.transfer.saveTransferDestinationTarget]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.transfer.saveTransferDestinationTarget]: (state, action) => ({
       ...state,
       transferDestinationTarget: action.payload.target
     }),
@@ -67,10 +64,7 @@ export const transferReducers = {
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
-    [actionCreators.transfer.loadFromTransferTargetSuccess]: (
-      state,
-      action
-    ) => {
+    [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
         state.openTransferResources,
         state.selectedTransferResource,
@@ -90,10 +84,7 @@ export const transferReducers = {
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection call.
      **/
-    [actionCreators.transfer.loadFromTransferTargetFailure]: (
-      state,
-      action
-    ) => ({
+    [actionCreators.transfer.loadFromTransferTargetFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -149,23 +140,19 @@ export const transferReducers = {
           };
         })
       };
-
-        return {
-          ...state,
-          transferTargetResources: deselectTargetResource(
-            state.transferTargetResources
-          )
-        };
-      },
+      return {
+        ...state,
+        transferTargetResources: deselectTargetResource(
+          state.transferTargetResources
+        )
+      };
+    },
     /***
      * Untrack API call.
      * Add resource details to selectedTransferResource.
      * Dispatched via Saga call on successful Resource Detail call for transfer.
      **/
-    [actionCreators.transfer.selectTransferResourceSuccess]: (
-      state,
-      action
-    ) => {
+    [actionCreators.transfer.selectTransferResourceSuccess]: (state, action) => {
       return {
         ...state,
         selectedTransferResource: action.payload,
