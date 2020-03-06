@@ -65,7 +65,7 @@ export const actionCreators = createActions({
         LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
         LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
         SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({ resource, targetToken }),
-        DESELECT_TRANSFER_RESOURCE: (resource) => ({resource}),
+        DESELECT_TRANSFER_RESOURCE: undefined,
         SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
         DISPLAY_TRANSFER_MODAL: undefined,
         HIDE_TRANSFER_MODAL: undefined,

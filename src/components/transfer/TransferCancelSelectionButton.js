@@ -9,12 +9,9 @@ import colors from "../../styles/colors";
 
 export default function TransferCancelSelectionButton({ disabled }) {
     const dispatch = useDispatch();
-
-    const transferTargetResources = useSelector(state => state.transferTargetResources);
-
     const submitCancel = () => {
         dispatch(actionCreators.transfer.clearTransferResource());
-        dispatch(actionCreators.transfer.deselectTransferResource(transferTargetResources));
+        dispatch(actionCreators.transfer.deselectTransferResource());
     };
 
     return (

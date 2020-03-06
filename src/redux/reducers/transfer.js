@@ -1,8 +1,8 @@
-import {actionCreators} from "../actionCreators";
+import { actionCreators } from "../actionCreators";
 import buildResourceHierarchy from "./helpers/resources";
-import {combineActions} from "redux-actions";
+import { combineActions } from "redux-actions";
 import updateOpenClose from "./helpers/updateOpenClose";
-import {trackAction, trackError, untrackAction} from "./helpers/tracking";
+import { trackAction, trackError, untrackAction } from "./helpers/tracking";
 
 export const transferReducers = {
   initialState: {
@@ -14,16 +14,18 @@ export const transferReducers = {
     transferData: null,
     transferModalDisplay: false,
     transferDestinationTarget: null,
-    transferDestinationToken: '',
-    transferStepInModal: null,
-    deactivateResource: false
+    transferDestinationToken: "",
+    transferStepInModal: null
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
       ...state,
       transferDestinationToken: action.payload.targetToken
     }),
-    [actionCreators.transfer.saveTransferDestinationTarget]: (state, action) => ({
+    [actionCreators.transfer.saveTransferDestinationTarget]: (
+      state,
+      action
+    ) => ({
       ...state,
       transferDestinationTarget: action.payload.target
     }),
@@ -32,14 +34,14 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.displayTransferModal]: state => ({
       ...state,
-      transferModalDisplay: true,
+      transferModalDisplay: true
     }),
     /**
      * Hide the Transfer Modal
      **/
     [actionCreators.transfer.hideTransferModal]: state => ({
       ...state,
-      transferModalDisplay: false,
+      transferModalDisplay: false
     }),
     /**
      * Add API call to trackers.
@@ -53,19 +55,28 @@ export const transferReducers = {
         state.pendingAPIOperations
       ),
       apiOperationErrors: state.apiOperationErrors.filter(
-        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString()),
+        item =>
+          item.action !==
+          actionCreators.transfer.loadFromTransferTarget.toString()
+      ),
       selectedTransferResource: null,
       selectedTransferResourceName: null,
-      transferTargetResources: null,
-
+      transferTargetResources: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
-    [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
+    [actionCreators.transfer.loadFromTransferTargetSuccess]: (
+      state,
+      action
+    ) => {
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, action);      return {
+        state.openTransferResources,
+        state.selectedTransferResource,
+        action
+      );
+      return {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
@@ -79,7 +90,10 @@ export const transferReducers = {
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection call.
      **/
-    [actionCreators.transfer.loadFromTransferTargetFailure]: (state, action) => ({
+    [actionCreators.transfer.loadFromTransferTargetFailure]: (
+      state,
+      action
+    ) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -91,7 +105,7 @@ export const transferReducers = {
         actionCreators.transfer.loadFromTransferTarget.toString(),
         state.apiOperationErrors
       ),
-      transferDestinationToken: ''
+      transferDestinationToken: ""
     }),
     /**
      * Add API call to trackers.
@@ -99,16 +113,16 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.selectTransferResource]: (state, action) => {
       const updateTargetResources = transferTargetResources => {
-        let sourceResources = transferTargetResources;
-        sourceResources.map(resource => {
-          resource.active = resource.id === action.payload.resource.id;
-          if (resource.kind === "container") {
-            if (resource.children) {
-              updateTargetResources(resource.children);
-            }
-          }
+        return transferTargetResources.map(resource => {
+          return {
+            ...resource,
+            active: resource.id === action.payload.resource.id,
+            children:
+              resource.kind === "container"
+                ? updateTargetResources(resource.children)
+                : resource.children
+          };
         });
-        return sourceResources;
       };
 
       return {
@@ -122,33 +136,36 @@ export const transferReducers = {
         transferTargetResources: updateTargetResources(state.transferTargetResources)
       };
     },
-    [actionCreators.transfer.deselectTransferResource]: (state) => {
+    [actionCreators.transfer.deselectTransferResource]: state => {
       const deselectTargetResource = transferTargetResources => {
-        let sourceResources = transferTargetResources;
-        sourceResources.map(resource => {
-          resource.active = false;
-          if (resource.kind === "container") {
-            if (resource.children) {
-              deselectTargetResource(resource.children);
-            }
-          }
-        });
-        return sourceResources;
+        return transferTargetResources.map(resource => {
+          return {
+            ...resource,
+            active: false,
+            children:
+              resource.kind === "container"
+                ? deselectTargetResource(resource.children)
+                : resource.children
+          };
+        })
       };
 
-      return {
-        ...state,
-        selectedTransferResourceName: null,
-        transferTargetResources: deselectTargetResource(state.transferTargetResources),
-        deactivateResource: !state.deactivateResource
-      };
-    },
+        return {
+          ...state,
+          transferTargetResources: deselectTargetResource(
+            state.transferTargetResources
+          )
+        };
+      },
     /***
      * Untrack API call.
      * Add resource details to selectedTransferResource.
      * Dispatched via Saga call on successful Resource Detail call for transfer.
      **/
-    [actionCreators.transfer.selectTransferResourceSuccess]: (state, action) => {
+    [actionCreators.transfer.selectTransferResourceSuccess]: (
+      state,
+      action
+    ) => {
       return {
         ...state,
         selectedTransferResource: action.payload,
@@ -166,8 +183,11 @@ export const transferReducers = {
       actionCreators.transfer.openTransferContainer,
       actionCreators.transfer.closeTransferContainer
     )]: (state, action) => {
-      const [newOpenResources, updatedSourceResources] =
-        updateOpenClose(state.openTransferResources, state.transferTargetResources, action);
+      const [newOpenResources, updatedSourceResources] = updateOpenClose(
+        state.openTransferResources,
+        state.transferTargetResources,
+        action
+      );
 
       return {
         ...state,
@@ -206,7 +226,7 @@ export const transferReducers = {
     [actionCreators.transfer.transferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: 'failure',
+      transferStatus: "failure",
       pendingAPIOperations: untrackAction(
         actionCreators.transfer.transferResource,
         state.pendingAPIOperations
@@ -250,7 +270,7 @@ export const transferReducers = {
     [actionCreators.transfer.transferJobFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: 'failure',
+      transferStatus: "failure",
       pendingAPIOperations: untrackAction(
         actionCreators.transfer.transferJob,
         state.pendingAPIOperations
@@ -259,7 +279,7 @@ export const transferReducers = {
         action,
         actionCreators.transfer.transferJob.toString(),
         state.apiOperationErrors
-      ),
+      )
     }),
     /**
      * Cancel the transfer
@@ -282,7 +302,7 @@ export const transferReducers = {
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       ),
-      transferStatus: 'cancelSuccess',
+      transferStatus: "cancelSuccess"
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -291,7 +311,7 @@ export const transferReducers = {
     [actionCreators.transfer.cancelTransferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: 'failure',
+      transferStatus: "failure",
       pendingAPIOperations: untrackAction(
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
@@ -300,7 +320,7 @@ export const transferReducers = {
         action,
         actionCreators.transfer.cancelTransfer.toString(),
         state.apiOperationErrors
-      ),
+      )
     }),
     /**
      * Clear all the transfer modal data so the modal starts fresh.
@@ -314,10 +334,13 @@ export const transferReducers = {
       openTransferResources: [],
       transferTargetResources: null,
       transferDestinationTarget: null,
-      transferDestinationToken: '',
+      transferDestinationToken: "",
       transferStepInModal: null,
       apiOperationErrors: state.apiOperationErrors.filter(
-        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
+        item =>
+          item.action !==
+          actionCreators.transfer.loadFromTransferTarget.toString()
+      )
     }),
     /**
      * Clear the transfer data so a transfer can retried
@@ -327,7 +350,10 @@ export const transferReducers = {
       transferStatus: null,
       transferData: null,
       apiOperationErrors: state.apiOperationErrors.filter(
-        item => item.action !== actionCreators.transfer.loadFromTransferTarget.toString())
+        item =>
+          item.action !==
+          actionCreators.transfer.loadFromTransferTarget.toString()
+      )
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -339,7 +365,7 @@ export const transferReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.transfer.refreshTransferTarget,
         state.pendingAPIOperations
-      ),
+      )
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -347,7 +373,10 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.refreshTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, action);
+        state.openTransferResources,
+        state.selectedTransferResource,
+        action
+      );
       return {
         ...state,
         pendingAPIResponse: false,
@@ -356,14 +385,18 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
-        transferStatus: state.transferStatus === 'success' ? "finished" : 'cancelled'
+        transferStatus:
+          state.transferStatus === "success" ? "finished" : "cancelled"
       };
     },
     /**
      * Untrack API call and track failure that occurred.
      * Dispatched via Saga call on failed Transfer Resource Collection Refresh call.
      **/
-    [actionCreators.transfer.refreshTransferTargetFailure]: (state, action) => ({
+    [actionCreators.transfer.refreshTransferTargetFailure]: (
+      state,
+      action
+    ) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -380,7 +413,7 @@ export const transferReducers = {
     /** Clear the Transfer Token **/
     [actionCreators.transfer.clearTransferToken]: state => ({
       ...state,
-      transferDestinationToken: ''
+      transferDestinationToken: ""
     }),
     [actionCreators.transfer.stepInTransferModal]: (state, action) => ({
       ...state,
@@ -392,5 +425,4 @@ export const transferReducers = {
       selectedTransferResourceName: null
     })
   }
-
 };

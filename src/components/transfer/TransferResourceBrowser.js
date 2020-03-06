@@ -18,7 +18,6 @@ export default function TransferResourceBrowser() {
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
-  const deactivateResource = useSelector(state => state.deactivateResource);
 
   const collectionError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
@@ -89,7 +88,7 @@ export default function TransferResourceBrowser() {
     else {
       setMessage('');
     }
-  }, [transferTargetResources, collectionError, deactivateResource]);
+  }, [transferTargetResources, collectionError]);
 
   return (
     <div css={{
