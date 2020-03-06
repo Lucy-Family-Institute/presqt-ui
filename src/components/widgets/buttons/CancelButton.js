@@ -15,8 +15,10 @@ export default function CancelButton({actionType}) {
   const ticketNumber = useSelector(state => state.activeTicketNumber);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const uploadStatus = useSelector(state => state.uploadStatus);
+  
   const transferStatus = useSelector(state => state.transferStatus);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
+  const transferTargetResources = useSelector(state => state.transferTargetResources);
 
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
@@ -30,6 +32,7 @@ export default function CancelButton({actionType}) {
     }
     else if (actionType === 'REMOVE_RESOURCE') {
       dispatch(actionCreators.transfer.clearTransferResource());
+      dispatch(actionCreators.transfer.deselectTransferResource(transferTargetResources));
     }
   };
 

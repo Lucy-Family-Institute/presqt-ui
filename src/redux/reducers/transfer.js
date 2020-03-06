@@ -15,7 +15,8 @@ export const transferReducers = {
     transferModalDisplay: false,
     transferDestinationTarget: null,
     transferDestinationToken: '',
-    transferStepInModal: null
+    transferStepInModal: null,
+    deactivateResource: false
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -119,6 +120,27 @@ export const transferReducers = {
         ),
         selectedTransferResourceName: action.payload.resource.title,
         transferTargetResources: updateTargetResources(state.transferTargetResources)
+      };
+    },
+    [actionCreators.transfer.deselectTransferResource]: (state) => {
+      const deselectTargetResource = transferTargetResources => {
+        let sourceResources = transferTargetResources;
+        sourceResources.map(resource => {
+          resource.active = false;
+          if (resource.kind === "container") {
+            if (resource.children) {
+              deselectTargetResource(resource.children);
+            }
+          }
+        });
+        return sourceResources;
+      };
+
+      return {
+        ...state,
+        selectedTransferResourceName: null,
+        transferTargetResources: deselectTargetResource(state.transferTargetResources),
+        deactivateResource: !state.deactivateResource
       };
     },
     /***
