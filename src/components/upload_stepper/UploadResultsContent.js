@@ -15,6 +15,7 @@ import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -71,49 +72,115 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       )
     }
     else if (uploadStatus === 'finished') {
+      uploadData.failed_fixity = ['/fixty/failed!', 'boi oh oboi'];
+      uploadData.resources_updated = ['/this/file/is bad', '/updated/me', ';abc/dfdfd/dfdfdf/d', 'sidofsaodifjadsoifj', '/osidjfaosdijfasdoifj'];
       const failedFixityMessage = uploadData.failed_fixity.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following files failed fixity checks: ${uploadData.failed_fixity.join(', ')}`}
-          />
-        </ListItem>
-        : <ListItem>
-          <ListItemIcon>
-            <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary='All files passed fixity checks'
-          />
-        </ListItem>;
+      ? <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              The following files failed fixity checks:
+            </ListSubheader>
+          }
+          dense={true}
+        >
+          {
+            uploadData.failed_fixity.map(resource => (
+              <ListItem>
+                <ListItemIcon>
+                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+                </ListItemIcon>
+                <ListItemText
+                  primary={resource}
+                />
+              </ListItem>
+            ))
+
+          }
+        </List>
+      :
+        <List dense={true}>
+          <ListItem>
+               <ListItemIcon>
+                 <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+               </ListItemIcon>
+               <ListItemText
+               primary='All files passed fixity checks'
+             />
+          </ListItem>
+        </List>;
 
       const resourcesIgnoredMessage = uploadData.resources_ignored.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were ignored: ${uploadData.resources_ignored.join(', ')}`}
-          />
-        </ListItem>
-        : null;
+        ? <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              The following duplicate resources were ignored:
+            </ListSubheader>
+          }
+          dense={true}
+        >
+          {
+            uploadData.resources_ignored.map(resource => (
+              <ListItem>
+                <ListItemIcon>
+                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+                </ListItemIcon>
+                <ListItemText
+                  primary={resource}
+                />
+              </ListItem>
+            ))
+
+          }
+        </List>
+        :
+        <List dense={true}>
+          <ListItem>
+            <ListItemIcon>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='All files passed fixity checks'
+            />
+          </ListItem>
+        </List>;
 
       const resourcesUpdatedMessage = uploadData.resources_updated.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were updated: ${uploadData.resources_updated.join(', ')}`}
-          />
-        </ListItem>
-        : null;
+        ? <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              The following duplicate resources were updated:
+            </ListSubheader>
+          }
+          dense={true}
+        >
+          {
+            uploadData.resources_updated.map(resource => (
+              <ListItem>
+                <ListItemIcon>
+                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+                </ListItemIcon>
+                <ListItemText
+                  primary={resource}
+                />
+              </ListItem>
+            ))
+
+          }
+        </List>
+        :
+        <List dense={true}>
+          <ListItem>
+            <ListItemIcon>
+              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
+            </ListItemIcon>
+            <ListItemText
+              primary='All files passed fixity checks'
+            />
+          </ListItem>
+        </List>;
 
       const successfulMessage = (
         <Grid item md={12}>
-          <div>
             <List dense={true}>
               <ListItem>
                 <ListItemIcon>
@@ -125,11 +192,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                   primary={uploadData.message}
                 />
               </ListItem>
-              {failedFixityMessage}
-              {resourcesIgnoredMessage}
-              {resourcesUpdatedMessage}
             </List>
-          </div>
+            {failedFixityMessage}
+            {resourcesIgnoredMessage}
+            {resourcesUpdatedMessage}
         </Grid>
       );
 
