@@ -30,10 +30,6 @@ export default function CancelButton({actionType}) {
     else if (actionType === 'TRANSFER') {
       dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, transferDestinationToken))
     }
-    else if (actionType === 'REMOVE_RESOURCE') {
-      dispatch(actionCreators.transfer.clearTransferResource());
-      dispatch(actionCreators.transfer.deselectTransferResource(transferTargetResources));
-    }
   };
 
   return (
