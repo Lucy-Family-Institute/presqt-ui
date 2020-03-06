@@ -78,13 +78,28 @@ export default function DownloadModal() {
         </Fragment>
       )
     }
+    else if (downloadStatus === 'cancelPending') {
+      setModalHeader('Download Cancelling');
+      setModalContent(
+        <div>
+          <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+            <p>The download is being cancelled.</p>
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+            <CancelButton actionType='DOWNLOAD' />
+          </div>
+        </div>
+      );
+    }
     else if (downloadStatus === 'cancelled') {
       setModalHeader('Download Cancelled');
       setModalContent(
         <Fragment>
           <div
-            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>              <ErrorOutlineIcon color="error"/>
-              <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error"/>
+            <span css={{ marginLeft: 5 }}>{downloadData.message}</span>
           </div>
           <div css={{justifyContent: 'center', display: 'flex'}}>
               <RetryDownloadButton

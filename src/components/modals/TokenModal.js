@@ -38,6 +38,7 @@ export default function TokenModal() {
         actionCreators.resources.loadFromTarget.toString()));
       dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
+    setToken('')
   };
 
   /**
