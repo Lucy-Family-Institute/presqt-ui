@@ -19,8 +19,6 @@ export default function CancelButton({actionType}) {
   const transferStatus = useSelector(state => state.transferStatus);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
 
-  console.log(downloadStatus);
-
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
       dispatch(actionCreators.download.cancelDownload(ticketNumber, targetToken))

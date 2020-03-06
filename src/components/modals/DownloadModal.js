@@ -48,7 +48,6 @@ export default function DownloadModal() {
    **/
   useEffect(() => {
     let errorMessage;
-    console.log(downloadData);
     if (downloadStatus === "failure") {
       setModalHeader('Download Failed!');
       // Initial download failed
