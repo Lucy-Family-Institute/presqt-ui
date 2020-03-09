@@ -92,6 +92,21 @@ export default function DownloadModal() {
         </div>
       );
     }
+    // Cancel Failed!
+    else if (downloadStatus === 'cancelFailure') {
+      setModalHeader('Download In Progress');
+      setModalContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The download is continuing.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='DOWNLOAD' />
+          </div>
+        </div>
+      )
+    }
     else if (downloadStatus === 'cancelled') {
       setModalHeader('Download Cancelled');
       setModalContent(

@@ -36,7 +36,12 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
     );
     setStepThreeContent(
       <div>
-        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>The upload is being processed on the server. If you refresh or leave the page the upload will still continue.</div>
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+          The upload is being processed on the server.
+        </div>
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+          If you refresh or leave the page the upload will still continue.
+        </div>
         <Spinner />
         <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
           <CancelButton actionType='UPLOAD' />
