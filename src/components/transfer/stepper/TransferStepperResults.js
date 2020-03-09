@@ -15,6 +15,7 @@ import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
 import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 
 export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
@@ -22,16 +23,15 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
 
   const transferStatus = useSelector(state => state.transferStatus);
   const transferData = useSelector(state => state.transferData);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
+  /** Capture Errors **/
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const transferError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.transferResource.toString());
-
   const transferJobError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.transferJob.toString());
-
   const transferCancelError = apiOperationErrors.find(
     element => element.action === actionCreators.transfer.cancelTransfer.toString());
 
@@ -48,74 +48,55 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
     </div>
   );
 
+  /** Build a list to display warning results **/
+  const buildList = (resources, header) => {
+    return (
+      <List
+        dense={true}
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            {header}
+          </ListSubheader>
+        }
+      >
+        {
+          resources.map(resource => (
+            <ListItem>
+              <ListItemIcon>
+                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              </ListItemIcon>
+              <ListItemText
+                primary={resource}
+              />
+            </ListItem>
+          ))
+        }
+      </List>
+    )
+  };
+
+  /** Build a list item for successful transfer results **/
+  const buildListItem = (message) => {
+    return (
+      <ListItem>
+        <ListItemIcon>
+          <CheckCircleOutlineIcon
+            style={{ color: colors.successGreen }}
+          />
+        </ListItemIcon>
+        <ListItemText
+          primary={message}
+        />
+      </ListItem>
+    )
+  };
+
   useEffect(() => {
+    // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
-    else if (transferStatus === 'finished') {
-      const failedFixityMessage = transferData.failed_fixity.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following files failed fixity checks: ${transferData.failed_fixity.join(', ')}`}
-          />
-        </ListItem>
-        : <ListItem>
-          <ListItemIcon>
-            <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary='All files passed fixity checks'
-          />
-        </ListItem>;
-
-      const resourcesIgnoredMessage = transferData.resources_ignored.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were ignored: ${transferData.resources_ignored.join(', ')}`}
-          />
-        </ListItem>
-        : null;
-
-      const resourcesUpdatedMessage = transferData.resources_updated.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were updated: ${transferData.resources_updated.join(', ')}`}
-          />
-        </ListItem>
-        : null;
-
-      const successfulMessage = (
-        <Grid item md={12}>
-          <div>
-            <List dense={true}>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleOutlineIcon
-                    style={{ color: colors.successGreen }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary={transferData.message}
-                />
-              </ListItem>
-              {failedFixityMessage}
-              {resourcesIgnoredMessage}
-              {resourcesUpdatedMessage}
-            </List>
-          </div>
-        </Grid>
-      );
-      setStepThreeContent(successfulMessage);
-    }
+    // Transfer cancelled. Refresh transfer resource browser
     else if (transferStatus === 'cancelSuccess') {
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken));
       setStepThreeContent(
@@ -130,6 +111,21 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
         </div>
       )
     }
+    // Transfer successful and transfer resource browser refreshed!
+    else if (transferStatus === 'finished') {
+      setStepThreeContent(
+        <Grid item md={12}>
+            <List dense={true}>
+              {buildListItem(transferData.message)}
+              {transferData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
+            </List>
+            {transferData.failed_fixity.length > 0 ? buildList(transferData.failed_fixity, 'The following files failed fixity checks:') : null}
+            {transferData.resources_ignored.length > 0 ? buildList(transferData.resources_ignored, 'The following duplicate resources were ignored:') : null}
+            {transferData.resources_updated.length > 0 ? buildList(transferData.resources_updated, 'The following duplicate resources were updated:') : null}
+        </Grid>
+      );
+    }
+    // Transfer Failed or cancel finished
     else if (transferStatus === 'failure' || transferStatus === 'cancelled') {
       let errorMessage;
       if (transferStatus === 'cancelled') {

@@ -15,6 +15,7 @@ import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -26,13 +27,13 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
 
   const uploadStatus = useSelector(state => state.uploadStatus);
   const uploadData = useSelector(state => state.uploadData);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
 
+  /** Capture Errors **/
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const uploadError = apiOperationErrors.find(
     element => element.action === actionCreators.upload.uploadToTarget.toString());
-
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.upload.uploadJob.toString());
 
@@ -48,14 +49,59 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     </div>
   );
 
+  /** Build a list to display warning results **/
+  const buildList = (resources, header) => {
+    return (
+      <List
+        dense={true}
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            {header}
+          </ListSubheader>
+        }
+      >
+        {
+          resources.map(resource => (
+            <ListItem>
+              <ListItemIcon>
+                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              </ListItemIcon>
+              <ListItemText
+                primary={resource}
+              />
+            </ListItem>
+          ))
+        }
+      </List>
+    )
+  };
+
+  /** Build a list item for successful upload results **/
+  const buildListItem = (message) => {
+    return (
+      <ListItem>
+        <ListItemIcon>
+          <CheckCircleOutlineIcon
+            style={{ color: colors.successGreen }}
+          />
+        </ListItemIcon>
+        <ListItemText
+          primary={message}
+        />
+      </ListItem>
+    )
+  };
+
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
+    // Upload Successful! Refresh resource browser
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
+    // Upload cancelled. Refresh resource browser
     else if (uploadStatus === 'cancelSuccess') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
       setStepThreeContent(
@@ -70,72 +116,21 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
+    // Upload successful and resource browser refreshed!
     else if (uploadStatus === 'finished') {
-      const failedFixityMessage = uploadData.failed_fixity.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following files failed fixity checks: ${uploadData.failed_fixity.join(', ')}`}
-          />
-        </ListItem>
-        : <ListItem>
-          <ListItemIcon>
-            <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary='All files passed fixity checks'
-          />
-        </ListItem>;
-
-      const resourcesIgnoredMessage = uploadData.resources_ignored.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were ignored: ${uploadData.resources_ignored.join(', ')}`}
-          />
-        </ListItem>
-        : null;
-
-      const resourcesUpdatedMessage = uploadData.resources_updated.length > 0
-        ? <ListItem>
-          <ListItemIcon>
-            <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-          </ListItemIcon>
-          <ListItemText
-            primary={`The following duplicate resources were updated: ${uploadData.resources_updated.join(', ')}`}
-          />
-        </ListItem>
-        : null;
-
-      const successfulMessage = (
+      setStepThreeContent(
         <Grid item md={12}>
-          <div>
             <List dense={true}>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleOutlineIcon
-                    style={{ color: colors.successGreen }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary={uploadData.message}
-                />
-              </ListItem>
-              {failedFixityMessage}
-              {resourcesIgnoredMessage}
-              {resourcesUpdatedMessage}
+              {buildListItem(uploadData.message)}
+              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
             </List>
-          </div>
+            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
+            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
+            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
         </Grid>
       );
-
-      setStepThreeContent(successfulMessage);
     }
-    // Upload Failed!
+    // Upload Failed or cancel finished
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
       if (uploadStatus === 'cancelled') {
