@@ -49,14 +49,58 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     </div>
   );
 
+  /** Build a list to display resources affected by upload **/
+  const buildList = (resources, header) => {
+    return (
+      <List
+        dense={true}
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            {header}
+          </ListSubheader>
+        }
+      >
+        {
+          resources.map(resource => (
+            <ListItem>
+              <ListItemIcon>
+                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
+              </ListItemIcon>
+              <ListItemText
+                primary={resource}
+              />
+            </ListItem>
+          ))
+        }
+      </List>
+    )
+  };
+
+  /** Build a list item for successful upload features **/
+  const buildListItem = (message) => {
+    return (
+      <ListItem>
+        <ListItemIcon>
+          <CheckCircleOutlineIcon
+            style={{ color: colors.successGreen }}
+          />
+        </ListItemIcon>
+        <ListItemText
+          primary={message}
+        />
+      </ListItem>
+    )
+  };
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
+    // Upload Successful! Refresh target browser
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
+    // Upload cancelled. Refresh target browser.
     else if (uploadStatus === 'cancelSuccess') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
       setStepThreeContent(
@@ -71,131 +115,17 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
+    // Upload successful and target browser refreshed!
     else if (uploadStatus === 'finished') {
-      uploadData.failed_fixity = ['/fixty/failed!', 'boi oh oboi'];
-      uploadData.resources_updated = ['/this/file/is bad', '/updated/me', ';abc/dfdfd/dfdfdf/d', 'sidofsaodifjadsoifj', '/osidjfaosdijfasdoifj'];
-      const failedFixityMessage = uploadData.failed_fixity.length > 0
-      ? <List
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              The following files failed fixity checks:
-            </ListSubheader>
-          }
-          dense={true}
-        >
-          {
-            uploadData.failed_fixity.map(resource => (
-              <ListItem>
-                <ListItemIcon>
-                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-                </ListItemIcon>
-                <ListItemText
-                  primary={resource}
-                />
-              </ListItem>
-            ))
-
-          }
-        </List>
-      :
-        <List dense={true}>
-          <ListItem>
-               <ListItemIcon>
-                 <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-               </ListItemIcon>
-               <ListItemText
-               primary='All files passed fixity checks'
-             />
-          </ListItem>
-        </List>;
-
-      const resourcesIgnoredMessage = uploadData.resources_ignored.length > 0
-        ? <List
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              The following duplicate resources were ignored:
-            </ListSubheader>
-          }
-          dense={true}
-        >
-          {
-            uploadData.resources_ignored.map(resource => (
-              <ListItem>
-                <ListItemIcon>
-                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-                </ListItemIcon>
-                <ListItemText
-                  primary={resource}
-                />
-              </ListItem>
-            ))
-
-          }
-        </List>
-        :
-        <List dense={true}>
-          <ListItem>
-            <ListItemIcon>
-              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary='All files passed fixity checks'
-            />
-          </ListItem>
-        </List>;
-
-      const resourcesUpdatedMessage = uploadData.resources_updated.length > 0
-        ? <List
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              The following duplicate resources were updated:
-            </ListSubheader>
-          }
-          dense={true}
-        >
-          {
-            uploadData.resources_updated.map(resource => (
-              <ListItem>
-                <ListItemIcon>
-                  <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-                </ListItemIcon>
-                <ListItemText
-                  primary={resource}
-                />
-              </ListItem>
-            ))
-
-          }
-        </List>
-        :
-        <List dense={true}>
-          <ListItem>
-            <ListItemIcon>
-              <CheckCircleOutlineIcon style={{ color: colors.successGreen }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary='All files passed fixity checks'
-            />
-          </ListItem>
-        </List>;
-
       const successfulMessage = (
         <Grid item md={12}>
             <List dense={true}>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleOutlineIcon
-                    style={{ color: colors.successGreen }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary={uploadData.message}
-                />
-              </ListItem>
+              {buildListItem(uploadData.message)}
+              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
             </List>
-            {failedFixityMessage}
-            {resourcesIgnoredMessage}
-            {resourcesUpdatedMessage}
+            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
+            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
+            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
         </Grid>
       );
 
