@@ -27,13 +27,13 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
 
   const uploadStatus = useSelector(state => state.uploadStatus);
   const uploadData = useSelector(state => state.uploadData);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
 
+  /** Capture Errors **/
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const uploadError = apiOperationErrors.find(
     element => element.action === actionCreators.upload.uploadToTarget.toString());
-
   const uploadJobError = apiOperationErrors.find(
     element => element.action === actionCreators.upload.uploadJob.toString());
 
@@ -49,7 +49,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     </div>
   );
 
-  /** Build a list to display warning resource results **/
+  /** Build a list to display warning results **/
   const buildList = (resources, header) => {
     return (
       <List
@@ -91,16 +91,17 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       </ListItem>
     )
   };
+
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
-    // Upload Successful! Refresh target browser
+    // Upload Successful! Refresh resource browser
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    // Upload cancelled. Refresh target browser.
+    // Upload cancelled. Refresh resource browser
     else if (uploadStatus === 'cancelSuccess') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
       setStepThreeContent(
@@ -115,9 +116,9 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
-    // Upload successful and target browser refreshed!
+    // Upload successful and resource browser refreshed!
     else if (uploadStatus === 'finished') {
-      const successfulMessage = (
+      setStepThreeContent(
         <Grid item md={12}>
             <List dense={true}>
               {buildListItem(uploadData.message)}
@@ -128,10 +129,8 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
             {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
         </Grid>
       );
-
-      setStepThreeContent(successfulMessage);
     }
-    // Upload Failed!
+    // Upload Failed or cancel finished
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
       if (uploadStatus === 'cancelled') {
