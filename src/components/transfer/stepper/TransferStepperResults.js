@@ -113,10 +113,6 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
     }
     // Transfer successful and transfer resource browser refreshed!
     else if (transferStatus === 'finished') {
-      transferData.resources_ignored = ['/34/3434', '/34/fe/fe'];
-      transferData.resources_updated = ['/34/3434', '/34/fe/fe'];
-      transferData.failed_fixity = [];
-
       setStepThreeContent(
         <Grid item md={12}>
             <List dense={true}>
@@ -126,7 +122,6 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
             {transferData.failed_fixity.length > 0 ? buildList(transferData.failed_fixity, 'The following files failed fixity checks:') : null}
             {transferData.resources_ignored.length > 0 ? buildList(transferData.resources_ignored, 'The following duplicate resources were ignored:') : null}
             {transferData.resources_updated.length > 0 ? buildList(transferData.resources_updated, 'The following duplicate resources were updated:') : null}
-
         </Grid>
       );
     }
