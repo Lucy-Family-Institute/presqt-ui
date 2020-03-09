@@ -40,6 +40,7 @@ export default function ResourceButton({resource, level, onClick }) {
         backgroundColor: "#FFFFFF",
         overflowWrap: "anywhere",
         textAlign: "left",
+        cursor: "pointer"
       }}
       onClick={() => onClick(resource)}
     >
@@ -66,7 +67,7 @@ export default function ResourceButton({resource, level, onClick }) {
       }
 
 
-      <span css={textStyles.listItem}>{resource.title}</span>
+      <span css={[textStyles.listItem, {cursor: "pointer"}]}>{resource.title}</span>
     </button>
   );
 }
