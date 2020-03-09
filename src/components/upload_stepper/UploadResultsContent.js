@@ -49,7 +49,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     </div>
   );
 
-  /** Build a list to display resources affected by upload **/
+  /** Build a list to display warning resource results **/
   const buildList = (resources, header) => {
     return (
       <List
@@ -76,7 +76,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     )
   };
 
-  /** Build a list item for successful upload features **/
+  /** Build a list item for successful upload results **/
   const buildListItem = (message) => {
     return (
       <ListItem>
