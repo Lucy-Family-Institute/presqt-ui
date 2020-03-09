@@ -6,6 +6,12 @@ import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
 import textStyles from "../../../styles/text";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import EditIcon from '@material-ui/icons/Edit';
+
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 const CustomTransferButton = withStyles({
   root: {
@@ -23,8 +29,8 @@ const CustomTransferButton = withStyles({
 export default function TransferStepperTransferButton({handleNext, selectedDuplicate}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.selectedTarget.name);
-  const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const sourceResource = useSelector(state => state.selectedResource);
   const selectedTransferResource = useSelector(state => state.selectedTransferResource);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
@@ -42,7 +48,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       sourceResource,
       selectedDuplicate,
       selectedTransferResource,
-      selectedTarget,
+      selectedTarget.name,
       targetToken
     ));
 
@@ -50,12 +56,36 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
   };
 
   return (
-    <CustomTransferButton
-      onClick={submitTransfer}
-      variant="contained"
-      color="primary"
-    >
-      <span css={textStyles.buttonText}>Transfer File</span>
-    </CustomTransferButton>
+    <div>
+      <div>
+        The following actions will occur with this transaction:
+        <List>
+          <ListItem>
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create or edit File Transfer Service Metadata file." />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            {selectedTransferResource
+              ? <ListItemText
+                primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${transferDestinationTarget} resource '${selectedTransferResource.title}'.`}/>
+              : <ListItemText primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${transferDestinationTarget} as a new project.`}/>
+            }
+          </ListItem>
+        </List>
+      </div>
+      <CustomTransferButton
+        onClick={submitTransfer}
+        variant="contained"
+        color="primary"
+      >
+        <span css={textStyles.buttonText}>Transfer File</span>
+      </CustomTransferButton>
+    </div>
+
   )
 }
