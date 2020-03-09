@@ -34,7 +34,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         setDisabled(false);
       }
     }
-  }, [transferStepInModal, transferStatus])
+  }, [transferStepInModal, transferStatus]);
 
   const iconSelector = () => {
     if (resource.kind === "container") {
@@ -66,6 +66,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         backgroundColor: "#FFFFFF",
         overflowWrap: "anywhere",
         textAlign: "left",
+        cursor: "pointer"
       },
         resource.kind === 'item' ? { opacity: 0.5 } : null
       ]}
@@ -94,7 +95,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
       }
 
 
-      <span css={resource.active ? textStyles.selectedTransferListItem : textStyles.listItem}>
+      <span css={[resource.active ? textStyles.selectedTransferListItem : textStyles.listItem, {cursor: "pointer"}]}>
         {resource.title}
       </span>
     </button>
