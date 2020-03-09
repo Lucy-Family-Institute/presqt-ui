@@ -103,13 +103,14 @@ export const transferReducers = {
      * Saga call to Resource-Detail occurs with this action for transfer.
      **/
     [actionCreators.transfer.selectTransferResource]: (state, action) => {
+
       const updateTargetResources = transferTargetResources => {
         return transferTargetResources.map(resource => {
           return {
             ...resource,
             active: resource.id === action.payload.resource.id,
             children:
-              resource.kind === "container"
+              resource.kind === "container" && resource.children
                 ? updateTargetResources(resource.children)
                 : resource.children
           };
@@ -134,7 +135,7 @@ export const transferReducers = {
             ...resource,
             active: false,
             children:
-              resource.kind === "container"
+              resource.kind === "container" && resource.children
                 ? deselectTargetResource(resource.children)
                 : resource.children
           };
