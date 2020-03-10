@@ -46,7 +46,7 @@ export default function TransferRetryButton({selectedDuplicate, setStepThreeCont
           The transfer is being processed on the server.
         </div>
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-          If you refresh or leave the page the upload will still continue.
+          If you refresh or leave the page the transfer will still continue.
         </div>
         <Spinner />
         <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
