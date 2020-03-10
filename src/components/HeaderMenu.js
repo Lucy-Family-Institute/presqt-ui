@@ -34,7 +34,7 @@ export default function HeaderMenu() {
       <a
         css={[
           textStyles.globalNav,
-          { textDecoration: "none", marginLeft: 25 },
+          { textDecoration: "none", marginLeft: 25, cursor: "pointer" },
           mainStyles.hoverOrFocusTransform,
         ]}
         target="_blank"
