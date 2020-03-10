@@ -58,7 +58,7 @@ export default function TargetActions() {
           {selectedResource
           ? <TransferActionButton
               key="Transfer"
-              disabled={!selectedTarget.supported_actions.resource_transfer_out}
+              disabled={!selectedTarget.supported_actions.resource_transfer_out || selectedResource.title === 'PRESQT_FTS_METADATA.json'}
             />: null}
         </div>
       </div>
