@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect} from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
 import FileSaver from "file-saver";
