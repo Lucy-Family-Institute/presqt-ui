@@ -1,16 +1,16 @@
 import {useState} from "react";
 
-export default function useDefaultHTML(initialValue) {
-  const [htmlContent, setHTMLContent] = useState(initialValue);
+export default function useDefault(initialValue) {
+  const [content, setContent] = useState(initialValue);
 
-  const setDefaultHTMLContent = (content) => {
+  const setDefaultContent = (content) => {
     if (!content) {
-      setHTMLContent(initialValue)
+      setContent(initialValue)
     }
     else {
-      setHTMLContent(content)
+      setContent(content)
     }
   };
 
-  return [htmlContent, setDefaultHTMLContent]
+  return [content, setDefaultContent]
 }

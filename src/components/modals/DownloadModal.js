@@ -12,7 +12,7 @@ import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import getError from "../../utils/getError";
-import useDefaultHTML from "../../hooks/useDefault";
+import useDefault from "../../hooks/useDefault";
 
 
 export default function DownloadModal() {
@@ -25,7 +25,7 @@ export default function DownloadModal() {
   const downloadError = getError(actionCreators.download.downloadResource);
   const downloadJobError = getError(actionCreators.download.downloadJob);
 
-  const [modalContent, setModalContent] = useDefaultHTML(
+  const [modalContent, setModalContent] = useDefault(
     <div>
       <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
         <p>The download is being processed on the server.</p>
@@ -36,7 +36,7 @@ export default function DownloadModal() {
       </div>
     </div>
   );
-  const [modalHeader, setModalHeader] = useDefaultHTML('Download In Progress');
+  const [modalHeader, setModalHeader] = useDefault('Download In Progress');
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.

@@ -10,7 +10,7 @@ import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import { actionCreators } from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
 import Spinner from "../widgets/spinners/Spinner";
-import useDefaultHTML from "../../hooks/useDefault";
+import useDefault from "../../hooks/useDefault";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -19,8 +19,8 @@ export default function TokenModal() {
   const githubStatus = useSelector(state => state.githubStatus);
   const githubIssueData = useSelector(state => state.githubIssueData);
 
-  const [title, setTitle] = useDefaultHTML("");
-  const [body, setBody] = useDefaultHTML("");
+  const [title, setTitle] = useDefault("");
+  const [body, setBody] = useDefault("");
 
   const handleClose = () => {
     dispatch(actionCreators.github.hideIssueModal());
