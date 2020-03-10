@@ -7,10 +7,11 @@ import {useDispatch, useSelector} from "react-redux";
 import modalStyles from "../../styles/modal";
 import textStyles from "../../styles/text";
 import TokenTextField from "../widgets/text_fields/TokenTextField";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
+import getError from "../../utils/getError";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -20,11 +21,9 @@ export default function TokenModal() {
   const tokenModalDisplay = useSelector(state => state.tokenModalDisplay);
   const connection = useSelector(state => state.selectedTarget);
 
+  const error = getError(actionCreators.resources.loadFromTarget);
 
   const [token, setToken] = useState('');
-
-  const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
 
   /**
    * Close the modal.

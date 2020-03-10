@@ -16,6 +16,7 @@ import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetrySta
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import getError from "../../utils/getError";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -29,13 +30,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadData = useSelector(state => state.uploadData);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
-
-  /** Capture Errors **/
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-  const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadToTarget.toString());
-  const uploadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadJob.toString());
+
+  const uploadError = getError(actionCreators.upload.uploadToTarget);
+  const uploadJobError = getError(actionCreators.upload.uploadJob);
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>

@@ -11,6 +11,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 import CancelButton from "../widgets/buttons/CancelButton";
+import getError from "../../utils/getError";
 
 
 const modalDefaultMessage = (
@@ -29,17 +30,13 @@ export default function DownloadModal() {
 
   const downloadData = useSelector(state => state.downloadData);
   const downloadModalDisplay = useSelector(state => state.downloadModalDisplay);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const downloadStatus = useSelector(state => state.downloadStatus);
+
+  const downloadError = getError(actionCreators.download.downloadResource);
+  const downloadJobError = getError(actionCreators.download.downloadJob);
 
   const [modalContent, setModalContent] = useState(modalDefaultMessage);
   const [modalHeader, setModalHeader] = useState('Download In Progress');
-
-  const downloadError = apiOperationErrors.find(
-    element => element.action === actionCreators.download.downloadResource.toString());
-
-  const downloadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.download.downloadJob.toString());
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.

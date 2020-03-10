@@ -19,6 +19,7 @@ import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
 import TransferStartOverButton from "../TransferStartOverButton";
+import getError from "../../../utils/getError";
 
 
 const useStyles = makeStyles(theme => ({
@@ -64,8 +65,7 @@ export default function TransferStepper() {
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const collectionError = apiOperationErrors.find(
-    element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
+  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');

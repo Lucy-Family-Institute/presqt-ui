@@ -6,7 +6,7 @@ import DownloadActionButton from "./action_buttons/DownloadActionButton";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
-import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
+import arrayValueFinder from "../utils/arrayValueFinder";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
