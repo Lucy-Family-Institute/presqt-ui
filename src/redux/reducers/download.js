@@ -127,7 +127,7 @@ export const downloadReducers = {
     [actionCreators.download.cancelDownloadFailure]: (state, action) => ({
     ...state,
     pendingAPIResponse: false,
-    downloadStatus: 'failure',
+    downloadStatus: 'cancelFailure',
     pendingAPIOperations: untrackAction(
       actionCreators.download.cancelDownload,
       state.pendingAPIOperations

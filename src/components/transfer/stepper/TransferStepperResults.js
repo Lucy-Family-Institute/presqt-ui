@@ -35,7 +35,10 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        The transfer is being processed on the server. If you refresh or leave the page the transfer will still continue.
+        The transfer is being processed on the server.
+      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        If you refresh or leave the page the transfer will still continue.
       </div>
       <Spinner />
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
@@ -107,6 +110,23 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
         </div>
       )
     }
+    // Cancel Failed!
+    else if (transferStatus === 'cancelFailure') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The transfer is continuing.
+          </div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            If you refresh or leave the page the transfer will still continue.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='TRANSFER' />
+          </div>
+        </div>
+      )
+    }
     // Transfer successful and transfer resource browser refreshed!
     else if (transferStatus === 'finished') {
       setStepThreeContent(
@@ -125,7 +145,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
     else if (transferStatus === 'failure' || transferStatus === 'cancelled') {
       let errorMessage;
       if (transferStatus === 'cancelled') {
-        errorMessage = `${transferData.message}. Some resources may have still be transferred.`
+        errorMessage = `${transferData.message} Some resources may have still been transferred.`
       }
       // PresQT transfer Post error
       else if (transferError) {
@@ -149,7 +169,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
           <div
             css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
           >
-            <ErrorOutlineIcon color="error" />
+            <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
             <span css={{ marginLeft: 5 }}>{errorMessage}</span>
           </div>
           <div css={{justifyContent: 'center', display: 'flex'}}

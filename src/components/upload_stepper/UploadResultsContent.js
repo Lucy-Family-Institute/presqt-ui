@@ -39,7 +39,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const [stepThreeContent, setStepThreeContent] = useDefault(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        The upload is being processed on the server. If you refresh or leave the page the upload will still continue.
+        The upload is being processed on the server.
+      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        If you refresh or leave the page the upload will still continue.
       </div>
       <Spinner />
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
@@ -115,6 +118,23 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
+    // Cancel Failed!
+    else if (uploadStatus === 'cancelFailure') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The upload is continuing.
+          </div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            If you refresh or leave the page the upload will still continue.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
+    }
     // Upload successful and resource browser refreshed!
     else if (uploadStatus === 'finished') {
       setStepThreeContent(
@@ -133,7 +153,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
       if (uploadStatus === 'cancelled') {
-        errorMessage = `${uploadData.message}. Some resources may have still be uploaded.`
+        errorMessage = `${uploadData.message}. Some resources may have still been uploaded.`
       }
       // PresQT Upload Post error
       else if (uploadError) {
@@ -151,12 +171,14 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(
         <Fragment>
           <div
-            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex',
+                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
           >
-            <ErrorOutlineIcon color="error" />
-            <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+            <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+            {errorMessage}
           </div>
-          <div css={{justifyContent: 'center', display: 'flex'}}
+          <div
+            css={{justifyContent: 'center', display: 'flex'}}
           >
             <RetryStartUploadOverButton
               setActiveStep={setActiveStep}

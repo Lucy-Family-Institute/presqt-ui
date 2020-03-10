@@ -34,7 +34,7 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
         targetToken
       )
     );
-    setStepThreeContent();
+    setStepThreeContent()
   };
 
   return (
