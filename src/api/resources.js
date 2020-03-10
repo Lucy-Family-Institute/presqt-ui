@@ -6,7 +6,7 @@ import {apiURLBase} from '../config';
  **/
 export function getTargetResources(target, targetToken) {
     return axios.get(`${apiURLBase}targets/${target}/resources/`, {
-      headers: {'presqt-source-tofken': targetToken}
+      headers: {'presqt-source-token': targetToken}
     });
 }
 

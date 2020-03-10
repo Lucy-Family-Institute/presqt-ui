@@ -12,18 +12,8 @@ import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import getError from "../../utils/getError";
+import useDefaultHTML from "../../hooks/useDefault";
 
-
-const modalDefaultMessage = (
-  <div>
-    <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
-      <p>The download is being processed on the server.</p>
-    </div>
-    <Spinner />
-    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
-      <CancelButton actionType='DOWNLOAD' />
-    </div>
-  </div>);
 
 export default function DownloadModal() {
   const dispatch = useDispatch();
@@ -35,8 +25,18 @@ export default function DownloadModal() {
   const downloadError = getError(actionCreators.download.downloadResource);
   const downloadJobError = getError(actionCreators.download.downloadJob);
 
-  const [modalContent, setModalContent] = useState(modalDefaultMessage);
-  const [modalHeader, setModalHeader] = useState('Download In Progress');
+  const [modalContent, setModalContent] = useDefaultHTML(
+    <div>
+      <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+        <p>The download is being processed on the server.</p>
+      </div>
+      <Spinner />
+      <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+        <CancelButton actionType='DOWNLOAD' />
+      </div>
+    </div>
+  );
+  const [modalHeader, setModalHeader] = useDefaultHTML('Download In Progress');
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.
@@ -63,13 +63,14 @@ export default function DownloadModal() {
       setModalContent(
         <Fragment>
           <div
-            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>              <ErrorOutlineIcon color="error"/>
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error"/>
               <span css={{ marginLeft: 5 }}>{errorMessage}</span>
           </div>
           <div css={{justifyContent: 'center', display: 'flex'}}>
               <RetryDownloadButton
                 setModalContent={setModalContent}
-                modalDefaultMessage={modalDefaultMessage}
+                setModalHeader={setModalHeader}
               />
           </div>
         </Fragment>
@@ -101,7 +102,7 @@ export default function DownloadModal() {
           <div css={{justifyContent: 'center', display: 'flex'}}>
               <RetryDownloadButton
                 setModalContent={setModalContent}
-                modalDefaultMessage={modalDefaultMessage}
+                setModalHeader={setModalHeader}
               />
           </div>
         </Fragment>
@@ -122,7 +123,7 @@ export default function DownloadModal() {
    **/
   const handleClose = () => {
     dispatch(actionCreators.download.hideDownloadModal());
-    setModalContent(modalDefaultMessage);
+    setModalContent();
     dispatch(actionCreators.download.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(

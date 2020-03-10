@@ -17,6 +17,7 @@ import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import getError from "../../utils/getError";
+import useDefaultHTML from "../../hooks/useDefault";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -35,7 +36,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadError = getError(actionCreators.upload.uploadToTarget);
   const uploadJobError = getError(actionCreators.upload.uploadJob);
 
-  const [stepThreeContent, setStepThreeContent] = useState(
+  const [stepThreeContent, setStepThreeContent] = useDefaultHTML(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         The upload is being processed on the server. If you refresh or leave the page the upload will still continue.
@@ -60,7 +61,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       >
         {
           resources.map(resource => (
-            <ListItem>
+            <ListItem key={resource}>
               <ListItemIcon>
                 <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
               </ListItemIcon>

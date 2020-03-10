@@ -94,7 +94,7 @@ export default function TokenModal() {
                 onChange={event => setToken(event.target.value)}
                 onAnimationEnd={(event) => { event.stopPropagation() }}
                 // If the enter button is pressed (code 13), submit the modal.
-                onKeyDown={(event) => {if (event.keyCode === 13 && token !== '') {modalSubmit()}}}
+                onKeyDown={(event) => {event.keyCode === 13 && token !== '' ? modalSubmit() : null}}
               />
               <ModalSubmitButton
                 variant="contained"

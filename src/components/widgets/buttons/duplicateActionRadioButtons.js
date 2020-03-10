@@ -31,20 +31,13 @@ const useStyles = makeStyles(theme => ({
 export default function DuplicateActionRadioButtons({selectedDuplicate, setSelectedDuplicate}) {
   const classes = useStyles();
 
-  /**
-   * When a new duplicate action is selected update the selectedDuplicate state to the new selection
-   **/
-  const handleChange = event => {
-    setSelectedDuplicate(event.target.value)
-  };
-
   return (
     <div>
       <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup
           aria-label="Duplicate Actions"
           value={selectedDuplicate}
-          onChange={handleChange}
+          onChange={event => setSelectedDuplicate(event.target.value)}
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >
           <FormControlLabel

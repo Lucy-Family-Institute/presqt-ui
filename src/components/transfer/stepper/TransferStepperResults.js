@@ -57,7 +57,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       >
         {
           resources.map(resource => (
-            <ListItem>
+            <ListItem key={resource}>
               <ListItemIcon>
                 <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
               </ListItemIcon>
