@@ -299,7 +299,7 @@ export const transferReducers = {
     [actionCreators.transfer.cancelTransferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: "failure",
+      transferStatus: "cancelFailure",
       pendingAPIOperations: untrackAction(
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
