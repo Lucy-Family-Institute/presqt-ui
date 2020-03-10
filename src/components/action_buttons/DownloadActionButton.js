@@ -14,8 +14,7 @@ import ActionButton from "../widgets/buttons/ActionButton";
 export default function DownloadActionButton({ disabled }) {
   const dispatch = useDispatch();
 
-  const targetToken = useSelector(state =>
-    state.apiTokens[state.selectedTarget.name]);
+  const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
 
 

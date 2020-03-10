@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -16,6 +16,8 @@ import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetrySta
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import getError from "../../utils/getError";
+import useDefault from "../../hooks/useDefault";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -29,15 +31,12 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadData = useSelector(state => state.uploadData);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
-
-  /** Capture Errors **/
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-  const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadToTarget.toString());
-  const uploadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadJob.toString());
 
-  const [stepThreeContent, setStepThreeContent] = useState(
+  const uploadError = getError(actionCreators.upload.uploadToTarget);
+  const uploadJobError = getError(actionCreators.upload.uploadJob);
+
+  const [stepThreeContent, setStepThreeContent] = useDefault(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         The upload is being processed on the server.
@@ -65,7 +64,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       >
         {
           resources.map(resource => (
-            <ListItem>
+            <ListItem key={resource}>
               <ListItemIcon>
                 <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
               </ListItemIcon>

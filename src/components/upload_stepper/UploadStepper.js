@@ -55,7 +55,6 @@ function getSteps(uploadType) {
   else {
     return possibleSteps;
   }
-
 }
 
 /**

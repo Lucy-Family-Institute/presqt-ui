@@ -16,6 +16,7 @@ import Spinner from "../../widgets/spinners/Spinner";
 import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import getError from "../../../utils/getError";
 
 
 export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
@@ -25,16 +26,11 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   const transferData = useSelector(state => state.transferData);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
-
-  /** Capture Errors **/
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-  const transferError = apiOperationErrors.find(
-    element => element.action === actionCreators.transfer.transferResource.toString());
-  const transferJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.transfer.transferJob.toString());
-  const transferCancelError = apiOperationErrors.find(
-    element => element.action === actionCreators.transfer.cancelTransfer.toString());
 
+  const transferError = getError(actionCreators.transfer.transferResource);
+  const transferJobError = getError(actionCreators.transfer.transferJob);
+  const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -64,7 +60,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       >
         {
           resources.map(resource => (
-            <ListItem>
+            <ListItem key={resource}>
               <ListItemIcon>
                 <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
               </ListItemIcon>
