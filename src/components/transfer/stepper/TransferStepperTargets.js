@@ -28,8 +28,8 @@ export default function TransferStepperTargets() {
               {
                 backgroundColor: 'white',
                 border: 'none',
-                paddingLeft: 0,
-                paddingRight: 10
+                paddingRight: 10,
+                cursor: 'pointer'
               }
             ]}
             onClick={() => handleSwitchTarget(connection)}

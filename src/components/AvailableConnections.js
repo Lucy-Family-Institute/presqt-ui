@@ -6,6 +6,7 @@ import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
+import mainStyles from "../styles/main";
 
 /**
  * This component displays the various targets that a user can connect with.
@@ -81,9 +82,11 @@ export default function AvailableConnections() {
               {
                 backgroundColor: 'white',
                 border: 'none',
-                paddingLeft: 0,
-                paddingRight: 10
+                paddingLeft: 5,
+                paddingRight: 10,
+                cursor: "pointer"
               },
+              mainStyles.hoverOrFocusTransform,
               pendingAPIResponse || downloadStatus === 'pending'
               || uploadStatus === 'pending' ? { opacity: 0.5 } : null
             ]}
