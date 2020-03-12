@@ -30,7 +30,7 @@ function* downloadTargetResource(action) {
 
         const downloadJobResponse = yield call(
           resourceDownloadJob,
-          response.data.download_job,
+          response.data.download_job_zip,
           action.payload.targetToken
         );
 
