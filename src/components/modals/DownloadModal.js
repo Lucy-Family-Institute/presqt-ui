@@ -13,6 +13,10 @@ import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadBu
 import CancelButton from "../widgets/buttons/CancelButton";
 import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import SuccessListItem from "../widgets/list_items/SuccessListItem";
+import WarningList from "../widgets/list_items/WarningList";
 
 
 export default function DownloadModal() {
@@ -125,10 +129,24 @@ export default function DownloadModal() {
     }
 
     // Download successful
-    else if (downloadStatus === "success") {
-      FileSaver.saveAs(downloadData, "PresQT_Download.zip");
-      dispatch(actionCreators.download.hideDownloadModal());
-      dispatch(actionCreators.download.clearDownloadData());
+    else if (downloadStatus === "finished") {
+      FileSaver.saveAs(downloadData.file, "PresQT_Download.zip");
+      setModalHeader("Download Successful!");
+      setModalContent(
+        <Grid item md={12}>
+          <List dense={true}>
+            <SuccessListItem message={downloadData.message}/>
+            {downloadData.failedFixity.length <= 0
+              ? <SuccessListItem message='All files passed fixity checks' />
+              : null
+            }
+          </List>
+          {downloadData.failedFixity.length > 0
+            ? <WarningList resources={downloadData.failedFixity}
+                           header='The following files failed fixity checks:'/>
+            : null}
+        </Grid>
+      )
     }
   }, [downloadStatus]);
 

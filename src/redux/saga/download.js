@@ -2,8 +2,8 @@ import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
   cancelResourceDownloadJob,
-  getResourceDownload,
-  resourceDownloadJob
+  getResourceDownload, resourceDownloadJobJSON,
+  resourceDownloadJobZIP
 } from "../../api/download";
 
 export function* watchResourceDownload() {
@@ -29,18 +29,36 @@ function* downloadTargetResource(action) {
         yield put(actionCreators.download.downloadJob());
 
         const downloadJobResponse = yield call(
-          resourceDownloadJob,
+          resourceDownloadJobZIP,
           response.data.download_job_zip,
           action.payload.targetToken
         );
 
         // Download successful!
         if (downloadJobResponse.headers['content-type'] === 'application/zip') {
+          // Get the zip file
           const downloadJobResponseData = new Blob(
             [downloadJobResponse.data],
             {type : 'application/json'}
           );
           yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseData, 'success'));
+
+          // Make one more request to the download job endpoint to get the process results
+          yield put(actionCreators.download.downloadJob());
+
+          const downloadJobResponseJSON = yield call(
+            resourceDownloadJobJSON,
+            response.data.download_job_json,
+            action.payload.targetToken
+          );
+          const finalDownloadData = {
+            file : downloadJobResponseData,
+            message: downloadJobResponseJSON.data.message,
+            failedFixity: downloadJobResponseJSON.data.failed_fixity
+          };
+
+          yield put(actionCreators.download.downloadJobSuccess(finalDownloadData, 'finished'));
+
           downloadFinished = true;
         }
         // Download pending!

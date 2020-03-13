@@ -10,12 +10,21 @@ export function getResourceDownload(resource, targetToken) {
 }
 
 /**
- * Resource Download Job Endpoint
+ * Resource Download Job ZIP Endpoint
  **/
-export function resourceDownloadJob(downloadJobURL, targetToken) {
+export function resourceDownloadJobZIP(downloadJobURL, targetToken) {
   return axios.get(downloadJobURL, {
     headers: {'presqt-source-token': targetToken},
     responseType: 'blob'
+  });
+}
+
+/**
+ * Resource Download Job JSON Endpoint
+ **/
+export function resourceDownloadJobJSON(downloadJobURL, targetToken) {
+  return axios.get(downloadJobURL, {
+    headers: {'presqt-source-token': targetToken}
   });
 }
 
