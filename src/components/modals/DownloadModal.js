@@ -133,18 +133,22 @@ export default function DownloadModal() {
       FileSaver.saveAs(downloadData.file, "PresQT_Download.zip");
       setModalHeader("Download Successful!");
       setModalContent(
-        <Grid item md={12}>
-          <List dense={true}>
-            <SuccessListItem message={downloadData.message}/>
-            {downloadData.failedFixity.length <= 0
-              ? <SuccessListItem message='All files passed fixity checks' />
-              : null
-            }
-          </List>
-          {downloadData.failedFixity.length > 0
-            ? <WarningList resources={downloadData.failedFixity}
-                           header='The following files failed fixity checks:'/>
-            : null}
+        <Grid container>
+          <Grid md={4}></Grid>
+          <Grid md={4}>
+            <List dense={true}>
+              <SuccessListItem message={downloadData.message}/>
+              {downloadData.failedFixity.length <= 0
+                ? <SuccessListItem message='All files passed fixity checks' />
+                : null
+              }
+            </List>
+            {downloadData.failedFixity.length > 0
+              ? <WarningList resources={downloadData.failedFixity}
+                             header='The following files failed fixity checks:'/>
+              : null}
+          </Grid>
+          <Grid md={4}></Grid>
         </Grid>
       )
     }
@@ -157,6 +161,7 @@ export default function DownloadModal() {
   const handleClose = () => {
     dispatch(actionCreators.download.hideDownloadModal());
     setModalContent();
+    setModalHeader();
     dispatch(actionCreators.download.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
@@ -175,12 +180,12 @@ export default function DownloadModal() {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        disableEscapeKeyDown={downloadStatus === 'pending'}
+        disableEscapeKeyDown={true}
       >
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={downloadStatus === 'pending'}
+          disabled={downloadStatus === 'pending' || downloadStatus === 'cancelPending'}
         >
           {modalHeader}
         </DialogTitle>

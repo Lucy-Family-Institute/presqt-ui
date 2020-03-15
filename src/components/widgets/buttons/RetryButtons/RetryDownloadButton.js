@@ -21,8 +21,10 @@ export default function RetryDownloadButton({setModalContent, setModalHeader}) {
 
   const submitRetry = () => {
       dispatch(actionCreators.download.clearDownloadData());
+
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.download.downloadResource.toString()));
+
       dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
 
       setModalContent();
