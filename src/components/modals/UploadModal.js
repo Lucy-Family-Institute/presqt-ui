@@ -45,7 +45,7 @@ export default function UploadModal()  {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        disableEscapeKeyDown={uploadStatus === 'pending' || uploadStatus === 'success' || uploadStatus === 'cancelSuccess'}
+        disableEscapeKeyDown={true}
       >
         <DialogTitle
           id="form-dialog-title"

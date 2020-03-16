@@ -17,7 +17,8 @@ export const downloadReducers = {
     pendingAPIOperations: trackAction(
       actionCreators.download.downloadResource,
       state.pendingAPIOperations
-    )
+    ),
+    downloadStatus: 'pending'
   }),
     /**
      * Untrack API call.

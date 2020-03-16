@@ -2,21 +2,17 @@
 import React, { useEffect, useState, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import {useDispatch, useSelector} from "react-redux";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../../redux/actionCreators";
-import colors from "../../../styles/colors";
 import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
 import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import getError from "../../../utils/getError";
+import SuccessListItem from "../../widgets/list_items/SuccessListItem";
+import WarningList from "../../widgets/list_items/WarningList";
 
 
 export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
@@ -46,49 +42,6 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       </div>
     </div>
   );
-
-  /** Build a list to display warning results **/
-  const buildList = (resources, header) => {
-    return (
-      <List
-        dense={true}
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            {header}
-          </ListSubheader>
-        }
-      >
-        {
-          resources.map(resource => (
-            <ListItem key={resource}>
-              <ListItemIcon>
-                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-              </ListItemIcon>
-              <ListItemText
-                primary={resource}
-              />
-            </ListItem>
-          ))
-        }
-      </List>
-    )
-  };
-
-  /** Build a list item for successful transfer results **/
-  const buildListItem = (message) => {
-    return (
-      <ListItem>
-        <ListItemIcon>
-          <CheckCircleOutlineIcon
-            style={{ color: colors.successGreen }}
-          />
-        </ListItemIcon>
-        <ListItemText
-          primary={message}
-        />
-      </ListItem>
-    )
-  };
 
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
@@ -132,12 +85,16 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       setStepThreeContent(
         <Grid item md={12}>
             <List dense={true}>
-              {buildListItem(transferData.message)}
-              {transferData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
+              <SuccessListItem message={transferData.message}/>
+              {transferData.failed_fixity.length <= 0
+                ? <SuccessListItem message='All files passed fixity checks' /> : null}
             </List>
-            {transferData.failed_fixity.length > 0 ? buildList(transferData.failed_fixity, 'The following files failed fixity checks:') : null}
-            {transferData.resources_ignored.length > 0 ? buildList(transferData.resources_ignored, 'The following duplicate resources were ignored:') : null}
-            {transferData.resources_updated.length > 0 ? buildList(transferData.resources_updated, 'The following duplicate resources were updated:') : null}
+            {transferData.failed_fixity.length > 0
+              ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' /> : null}
+            {transferData.resources_ignored.length > 0
+              ? <WarningList resources={transferData.resources_ignored} header='The following duplicate resources were ignored:'/> : null}
+            {transferData.resources_updated.length > 0
+              ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:'/> : null}
         </Grid>
       );
     }
