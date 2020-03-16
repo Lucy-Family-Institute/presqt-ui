@@ -1,4 +1,3 @@
-// TODO: Need something in here to handle pending operations.
 import {createActions} from 'redux-actions';
 
 export const actionCreators = createActions({
@@ -9,7 +8,7 @@ export const actionCreators = createActions({
         HIDE_TOKEN_MODAL: undefined,
     },
     RESOURCES: {
-        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken,}),
+        LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
         LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue) => ({
@@ -25,6 +24,12 @@ export const actionCreators = createActions({
         SELECT_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         SELECT_RESOURCE_SUCCESS: undefined,
         CLEAR_RESOURCES: undefined,
+        REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
+        REFRESH_TARGET_SUCCESS: undefined,
+        REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
+        CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+    },
+    DOWNLOAD: {
         DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
         DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
@@ -37,6 +42,8 @@ export const actionCreators = createActions({
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
+    },
+    UPLOAD: {
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
           ({target, file, duplicateAction, resourceToUploadTo, targetToken}),
         UPLOAD_TO_TARGET_SUCCESS: (data) => ({data}),
@@ -50,15 +57,54 @@ export const actionCreators = createActions({
         CLEAR_UPLOAD_DATA: undefined,
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
         HIDE_UPLOAD_MODAL: undefined,
-        REFRESH_TARGET: (target, targetToken) => ({target, targetToken}),
-        REFRESH_TARGET_SUCCESS: undefined,
-        REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
-        CLEAR_ACTIVE_TICKET_NUMBER: undefined
+    },
+    TRANSFER: {
+        SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),
+        SAVE_TRANSFER_DESTINATION_TARGET: (target) => ({target}),
+        LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
+        LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+        SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({ resource, targetToken }),
+        DESELECT_TRANSFER_RESOURCE: undefined,
+        SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
+        DISPLAY_TRANSFER_MODAL: undefined,
+        HIDE_TRANSFER_MODAL: undefined,
+        OPEN_TRANSFER_CONTAINER: container => ({container, open: true}),
+        CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
+        TRANSFER_RESOURCE: (
+          destinationTarget, destinationToken, sourceResource, duplicateAction,
+          resourceToTransferTo, sourceTarget, sourceTargetToken, ) => ({
+            destinationTarget, destinationToken, sourceResource,
+            duplicateAction, resourceToTransferTo, sourceTarget, sourceTargetToken}),
+        TRANSFER_SUCCESS: (data) => ({data}),
+        TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        TRANSFER_JOB: undefined,
+        TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
+        TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
+        CANCEL_TRANSFER: (ticketNumber, sourceToken, destinationToken) =>
+          ({ticketNumber, sourceToken, destinationToken}),
+        CANCEL_TRANSFER_SUCCESS: undefined,
+        CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
+        CLEAR_TRANSFER_MODAL_DATA: undefined,
+        CLEAR_TRANSFER_DATA: undefined,
+        CLEAR_TRANSFER_TOKEN: undefined,
+        CLEAR_TRANSFER_RESOURCE: undefined,
+        REFRESH_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
+        REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
     },
     TARGETS: {
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
-        SWITCH_SOURCE: undefined,
         SWITCH_TARGET: undefined
+    },
+    GITHUB: {
+        DISPLAY_ISSUE_MODAL: undefined,
+        HIDE_ISSUE_MODAL: undefined,
+        SUBMIT_GITHUB_ISSUE: (title, body) => ({ title, body }),
+        SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
+        SUBMIT_GITHUB_ISSUE_FAILURE: undefined,
+        CLEAR_GITHUB_ISSUE: undefined
     }
 });

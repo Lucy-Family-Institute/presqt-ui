@@ -5,6 +5,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { jsx } from '@emotion/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
+import textStyles from "../../styles/text";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,13 +34,6 @@ const CustomButton = withStyles({
 export default function UploadSelectFile({selectedFile, setSelectedFile}) {
   const classes = useStyles();
 
-  /**
-   * When a file is selected, add it to the selectedFile state
-   **/
-  const onChangeHandler = (file) => {
-    setSelectedFile(file)
-  };
-
   return (
     <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <div className={classes.root}>
@@ -48,7 +42,7 @@ export default function UploadSelectFile({selectedFile, setSelectedFile}) {
             className={classes.input}
             id="contained-button-file"
             type="file"
-            onChange={event => onChangeHandler(event.target.files[0])}
+            onChange={event => setSelectedFile(event.target.files[0])}
           />
           <label htmlFor="contained-button-file">
             <CustomButton
@@ -58,7 +52,7 @@ export default function UploadSelectFile({selectedFile, setSelectedFile}) {
               endIcon={<CloudUploadIcon />}
               onAnimationEnd={(event) => {event.stopPropagation()}}
             >
-              Select File
+              <span css={textStyles.buttonText}>Select File</span>
             </CustomButton>
           </label>
         </div>

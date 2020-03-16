@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
 import { useSelector } from "react-redux";
-
 import textStyles from "../styles/text";
 import MediumHeader from "./widgets/headers/MediumHeader";
 import { actionCreators } from "../redux/actionCreators";
@@ -11,16 +10,12 @@ import Spinner from "./widgets/spinners/Spinner";
  * This component is responsible for displaying the details of a selected resource.
  **/
 export default function TargetActionDetail() {
-  /** SELECTOR DEFINITIONS
-   * selectedLeftResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
 
   /**
    * Filter out resource data points that we don't want to display in the detail panel.
-   * We exclude the following keys: ['links', 'open', 'children', 'count']
+   * We exclude the following keys certain keys.
    */
   const detailsToRender = resource => {
     return Object.entries(resource)
@@ -120,11 +115,12 @@ export default function TargetActionDetail() {
         ? <Spinner />
         : pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString())
         ? null
-        : selectedLeftResource ? (
+        : selectedResource
+        ? (
           <div>
             <MediumHeader text="Resource Details" />
             <div css={{ paddingTop: 10 }}>
-              {detailsToRender(selectedLeftResource).map(resourceData =>
+              {detailsToRender(selectedResource).map(resourceData =>
                 renderDetailItem(resourceData)
               )}
             </div>

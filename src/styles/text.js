@@ -19,6 +19,11 @@ export default {
     fontSize: 14,
     fontFamily: "Roboto"
   }),
+  selectedTransferListItem: css({
+    fontSize: 14,
+    fontFamily: "Roboto",
+    color: "#181818"
+  }),
   globalNav: css({
     fontSize: 16,
     fontFamily: "Raleway",
@@ -58,7 +63,18 @@ export default {
   buttonText: css({
     fontFamily: "Roboto",
     fontWeight: 500,
-    fontSize: 12,
+    fontSize: 13,
     textTransform: "uppercase"
-  })
+  }),
+  selectedResource: css({
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 14,
+    color: colors.presqtBlue
+  }),
+  transferResource: css({
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 14
+  }),
 };

@@ -12,10 +12,10 @@ export default function RetryStartUploadOverButton({setActiveStep, setSelectedFi
   const dispatch = useDispatch();
 
   const submitRetry = () => {
-    dispatch(actionCreators.resources.clearUploadData());
+    dispatch(actionCreators.upload.clearUploadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.uploadToTarget.toString()
+        actionCreators.upload.uploadToTarget.toString()
       )
     );
     setSelectedFile(null);

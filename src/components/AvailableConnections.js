@@ -2,36 +2,33 @@
 import { jsx } from '@emotion/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-
 import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
+import mainStyles from "../styles/main";
+import getError from "../utils/getError";
 
 /**
  * This component displays the various targets that a user can connect with.
- * It's responsible for switching targets, handing off resource loading, and handing off modal work
- * It's also responsible for broadcasting (via Redux) what the currently selected "sourceTarget" is.
+ * It's responsible for switching targets, handing off resource loading, displaying the token modal.
  */
 export default function AvailableConnections() {
   const dispatch = useDispatch();
 
-  const pendingAPIResponse = useSelector(state => state.resources.pendingAPIResponse);
-  const apiTokens = useSelector(state => state.authorization.apiTokens);
-  const sourceTarget = useSelector(state => state.targets.source);
-  const availableTargets = useSelector(state => state.targets.available);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
-  
-  let tokenError;
-  if (collection_error) {
-    tokenError = collection_error.status === 401;
-  }
+  const pendingAPIResponse = useSelector(state => state.pendingAPIResponse);
+  const apiTokens = useSelector(state => state.apiTokens);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const availableTargets = useSelector(state => state.available);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const downloadStatus = useSelector(state => state.downloadStatus);
+  const uploadStatus = useSelector(state => state.uploadStatus);
+
+  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const tokenError = collectionError && collectionError.status === 401;
+
   /**
    * Dispatch load action on page-load.
-   * Saga call to Target-Collection occurs with this action.
-   *    -> Saga function dispatches loadSuccess action when finished.
    */
   useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
 
@@ -40,9 +37,7 @@ export default function AvailableConnections() {
    * If a exists in apiOperationErrors then display the modal.
    **/
   useEffect(() => {
-    if (
-      apiOperationErrors.length > 0 &&
-      tokenError) {
+    if (apiOperationErrors.length > 0 && tokenError) {
         dispatch(actionCreators.authorization.displayTokenModal());
     }
   }, [apiOperationErrors]);
@@ -50,20 +45,22 @@ export default function AvailableConnections() {
   /**
    * Set the selected target as the source target.
    * If a connection already exists with the target then dispatch loadFromTarget action.
-   *    -> Saga call to Resource-Collection occurs with this action.
-   *        -> Saga function dispatches loadFromTargetSuccess action is if successful.
-   *        -> Saga function dispatches loadFromTargetFailure action if not successful.
    * Else display the modal.
    */
-  const handleSwitchSourceTarget = connection => {
+  const handleSwitchTarget = connection => {
     dispatch(actionCreators.resources.clearResources());
-    dispatch(actionCreators.targets.switchSource(connection));
+
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.loadFromTarget.toString()));
+    dispatch(actionCreators.resources.removeFromErrorList(
+      actionCreators.resources.loadFromTargetSearch.toString()));
+
+    dispatch(actionCreators.targets.switchTarget(connection));
 
     if (connection.name in apiTokens) {
-      dispatch(
-        actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name])
-      );
-    } else {
+      dispatch(actionCreators.resources.loadFromTarget(connection,apiTokens[connection.name]));
+    }
+    else {
       setTimeout(() => dispatch(actionCreators.authorization.displayTokenModal()), 500);
     }
   };
@@ -84,19 +81,24 @@ export default function AvailableConnections() {
               {
                 backgroundColor: 'white',
                 border: 'none',
-                paddingLeft: 0,
-                paddingRight: 10
+                paddingLeft: 5,
+                paddingRight: 10,
+                cursor: "pointer"
               },
-              pendingAPIResponse ? { opacity: 0.5 } : null
+              mainStyles.hoverOrFocusTransform,
+              pendingAPIResponse || downloadStatus === 'pending'
+              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
             ]}
-            onClick={() => handleSwitchSourceTarget(connection)}
-            disabled={pendingAPIResponse}
+            onClick={() => handleSwitchTarget(connection)}
+            disabled={
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+            }
           >
             <img
               src={require(`../images/available_connections/${connection.name}.png`)}
               alt={connection.readable_name}
             />
-            {sourceTarget && sourceTarget.name === connection.name ? (
+            {selectedTarget && selectedTarget.name === connection.name ? (
               <div
                 css={{
                   minHeight: 5,

@@ -5,6 +5,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
+import textStyles from "../../styles/text";
 
 const CustomUploadButton = withStyles({
   root: {
@@ -23,15 +24,15 @@ export default function UploadButton({selectedFile, selectedDuplicate,
                                        handleNext, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.targets.source.name);
-  const targetToken = useSelector(state => state.authorization.apiTokens[state.targets.source.name]);
+  const selectedTarget = useSelector(state => state.selectedTarget.name);
+  const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
 
   /**
    * When the upload button is pushed, dispatch the Upload action and update the stepper
    * index to move forward.
    **/
   const submitUpload = () => {
-    dispatch(actionCreators.resources.uploadToTarget(
+    dispatch(actionCreators.upload.uploadToTarget(
       selectedTarget,
       selectedFile,
       selectedDuplicate,
@@ -47,7 +48,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
       variant="contained"
       color="primary"
     >
-    Upload File
+      <span css={textStyles.buttonText}>Upload File</span>
     </CustomUploadButton>
   )
 }

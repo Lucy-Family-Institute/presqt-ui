@@ -11,16 +11,12 @@ import { actionCreators } from "../../redux/actionCreators";
 export default function UploadActionButton({style, text, type, disabled}) {
   const dispatch = useDispatch();
 
-  const submitUpload = () => {
-    dispatch(actionCreators.resources.displayUploadModal(type));
-  };
-
   return (
     <ActionButton
       css={style}
       elevation={0}
       variant="contained"
-      onClick={submitUpload}
+      onClick={() => dispatch(actionCreators.upload.displayUploadModal(type))}
       disabled={disabled}
     >
       <span css={textStyles.buttonText}>{text}</span>

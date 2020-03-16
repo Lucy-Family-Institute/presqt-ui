@@ -6,24 +6,22 @@ import DownloadActionButton from "./action_buttons/DownloadActionButton";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
-import arrayValueFinder from "../redux/reducers/helpers/arrayValueFinder";
+import arrayValueFinder from "../utils/arrayValueFinder";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
  * the html element, and rendering the correct component for each action.
  **/
 export default function TargetActions() {
-  /** SELECTOR DEFINITIONS
-   * selectedLeftResource : Object of the resource details of the selected resource to display.
-   * pendingAPIOperations   : List of API operations currently in progress.
-   **/
-  const selectedLeftResource = useSelector(state => state.resources.selectedLeftResource);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
-  var buttonsList = [];
-  if (selectedLeftResource) {
-    for (var i = 0; i < selectedLeftResource.links.length; i++) {
-      buttonsList.push(selectedLeftResource.links[i].name);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+  const searchValue = useSelector(state => state.searchValue);
+
+  let buttonsList = [];
+  if (selectedResource) {
+    for (let i = 0; i < selectedResource.links.length; i++) {
+      buttonsList.push(selectedResource.links[i].name);
     }
   }
 
@@ -41,26 +39,26 @@ export default function TargetActions() {
             textStyles.largeHeader
           ]}
         >
-          {selectedLeftResource ? selectedLeftResource.title : null}
+          {selectedResource ? selectedResource.title : null}
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedLeftResource
+          {selectedResource
             ? <DownloadActionButton
               key={"Download"}
               disabled={!arrayValueFinder(buttonsList, "Download")}
             /> : null}
-          {selectedLeftResource
+          {selectedResource
           ? <UploadActionButton
-              key={"UPLOAD"}
-              text="Upload"
+              key="UPLOAD"
               type="EXISTING"
-              disabled={!leftSearchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+              text="Upload"
             /> : null}
-          {selectedLeftResource
+          {selectedResource
           ? <TransferActionButton
-              key={"Transfer"}
-              disabled={true}
+              key="Transfer"
+              disabled={!selectedTarget.supported_actions.resource_transfer_out || selectedResource.title === 'PRESQT_FTS_METADATA.json'}
             />: null}
         </div>
       </div>

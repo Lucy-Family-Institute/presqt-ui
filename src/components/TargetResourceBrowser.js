@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { keyframes } from "emotion";
 import { jsx } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actionCreators";
@@ -10,36 +9,29 @@ import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, React, useEffect } from "react";
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  
-  100% {
-    opacity: 100;
-  }
-`;
+import {basicFadeIn} from "../styles/animations";
+import getError from "../utils/getError";
 
 /**
  * This component handles actions within the resource browser. It will open/close containers,
  * display resource details, as well as sort the hierarchy of resources.
- */
+ **/
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
-  const sourceTargetToken = useSelector(state => state.targets.source
-      ? state.authorization.apiTokens[state.targets.source.name]
+  const targetToken = useSelector(state => state.selectedTarget
+      ? state.apiTokens[state.selectedTarget.name]
       : null);
-  const leftTargetResources = useSelector(state => state.resources.leftTargetResources);
-  const pendingAPIOperations = useSelector(state => state.resources.pendingAPIOperations);
-  const apiOperationErrors = useSelector(state => state.resources.apiOperationErrors);
-  const sourceTarget = useSelector(state => state.targets.source);
-  const leftSearchValue = useSelector(state => state.resources.leftSearchValue);
-  const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
-  const search_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
+
+  const targetResources = useSelector(state => state.targetResources);
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const searchValue = useSelector(state => state.searchValue);
+
+  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const searchError = getError(actionCreators.resources.loadFromTargetSearch);
+
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
 
@@ -47,9 +39,7 @@ export default function TargetResourceBrowser() {
    * If clicked container is open then dispatch the closeContainer action to minimize the container
    * Else dispatch the openContainer action to expand the container
    * After the container action completes, dispatch selectResource to fetch resource details
-   *   -> Saga call to Resource Detail occurs here
-   *      -> On complete saga dispatches the selectResourceSuccess action
-   */
+   **/
   const onResourceClicked = (resource, targetToken) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
@@ -61,11 +51,11 @@ export default function TargetResourceBrowser() {
   /**
    * Recursively called function which is used to display the resource
    * hierarchy of a given target.
-   */
+   **/
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
     return resources.map(resource => {
       return (
-        <div key={resource.id} css={{ animation: `${fadeIn} .5s ease` }}>
+        <div key={resource.id} css={{ animation: `${basicFadeIn} .5s ease` }}>
           <ResourceButton
             resource={resource}
             level={level}
@@ -86,23 +76,19 @@ export default function TargetResourceBrowser() {
    * then display the search input.
    **/
   const search = () => {
-    if (leftTargetResources || leftSearchValue || collection_error) {
-      if (collection_error) {
-        if (collection_error.status === 401) {
-          return null;
-        }
-      }
+    if (collectionError && collectionError.status === 401) {
+      return null;
+    }
+    else if (targetResources || searchValue) {
       return <TargetSearch />;
     }
   };
 
   const upload = () => {
-    if (leftTargetResources || leftSearchValue || collection_error) {
-      if (collection_error) {
-        if (collection_error.status === 401) {
-          return null;
-        }
-      }
+    if (collectionError && collectionError.status === 401) {
+      return null;
+    }
+    else if (targetResources || searchValue) {
       return (
         <UploadActionButton
           style={{ width: 250 }}
@@ -110,36 +96,41 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!leftSearchValue && sourceTarget.supported_actions["resource_upload"] === true ? false : true}
+          disabled={!searchValue && selectedTarget.supported_actions["resource_upload"] ? false : true}
         />
       );
     }
   };
 
   useEffect(() => {
-    if (leftTargetResources && leftTargetResources.length > 0) {
+    // If resources exist
+    if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, sourceTargetToken), leftTargetResources))
+        resource => onResourceClicked(resource, targetToken), targetResources))
     }
-    else if (leftTargetResources && leftTargetResources.length === 0 && leftSearchValue) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for search term 
-        "${leftSearchValue}".`);
+    // Search returned no results
+    else if (targetResources && targetResources.length === 0 && searchValue) {
+      setMessage(`No ${selectedTarget.readable_name} resources found for search term 
+        "${searchValue}".`);
     }
-    else if (leftTargetResources && leftTargetResources.length === 0) {
-      setMessage(`No ${sourceTarget.readable_name} resources found for this user.`);
+    // No resources exist
+    else if (targetResources && targetResources.length === 0) {
+      setMessage(`No ${selectedTarget.readable_name} resources found for this user.`);
     }
-    else if (search_error) {
+    // Searched returned an error
+    else if (searchError) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
-      setMessage(`${search_error.data}`);
+      setMessage(`${searchError.data}`);
     }
-    else if (collection_error && collection_error.status !== 401) {
+    // Resource collection returns an error
+    else if (collectionError && collectionError.status !== 401) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
-      setMessage(`${collection_error.data}`);
+      setMessage(`${collectionError.data}`);
     }
     else {
       setMessage('');
     }
-  }, [leftTargetResources]);
+  }, [targetResources, apiOperationErrors]);
 
   return (
     <div
@@ -152,10 +143,11 @@ export default function TargetResourceBrowser() {
         display: "flex"
       }}
     >
+
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}
-        {!sourceTarget ? null : upload()}
+        {!selectedTarget ? null : upload()}
         {pendingAPIOperations.includes(
           actionCreators.resources.loadFromTarget.toString()
         ) ||
@@ -163,9 +155,7 @@ export default function TargetResourceBrowser() {
           actionCreators.resources.loadFromTargetSearch.toString()
         ) ? <Spinner />
           : (
-          <div>
             <div css={messageCss}>{message}</div>
-          </div>
         )}
       </div>
     </div>

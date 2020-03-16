@@ -7,13 +7,13 @@ import StepLabel from "@material-ui/core/StepLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import UploadSelectFile from "./UploadSelectFile";
-import UploadDuplicateActionRadioButtons from "./UploadDuplicateActionRadioButtons";
+import DuplicateActionRadioButtons from "../widgets/buttons/duplicateActionRadioButtons";
 import UploadButton from "./UploadButton";
 import UploadResultsContent from "./UploadResultsContent";
 import UploadStepConnector from "./UploadStepConnector";
 import StepContent from "@material-ui/core/StepContent";
 import withStyles from "@material-ui/core/styles/withStyles";
-import UploadStepperBackButton from "./UploadStepperBackButton";
+import StepperBackButton from "../widgets/buttons/stepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
 import colors from "../../styles/colors";
 
@@ -55,7 +55,6 @@ function getSteps(uploadType) {
   else {
     return possibleSteps;
   }
-
 }
 
 /**
@@ -105,7 +104,7 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
           />;
         }
         else {
-          return <UploadDuplicateActionRadioButtons
+          return <DuplicateActionRadioButtons
             selectedDuplicate={selectedDuplicate}
             setSelectedDuplicate={setSelectedDuplicate}
           />;
@@ -165,9 +164,10 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
               <div className={classes.actionsContainer}>
                 <div>
                   {possibleSteps.indexOf(label) !== 3
-                    ? <UploadStepperBackButton
+                    ? <StepperBackButton
                       handleBack={handleBack}
-                      activeStep={activeStep}/>
+                      activeStep={activeStep}
+                    />
                     : null }
                   {possibleSteps.indexOf(label) === 0 || possibleSteps.indexOf(label) === 1
                     ? <UploadStepperNextButton

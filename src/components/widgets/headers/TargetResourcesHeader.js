@@ -1,24 +1,21 @@
 /** @jsx jsx */
-import { keyframes } from 'emotion';
 import { jsx } from '@emotion/core';
-
 import textStyles from '../../../styles/text';
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 100;
-  }
-`;
+import {useSelector} from "react-redux";
+import {basicFadeIn} from "../../../styles/animations";
 
 function TargetResourcesHeader() {
+  const target = useSelector(state => state.selectedTarget);
+
+  let headerMessage = 'Resources';
+  if (target) {
+    headerMessage = `${target.readable_name} Resources`;
+  }
+
   return (
-    <div css={{ display: 'flex', alignItems: 'center' }}>
-      <span css={[textStyles.largeHeader, { animation: `${fadeIn} 1s ease` }]}>
-        Resources
+    <div css={{ display: 'flex' }}>
+      <span css={[textStyles.largeHeader, { animation: `${basicFadeIn} 1s ease` }]}>
+        {headerMessage}
       </span>
     </div>
   );
