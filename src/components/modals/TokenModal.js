@@ -88,7 +88,7 @@ export default function TokenModal() {
             >
               <TokenTextField
                 size="small"
-                type='text'
+                type='password'
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
