@@ -51,10 +51,12 @@ function* downloadTargetResource(action) {
             response.data.download_job_json,
             action.payload.targetToken
           );
+
           const finalDownloadData = {
             file : downloadJobResponseData,
             message: downloadJobResponseJSON.data.message,
-            failedFixity: downloadJobResponseJSON.data.failed_fixity
+            failedFixity: downloadJobResponseJSON.data.failed_fixity,
+            zipName: downloadJobResponseJSON.data.zip_name
           };
 
           yield put(actionCreators.download.downloadJobSuccess(finalDownloadData, 'finished'));

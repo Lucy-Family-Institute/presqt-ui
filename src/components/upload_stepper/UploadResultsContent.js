@@ -139,8 +139,8 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     else if (uploadStatus === 'finished') {
       setStepThreeContent(
         <Grid container>
-          <Grid container md={2}></Grid>
-          <Grid container md={8}>
+          <Grid md></Grid>
+          <Grid md>
             <List dense={true}>
               {buildListItem(uploadData.message)}
               {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
@@ -149,7 +149,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
             {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
             {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
           </Grid>
-          <Grid container md={2}></Grid>
+          <Grid md></Grid>
         </Grid>
       );
     }

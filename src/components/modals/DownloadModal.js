@@ -130,12 +130,12 @@ export default function DownloadModal() {
 
     // Download successful
     else if (downloadStatus === "finished") {
-      FileSaver.saveAs(downloadData.file, "PresQT_Download.zip");
+      FileSaver.saveAs(downloadData.file, downloadData.zipName);
       setModalHeader("Download Successful!");
       setModalContent(
         <Grid container>
-          <Grid md={4}></Grid>
-          <Grid md={4}>
+          <Grid md></Grid>
+          <Grid md>
             <List dense={true}>
               <SuccessListItem message={downloadData.message}/>
               {downloadData.failedFixity.length <= 0
@@ -148,7 +148,7 @@ export default function DownloadModal() {
                              header='The following files failed fixity checks:'/>
               : null}
           </Grid>
-          <Grid md={4}></Grid>
+          <Grid md></Grid>
         </Grid>
       )
     }
