@@ -87,7 +87,6 @@ export default function TokenModal() {
               }}
             >
               <TokenTextField
-                id="standard-password-input"
                 size="small"
                 type='password'
                 value={token}

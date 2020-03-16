@@ -17,7 +17,6 @@ export default function TransferStepperToken({ handleNext }) {
 
   return (
     <TokenTextField
-      id="standard-password-input"
       size="small"
       type='password'
       label="Insert API Token Here"
