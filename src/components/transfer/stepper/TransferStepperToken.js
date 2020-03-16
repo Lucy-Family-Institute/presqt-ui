@@ -17,8 +17,9 @@ export default function TransferStepperToken({ handleNext }) {
 
   return (
     <TokenTextField
+      id="standard-password-input"
       size="small"
-      type='text'
+      type='password'
       label="Insert API Token Here"
       value={transferDestinationToken}
       onChange={event => dispatch(actionCreators.transfer.saveTransferToken(event.target.value))}
