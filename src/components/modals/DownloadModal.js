@@ -133,9 +133,14 @@ export default function DownloadModal() {
       FileSaver.saveAs(downloadData.file, downloadData.zipName);
       setModalHeader("Download Successful!");
       setModalContent(
-        <Grid container>
-          <Grid md></Grid>
-          <Grid md>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item md></Grid>
+          <Grid item md>
             <List dense={true}>
               <SuccessListItem message={downloadData.message}/>
               {downloadData.failedFixity.length <= 0
@@ -148,7 +153,7 @@ export default function DownloadModal() {
                              header='The following files failed fixity checks:'/>
               : null}
           </Grid>
-          <Grid md></Grid>
+          <Grid item md></Grid>
         </Grid>
       )
     }
