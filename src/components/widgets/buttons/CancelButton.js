@@ -38,7 +38,12 @@ export default function CancelButton({actionType}) {
         color="primary"
         className={classes.button}
         onClick={submitCancel}
-        disabled={!ticketNumber || uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess' || downloadStatus === 'cancelPending'}
+        disabled={
+          !ticketNumber ||
+          uploadStatus === 'cancelPending' ||
+          uploadStatus === 'cancelSuccess' ||
+          transferStatus === 'cancelSuccess' ||
+          downloadStatus === 'cancelPending'}
       >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>

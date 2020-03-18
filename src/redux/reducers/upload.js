@@ -19,7 +19,7 @@ export const uploadReducers = {
         actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
       ),
-      uploadStatus: 'pending'
+      uploadStatus: state.uploadStatus === 'cancelPending' ? state.uploadStatus: 'pending'
     }),
     /**
      * Untrack API call.
@@ -129,7 +129,8 @@ export const uploadReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
-      )
+      ),
+      uploadStatus: 'cancelPending'
     }),
     /**
      * Untrack API call.
@@ -141,7 +142,6 @@ export const uploadReducers = {
         actionCreators.upload.cancelUpload,
         state.pendingAPIOperations
       ),
-      uploadStatus: 'cancelSuccess',
     }),
     /**
      * Untrack API call and track failure that occurred.
