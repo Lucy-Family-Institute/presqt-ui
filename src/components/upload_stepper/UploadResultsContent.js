@@ -2,20 +2,14 @@
 import React, { useEffect, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import {useDispatch, useSelector} from "react-redux";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../redux/actionCreators";
-import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
 import SuccessListItem from "../widgets/list_items/SuccessListItem";
@@ -71,7 +65,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           justify="center"
           alignItems="center"
         >
-          <Grid item md></Grid>
           <Grid item md>
             <List dense={true}>
               <SuccessListItem message={uploadData.message}/>
@@ -92,7 +85,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                               message='The following duplicate resources were updated:'/>
               : null}
           </Grid>
-          <Grid item md></Grid>
         </Grid>
       );
     }

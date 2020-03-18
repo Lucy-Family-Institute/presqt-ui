@@ -139,7 +139,6 @@ export default function DownloadModal() {
           justify="center"
           alignItems="center"
         >
-          <Grid item md></Grid>
           <Grid item md>
             <List dense={true}>
               <SuccessListItem message={downloadData.message}/>
@@ -153,7 +152,6 @@ export default function DownloadModal() {
                              header='The following files failed fixity checks:'/>
               : null}
           </Grid>
-          <Grid item md></Grid>
         </Grid>
       )
     }
