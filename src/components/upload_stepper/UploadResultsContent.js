@@ -18,6 +18,8 @@ import Spinner from "../widgets/spinners/Spinner";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
+import SuccessListItem from "../widgets/list_items/SuccessListItem";
+import WarningList from "../widgets/list_items/WarningList";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -51,49 +53,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     </div>
   );
 
-  /** Build a list to display warning results **/
-  const buildList = (resources, header) => {
-    return (
-      <List
-        dense={true}
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            {header}
-          </ListSubheader>
-        }
-      >
-        {
-          resources.map(resource => (
-            <ListItem key={resource}>
-              <ListItemIcon>
-                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-              </ListItemIcon>
-              <ListItemText
-                primary={resource}
-              />
-            </ListItem>
-          ))
-        }
-      </List>
-    )
-  };
-
-  /** Build a list item for successful upload results **/
-  const buildListItem = (message) => {
-    return (
-      <ListItem>
-        <ListItemIcon>
-          <CheckCircleOutlineIcon
-            style={{ color: colors.successGreen }}
-          />
-        </ListItemIcon>
-        <ListItemText
-          primary={message}
-        />
-      </ListItem>
-    )
-  };
-
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
@@ -115,12 +74,23 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           <Grid item md></Grid>
           <Grid item md>
             <List dense={true}>
-              {buildListItem(uploadData.message)}
-              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
+              <SuccessListItem message={uploadData.message}/>
+              {uploadData.failed_fixity.length <= 0
+                ? <SuccessListItem message='All files passed fixity checks'/>
+                : null}
             </List>
-            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
-            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
-            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
+            {uploadData.failed_fixity.length > 0
+              ?  <WarningList resources={uploadData.failed_fixity}
+                              message='The following files failed fixity checks:'/>
+              : null}
+            {uploadData.resources_ignored.length > 0
+              ?  <WarningList resources={uploadData.resources_ignored}
+                              message='The following duplicate resources were ignored:'/>
+              : null}
+            {uploadData.resources_updated.length > 0
+              ?  <WarningList resources={uploadData.resources_updated}
+                              message='The following duplicate resources were updated:'/>
+              : null}
           </Grid>
           <Grid item md></Grid>
         </Grid>
