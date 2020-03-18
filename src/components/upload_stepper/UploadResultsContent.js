@@ -126,7 +126,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </Grid>
       );
     }
-    // Upload cancelled. Refresh resource browser
+    // Cancel started
     else if (uploadStatus === 'cancelPending') {
       setStepThreeContent(
         <div>
@@ -140,6 +140,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
+    // Cancel successful. Refresh resource browser
     else if (uploadStatus === 'cancelSuccess') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }

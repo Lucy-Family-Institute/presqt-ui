@@ -42,6 +42,7 @@ export default function CancelButton({actionType}) {
           !ticketNumber ||
           uploadStatus === 'cancelPending' ||
           uploadStatus === 'cancelSuccess' ||
+          transferStatus === 'cancelPending' ||
           transferStatus === 'cancelSuccess' ||
           downloadStatus === 'cancelPending'}
       >

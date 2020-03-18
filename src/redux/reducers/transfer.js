@@ -192,7 +192,9 @@ export const transferReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.transfer.transferResource,
         state.pendingAPIOperations
-      )
+      ),
+      transferStatus: state.transferStatus === 'cancelPending' ? state.transferStatus: 'pending'
+
     }),
     /**
      * Untrack API call.
@@ -278,7 +280,9 @@ export const transferReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
-      )
+      ),
+      transferStatus: 'cancelPending'
+
     }),
     /**
      * Untrack API call.
@@ -290,7 +294,6 @@ export const transferReducers = {
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       ),
-      transferStatus: "cancelSuccess"
     }),
     /**
      * Untrack API call and track failure that occurred.
