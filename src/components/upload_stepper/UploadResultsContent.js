@@ -103,38 +103,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    // Upload cancelled. Refresh resource browser
-    else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
-      setStepThreeContent(
-        <div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            Upload is being cancelled...
-          </div>
-          <Spinner />
-          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='UPLOAD' />
-          </div>
-        </div>
-      )
-    }
-    // Cancel Failed!
-    else if (uploadStatus === 'cancelFailure') {
-      setStepThreeContent(
-        <div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            Cancel Failed! The upload is continuing.
-          </div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            If you refresh or leave the page the upload will still continue.
-          </div>
-          <Spinner />
-          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='UPLOAD' />
-          </div>
-        </div>
-      )
-    }
     // Upload successful and resource browser refreshed!
     else if (uploadStatus === 'finished') {
       setStepThreeContent(
@@ -157,6 +125,41 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           <Grid item md></Grid>
         </Grid>
       );
+    }
+    // Cancel started
+    else if (uploadStatus === 'cancelPending') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Upload is being cancelled...
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
+    }
+    // Cancel successful. Refresh resource browser
+    else if (uploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
+    }
+    // Cancel Failed!
+    else if (uploadStatus === 'cancelFailure') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The upload is continuing.
+          </div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            If you refresh or leave the page the upload will still continue.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
     }
     // Upload Failed or cancel finished
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
