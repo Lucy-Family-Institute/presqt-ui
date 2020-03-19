@@ -103,9 +103,31 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    // Upload cancelled. Refresh resource browser
-    else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+    // Upload successful and resource browser refreshed!
+    else if (uploadStatus === 'finished') {
+      setStepThreeContent(
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item md></Grid>
+          <Grid item md>
+            <List dense={true}>
+              {buildListItem(uploadData.message)}
+              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
+            </List>
+            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
+            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
+            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
+          </Grid>
+          <Grid item md></Grid>
+        </Grid>
+      );
+    }
+    // Cancel started
+    else if (uploadStatus === 'cancelPending') {
       setStepThreeContent(
         <div>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
@@ -117,6 +139,10 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           </div>
         </div>
       )
+    }
+    // Cancel successful. Refresh resource browser
+    else if (uploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
     // Cancel Failed!
     else if (uploadStatus === 'cancelFailure') {
@@ -134,27 +160,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
           </div>
         </div>
       )
-    }
-    // Upload successful and resource browser refreshed!
-    else if (uploadStatus === 'finished') {
-      setStepThreeContent(
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <Grid item md>
-            <List dense={true}>
-              {buildListItem(uploadData.message)}
-              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
-            </List>
-            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
-            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
-            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
-          </Grid>
-        </Grid>
-      );
     }
     // Upload Failed or cancel finished
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {

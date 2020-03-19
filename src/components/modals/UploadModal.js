@@ -50,7 +50,11 @@ export default function UploadModal()  {
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={uploadStatus === 'pending' || uploadStatus === 'success' || uploadStatus === 'cancelSuccess'}
+          disabled={
+            uploadStatus === 'pending' ||
+            uploadStatus === 'success' ||
+            uploadStatus === 'cancelSuccess' ||
+            uploadStatus === 'cancelPending'}
         >
           Upload Resource
         </DialogTitle>
