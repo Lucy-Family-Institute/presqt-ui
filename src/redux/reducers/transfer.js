@@ -193,7 +193,7 @@ export const transferReducers = {
         actionCreators.transfer.transferResource,
         state.pendingAPIOperations
       ),
-      transferStatus: state.transferStatus === 'cancelPending' ? state.transferStatus: 'pending'
+      transferStatus: 'pending'
 
     }),
     /**
@@ -250,7 +250,10 @@ export const transferReducers = {
         actionCreators.transfer.transferJob,
         state.pendingAPIOperations
       ),
-      transferStatus: action.payload.status,
+      transferStatus: state.transferStatus === 'cancelPending' &&
+                      action.payload.status === 'pending'
+        ? 'cancelPending'
+        : action.payload.status,
       transferData: action.payload.data
     }),
     /**
