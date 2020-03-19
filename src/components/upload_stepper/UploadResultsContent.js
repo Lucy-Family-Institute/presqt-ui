@@ -74,15 +74,15 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
             </List>
             {uploadData.failed_fixity.length > 0
               ?  <WarningList resources={uploadData.failed_fixity}
-                              message='The following files failed fixity checks:'/>
+                              header='The following files failed fixity checks:'/>
               : null}
             {uploadData.resources_ignored.length > 0
               ?  <WarningList resources={uploadData.resources_ignored}
-                              message='The following duplicate resources were ignored:'/>
+                              header='The following duplicate resources were ignored:'/>
               : null}
             {uploadData.resources_updated.length > 0
               ?  <WarningList resources={uploadData.resources_updated}
-                              message='The following duplicate resources were updated:'/>
+                              header='The following duplicate resources were updated:'/>
               : null}
           </Grid>
         </Grid>
