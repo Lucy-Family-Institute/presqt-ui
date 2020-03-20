@@ -21,9 +21,6 @@ export default function TransferStepperToken({ handleNext }) {
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
 
   const [passwordIsMasked, setPasswordIsMasked] = useState(true);
-  const togglePasswordMask = () => {
-    setPasswordIsMasked(!passwordIsMasked);
-  }
 
   return (
     <TokenTextField
@@ -41,12 +38,12 @@ export default function TransferStepperToken({ handleNext }) {
               ?
               <VisibilityOffIcon
                 css={{ cursor: "pointer", color: colors.presqtBlue }}
-                onClick={() => togglePasswordMask()}
+                onClick={() => setPasswordIsMasked(!passwordIsMasked)}
               />
               :
               <VisibilityIcon
                 css={{ cursor: "pointer", color: colors.presqtBlue }}
-                onClick={() => togglePasswordMask()}
+                onClick={() => setPasswordIsMasked(!passwordIsMasked)}
               />
             }
           </InputAdornment>

@@ -33,10 +33,6 @@ export default function TokenModal() {
   const [token, setToken] = useState('');
   const [passwordIsMasked, setPasswordIsMasked] = useState(true);
 
-  const togglePasswordMask = () => {
-    setPasswordIsMasked(!passwordIsMasked);
-  }
-
   /**
    * Close the modal.
    * Dispatch saveToken action to save target token to apiTokens
@@ -116,12 +112,12 @@ export default function TokenModal() {
                         ?
                         <VisibilityOffIcon
                           css={{ cursor: "pointer", color: colors.presqtBlue }}
-                          onClick={() => togglePasswordMask()}
+                          onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                         :
                         <VisibilityIcon
                           css={{ cursor: "pointer", color: colors.presqtBlue }}
-                          onClick={() => togglePasswordMask()}
+                          onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                       }
                     </InputAdornment>
