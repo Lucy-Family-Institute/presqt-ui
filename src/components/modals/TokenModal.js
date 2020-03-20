@@ -12,6 +12,13 @@ import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
 import getError from "../../utils/getError";
+import { InputAdornment } from "@material-ui/core";
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import colors from "../../styles/colors";
+
+
+
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -24,6 +31,11 @@ export default function TokenModal() {
   const error = getError(actionCreators.resources.loadFromTarget);
 
   const [token, setToken] = useState('');
+  const [passwordIsMasked, setPasswordIsMasked] = useState(true);
+
+  const togglePasswordMask = () => {
+    setPasswordIsMasked(!passwordIsMasked);
+  }
 
   /**
    * Close the modal.
@@ -38,6 +50,7 @@ export default function TokenModal() {
       dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
     setToken('')
+    setPasswordIsMasked(true);
   };
 
   /**
@@ -88,13 +101,31 @@ export default function TokenModal() {
             >
               <TokenTextField
                 size="small"
-                type='password'
+                type={passwordIsMasked ? 'password' : 'text'}
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
                 onAnimationEnd={(event) => { event.stopPropagation() }}
                 // If the enter button is pressed (code 13), submit the modal.
-                onKeyDown={(event) => {event.keyCode === 13 && token !== '' ? modalSubmit() : null}}
+                onKeyDown={(event) => { event.keyCode === 13 && token !== '' ? modalSubmit() : null }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      {passwordIsMasked
+                        ?
+                        <VisibilityOffIcon
+                          css={{ cursor: "pointer", color: colors.presqtBlue }}
+                          onClick={() => togglePasswordMask()}
+                        />
+                        :
+                        <VisibilityIcon
+                          css={{ cursor: "pointer", color: colors.presqtBlue }}
+                          onClick={() => togglePasswordMask()}
+                        />
+                      }
+                    </InputAdornment>
+                  )
+                }}
               />
               <ModalSubmitButton
                 variant="contained"
