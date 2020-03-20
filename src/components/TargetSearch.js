@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchTextField from "./widgets/text_fields/SearchTextField";
 import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from '@material-ui/icons/Info';
 import Grid from "@material-ui/core/Grid";
 
