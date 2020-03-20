@@ -1,10 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import {useState} from "react";
+import {Fragment, useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchTextField from "./widgets/text_fields/SearchTextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import InfoIcon from '@material-ui/icons/Info';
+
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +46,7 @@ export default function TargetSearch() {
   };
 
   return (
+    <Fragment>
     <div css={{ marginBottom: 10 }}>
       <form
         onSubmit={event => submitSearch(event)}
@@ -53,12 +58,18 @@ export default function TargetSearch() {
           size="small"
           type="text"
           id="outlined-basic"
-          label={"Search " + selectedTarget.readable_name}
+          label={`Search ${selectedTarget.readable_name} By Title`}
           variant="outlined"
           value={searchValue}
           onChange={event => setSearchValue(event.target.value)}
         />
+        <Tooltip title="Stuff" arrow placement="right">
+          <IconButton aria-label="info">
+            <InfoIcon />
+          </IconButton>
+        </Tooltip>
       </form>
     </div>
+    </Fragment>
   );
 }
