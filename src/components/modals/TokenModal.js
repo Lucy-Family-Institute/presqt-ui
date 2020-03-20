@@ -67,6 +67,7 @@ export default function TokenModal() {
         actionCreators.resources.loadFromTarget.toString()));
     }
     setToken('');
+    setPasswordIsMasked(true);
   };
 
   return connection
