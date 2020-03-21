@@ -111,12 +111,24 @@ export default function TokenModal() {
                       {passwordIsMasked
                         ?
                         <VisibilityOffIcon
-                          css={{ cursor: "pointer", color: colors.presqtBlue }}
+                          css={{
+                            cursor: "pointer",
+                            color: colors.presqtBlue,
+                            "&:hover": {
+                              color: colors.presqtBlueHover
+                            }
+                          }}
                           onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                         :
                         <VisibilityIcon
-                          css={{ cursor: "pointer", color: colors.presqtBlue }}
+                          css={{
+                            cursor: "pointer",
+                            color: colors.presqtBlue,
+                            "&:hover": {
+                              color: colors.presqtBlueHover
+                            }
+                          }}
                           onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                       }
