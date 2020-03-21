@@ -97,7 +97,8 @@ export const actionCreators = createActions({
     TARGETS: {
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
-        SWITCH_TARGET: undefined
+        SWITCH_TARGET: undefined,
+        CLEAR_TARGET: undefined
     },
     GITHUB: {
         DISPLAY_ISSUE_MODAL: undefined,
