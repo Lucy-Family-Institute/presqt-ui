@@ -7,7 +7,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import colors from "../../../styles/colors";
 import Tooltip from "@material-ui/core/Tooltip";
 
-
 export default function SignOutButton() {
   const dispatch = useDispatch();
 
@@ -20,17 +19,23 @@ export default function SignOutButton() {
   };
 
   return (
-    <Tooltip title={`Sign out of ${selectedTarget.readable_name}`} arrow placement="right">
+    <Tooltip
+      title={`Sign out of ${selectedTarget.readable_name}`}
+      arrow
+      placement="right"
+    >
       <ExitToAppIcon
         css={{
-            cursor: "pointer",
-            color: colors.presqtBlue,
-            paddingLeft: 5,
-            "&:hover": {
-              color: colors.presqtBlueHover
-            }
+          cursor: "pointer",
+          color: colors.presqtBlue,
+          paddingLeft: 5,
+          verticalAlign: "middle",
+          "&:hover": {
+            color: colors.presqtBlueHover
+          }
         }}
-        onClick={signOut}/>
+        onClick={signOut}
+      />
     </Tooltip>
   );
 }
