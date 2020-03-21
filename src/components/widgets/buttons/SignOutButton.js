@@ -7,11 +7,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import colors from "../../../styles/colors";
 import Tooltip from "@material-ui/core/Tooltip";
 
-/**
- * This component handles the download action button in the TargetActions component.
- * It is responsible for dispatching the action that will make the download API call and open
- * a modal to display the download status.
- **/
+
 export default function SignOutButton() {
   const dispatch = useDispatch();
 
