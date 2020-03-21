@@ -23,9 +23,12 @@ export default function SignOutButton() {
     <Tooltip title={`Sign out of ${selectedTarget.readable_name}`} arrow placement="right">
       <ExitToAppIcon
         css={{
-          cursor: "pointer",
-          color: colors.presqtBlue,
-          paddingLeft: 5
+            cursor: "pointer",
+            color: colors.presqtBlue,
+            paddingLeft: 5,
+            "&:hover": {
+              color: colors.presqtBlueHover
+            }
         }}
         onClick={signOut}/>
     </Tooltip>
