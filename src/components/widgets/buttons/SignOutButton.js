@@ -18,11 +18,9 @@ export default function SignOutButton() {
     dispatch(actionCreators.authorization.removeToken(selectedTarget.name));
     dispatch(actionCreators.targets.clearTarget());
   };
-    
-  const toolMessage = `Sign out of ${selectedTarget.readable_name}`;
 
   return (
-    <Tooltip title={toolMessage} arrow placement="right">
+    <Tooltip title={`Sign out of ${selectedTarget.readable_name}`} arrow placement="right">
       <ExitToAppIcon
         css={{
           cursor: "pointer",
