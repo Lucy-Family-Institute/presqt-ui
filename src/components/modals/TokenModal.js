@@ -16,6 +16,7 @@ import { InputAdornment } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import colors from "../../styles/colors";
+import buttons from "../../styles/buttons";
 
 
 
@@ -111,24 +112,12 @@ export default function TokenModal() {
                       {passwordIsMasked
                         ?
                         <VisibilityOffIcon
-                          css={{
-                            cursor: "pointer",
-                            color: colors.presqtBlue,
-                            "&:hover": {
-                              color: colors.presqtBlueHover
-                            }
-                          }}
+                          css={[buttons.inlineButton]}
                           onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                         :
                         <VisibilityIcon
-                          css={{
-                            cursor: "pointer",
-                            color: colors.presqtBlue,
-                            "&:hover": {
-                              color: colors.presqtBlueHover
-                            }
-                          }}
+                          css={[buttons.inlineButton]}
                           onClick={() => setPasswordIsMasked(!passwordIsMasked)}
                         />
                       }

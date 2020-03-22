@@ -4,7 +4,7 @@ import { jsx } from "@emotion/core";
 import textStyles from "../../../styles/text";
 import { actionCreators } from "../../../redux/actionCreators";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import colors from "../../../styles/colors";
+import buttons from "../../../styles/buttons";
 import Tooltip from "@material-ui/core/Tooltip";
 
 export default function SignOutButton() {
@@ -25,15 +25,12 @@ export default function SignOutButton() {
       placement="right"
     >
       <ExitToAppIcon
-        css={{
-          cursor: "pointer",
-          color: colors.presqtBlue,
-          paddingLeft: 5,
-          verticalAlign: "middle",
-          "&:hover": {
-            color: colors.presqtBlueHover
-          }
-        }}
+        css={[
+          buttons.inlineButton,
+          {
+            paddingLeft: 5,
+            verticalAlign: "middle"
+          }]}
         onClick={signOut}
       />
     </Tooltip>
