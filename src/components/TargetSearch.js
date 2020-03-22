@@ -8,6 +8,9 @@ import SearchTextField from "./widgets/text_fields/SearchTextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import InfoIcon from '@material-ui/icons/Info';
 import Grid from "@material-ui/core/Grid";
+import SearchIcon from '@material-ui/icons/Search';
+import buttons from "../styles/buttons";
+import { InputAdornment } from "@material-ui/core";
 
 
 const useStyles = makeStyles({
@@ -63,6 +66,16 @@ export default function TargetSearch() {
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <SearchIcon
+                      css={[buttons.inlineButton]}
+                      onClick={event => submitSearch(event)}
+                    />
+                  </InputAdornment>
+                )
+              }}
             />
           </form>
         </div>
