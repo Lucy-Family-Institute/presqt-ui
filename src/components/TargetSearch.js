@@ -11,7 +11,8 @@ import Grid from "@material-ui/core/Grid";
 import SearchIcon from '@material-ui/icons/Search';
 import buttons from "../styles/buttons";
 import { InputAdornment } from "@material-ui/core";
-
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
   root: {
@@ -19,6 +20,13 @@ const useStyles = makeStyles({
       marginTop: 10,
       width: 250
     }
+  },
+  divider: {
+    height: 28,
+    backgroundColor: '#c4c4c4',
+    marginRight: 5,
+    marginLeft: 5,
+    width: 1
   }
 });
 
@@ -34,18 +42,31 @@ export default function TargetSearch() {
 
   const submitSearch = (event) => {
     event.preventDefault();
+
+    if (searchValue) {
+      dispatch(
+        actionCreators.resources.removeFromErrorList(
+          actionCreators.resources.loadFromTargetSearch.toString()
+        )
+      );
+
+      dispatch(
+        actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, searchValue)
+      );
+    }
+  };
+
+  const refreshResources = (event) => {
+    event.preventDefault();
+    setSearchValue('');
+
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTargetSearch.toString()
       )
     );
-    dispatch(
-      actionCreators.resources.loadFromTargetSearch(
-        selectedTarget.name,
-        token,
-        searchValue
-      )
-    );
+
+    dispatch(actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, ''));
   };
 
   return (
@@ -67,12 +88,32 @@ export default function TargetSearch() {
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
               InputProps={{
+                style: {
+                  paddingRight: 5
+                },
                 endAdornment: (
-                  <InputAdornment position='end'>
+                  <InputAdornment
+                    position='end'
+                  >
                     <SearchIcon
-                      css={[buttons.inlineButton]}
-                      onClick={event => submitSearch(event)}
+                      css={searchValue ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
+                      onClick={event => submitSearch(event, 'search')}
                     />
+                    <Divider
+                      className={classes.divider}
+                      orientation="vertical"
+                    />
+                    <Tooltip
+                      title={searchValue
+                        ? "Clear search and refresh user's resources"
+                        : "Refresh user's resources"}
+                      arrow placement="right"
+                    >
+                      <RefreshIcon
+                        css={[buttons.inlineButton]}
+                        onClick={event => refreshResources(event)}
+                      />
+                    </Tooltip>
                   </InputAdornment>
                 )
               }}
@@ -84,19 +125,19 @@ export default function TargetSearch() {
         style={{marginBottom: 14}}
         item
       >
-          <Tooltip
-            title={
-              <Fragment>
-                Only the first page of paginated search results are returned.
-                <br />
-                If you don't see the desired project try a more specific search.
-              </Fragment>
-            }
-            arrow placement="right">
-            <InfoIcon
-              style={{ color: '#757575' }}
-            />
-          </Tooltip>
+        <Tooltip
+          title={
+            <Fragment>
+              Only the first page of paginated search results are returned.
+              <br />
+              If you don't see the desired project try a more specific search.
+            </Fragment>
+          }
+          arrow placement="right">
+          <InfoIcon
+            style={{ color: '#757575', cursor: 'help' }}
+          />
+        </Tooltip>
       </Grid>
     </Grid>
   );
