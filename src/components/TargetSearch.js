@@ -27,13 +27,6 @@ const useStyles = makeStyles({
     marginRight: 5,
     marginLeft: 5,
     width: 1
-  },
-  adornment: {
-    MuiInputAdornment: {
-      positionEnd: {
-        paddingRight: 5
-      }
-    }
   }
 });
 
@@ -81,8 +74,10 @@ export default function TargetSearch() {
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
-              className={classes.adornment}
               InputProps={{
+                style: {
+                  paddingRight: 5
+                },
                 endAdornment: (
                   <InputAdornment
                     position='end'
