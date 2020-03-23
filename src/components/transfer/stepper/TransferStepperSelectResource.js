@@ -3,6 +3,10 @@ import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
 import text from '../../../styles/text';
 import TransferCancelSelectionButton from "../TransferCancelSelectionButton"
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../../../styles/colors";
+
+
 
 export default function TransferStepperSelectResource() {
   const selectedTransferResourceName = useSelector(state => state.selectedTransferResourceName);
@@ -10,17 +14,19 @@ export default function TransferStepperSelectResource() {
   if (selectedTransferResourceName) {
     return (
       <div css={text.transferResource}>Selected Resource: <span css={text.selectedResource}>{selectedTransferResourceName}
-        <TransferCancelSelectionButton disabled={false} />
+        <TransferCancelSelectionButton
+          disabled={false}
+        />
       </span>
       </div>
-      )
+    )
   }
   return (
     <div css={text.transferResource}>
         No Resource Selected
         <span>
-        <TransferCancelSelectionButton disabled={true} />
-      </span>
+          <TransferCancelSelectionButton disabled={true} />
+        </span>
     </div>
   )
 }

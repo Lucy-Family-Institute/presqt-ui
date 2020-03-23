@@ -85,9 +85,9 @@ export default function AvailableConnections() {
                 paddingRight: 10,
                 cursor: "pointer"
               },
-              mainStyles.hoverOrFocusTransform,
-              pendingAPIResponse || downloadStatus === 'pending'
-              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+                ? { cursor: 'not-allowed', opacity: 0.5 }
+                : mainStyles.hoverOrFocusTransform
             ]}
             onClick={() => handleSwitchTarget(connection)}
             disabled={

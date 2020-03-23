@@ -23,8 +23,15 @@ const ActionButton = withStyles({
     "&:disabled": {
       backgroundColor: "#D3D3D3",
       border: `1px solid ${"#D3D3D3"}`,
-      color: "#696969"
-    }
+      color: "#696969",
+      pointerEvents: 'auto',
+      "&:hover": {
+        cursor: "not-allowed",
+        backgroundColor: "#D3D3D3",
+        border: `1px solid ${"#D3D3D3"}`,
+        color: "#696969"
+      }
+    },
   },
   containedPrimary: {
     backgroundColor: colors.presqtOrange
