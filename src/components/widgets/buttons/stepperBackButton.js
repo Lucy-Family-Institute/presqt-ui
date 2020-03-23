@@ -10,7 +10,11 @@ const useStyles = makeStyles(theme => ({
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
-    color: colors.presqtBlue
+    color: colors.presqtBlue,
+    "&:disabled": {
+      cursor: 'not-allowed',
+      pointerEvents: 'auto'
+    }
   }
 }));
 

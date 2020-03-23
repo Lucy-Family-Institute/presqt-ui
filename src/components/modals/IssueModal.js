@@ -80,7 +80,7 @@ export default function TokenModal() {
               <ModalSubmitButton
                 variant="contained"
                 css={[
-                  title ? modalStyles.button : modalStyles.disabledButton,
+                  modalStyles.button,
                   modalStyles.buttonText
                 ]}
                 onClick={() => dispatch(actionCreators.github.submitGithubIssue(title, body))}

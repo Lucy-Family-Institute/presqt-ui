@@ -30,15 +30,6 @@ export default {
       color: colors.presqtBlue
     }
   })),
-  CancelButton: makeStyles(theme => ({
-    button: {
-      height: "100%",
-      backgroundColor: colors.presqtBlue,
-      "&:hover": {
-        backgroundColor: colors.presqtBlueHover
-      }
-    }
-  })),
   inlineButton: css({
     cursor: "pointer",
     color: colors.presqtBlue,

@@ -15,7 +15,6 @@ import getError from "../../utils/getError";
 import { InputAdornment } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import colors from "../../styles/colors";
 import buttons from "../../styles/buttons";
 
 
