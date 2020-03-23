@@ -1,5 +1,6 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "./colors";
+import { css } from "@emotion/core";
 
 export default {
   RetryUpload: makeStyles(theme => ({
@@ -37,5 +38,12 @@ export default {
         backgroundColor: colors.presqtBlueHover
       }
     }
-  }))
+  })),
+  inlineButton: css({
+    cursor: "pointer",
+    color: colors.presqtBlue,
+    "&:hover": {
+      color: colors.presqtBlueHover
+    }
+  })
 };

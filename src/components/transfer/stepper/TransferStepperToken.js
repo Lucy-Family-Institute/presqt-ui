@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import colors from "../../../styles/colors";
+import buttons from "../../../styles/buttons";
 import {useState} from "react";
 
 const TokenTextField = withStyles({
@@ -37,12 +37,12 @@ export default function TransferStepperToken({ handleNext }) {
             {passwordIsMasked
               ?
               <VisibilityOffIcon
-                css={{ cursor: "pointer", color: colors.presqtBlue }}
+                css={[buttons.inlineButton]}
                 onClick={() => setPasswordIsMasked(!passwordIsMasked)}
               />
               :
               <VisibilityIcon
-                css={{ cursor: "pointer", color: colors.presqtBlue }}
+                css={[buttons.inlineButton]}
                 onClick={() => setPasswordIsMasked(!passwordIsMasked)}
               />
             }
