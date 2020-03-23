@@ -28,13 +28,6 @@ const useStyles = makeStyles({
     marginLeft: 5,
     width: 1
   },
-  adornment: {
-    MuiInputAdornment: {
-      positionEnd: {
-        paddingRight: 5
-      }
-    }
-  }
 });
 
 export default function TargetSearch() {
@@ -81,7 +74,7 @@ export default function TargetSearch() {
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
-              className={classes.adornment}
+              className={classes2.root}
               InputProps={{
                 endAdornment: (
                   <InputAdornment
@@ -109,19 +102,19 @@ export default function TargetSearch() {
         style={{marginBottom: 14}}
         item
       >
-          <Tooltip
-            title={
-              <Fragment>
-                Only the first page of paginated search results are returned.
-                <br />
-                If you don't see the desired project try a more specific search.
-              </Fragment>
-            }
-            arrow placement="right">
-            <InfoIcon
-              style={{ color: '#757575' }}
-            />
-          </Tooltip>
+        <Tooltip
+          title={
+            <Fragment>
+              Only the first page of paginated search results are returned.
+              <br />
+              If you don't see the desired project try a more specific search.
+            </Fragment>
+          }
+          arrow placement="right">
+          <InfoIcon
+            style={{ color: '#757575' }}
+          />
+        </Tooltip>
       </Grid>
     </Grid>
   );
