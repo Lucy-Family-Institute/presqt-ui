@@ -45,5 +45,9 @@ export default {
     "&:hover": {
       color: colors.presqtBlueHover
     }
+  }),
+  disabledInlineButton: css({
+    cursor: "not-allowed",
+    color: '#646464'
   })
 };

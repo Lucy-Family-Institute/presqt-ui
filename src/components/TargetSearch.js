@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     marginRight: 5,
     marginLeft: 5,
     width: 1
-  },
+  }
 });
 
 export default function TargetSearch() {
@@ -42,18 +42,31 @@ export default function TargetSearch() {
 
   const submitSearch = (event) => {
     event.preventDefault();
+
+    if (searchValue) {
+      dispatch(
+        actionCreators.resources.removeFromErrorList(
+          actionCreators.resources.loadFromTargetSearch.toString()
+        )
+      );
+
+      dispatch(
+        actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, searchValue)
+      );
+    }
+  };
+
+  const refreshResources = (event) => {
+    event.preventDefault();
+    setSearchValue('');
+
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTargetSearch.toString()
       )
     );
-    dispatch(
-      actionCreators.resources.loadFromTargetSearch(
-        selectedTarget.name,
-        token,
-        searchValue
-      )
-    );
+
+    dispatch(actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, ''));
   };
 
   return (
@@ -74,23 +87,33 @@ export default function TargetSearch() {
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
-              className={classes2.root}
               InputProps={{
+                style: {
+                  paddingRight: 5
+                },
                 endAdornment: (
                   <InputAdornment
                     position='end'
                   >
                     <SearchIcon
-                      css={[buttons.inlineButton]}
-                      onClick={event => submitSearch(event)}
+                      css={searchValue ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
+                      onClick={event => submitSearch(event, 'search')}
                     />
                     <Divider
                       className={classes.divider}
                       orientation="vertical"
                     />
-                    <RefreshIcon
-                      css={[buttons.inlineButton]}
-                    />
+                    <Tooltip
+                      title={searchValue
+                        ? "Clear search and refresh user's resources"
+                        : "Refresh user's resources"}
+                      arrow placement="right"
+                    >
+                      <RefreshIcon
+                        css={[buttons.inlineButton]}
+                        onClick={event => refreshResources(event)}
+                      />
+                    </Tooltip>
                   </InputAdornment>
                 )
               }}
@@ -112,7 +135,7 @@ export default function TargetSearch() {
           }
           arrow placement="right">
           <InfoIcon
-            style={{ color: '#757575' }}
+            style={{ color: '#757575', cursor: 'help' }}
           />
         </Tooltip>
       </Grid>
