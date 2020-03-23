@@ -11,13 +11,28 @@ import Grid from "@material-ui/core/Grid";
 import SearchIcon from '@material-ui/icons/Search';
 import buttons from "../styles/buttons";
 import { InputAdornment } from "@material-ui/core";
-
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
   root: {
     "& > *": {
       marginTop: 10,
       width: 250
+    }
+  },
+  divider: {
+    height: 28,
+    backgroundColor: '#c4c4c4',
+    marginRight: 5,
+    marginLeft: 5,
+    width: 1
+  },
+  adornment: {
+    MuiInputAdornment: {
+      positionEnd: {
+        paddingRight: 5
+      }
     }
   }
 });
@@ -66,12 +81,22 @@ export default function TargetSearch() {
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
+              className={classes.adornment}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>
+                  <InputAdornment
+                    position='end'
+                  >
                     <SearchIcon
                       css={[buttons.inlineButton]}
                       onClick={event => submitSearch(event)}
+                    />
+                    <Divider
+                      className={classes.divider}
+                      orientation="vertical"
+                    />
+                    <RefreshIcon
+                      css={[buttons.inlineButton]}
                     />
                   </InputAdornment>
                 )
