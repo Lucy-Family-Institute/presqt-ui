@@ -9,10 +9,12 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
-import colors from "../../../styles/colors";
+import colors from "../../styles/colors";
 import {useSelector} from "react-redux";
-import {actionCreators} from "../../../redux/actionCreators";
+import {actionCreators} from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
+import textStyles from "../../styles/text";
+import {jsx} from "@emotion/core";
 
 const SplitActionButton = withStyles({
   root: {
@@ -99,8 +101,8 @@ export default function ServicesSplitButton() {
         <ServicesButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
           <SplitActionButton
             onClick={handleClick}
-          >{
-            label}
+          >
+            <span css={textStyles.buttonText}>{label}</span>
           </SplitActionButton>
           <SplitArrowButton
             size="small"
@@ -130,7 +132,7 @@ export default function ServicesSplitButton() {
                         selected={index === selectedIndex}
                         onClick={event => handleMenuItemClick(event, index)}
                       >
-                        {service.readable_name}
+                        <span css={textStyles.buttonText}>{service.readable_name}</span>
                       </MenuItem>
                     ))}
                   </MenuList>

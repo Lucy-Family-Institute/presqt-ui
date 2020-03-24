@@ -8,7 +8,7 @@ import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
 import arrayValueFinder from "../utils/arrayValueFinder";
 import {Fragment} from "react";
-import ServicesSplitButton from "./widgets/buttons/ServicesSplitButton";
+import ServicesSplitButton from "./action_buttons/ServicesSplitButton";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
