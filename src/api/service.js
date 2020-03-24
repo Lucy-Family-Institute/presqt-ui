@@ -11,6 +11,6 @@ export function getServices() {
 /**
  * Service Detail Endpoint
  */
-export function getService(serviceName) {
-  return axios.get(`${apiURLBase}services/${serviceName}/`);
+export function getService(service) {
+  return axios.get(`${apiURLBase}services/${service.name}/`);
 }

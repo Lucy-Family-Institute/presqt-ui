@@ -103,7 +103,7 @@ export const actionCreators = createActions({
     SERVICES: {
         LOAD_SERVICES: undefined,
         LOAD_SERVICES_SUCCESS: undefined,
-        SELECT_SERVICE: undefined,
+        SELECT_SERVICE: (service) => ({service}),
         SELECT_SERVICE_SUCCESS: undefined,
         CLEAR_SERVICE: undefined
       },

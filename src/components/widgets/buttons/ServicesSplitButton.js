@@ -10,8 +10,9 @@ import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
-
-const options = ['EaaSI', 'IIIF'];
+import {useSelector} from "react-redux";
+import {actionCreators} from "../../../redux/actionCreators";
+import { useDispatch } from "react-redux";
 
 const SplitActionButton = withStyles({
   root: {
@@ -57,19 +58,25 @@ const ServicesButtonGroup = withStyles({
 })(ButtonGroup);
 
 export default function ServicesSplitButton() {
+  const dispatch = useDispatch();
+
+  const services = useSelector(state => state.availableServices);
+
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [label, setLabel] = useState('Services');
 
   const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
+    if (selectedIndex !== null) {
+      dispatch(actionCreators.services.selectService(services[selectedIndex]))
+    }
   };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
     setOpen(false);
-    setLabel(options[index])
+    setLabel(services[index].readable_name)
   };
 
   const handleToggle = () => {
@@ -113,13 +120,13 @@ export default function ServicesSplitButton() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList id="split-button-menu">
-                    {options.map((option, index) => (
+                    {services.map((service, index) => (
                       <MenuItem
-                        key={option}
+                        key={service.readable_name}
                         selected={index === selectedIndex}
                         onClick={event => handleMenuItemClick(event, index)}
                       >
-                        {option}
+                        {service.readable_name}
                       </MenuItem>
                     ))}
                   </MenuList>
