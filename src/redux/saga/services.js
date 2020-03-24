@@ -12,6 +12,7 @@ function* loadServices() {
   yield put(actionCreators.services.loadServicesSuccess(response.data));
 }
 
+/** Service Detail **/
 export function* watchLoadService() {
   yield takeEvery(actionCreators.services.selectService, loadService);
 }
