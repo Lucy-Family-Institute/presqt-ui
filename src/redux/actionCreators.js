@@ -114,5 +114,9 @@ export const actionCreators = createActions({
         SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
         SUBMIT_GITHUB_ISSUE_FAILURE: undefined,
         CLEAR_GITHUB_ISSUE: undefined
+    },
+    EAASI: {
+        DISPLAY_EAASI_MODAL: undefined,
+        HIDE_EAASI_MODAL: undefined,
     }
 });

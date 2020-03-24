@@ -7,6 +7,7 @@ import { targetsReducers } from "./targets";
 import { authorizationReducers } from "./authorization";
 import { githubReducers } from "./github";
 import { servicesReducers } from "./services";
+import { eaasiReducers } from "./eaasi";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -20,7 +21,8 @@ const initialState = {
   ...uploadReducers.initialState,
   ...transferReducers.initialState,
   ...githubReducers.initialState,
-  ...servicesReducers.initialState
+  ...servicesReducers.initialState,
+  ...eaasiReducers.initialState
 };
 
 export default handleActions(
@@ -32,7 +34,8 @@ export default handleActions(
     ...uploadReducers.reducers,
     ...transferReducers.reducers,
     ...githubReducers.reducers,
-    ...servicesReducers.reducers
+    ...servicesReducers.reducers,
+    ...eaasiReducers.reducers
   },
   initialState
 );

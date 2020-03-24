@@ -69,7 +69,11 @@ export default function ServicesSplitButton() {
 
   const handleClick = () => {
     if (selectedIndex !== null) {
-      dispatch(actionCreators.services.selectService(services[selectedIndex]))
+      dispatch(actionCreators.services.selectService(services[selectedIndex]));
+
+      if (services[selectedIndex].name === 'eaasi'){
+        dispatch(actionCreators.eaasi.displayEaasiModal())
+      }
     }
   };
 
