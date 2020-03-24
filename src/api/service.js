@@ -7,3 +7,10 @@ import { apiURLBase } from "../config";
 export function getServices() {
   return axios.get(`${apiURLBase}services/`);
 }
+
+/**
+ * Service Detail Endpoint
+ */
+export function getService(serviceName) {
+  return axios.get(`${apiURLBase}services/${serviceName}/`);
+}

@@ -104,6 +104,7 @@ export const actionCreators = createActions({
         LOAD_SERVICES: undefined,
         LOAD_SERVICES_SUCCESS: undefined,
         SELECT_SERVICE: undefined,
+        SELECT_SERVICE_SUCCESS: undefined,
         CLEAR_SERVICE: undefined
       },
     GITHUB: {

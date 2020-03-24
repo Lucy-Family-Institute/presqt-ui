@@ -6,7 +6,7 @@ export const servicesReducers = {
     availableServices: []
   },
   reducers: {
-    [actionCreators.services.selectService]: (state, action) => ({
+    [actionCreators.services.selectServiceSuccess]: (state, action) => ({
       ...state,
       selectedService: action.payload
     }),

@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
-import { getServices } from "../../api/service";
+import { getServices, getService } from "../../api/service";
 
 /** Service Collection **/
 export function* watchLoadServices() {
@@ -10,4 +10,13 @@ export function* watchLoadServices() {
 function* loadServices() {
   const response = yield call(getServices);
   yield put(actionCreators.services.loadServicesSuccess(response.data));
+}
+
+export function* watchLoadService() {
+  yield takeEvery(actionCreators.services.selectService, loadService);
+}
+
+function* loadService(action) {
+  const response = yield call(getService, action.payload.name);
+  yield put(actionCreators.services.loadServiceSuccess(response.data));
 }
