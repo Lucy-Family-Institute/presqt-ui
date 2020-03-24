@@ -100,6 +100,12 @@ export const actionCreators = createActions({
         SWITCH_TARGET: undefined,
         CLEAR_TARGET: undefined
     },
+    SERVICES: {
+        LOAD_SERVICES: undefined,
+        LOAD_SERVICES_SUCCESS: undefined,
+        SELECT_SERVICE: undefined,
+        CLEAR_SERVICE: undefined
+      },
     GITHUB: {
         DISPLAY_ISSUE_MODAL: undefined,
         HIDE_ISSUE_MODAL: undefined,

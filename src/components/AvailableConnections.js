@@ -29,8 +29,9 @@ export default function AvailableConnections() {
 
   /**
    * Dispatch load action on page-load.
+   * Dispatch load services on page-load.
    */
-  useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
+  useEffect(() => {dispatch(actionCreators.targets.load()); dispatch(actionCreators.services.loadServices());}, [dispatch]);
 
   /**
    * Watch for a change in apiOperationErrors.
