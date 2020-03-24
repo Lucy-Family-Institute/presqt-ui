@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import {Fragment} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
