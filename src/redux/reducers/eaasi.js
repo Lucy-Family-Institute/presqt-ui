@@ -1,5 +1,5 @@
 import { actionCreators } from "../actionCreators";
-import {trackAction} from "./helpers/tracking";
+import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 
 export const eaasiReducers = {
   initialState: {
@@ -33,7 +33,26 @@ export const eaasiReducers = {
         state.pendingAPIOperations
       ),
     }),
-    [actionCreators.eaasi.sendEaasiProposalSuccess]: (state, action) => ({}),
-    [actionCreators.eaasi.sendEaasiProposalFailure]: (state, action) => ({})
+    [actionCreators.eaasi.sendEaasiProposalSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.eaasi.sendEaasiProposal,
+        state.pendingAPIOperations
+      ),
+    }),
+    [actionCreators.eaasi.sendEaasiProposalFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.eaasi.sendEaasiProposal,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.eaasi.sendEaasiProposal.toString(),
+        state.apiOperationErrors
+      ),
+    })
   }
 };

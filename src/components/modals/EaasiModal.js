@@ -4,7 +4,7 @@ import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import {jsx} from "@emotion/core";
 import {useDispatch, useSelector} from "react-redux";
-import React from "react";
+import React, {useEffect} from "react";
 import {actionCreators} from "../../redux/actionCreators";
 import textStyles from "../../styles/text";
 import Button from "@material-ui/core/Button";
@@ -24,13 +24,34 @@ export default function EaasiModal() {
   const dispatch = useDispatch();
 
   const eaasiModalDisplay = useSelector(state => state.eaasiModalDisplay);
-
+  // const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
+  const downloadStatus = useSelector(state => state.downloadStatus);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const apiTokens = useSelector(state => state.apiTokens);
+  const activeTicketNumber = useSelector(state => state.activeTicketNumber);
   /**
    *  Close the modal.
    **/
   const handleClose = () => {
     dispatch(actionCreators.eaasi.hideEaasiModal());
   };
+
+  const submitProposal = () => {
+    dispatch(actionCreators.download.downloadResource(selectedResource, apiTokens[selectedTarget.name]))
+  };
+
+  // useEffect({}, [eaasiProposalStatus])
+
+  useEffect(() => {
+      if (downloadStatus === 'finished') {
+        dispatch(actionCreators.eaasi.sendEaasiProposal(activeTicketNumber))
+      }
+      else {
+        console.log('oops download error or pending')
+      }
+    }, [downloadStatus]
+  );
 
   return eaasiModalDisplay ? (
     <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
@@ -58,7 +79,7 @@ export default function EaasiModal() {
             </div>
             <div css={{ display: 'flex',  justifyContent:'center' }}>
               <CustomEaasiButton
-                // onClick={submitUpload}
+                onClick={submitProposal}
                 variant="contained"
                 color="primary"
               >
