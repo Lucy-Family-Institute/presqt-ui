@@ -25,7 +25,7 @@ export default function EaasiModal() {
 
   const eaasiModalDisplay = useSelector(state => state.eaasiModalDisplay);
   // const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
-  const downloadStatus = useSelector(state => state.downloadStatus);
+  const downloadForServiceStatus = useSelector(state => state.downloadForServiceStatus);
   const selectedResource = useSelector(state => state.selectedResource);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const apiTokens = useSelector(state => state.apiTokens);
@@ -38,19 +38,19 @@ export default function EaasiModal() {
   };
 
   const submitProposal = () => {
-    dispatch(actionCreators.download.downloadResource(selectedResource, apiTokens[selectedTarget.name]))
+    dispatch(actionCreators.download.downloadResource(selectedResource, apiTokens[selectedTarget.name], true))
   };
 
   // useEffect({}, [eaasiProposalStatus])
 
   useEffect(() => {
-      if (downloadStatus === 'finished') {
+      if (downloadForServiceStatus === 'finished') {
         dispatch(actionCreators.eaasi.sendEaasiProposal(activeTicketNumber))
       }
       else {
         console.log('oops download error or pending')
       }
-    }, [downloadStatus]
+    }, [downloadForServiceStatus]
   );
 
   return eaasiModalDisplay ? (
