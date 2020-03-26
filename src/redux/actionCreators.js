@@ -30,7 +30,7 @@ export const actionCreators = createActions({
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
     },
     DOWNLOAD: {
-        DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
         DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,
@@ -39,6 +39,7 @@ export const actionCreators = createActions({
         CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
         CANCEL_DOWNLOAD_SUCCESS: undefined,
         CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
+        DOWNLOAD_FOR_SERVICE_SUCCESS: undefined,
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
