@@ -5,7 +5,8 @@ export const eaasiReducers = {
   initialState: {
     eaasiModalDisplay: false,
     eaasiProposalStatus: null,
-    eaasiProposalData: null
+    eaasiProposalPostData: null,
+    eaasiProposalGetData: null
   },
   reducers: {
     /**
@@ -41,7 +42,7 @@ export const eaasiReducers = {
         actionCreators.eaasi.sendEaasiProposal,
         state.pendingAPIOperations
       ),
-      eaasiProposalData: action.payload
+      eaasiProposalPostData: action.payload
     }),
     [actionCreators.eaasi.sendEaasiProposalFailure]: (state, action) => ({
       ...state,
@@ -53,6 +54,36 @@ export const eaasiReducers = {
       apiOperationErrors: trackError(
         action,
         actionCreators.eaasi.sendEaasiProposal.toString(),
+        state.apiOperationErrors
+      ),
+    }),
+    [actionCreators.eaasi.getEaasiProposal]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.eaasi.getEaasiProposal,
+        state.pendingAPIOperations
+      ),
+    }),
+    [actionCreators.eaasi.getEaasiProposalSuccess]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.eaasi.getEaasiProposal,
+        state.pendingAPIOperations
+      ),
+      eaasiProposalGetData: action.payload
+    }),
+    [actionCreators.eaasi.getEaasiProposalFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.eaasi.getEaasiProposal,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.eaasi.getEaasiProposal.toString(),
         state.apiOperationErrors
       ),
     })
