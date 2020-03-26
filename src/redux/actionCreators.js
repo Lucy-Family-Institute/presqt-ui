@@ -125,5 +125,6 @@ export const actionCreators = createActions({
         GET_EAASI_PROPOSAL: (proposal_link) => ({proposal_link}),
         GET_EAASI_PROPOSAL_SUCCESS: undefined,
         GET_EAASI_PROPOSAL_FAILURE: undefined,
+        CLEAR_EAASI_DATA: undefined
     }
 });

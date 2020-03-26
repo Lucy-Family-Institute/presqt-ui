@@ -1,5 +1,5 @@
 import { actionCreators } from "../actionCreators";
-import {trackAction, trackError, untrackAction} from "./helpers/tracking";
+import { trackAction, trackError, untrackAction } from "./helpers/tracking";
 
 export const eaasiReducers = {
   initialState: {
@@ -14,14 +14,14 @@ export const eaasiReducers = {
      **/
     [actionCreators.eaasi.displayEaasiModal]: state => ({
       ...state,
-      eaasiModalDisplay: true,
+      eaasiModalDisplay: true
     }),
     /**
      * Hide the EaaSI Modal
      **/
     [actionCreators.eaasi.hideEaasiModal]: state => ({
       ...state,
-      eaasiModalDisplay: false,
+      eaasiModalDisplay: false
     }),
     /**
      * Add API call to trackers.
@@ -33,7 +33,7 @@ export const eaasiReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.eaasi.sendEaasiProposal,
         state.pendingAPIOperations
-      ),
+      )
     }),
     [actionCreators.eaasi.sendEaasiProposalSuccess]: (state, action) => ({
       ...state,
@@ -55,7 +55,7 @@ export const eaasiReducers = {
         action,
         actionCreators.eaasi.sendEaasiProposal.toString(),
         state.apiOperationErrors
-      ),
+      )
     }),
     [actionCreators.eaasi.getEaasiProposal]: state => ({
       ...state,
@@ -63,7 +63,7 @@ export const eaasiReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.eaasi.getEaasiProposal,
         state.pendingAPIOperations
-      ),
+      )
     }),
     [actionCreators.eaasi.getEaasiProposalSuccess]: (state, action) => ({
       ...state,
@@ -85,7 +85,13 @@ export const eaasiReducers = {
         action,
         actionCreators.eaasi.getEaasiProposal.toString(),
         state.apiOperationErrors
-      ),
+      )
+    }),
+    [actionCreators.eaasi.clearEaasiData]: state => ({
+      ...state,
+      eaasiProposalStatus: null,
+      eaasiProposalPostData: null,
+      eaasiProposalGetData: null
     })
   }
 };
