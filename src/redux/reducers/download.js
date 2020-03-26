@@ -6,19 +6,22 @@ export const downloadReducers = {
     downloadStatus: null,
     downloadData: null,
     downloadModalDisplay: false,
+    downloadForService: false,
+    downloadForServiceStatus: null
   },
   reducers: {
     /**
      * Register resource download operation.
      **/
-    [actionCreators.download.downloadResource]: state => ({
+    [actionCreators.download.downloadResource]: (state, action) => ({
     ...state,
     pendingAPIResponse: true,
     pendingAPIOperations: trackAction(
       actionCreators.download.downloadResource,
       state.pendingAPIOperations
     ),
-    downloadStatus: 'pending'
+    downloadStatus: 'pending',
+    downloadForService: action.payload.isService
   }),
     /**
      * Untrack API call.
@@ -139,6 +142,10 @@ export const downloadReducers = {
       state.apiOperationErrors
     ),
   }),
+    [actionCreators.download.downloadForServiceSuccess]: state => ({
+      ...state,
+      downloadForServiceStatus: 'finished'
+    }),  
     /**
      * Refresh the resources in the Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
@@ -149,7 +156,9 @@ export const downloadReducers = {
     [actionCreators.download.clearDownloadData]: state => ({
     ...state,
     downloadStatus: null,
-    downloadData: null
+    downloadData: null,
+    downloadForService: false,
+    downloadForServiceStatus: null
   }),
     /**
      * Display the Download Modal

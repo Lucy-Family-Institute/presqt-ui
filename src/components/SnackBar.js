@@ -23,6 +23,7 @@ export default function SnackBar() {
   const classes = useStyles();
 
   const downloadStatus = useSelector(state => state.downloadStatus);
+  const downloadForService = useSelector(state => state.downloadForService);
   const uploadStatus = useSelector(state => state.uploadStatus);
   const transferStatus = useSelector(state => state.transferStatus);
   const githubStatus = useSelector(state => state.githubStatus);
@@ -36,20 +37,22 @@ export default function SnackBar() {
    * DOWNLOAD
    **/
   useEffect(() => {
-    if (downloadStatus === 'success') {
-      setSnackBarOpen(true);
-      setSnackBarText('Download Successful!');
-      setSnackBarClass(classes.success);
-    }
-    else if (downloadStatus === 'failure') {
-      setSnackBarOpen(true);
-      setSnackBarText('Download Failed!');
-      setSnackBarClass(classes.failure);
-    }
-    else if (downloadStatus === 'cancelled') {
-      setSnackBarOpen(true);
-      setSnackBarText('Download Cancelled!');
-      setSnackBarClass(classes.failure);
+    if (!downloadForService) {
+      if (downloadStatus === 'success') {
+        setSnackBarOpen(true);
+        setSnackBarText('Download Successful!');
+        setSnackBarClass(classes.success);
+      }
+      else if (downloadStatus === 'failure') {
+        setSnackBarOpen(true);
+        setSnackBarText('Download Failed!');
+        setSnackBarClass(classes.failure);
+      }
+      else if (downloadStatus === 'cancelled') {
+        setSnackBarOpen(true);
+        setSnackBarText('Download Cancelled!');
+        setSnackBarClass(classes.failure);
+      }
     }
   }, [downloadStatus]);
 

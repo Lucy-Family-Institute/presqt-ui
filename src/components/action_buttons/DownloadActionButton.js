@@ -23,7 +23,7 @@ export default function DownloadActionButton({ disabled }) {
    **/
   const submitDownload = () => {
     dispatch(actionCreators.download.displayDownloadModal());
-    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
+    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
   };
 
   return (

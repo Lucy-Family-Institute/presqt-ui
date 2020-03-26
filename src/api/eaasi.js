@@ -8,5 +8,5 @@ export function postEaasiProposal(ticket_number) {
   const bodyFormData = new FormData();
   bodyFormData.set('ticket_number', ticket_number);
 
-  return axios.post(proposalURL, bodyFormData)
+  return axios.post(proposalURL, bodyFormData);
 }
