@@ -4,7 +4,8 @@ import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 export const eaasiReducers = {
   initialState: {
     eaasiModalDisplay: false,
-    eaasiProposalStatus: null
+    eaasiProposalStatus: null,
+    eaasiProposalData: null
   },
   reducers: {
     /**
@@ -40,6 +41,7 @@ export const eaasiReducers = {
         actionCreators.eaasi.sendEaasiProposal,
         state.pendingAPIOperations
       ),
+      eaasiProposalData: action.payload
     }),
     [actionCreators.eaasi.sendEaasiProposalFailure]: (state, action) => ({
       ...state,
