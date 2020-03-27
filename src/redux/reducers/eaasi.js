@@ -57,7 +57,8 @@ export const eaasiReducers = {
         action,
         actionCreators.eaasi.sendEaasiProposal.toString(),
         state.apiOperationErrors
-      )
+      ),
+      eaasiProposalStatus: 'postFailure'
     }),
     [actionCreators.eaasi.getEaasiProposal]: state => ({
       ...state,
@@ -89,7 +90,8 @@ export const eaasiReducers = {
         action,
         actionCreators.eaasi.getEaasiProposal.toString(),
         state.apiOperationErrors
-      )
+      ),
+      eaasiProposalStatus: 'getFailure'
     }),
     [actionCreators.eaasi.clearEaasiData]: state => ({
       ...state,

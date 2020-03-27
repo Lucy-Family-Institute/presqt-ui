@@ -17,8 +17,8 @@ function* sendEaasiProposal(action) {
   }
   catch (error) {
     yield put(actionCreators.eaasi.sendEaasiProposalFailure(
-      error.response.status,
-      error.response.data.error)
+      error.response.data,
+      error.response.status)
     )
   }
 }
@@ -47,8 +47,8 @@ export function* watchEaasiSuccess() {
     }
     catch (error) {
       yield put(actionCreators.eaasi.getEaasiProposalFailure(
-        error.response.status,
-        error.response.data.error)
+        error.response.data,
+        error.response.status)
       )
     }
   }

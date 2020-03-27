@@ -12,6 +12,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
 import Spinner from "../widgets/spinners/Spinner";
 import useDefault from "../../hooks/useDefault";
+import getError from "../../utils/getError";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const CustomEaasiButton = withStyles({
   root: {
@@ -36,6 +38,7 @@ export default function EaasiModal() {
   const apiTokens = useSelector(state => state.apiTokens);
   const activeTicketNumber = useSelector(state => state.activeTicketNumber);
   const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
+  const eaasiError = getError(actionCreators.eaasi.getEaasiProposal);
 
   const [modalContentHeader, setModalContentHeader] = useDefault("");
   const [modalContentBody, setModalContentBody] = useDefault("");
@@ -73,6 +76,7 @@ export default function EaasiModal() {
     else if (eaasiProposalStatus === 'getPending') {
       setModalContentHeader("Proposal task is being processed on the EaaSI server...")
     }
+
     else if (eaasiProposalStatus === 'getFinished') {
       setModalContentHeader(
         <Fragment>
@@ -81,6 +85,15 @@ export default function EaasiModal() {
       );
       setModalContentBody("");
     }
+    else if (eaasiProposalStatus === 'getFailure') {
+      setModalContentHeader(
+        <div
+        css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error" />
+          <span css={{ marginLeft: 5 }}>EaaSI Error: {eaasiError.data.message}</span>
+          </div>);
+        setModalContentBody("");
+      }
     else if (selectedResource){
       setModalContentHeader(`Clicking on this button will send the contents of 
         '${selectedResource.title}' to EaaSI. They will prepare the contents and return an image that can be run as an emulator.`);
@@ -116,8 +129,8 @@ export default function EaasiModal() {
           EaaSI Service
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>
-          <div css={{ display: "flex", justifyContent: "center" }}>
-            <p>{modalContentHeader}</p>
+          <div css={{ display: "flex", justifyContent: "center", padding: 10 }}>
+            {modalContentHeader}
           </div>
           <div css={{ display: "flex", justifyContent: "center" }}>
             {modalContentBody}
