@@ -27,6 +27,7 @@ const CustomEaasiButton = withStyles({
 export default function EaasiModal() {
   const dispatch = useDispatch();
 
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const eaasiModalDisplay = useSelector(state => state.eaasiModalDisplay);
   const downloadForServiceStatus = useSelector(state => state.downloadForServiceStatus);
   const downloadForService = useSelector(state => state.downloadForService);
