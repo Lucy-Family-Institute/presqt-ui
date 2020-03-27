@@ -25,7 +25,7 @@ export default function RetryDownloadButton({setModalContent, setModalHeader}) {
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.download.downloadResource.toString()));
 
-      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
+      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
 
       setModalContent();
       setModalHeader();

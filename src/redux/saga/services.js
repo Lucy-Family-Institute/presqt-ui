@@ -18,6 +18,6 @@ export function* watchLoadService() {
 }
 
 function* loadService(action) {
-  const response = yield call(getService, action.payload.name);
-  yield put(actionCreators.services.loadServiceSuccess(response.data));
+  const response = yield call(getService, action.payload.service);
+  yield put(actionCreators.services.selectServiceSuccess(response.data));
 }

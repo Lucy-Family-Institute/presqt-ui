@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import {Fragment} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
 import textStyles from "../../styles/text";
@@ -24,7 +23,7 @@ export default function DownloadActionButton({ disabled }) {
    **/
   const submitDownload = () => {
     dispatch(actionCreators.download.displayDownloadModal());
-    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
+    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
   };
 
   return (

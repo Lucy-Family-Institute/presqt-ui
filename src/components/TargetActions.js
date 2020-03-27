@@ -7,6 +7,8 @@ import UploadActionButton from "./action_buttons/UploadActionButton";
 import TransferActionButton from "./action_buttons/TransferActionButton";
 import { actionCreators } from "../redux/actionCreators";
 import arrayValueFinder from "../utils/arrayValueFinder";
+import {Fragment} from "react";
+import ServicesSplitButton from "./action_buttons/ServicesSplitButton";
 
 /**
  * Component for target action buttons on the detail page. It is responsible for the rendering of
@@ -43,23 +45,27 @@ export default function TargetActions() {
         </span>
 
         <div css={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-          {selectedResource
-            ? <DownloadActionButton
-              key={"Download"}
-              disabled={!arrayValueFinder(buttonsList, "Download")}
-            /> : null}
-          {selectedResource
-          ? <UploadActionButton
-              key="UPLOAD"
-              type="EXISTING"
-              disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
-              text="Upload"
-            /> : null}
-          {selectedResource
-          ? <TransferActionButton
-              key="Transfer"
-              disabled={!selectedTarget.supported_actions.resource_transfer_out || selectedResource.title === 'PRESQT_FTS_METADATA.json'}
-            />: null}
+          {
+            selectedResource
+            ? <Fragment>
+                <DownloadActionButton
+                  key={"Download"}
+                  disabled={!arrayValueFinder(buttonsList, "Download")}
+                />
+                <UploadActionButton
+                  key="UPLOAD"
+                  type="EXISTING"
+                  disabled={!searchValue ? !arrayValueFinder(buttonsList, "Upload") : true}
+                  text="Upload"
+                />
+                <TransferActionButton
+                  key="Transfer"
+                  disabled={!selectedTarget.supported_actions.resource_transfer_out || selectedResource.title === 'PRESQT_FTS_METADATA.json'}
+                />
+                <ServicesSplitButton />
+              </Fragment>
+            : null
+          }
         </div>
       </div>
     );
