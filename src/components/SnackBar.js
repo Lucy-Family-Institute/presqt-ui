@@ -124,6 +124,11 @@ export default function SnackBar() {
       setSnackBarText(`EaaSI Proposal Created Successfully`);
       setSnackBarClass(classes.success);
     }
+    else if (eaasiProposalStatus === 'getFailure' || eaasiProposalStatus === 'postFailure') {
+      setSnackBarOpen(true);
+      setSnackBarText('EaaSI Proposal Failed to Create');
+      setSnackBarClass(classes.failure);
+    }
   }, [eaasiProposalStatus]);
 
 
