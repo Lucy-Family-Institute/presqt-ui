@@ -67,7 +67,7 @@ function* downloadTargetResource(action) {
           }
           else {
             yield put(actionCreators.download.downloadForServiceSuccess());
-            downloadFinished = true;;
+            downloadFinished = true;
           }
         }
         // Download pending!
