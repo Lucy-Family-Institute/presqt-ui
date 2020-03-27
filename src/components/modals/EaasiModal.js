@@ -62,8 +62,32 @@ export default function EaasiModal() {
   useEffect(() => {
     if (eaasiProposalPostData) {
       dispatch(actionCreators.eaasi.getEaasiProposal(eaasiProposalPostData.proposal_link));
+      setModalContent(eaasiProposalPostData.message);
     }
   }, [eaasiProposalPostData]);
+
+  useEffect(() => {
+    if (eaasiProposalGetData) {
+      if ("message" in eaasiProposalGetData) {
+        console.log("CHANGING MODAL CONTENT TO: ", eaasiProposalGetData.message);
+        setModalContent(eaasiProposalGetData.message);
+        console.log("ACTUAL MODAL CONTENT: ", modalContent)
+      }
+      else if ("image_url" in eaasiProposalGetData) {
+        console.log("CHANGING MODAL CONTENT TO INCLUDE: ", eaasiProposalGetData.image_url);
+        setModalContent(
+          <Fragment>
+          EaaSI has successfully created an emulation image. It can be
+          downloaded by clicking
+          <a href={`${eaasiProposalGetData.image_url}`} target="_blank">
+            {" "}
+            here.
+          </a>
+          </Fragment>)
+        console.log("ACTUAL MODAL CONTENT: ", modalContent)
+      }
+    }
+  }, [eaasiProposalGetData]);
 
   return eaasiModalDisplay ? (
     <div css={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
