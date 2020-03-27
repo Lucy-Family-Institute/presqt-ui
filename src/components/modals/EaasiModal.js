@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, Fragment } from "react";
 import { actionCreators } from "../../redux/actionCreators";
 import textStyles from "../../styles/text";
-import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
 import Spinner from "../widgets/spinners/Spinner";
