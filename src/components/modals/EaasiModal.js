@@ -80,7 +80,6 @@ export default function EaasiModal() {
           EaaSI has successfully created an emulation image. It can be
           downloaded by clicking
           <a href={`${eaasiProposalGetData.image_url}`} target="_blank">
-            {" "}
             here.
           </a>
           </Fragment>)
