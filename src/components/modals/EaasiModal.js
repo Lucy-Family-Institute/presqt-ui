@@ -49,6 +49,14 @@ export default function EaasiModal() {
     dispatch(actionCreators.eaasi.hideEaasiModal());
     dispatch(actionCreators.download.clearDownloadData());
     dispatch(actionCreators.eaasi.clearEaasiData());
+    if (apiOperationErrors.length > 0 && eaasiGetError) {
+      dispatch(actionCreators.resources.removeFromErrorList(
+        actionCreators.eaasi.getEaasiProposal.toString()));
+    }
+    else if (apiOperationErrors.length > 0 && eaasiPostError) {
+      dispatch(actionCreators.resources.removeFromErrorList(
+        actionCreators.eaasi.sendEaasiProposal.toString()));
+    }
   };
 
   const submitProposal = () => {
