@@ -33,7 +33,8 @@ export const eaasiReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.eaasi.sendEaasiProposal,
         state.pendingAPIOperations
-      )
+      ),
+      eaasiProposalStatus: 'postPending'
     }),
     [actionCreators.eaasi.sendEaasiProposalSuccess]: (state, action) => ({
       ...state,
@@ -42,7 +43,8 @@ export const eaasiReducers = {
         actionCreators.eaasi.sendEaasiProposal,
         state.pendingAPIOperations
       ),
-      eaasiProposalPostData: action.payload
+      eaasiProposalPostData: action.payload,
+      eaasiProposalStatus: 'postFinished'
     }),
     [actionCreators.eaasi.sendEaasiProposalFailure]: (state, action) => ({
       ...state,
@@ -63,7 +65,8 @@ export const eaasiReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.eaasi.getEaasiProposal,
         state.pendingAPIOperations
-      )
+      ),
+      eaasiProposalStatus: 'getPending'
     }),
     [actionCreators.eaasi.getEaasiProposalSuccess]: (state, action) => ({
       ...state,
@@ -72,7 +75,8 @@ export const eaasiReducers = {
         actionCreators.eaasi.getEaasiProposal,
         state.pendingAPIOperations
       ),
-      eaasiProposalGetData: action.payload
+      eaasiProposalGetData: action.payload.data,
+      eaasiProposalStatus: action.payload.status
     }),
     [actionCreators.eaasi.getEaasiProposalFailure]: (state, action) => ({
       ...state,

@@ -27,6 +27,7 @@ export default function EaasiModal() {
 
   const eaasiModalDisplay = useSelector(state => state.eaasiModalDisplay);
   const downloadForServiceStatus = useSelector(state => state.downloadForServiceStatus);
+  const downloadForService = useSelector(state => state.downloadForService);
   const eaasiProposalPostData = useSelector(state => state.eaasiProposalPostData);
   const eaasiProposalGetData = useSelector(state => state.eaasiProposalGetData);
   const downloadStatus = useSelector(state => state.downloadStatus);
@@ -34,12 +35,11 @@ export default function EaasiModal() {
   const selectedTarget = useSelector(state => state.selectedTarget);
   const apiTokens = useSelector(state => state.apiTokens);
   const activeTicketNumber = useSelector(state => state.activeTicketNumber);
+  const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
 
-  const [modalContent, setModalContent] = useDefault("");
+  const [modalContentHeader, setModalContentHeader] = useDefault("");
+  const [modalContentBody, setModalContentBody] = useDefault("");
 
-  /**
-   *  Close the modal.
-   **/
   const handleClose = () => {
     dispatch(actionCreators.eaasi.hideEaasiModal());
     dispatch(actionCreators.download.clearDownloadData());
@@ -60,33 +60,42 @@ export default function EaasiModal() {
   }, [downloadForServiceStatus]);
 
   useEffect(() => {
-    if (eaasiProposalPostData) {
+    if (downloadForService && !downloadForServiceStatus) {
+      setModalContentHeader("Your request is being processed on the PresQT server...");
+      setModalContentBody(<Spinner />)
+    }
+    else if (eaasiProposalStatus === 'postPending') {
+      setModalContentHeader("Proposal task is being processed on the EaaSI server...")
+    }
+    else if (eaasiProposalStatus === 'postFinished') {
       dispatch(actionCreators.eaasi.getEaasiProposal(eaasiProposalPostData.proposal_link));
-      setModalContent(eaasiProposalPostData.message);
     }
-  }, [eaasiProposalPostData]);
-
-  useEffect(() => {
-    if (eaasiProposalGetData) {
-      if ("message" in eaasiProposalGetData) {
-        console.log("CHANGING MODAL CONTENT TO: ", eaasiProposalGetData.message);
-        setModalContent(eaasiProposalGetData.message);
-        console.log("ACTUAL MODAL CONTENT: ", modalContent)
-      }
-      else if ("image_url" in eaasiProposalGetData) {
-        console.log("CHANGING MODAL CONTENT TO INCLUDE: ", eaasiProposalGetData.image_url);
-        setModalContent(
-          <Fragment>
-          EaaSI has successfully created an emulation image. It can be
-          downloaded by clicking
-          <a href={`${eaasiProposalGetData.image_url}`} target="_blank">
-            here.
-          </a>
-          </Fragment>)
-        console.log("ACTUAL MODAL CONTENT: ", modalContent)
-      }
+    else if (eaasiProposalStatus === 'getPending') {
+      setModalContentHeader("Proposal task is being processed on the EaaSI server...")
     }
-  }, [eaasiProposalGetData]);
+    else if (eaasiProposalStatus === 'getFinished') {
+      setModalContentHeader(
+        <Fragment>
+          EaaSI has successfully created an emulation image. It can be downloaded by clicking <a href={`${eaasiProposalGetData.image_url}`} target="_blank">here.</a>
+        </Fragment>
+      );
+      setModalContentBody("");
+    }
+    else if (selectedResource){
+      setModalContentHeader(`Clicking on this button will send the contents of 
+        '${selectedResource.title}' to EaaSI. They will prepare the contents and return an image that can be run as an emulator.`);
+      setModalContentBody(
+        <CustomEaasiButton
+          onClick={submitProposal}
+          variant="contained"
+          color="primary"
+          disabled={downloadStatus ? downloadStatus === "pending" : false}
+        >
+          <span css={textStyles.buttonText}>Send</span>
+        </CustomEaasiButton>
+      )
+    }
+  }, [eaasiProposalStatus, eaasiModalDisplay, downloadForService]);
 
   return eaasiModalDisplay ? (
     <div css={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -102,50 +111,17 @@ export default function EaasiModal() {
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          // disabled={downloadStatus === 'pending' || downloadStatus === 'cancelPending'}
+          disabled={downloadStatus && eaasiProposalStatus !== 'getFinished' }
         >
           EaaSI Service
         </DialogTitle>
         <DialogContent style={{ padding: 20 }}>
           <div css={{ display: "flex", justifyContent: "center" }}>
-            <p>
-              {selectedResource && !downloadStatus ? (
-                `Clicking on this button will send the contents of ${selectedResource.title} to EaaSI. They will prepare the contents and return an image that can be run as an emulator.`
-              ) : downloadStatus && !eaasiProposalPostData ? (
-                "Your request is being processed on the PresQT server..."
-              ) : eaasiProposalPostData ? (
-                eaasiProposalPostData.message
-              ) : eaasiProposalGetData &&
-                "image_url" in eaasiProposalGetData ? (
-                <Fragment>
-                  EaaSI has successfully created an emulation image. It can be
-                  downloaded by clicking
-                  <a href={`${eaasiProposalGetData.image_url}`} target="_blank">
-                    {" "}
-                    here.
-                  </a>
-                </Fragment>
-              ) : null}
-            </p>
+            <p>{modalContentHeader}</p>
           </div>
-          {!downloadStatus ? (
-            <div css={{ display: "flex", justifyContent: "center" }}>
-              <CustomEaasiButton
-                onClick={submitProposal}
-                variant="contained"
-                color="primary"
-                disabled={downloadStatus ? downloadStatus === "pending" : false}
-              >
-                <span css={textStyles.buttonText}>Send</span>
-              </CustomEaasiButton>
-            </div>
-          ) : downloadStatus &&
-            !eaasiProposalPostData &&
-            !eaasiProposalGetData ? (
-            <Spinner />
-          ) : eaasiProposalGetData && "message" in eaasiProposalGetData ? (
-            <Spinner />
-          ) : null}
+          <div css={{ display: "flex", justifyContent: "center" }}>
+            {modalContentBody}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

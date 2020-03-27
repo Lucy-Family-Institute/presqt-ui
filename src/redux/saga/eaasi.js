@@ -34,13 +34,13 @@ export function* watchEaasiSuccess() {
         const response = yield call(
           getEaasiProposal,
           action.payload.proposal_link
-        )
+        );
         if (response.status === 200) {
-          yield put(actionCreators.eaasi.getEaasiProposalSuccess(response.data));
+          yield put(actionCreators.eaasi.getEaasiProposalSuccess(response.data, 'getFinished'));
           proposalFinished = true;
         }
         else {
-          yield put(actionCreators.eaasi.getEaasiProposalSuccess(response.data));
+          yield put(actionCreators.eaasi.getEaasiProposalSuccess(response.data, 'getPending'));
           yield delay(5000);
         }
       }

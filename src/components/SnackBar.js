@@ -28,6 +28,7 @@ export default function SnackBar() {
   const transferStatus = useSelector(state => state.transferStatus);
   const githubStatus = useSelector(state => state.githubStatus);
   const githubIssueData = useSelector(state => state.githubIssueData);
+  const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
@@ -77,6 +78,9 @@ export default function SnackBar() {
     }
   }, [uploadStatus]);
 
+  /**
+   * TRANSFER
+   **/
   useEffect(() => {
     if (transferStatus === 'finished') {
       setSnackBarOpen(true);
@@ -95,6 +99,9 @@ export default function SnackBar() {
     }
   }, [transferStatus]);
 
+  /**
+   * GITHUB ISSUE
+   **/
   useEffect(() => {
     if (githubStatus === 'success') {
       setSnackBarOpen(true);
@@ -107,6 +114,17 @@ export default function SnackBar() {
       setSnackBarClass(classes.failure);
     }
   }, [githubStatus]);
+
+  /**
+   * EAASI SERVICE
+   **/
+  useEffect(() => {
+    if (eaasiProposalStatus === 'getFinished') {
+      setSnackBarOpen(true);
+      setSnackBarText(`EaaSI Proposal Created Successfully`);
+      setSnackBarClass(classes.success);
+    }
+  }, [eaasiProposalStatus]);
 
 
   return (

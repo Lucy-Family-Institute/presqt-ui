@@ -123,7 +123,7 @@ export const actionCreators = createActions({
         SEND_EAASI_PROPOSAL_SUCCESS: undefined,
         SEND_EAASI_PROPOSAL_FAILURE: undefined,
         GET_EAASI_PROPOSAL: (proposal_link) => ({proposal_link}),
-        GET_EAASI_PROPOSAL_SUCCESS: undefined,
+        GET_EAASI_PROPOSAL_SUCCESS: (data, status) => ({data, status}),
         GET_EAASI_PROPOSAL_FAILURE: undefined,
         CLEAR_EAASI_DATA: undefined
     }
