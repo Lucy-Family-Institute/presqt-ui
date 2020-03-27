@@ -38,7 +38,9 @@ export default function EaasiModal() {
   const apiTokens = useSelector(state => state.apiTokens);
   const activeTicketNumber = useSelector(state => state.activeTicketNumber);
   const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
-  const eaasiError = getError(actionCreators.eaasi.getEaasiProposal);
+
+  const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal);
+  const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal);
 
   const [modalContentHeader, setModalContentHeader] = useDefault("");
   const [modalContentBody, setModalContentBody] = useDefault("");
@@ -54,6 +56,11 @@ export default function EaasiModal() {
         selectedResource,
         apiTokens[selectedTarget.name],
         true));
+  };
+
+  const checkDisabled = () => {
+    const disabledStatus = [null, 'postPending', 'postFinished', 'getPending'];
+    return (downloadStatus && disabledStatus.indexOf(eaasiProposalStatus) > -1)
   };
 
   useEffect(() => {
@@ -73,14 +80,22 @@ export default function EaasiModal() {
     else if (eaasiProposalStatus === 'postFinished') {
       dispatch(actionCreators.eaasi.getEaasiProposal(eaasiProposalPostData.proposal_link));
     }
+    else if (eaasiProposalStatus === 'postFailure') {
+      setModalContentHeader(
+        <div
+          css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
+          <ErrorOutlineIcon color="error" />
+          <span css={{ marginLeft: 5 }}>EaaSI Error: {eaasiPostError.data.message}</span>
+        </div>);
+      setModalContentBody("");
+    }
     else if (eaasiProposalStatus === 'getPending') {
       setModalContentHeader("Proposal task is being processed on the EaaSI server...")
     }
-
     else if (eaasiProposalStatus === 'getFinished') {
       setModalContentHeader(
         <Fragment>
-          EaaSI has successfully created an emulation image. It can be downloaded by clicking <a href={`${eaasiProposalGetData.image_url}`} target="_blank">here.</a>
+          EaaSI has successfully created an emulation image. It can be downloaded by clicking&nbsp;<a href={`${eaasiProposalGetData.image_url}`} target="_blank">here.</a>
         </Fragment>
       );
       setModalContentBody("");
@@ -90,7 +105,7 @@ export default function EaasiModal() {
         <div
         css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
             <ErrorOutlineIcon color="error" />
-          <span css={{ marginLeft: 5 }}>EaaSI Error: {eaasiError.data.message}</span>
+          <span css={{ marginLeft: 5 }}>EaaSI Error: {eaasiGetError.data.message}</span>
           </div>);
         setModalContentBody("");
       }
@@ -124,7 +139,7 @@ export default function EaasiModal() {
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={downloadStatus && eaasiProposalStatus !== 'getFinished' }
+          disabled={checkDisabled()}
         >
           EaaSI Service
         </DialogTitle>

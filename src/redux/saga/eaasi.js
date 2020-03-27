@@ -29,8 +29,9 @@ export function* watchEaasiSuccess() {
 
   function* getEaasiProposalLink(action) {
     try {
-      let proposalFinished = false
+      let proposalFinished = false;
       while (!proposalFinished) {
+
         const response = yield call(
           getEaasiProposal,
           action.payload.proposal_link
