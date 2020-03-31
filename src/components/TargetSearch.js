@@ -62,8 +62,6 @@ export default function TargetSearch() {
           actionCreators.resources.loadFromTargetSearch.toString()
         )
       );
-
-      console.log('ABOUT TO DISPATCH')
       dispatch(
         actionCreators.resources.loadFromTargetSearch(
           selectedTarget.name, token, searchValue, selectedSearchParameter)
