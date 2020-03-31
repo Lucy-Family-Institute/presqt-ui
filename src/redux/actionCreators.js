@@ -11,10 +11,11 @@ export const actionCreators = createActions({
         LOAD_FROM_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TARGET_SUCCESS: undefined,
         LOAD_FROM_TARGET_FAILURE: (status, data) => ({status, data}),
-        LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue) => ({
+        LOAD_FROM_TARGET_SEARCH: (target, targetToken, searchValue, searchParameter) => ({
             target,
             targetToken,
-            searchValue
+            searchValue,
+            searchParameter
         }),
         LOAD_FROM_TARGET_SEARCH_SUCCESS: undefined,
         LOAD_FROM_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
