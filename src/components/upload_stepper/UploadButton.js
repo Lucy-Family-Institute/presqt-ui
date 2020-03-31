@@ -53,35 +53,34 @@ export default function UploadButton({selectedFile, selectedDuplicate,
       <div>
         The following actions will occur with this transaction:
         <List>
-          {/* Metadata Statement*/}
-          <IconListItem
-            icon={<EditIcon />}
-            text="Write or edit File Transfer Service Metadata file at the top level." />
-
           {/* Upload Statement */}
           <IconListItem
             icon={<EditIcon />}
             text={
               resourceToUploadTo
-              ? <ListItemText
-                primary={`Upload to the ${selectedTarget.readable_name} resource '${sourceResource.title}'.`}/>
-              : <ListItemText primary={`Upload to ${selectedTarget.readable_name} as a new project.`}/>
+                ? `Upload to the ${selectedTarget.readable_name} resource '${sourceResource.title}'.`
+                : `Upload to ${selectedTarget.readable_name} as a new project.`
             }
           />
+
+          {/* Metadata Statement*/}
+          <IconListItem
+            icon={<EditIcon />}
+            text="Write or edit File Transfer Service Metadata file at the top level." />
 
           {/* Destination Target Statement*/
             selectedTarget.name === 'osf'
             ? <IconListItem
-                icon={<EditIcon />}
-                text={`Resources will be stored in OSF Storage by default.`} />
+            icon={<EditIcon />}
+            text={`Resources will be stored in OSF Storage by default.`} />
             : selectedTarget.name === 'github'
             ? <IconListItem
-                icon={<WarningIcon />}
-                text="Github does not provide checksums for files."/>
+            icon={<WarningIcon />}
+            text="Github does not provide checksums for files."/>
             : selectedTarget.name === 'zenodo'
             ? <IconListItem
-              icon={<EditIcon />}
-              text={`New resource will be written in BagIt format as a ZIP file.`} />
+            icon={<EditIcon />}
+            text={`New resource will be written in BagIt format as a ZIP file.`} />
             : null
           }
 

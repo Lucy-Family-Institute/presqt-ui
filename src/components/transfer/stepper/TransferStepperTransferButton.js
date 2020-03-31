@@ -73,16 +73,16 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             icon={<EditIcon />}
             text={
               selectedTransferResource
-              ? <ListItemText
-                primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`}/>
-              : <ListItemText primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${destinationTargetReadableName} as a new project.`}/>
+              ? `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`
+              : `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${destinationTargetReadableName} as a new project.`
             }
           />
 
           {/* Metadata Statement*/}
           <IconListItem
             icon={<EditIcon />}
-            text="Write or edit File Transfer Service Metadata file at the top level."/>
+            text="Write or edit File Transfer Service Metadata file at the top level."
+          />
 
           {/* Github Statement */
             selectedTarget.name === 'github' || transferDestinationTarget === 'github'
