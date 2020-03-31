@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import {Fragment, useState} from "react";
+import {Fragment, useState, useRef} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,14 @@ import buttons from "../styles/buttons";
 import { InputAdornment } from "@material-ui/core";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import Divider from "@material-ui/core/Divider";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import Popper from "@material-ui/core/Popper";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import MenuList from "@material-ui/core/MenuList";
+import MenuItem from "@material-ui/core/MenuItem";
+import textStyles from "../styles/text";
 
 const useStyles = makeStyles({
   root: {
@@ -30,15 +38,20 @@ const useStyles = makeStyles({
   }
 });
 
+const choices = ["ID", "Title"];
+
 export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const anchorRef = useRef(null);
 
   const selectedTarget = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[selectedTarget.name];
 
+  const [selectedSearchParameter, setSelectedSearchParameter] = useState("Title");
   const [searchValue, setSearchValue] = useState('');
-
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -50,8 +63,10 @@ export default function TargetSearch() {
         )
       );
 
+      console.log('ABOUT TO DISPATCH')
       dispatch(
-        actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, searchValue)
+        actionCreators.resources.loadFromTargetSearch(
+          selectedTarget.name, token, searchValue, selectedSearchParameter)
       );
     }
   };
@@ -66,7 +81,24 @@ export default function TargetSearch() {
       )
     );
 
-    dispatch(actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, ''));
+    dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setOpen(false);
+    setSelectedSearchParameter(choices[index]);
+  };
+
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
+  const handleClose = event => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -82,8 +114,9 @@ export default function TargetSearch() {
             <SearchTextField
               size="small"
               type="text"
+              ref={anchorRef}
               id="outlined-basic"
-              label={`Search ${selectedTarget.readable_name} By Title`}
+              label={`Search ${selectedTarget.readable_name} By ${selectedSearchParameter}`}
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
@@ -91,6 +124,51 @@ export default function TargetSearch() {
                 style: {
                   paddingRight: 5
                 },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ArrowDropDownIcon
+                      css={[buttons.inlineButton]}
+                      onClick={handleToggle}
+                    />
+                    <Popper
+                      open={open}
+                      anchorEl={anchorRef.current}
+                      role={undefined}
+                      transition
+                      css={{ width: 200 }}
+                    >
+                      {({ TransitionProps}) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin: "center top",
+                            anchorOrigin: "center bottom"
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                              <MenuList id="split-button-menu">
+                                {choices.map((choice, index) => (
+                                  <MenuItem
+                                    key={choice}
+                                    selected={index === selectedIndex}
+                                    onClick={event =>
+                                      handleMenuItemClick(event, index)
+                                    }
+                                  >
+                                    <span css={textStyles.buttonText}>
+                                      {choice}
+                                    </span>
+                                  </MenuItem>
+                                ))}
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </InputAdornment>
+                ),
                 endAdornment: (
                   <InputAdornment
                     position='end'
