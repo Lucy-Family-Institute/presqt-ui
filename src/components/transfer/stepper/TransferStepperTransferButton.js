@@ -7,11 +7,11 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
 import textStyles from "../../../styles/text";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import EditIcon from '@material-ui/icons/Edit';
+import IconListItem from "../../widgets/list_items/IconListItem";
+import EditIcon from "@material-ui/icons/Edit";
+import WarningIcon from '@material-ui/icons/Warning';
 
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 const CustomTransferButton = withStyles({
   root: {
@@ -19,6 +19,7 @@ const CustomTransferButton = withStyles({
     '&:hover': {
       backgroundColor: '#0a4996',
     },
+    width: 167
   },
 })(Button);
 
@@ -60,22 +61,49 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       <div>
         The following actions will occur with this transaction:
         <List>
-          <ListItem>
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create or edit File Transfer Service Metadata file." />
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            {selectedTransferResource
+          {/* Transfer Statement */}
+          <IconListItem
+            icon=<EditIcon />
+            text={
+              selectedTransferResource
               ? <ListItemText
                 primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${transferDestinationTarget} resource '${selectedTransferResource.title}'.`}/>
               : <ListItemText primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${transferDestinationTarget} as a new project.`}/>
             }
-          </ListItem>
+          />
+
+          {/* Metadata Statement*/}
+          <IconListItem
+            icon={<EditIcon />}
+            text="Create or edit File Transfer Service Metadata file at the top level."/>
+
+          {/* Github Statement */
+            selectedTarget.name === 'github' || transferDestinationTarget === 'github'
+            ? <IconListItem
+                icon={<WarningIcon />}
+                text="Github does not provide checksums for files."/>
+            : null
+          }
+
+          {/* Source Target Statement*/
+            selectedTarget.name === 'osf'
+              ? <IconListItem
+                icon={<WarningIcon />}
+                text="OSF will only provide checksums for OSF Storage files." />
+              : null
+          }
+
+          {/* Destination Target Statement*/
+            transferDestinationTarget === 'osf'
+            ? <IconListItem
+                icon={<EditIcon />}
+                text={`'${sourceResource.title}' will be stored in OSF Storage by default.`} />
+            : transferDestinationTarget === 'zenodo'
+            ? <IconListItem
+                icon={<EditIcon />}
+                text={`'${sourceResource.title}' will be written in BagIt format as a ZIP file.`} />
+            : null
+          }
         </List>
       </div>
       <CustomTransferButton
