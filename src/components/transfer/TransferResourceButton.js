@@ -52,7 +52,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         return fileIcon;
     }
   };
-  console.log(disabled, resource.kind);
+
   return (
     <button
       disabled={resource.kind === 'item' || disabled}

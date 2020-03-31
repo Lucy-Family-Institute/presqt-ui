@@ -13,12 +13,20 @@ export function getTargetResources(target, targetToken) {
 /**
  * Resource Collection Endpoint With Search Parameter
  **/
-export function getTargetResourcesSearch(target, targetToken, search) {
-  const searchValueNoSpaces = search.replace(/ /g, "+");
+export function getTargetResourcesSearch(target, targetToken, search, searchParameter) {
+  const formatSearchParameter = searchParameter.toLowerCase();
+  if (formatSearchParameter === 'title') {
+    const searchValueNoSpaces = search.replace(/ /g, "+");
 
-  return axios.get(`${apiURLBase}targets/${target}/resources?title=${searchValueNoSpaces}`, {
-    headers: { 'presqt-source-token': targetToken }
-  });
+    return axios.get(`${apiURLBase}targets/${target}/resources?title=${searchValueNoSpaces}`, {
+      headers: { 'presqt-source-token': targetToken }
+    });
+  }
+  else {
+    return axios.get(`${apiURLBase}targets/${target}/resources?id=${search}`, {
+      headers: { 'presqt-source-token': targetToken }
+    });
+  }
 }
 
 /**
