@@ -63,7 +63,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
         <List>
           {/* Transfer Statement */}
           <IconListItem
-            icon=<EditIcon />
+            icon={<EditIcon />}
             text={
               selectedTransferResource
               ? <ListItemText

@@ -6,6 +6,11 @@ import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
 import textStyles from "../../styles/text";
+import List from "@material-ui/core/List";
+import IconListItem from "../widgets/list_items/IconListItem";
+import EditIcon from "@material-ui/icons/Edit";
+import ListItemText from "@material-ui/core/ListItemText";
+import WarningIcon from "@material-ui/icons/Warning";
 
 const CustomUploadButton = withStyles({
   root: {
@@ -24,7 +29,8 @@ export default function UploadButton({selectedFile, selectedDuplicate,
                                        handleNext, resourceToUploadTo}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.selectedTarget.name);
+  const sourceResource = useSelector(state => state.selectedResource);
+  const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
 
   /**
@@ -33,7 +39,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
    **/
   const submitUpload = () => {
     dispatch(actionCreators.upload.uploadToTarget(
-      selectedTarget,
+      selectedTarget.name,
       selectedFile,
       selectedDuplicate,
       resourceToUploadTo,
@@ -43,12 +49,53 @@ export default function UploadButton({selectedFile, selectedDuplicate,
   };
 
   return (
-    <CustomUploadButton
-      onClick={submitUpload}
-      variant="contained"
-      color="primary"
-    >
-      <span css={textStyles.buttonText}>Upload File</span>
-    </CustomUploadButton>
+    <div>
+      <div>
+        The following actions will occur with this transaction:
+        <List>
+          {/* Metadata Statement*/}
+          <IconListItem
+            icon={<EditIcon />}
+            text="Create or edit File Transfer Service Metadata file at the top level." />
+
+          {/* Upload Statement */}
+          <IconListItem
+            icon={<EditIcon />}
+            text={
+              resourceToUploadTo
+              ? <ListItemText
+                primary={`Upload to the ${selectedTarget.readable_name} resource '${sourceResource.title}'.`}/>
+              : <ListItemText primary={`Upload to ${selectedTarget.readable_name} as a new project.`}/>
+            }
+          />
+
+          {/* Destination Target Statement*/
+            selectedTarget.name === 'osf'
+            ? <IconListItem
+                icon={<EditIcon />}
+                text={`Resources will be stored in OSF Storage by default.`} />
+            : selectedTarget.name === 'github'
+            ? <IconListItem
+                icon={<WarningIcon />}
+                text="Github does not provide checksums for files."/>
+            : selectedTarget.name === 'zenodo'
+            ? <IconListItem
+              icon={<EditIcon />}
+              text={`New resource will be written in BagIt format as a ZIP file.`} />
+            : null
+          }
+
+        </List>
+
+      </div>
+      <CustomUploadButton
+        onClick={submitUpload}
+        variant="contained"
+        color="primary"
+      >
+        <span css={textStyles.buttonText}>Upload File</span>
+      </CustomUploadButton>
+    </div>
+
   )
 }
