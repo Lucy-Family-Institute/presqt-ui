@@ -48,7 +48,7 @@ export default function TargetSearch() {
   const selectedTarget = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[selectedTarget.name];
 
-  const [selectedSearchParameter, setSelectedSearchParameter] = useState("Title");
+  const [selectedSearchParameter, setSelectedSearchParameter] = useState(choices[1]);
   const [searchValue, setSearchValue] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [open, setOpen] = useState(false);
