@@ -21,6 +21,9 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import textStyles from "../styles/text";
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import isSpaces from "../utils/isSpaces";
+
 
 const useStyles = makeStyles({
   root: {
@@ -56,7 +59,7 @@ export default function TargetSearch() {
   const submitSearch = (event) => {
     event.preventDefault();
 
-    if (searchValue) {
+    if (searchValue && !isSpaces(searchValue)) {
       dispatch(
         actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromTargetSearch.toString()
@@ -124,10 +127,16 @@ export default function TargetSearch() {
                 },
                 startAdornment: (
                   <InputAdornment position="start">
-                    <ArrowDropDownIcon
-                      css={[buttons.inlineButton]}
-                      onClick={handleToggle}
-                    />
+                    {open
+                      ? < ArrowRightIcon
+                        css={[buttons.inlineButton]}
+                        onClick={handleToggle}
+                      />
+                      : <ArrowDropDownIcon
+                        css={[buttons.inlineButton]}
+                        onClick={handleToggle}
+                      />
+                    }
                     <Popper
                       open={open}
                       anchorEl={anchorRef.current}
@@ -172,7 +181,7 @@ export default function TargetSearch() {
                     position='end'
                   >
                     <SearchIcon
-                      css={searchValue ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
+                      css={searchValue && !isSpaces(searchValue) ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
                       onClick={event => submitSearch(event, 'search')}
                     />
                     <Divider
