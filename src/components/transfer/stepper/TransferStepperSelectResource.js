@@ -3,8 +3,6 @@ import { jsx } from "@emotion/core";
 import { useSelector } from "react-redux";
 import text from '../../../styles/text';
 import TransferCancelSelectionButton from "../TransferCancelSelectionButton"
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import colors from "../../../styles/colors";
 
 
 

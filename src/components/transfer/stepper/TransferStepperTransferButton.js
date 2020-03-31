@@ -36,12 +36,12 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
   const selectedTransferResource = useSelector(state => state.selectedTransferResource);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+  const available = useSelector(state => state.available);
 
   /**
    * When the transfer button is pushed, dispatch the Transfer action and transfer the stepper
    * index to move forward.
    **/
-
   const submitTransfer = () => {
     dispatch(actionCreators.transfer.transferResource(
       transferDestinationTarget,
@@ -56,6 +56,13 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       handleNext()
   };
 
+  let destinationTargetReadableName = '';
+  for (let i = 0; i < available.length; i++) {
+    if (available[i].name === transferDestinationTarget) {
+      destinationTargetReadableName = available[i].readable_name
+    }
+  }
+
   return (
     <div>
       <div>
@@ -67,15 +74,15 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             text={
               selectedTransferResource
               ? <ListItemText
-                primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${transferDestinationTarget} resource '${selectedTransferResource.title}'.`}/>
-              : <ListItemText primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${transferDestinationTarget} as a new project.`}/>
+                primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`}/>
+              : <ListItemText primary={`Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${destinationTargetReadableName} as a new project.`}/>
             }
           />
 
           {/* Metadata Statement*/}
           <IconListItem
             icon={<EditIcon />}
-            text="Create or edit File Transfer Service Metadata file at the top level."/>
+            text="Write or edit File Transfer Service Metadata file at the top level."/>
 
           {/* Github Statement */
             selectedTarget.name === 'github' || transferDestinationTarget === 'github'

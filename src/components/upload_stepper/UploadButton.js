@@ -56,7 +56,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
           {/* Metadata Statement*/}
           <IconListItem
             icon={<EditIcon />}
-            text="Create or edit File Transfer Service Metadata file at the top level." />
+            text="Write or edit File Transfer Service Metadata file at the top level." />
 
           {/* Upload Statement */}
           <IconListItem
