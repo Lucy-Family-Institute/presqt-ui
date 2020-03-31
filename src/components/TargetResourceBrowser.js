@@ -10,11 +10,12 @@ import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, React, useEffect } from "react";
 import {basicFadeIn} from "../styles/animations";
+import getError from "../utils/getError";
 
 /**
  * This component handles actions within the resource browser. It will open/close containers,
  * display resource details, as well as sort the hierarchy of resources.
- */
+ **/
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
 
@@ -28,10 +29,8 @@ export default function TargetResourceBrowser() {
   const selectedTarget = useSelector(state => state.selectedTarget);
   const searchValue = useSelector(state => state.searchValue);
 
-  const collectionError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
-  const searchError = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTargetSearch.toString());
+  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const searchError = getError(actionCreators.resources.loadFromTargetSearch);
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");

@@ -1,21 +1,19 @@
 /** @jsx jsx */
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import {useDispatch, useSelector} from "react-redux";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { jsx } from '@emotion/core';
 import {actionCreators} from "../../redux/actionCreators";
-import colors from "../../styles/colors";
 import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton";
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
-import ListSubheader from "@material-ui/core/ListSubheader";
+import getError from "../../utils/getError";
+import useDefault from "../../hooks/useDefault";
+import SuccessListItem from "../widgets/list_items/SuccessListItem";
+import WarningList from "../widgets/list_items/WarningList";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -29,18 +27,18 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const uploadData = useSelector(state => state.uploadData);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
-
-  /** Capture Errors **/
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-  const uploadError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadToTarget.toString());
-  const uploadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.upload.uploadJob.toString());
 
-  const [stepThreeContent, setStepThreeContent] = useState(
+  const uploadError = getError(actionCreators.upload.uploadToTarget);
+  const uploadJobError = getError(actionCreators.upload.uploadJob);
+
+  const [stepThreeContent, setStepThreeContent] = useDefault(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        The upload is being processed on the server. If you refresh or leave the page the upload will still continue.
+        The upload is being processed on the server.
+      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        If you refresh or leave the page the upload will still continue.
       </div>
       <Spinner />
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
@@ -48,49 +46,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       </div>
     </div>
   );
-
-  /** Build a list to display warning results **/
-  const buildList = (resources, header) => {
-    return (
-      <List
-        dense={true}
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            {header}
-          </ListSubheader>
-        }
-      >
-        {
-          resources.map(resource => (
-            <ListItem>
-              <ListItemIcon>
-                <ErrorOutlineIcon style={{ color: colors.warningYellow }}/>
-              </ListItemIcon>
-              <ListItemText
-                primary={resource}
-              />
-            </ListItem>
-          ))
-        }
-      </List>
-    )
-  };
-
-  /** Build a list item for successful upload results **/
-  const buildListItem = (message) => {
-    return (
-      <ListItem>
-        <ListItemIcon>
-          <CheckCircleOutlineIcon
-            style={{ color: colors.successGreen }}
-          />
-        </ListItemIcon>
-        <ListItemText
-          primary={message}
-        />
-      </ListItem>
-    )
-  };
 
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
@@ -101,9 +56,40 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
     }
-    // Upload cancelled. Refresh resource browser
-    else if (uploadStatus === 'cancelSuccess') {
-      dispatch(actionCreators.resources.refreshTarget(connection, token));
+    // Upload successful and resource browser refreshed!
+    else if (uploadStatus === 'finished') {
+      setStepThreeContent(
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item md>
+            <List dense={true}>
+              <SuccessListItem message={uploadData.message}/>
+              {uploadData.failed_fixity.length <= 0
+                ? <SuccessListItem message='All files passed fixity checks'/>
+                : null}
+            </List>
+            {uploadData.failed_fixity.length > 0
+              ?  <WarningList resources={uploadData.failed_fixity}
+                              header='The following files failed fixity checks:'/>
+              : null}
+            {uploadData.resources_ignored.length > 0
+              ?  <WarningList resources={uploadData.resources_ignored}
+                              header='The following duplicate resources were ignored:'/>
+              : null}
+            {uploadData.resources_updated.length > 0
+              ?  <WarningList resources={uploadData.resources_updated}
+                              header='The following duplicate resources were updated:'/>
+              : null}
+          </Grid>
+        </Grid>
+      );
+    }
+    // Cancel started
+    else if (uploadStatus === 'cancelPending') {
       setStepThreeContent(
         <div>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
@@ -116,25 +102,32 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </div>
       )
     }
-    // Upload successful and resource browser refreshed!
-    else if (uploadStatus === 'finished') {
+    // Cancel successful. Refresh resource browser
+    else if (uploadStatus === 'cancelSuccess') {
+      dispatch(actionCreators.resources.refreshTarget(connection, token));
+    }
+    // Cancel Failed!
+    else if (uploadStatus === 'cancelFailure') {
       setStepThreeContent(
-        <Grid item md={12}>
-            <List dense={true}>
-              {buildListItem(uploadData.message)}
-              {uploadData.failed_fixity.length <= 0 ? buildListItem('All files passed fixity checks') : null}
-            </List>
-            {uploadData.failed_fixity.length > 0 ? buildList(uploadData.failed_fixity, 'The following files failed fixity checks:') : null}
-            {uploadData.resources_ignored.length > 0 ? buildList(uploadData.resources_ignored, 'The following duplicate resources were ignored:') : null}
-            {uploadData.resources_updated.length > 0 ? buildList(uploadData.resources_updated, 'The following duplicate resources were updated:') : null}
-        </Grid>
-      );
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The upload is continuing.
+          </div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            If you refresh or leave the page the upload will still continue.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='UPLOAD' />
+          </div>
+        </div>
+      )
     }
     // Upload Failed or cancel finished
     else if (uploadStatus === 'failure' || uploadStatus === 'cancelled') {
       let errorMessage;
       if (uploadStatus === 'cancelled') {
-        errorMessage = `${uploadData.message}. Some resources may have still be uploaded.`
+        errorMessage = `${uploadData.message}. Some resources may have still been uploaded.`
       }
       // PresQT Upload Post error
       else if (uploadError) {
@@ -152,12 +145,14 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(
         <Fragment>
           <div
-            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex',
+                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
           >
-            <ErrorOutlineIcon color="error" />
-            <span css={{ marginLeft: 5 }}>{errorMessage}</span>
+            <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+            {errorMessage}
           </div>
-          <div css={{justifyContent: 'center', display: 'flex'}}
+          <div
+            css={{justifyContent: 'center', display: 'flex'}}
           >
             <RetryStartUploadOverButton
               setActiveStep={setActiveStep}

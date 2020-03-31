@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: '#0a4996',
     },
+    "&:disabled": {
+      cursor: 'not-allowed',
+      pointerEvents: 'auto'
+    }
   }
 }));
 

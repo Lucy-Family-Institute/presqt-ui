@@ -6,12 +6,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { useDispatch, useSelector } from "react-redux";
 import modalStyles from "../../styles/modal";
 import TokenTextField from "../widgets/text_fields/TokenTextField";
-import { useState } from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import { actionCreators } from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
-import { postGithubIssue } from "../../api/github_issues";
 import Spinner from "../widgets/spinners/Spinner";
+import useDefault from "../../hooks/useDefault";
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -20,81 +19,77 @@ export default function TokenModal() {
   const githubStatus = useSelector(state => state.githubStatus);
   const githubIssueData = useSelector(state => state.githubIssueData);
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useDefault("");
+  const [body, setBody] = useDefault("");
 
   const handleClose = () => {
     dispatch(actionCreators.github.hideIssueModal());
     dispatch(actionCreators.github.clearGithubIssue());
-    setTitle("");
-    setBody("");
-  };
-
-  const modalSubmit = () => {
-    dispatch(actionCreators.github.submitGithubIssue(title, body));
+    setTitle();
+    setBody();
   };
 
   const getContent = () => {
     return (
       !githubStatus
         ? <div>
-          <div
-            css={{
-              paddingTop: 5,
-              paddingBottom: 10,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <TokenTextField
-              variant="outlined"
-              size="small"
-              type="text"
-              value={title}
-              label="Insert Title of The Issue Here..."
-              onChange={event => setTitle(event.target.value)}
-              onAnimationEnd={event => event.stopPropagation()}
-            />
-          </div>
-          <div
-            css={{
-              paddingTop: 10,
-              paddingBottom: 10,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <TokenTextField
-              id="outlined-multiline-static"
-              label="Insert Content of The Issue Here..."
-              onChange={event => setBody(event.target.value)}
-              value={body}
-              multiline
-              rows="4"
-              variant="outlined"
-            />
-          </div>
-          <div
-            css={{
-              paddingTop: 10,
-              paddingBottom: 10,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <ModalSubmitButton
-              variant="contained"
-              css={[
-                title ? modalStyles.button : modalStyles.disabledButton,
-                modalStyles.buttonText
-              ]}
-              onClick={() => modalSubmit()}
-              disabled={!title || !body}
+            <div
+              css={{
+                paddingTop: 5,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
             >
-              Submit Issue
-            </ModalSubmitButton>
+              <TokenTextField
+                variant="outlined"
+                size="small"
+                type="text"
+                value={title}
+                label="Insert Title of The Issue Here..."
+                onChange={event => setTitle(event.target.value)}
+                onAnimationEnd={event => event.stopPropagation()}
+              />
+            </div>
+            <div
+              css={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <TokenTextField
+                id="outlined-multiline-static"
+                label="Insert Content of The Issue Here..."
+                onChange={event => setBody(event.target.value)}
+                value={body}
+                multiline
+                rows="4"
+                variant="outlined"
+              />
+            </div>
+            <div
+              css={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <ModalSubmitButton
+                variant="contained"
+                css={[
+                  modalStyles.button,
+                  modalStyles.buttonText
+                ]}
+                onClick={() => dispatch(actionCreators.github.submitGithubIssue(title, body))}
+                disabled={!title || !body}
+              >
+                Submit Issue
+              </ModalSubmitButton>
+            </div>
           </div>
-        </div>
         : githubStatus === 'pending'
         ? <Spinner/>
         : githubStatus === "failure"
@@ -105,23 +100,23 @@ export default function TokenModal() {
               display: "flex",
               justifyContent: "center"
             }}
-          >
-            <p>Github returned an error trying to post the issue.</p>
-          </div>
+            >
+              <p>Github returned an error trying to post the issue.</p>
+            </div>
           :
-          <div
-            css={{
-              paddingTop: 5,
-              paddingBottom: 10,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <p>
-              Github issue #{githubIssueData.number} created successfully. You
-              can find your issue <a href={`${githubIssueData.html_url}`} target='_blank'>here.</a>
-            </p>
-          </div>
+            <div
+              css={{
+                paddingTop: 5,
+                paddingBottom: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <p>
+                Github issue #{githubIssueData.number} created successfully. You
+                can find your issue <a href={`${githubIssueData.html_url}`} target='_blank'>here.</a>
+              </p>
+            </div>
     )
   };
 

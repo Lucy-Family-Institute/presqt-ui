@@ -189,7 +189,8 @@ export const resourceReducers = {
         ...state,
         targetResources: null,
         selectedResource: null,
-        searchValue: null
+        searchValue: null,
+        openResources: []
       };
     },
 

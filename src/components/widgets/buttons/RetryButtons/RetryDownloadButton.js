@@ -12,21 +12,23 @@ import Button from "@material-ui/core/Button/Button";
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function RetryDownloadButton({setModalContent, modalDefaultMessage}) {
+export default function RetryDownloadButton({setModalContent, setModalHeader}) {
   const classes = buttonStyles.RetryDownload();
   const dispatch = useDispatch();
-  // Download specific Selectors
-  const targetToken = useSelector(
-    state => state.apiTokens[state.selectedTarget.name]);
+
+  const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
 
   const submitRetry = () => {
       dispatch(actionCreators.download.clearDownloadData());
+
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.download.downloadResource.toString()));
-      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken));
 
-      setModalContent(modalDefaultMessage);
+      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
+
+      setModalContent();
+      setModalHeader();
     };
 
   return (

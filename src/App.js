@@ -17,6 +17,7 @@ import DownloadModal from "./components/modals/DownloadModal";
 import {Fragment} from "react";
 import TransferModal from "./components/modals/TransferModal";
 import IssueModal from "./components/modals/IssueModal";
+import EaasiModal from "./components/modals/EaasiModal";
 
 const styles = {
   app: css({
@@ -57,6 +58,7 @@ function App() {
         <DownloadModal />
         <TransferModal />
         <IssueModal />
+        <EaasiModal />
       </div>
     </Fragment>
 

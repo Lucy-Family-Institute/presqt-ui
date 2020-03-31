@@ -6,6 +6,8 @@ import { actionCreators } from '../redux/actionCreators';
 import text from '../styles/text';
 import colors from '../styles/colors';
 import { basicFadeIn } from '../styles/animations';
+import mainStyles from "../styles/main";
+import getError from "../utils/getError";
 
 /**
  * This component displays the various targets that a user can connect with.
@@ -22,15 +24,17 @@ export default function AvailableConnections() {
   const downloadStatus = useSelector(state => state.downloadStatus);
   const uploadStatus = useSelector(state => state.uploadStatus);
 
-  const collection_error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
-
-  const tokenError = collection_error && collection_error.status === 401;
+  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const tokenError = collectionError && collectionError.status === 401;
 
   /**
    * Dispatch load action on page-load.
+   * Dispatch load services on page-load.
    */
-  useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
+  useEffect(() => {
+    dispatch(actionCreators.targets.load());
+    dispatch(actionCreators.services.loadServices());
+  }, [dispatch]);
 
   /**
    * Watch for a change in apiOperationErrors.
@@ -81,11 +85,13 @@ export default function AvailableConnections() {
               {
                 backgroundColor: 'white',
                 border: 'none',
-                paddingLeft: 0,
-                paddingRight: 10
+                paddingLeft: 5,
+                paddingRight: 10,
+                cursor: "pointer"
               },
-              pendingAPIResponse || downloadStatus === 'pending'
-              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+                ? { cursor: 'not-allowed', opacity: 0.5 }
+                : mainStyles.hoverOrFocusTransform
             ]}
             onClick={() => handleSwitchTarget(connection)}
             disabled={

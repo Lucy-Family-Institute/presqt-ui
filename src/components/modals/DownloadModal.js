@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "./modalHeader";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect} from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import Spinner from "../widgets/spinners/Spinner";
 import FileSaver from "file-saver";
@@ -11,35 +11,36 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {jsx} from "@emotion/core";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
 import CancelButton from "../widgets/buttons/CancelButton";
+import getError from "../../utils/getError";
+import useDefault from "../../hooks/useDefault";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import SuccessListItem from "../widgets/list_items/SuccessListItem";
+import WarningList from "../widgets/list_items/WarningList";
 
-
-const modalDefaultMessage = (
-  <div>
-    <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
-      <p>The download is being processed on the server.</p>
-    </div>
-    <Spinner />
-    <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
-      <CancelButton actionType='DOWNLOAD' />
-    </div>
-  </div>);
 
 export default function DownloadModal() {
   const dispatch = useDispatch();
 
   const downloadData = useSelector(state => state.downloadData);
   const downloadModalDisplay = useSelector(state => state.downloadModalDisplay);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const downloadStatus = useSelector(state => state.downloadStatus);
 
-  const [modalContent, setModalContent] = useState(modalDefaultMessage);
-  const [modalHeader, setModalHeader] = useState('Download In Progress');
+  const downloadError = getError(actionCreators.download.downloadResource);
+  const downloadJobError = getError(actionCreators.download.downloadJob);
 
-  const downloadError = apiOperationErrors.find(
-    element => element.action === actionCreators.download.downloadResource.toString());
-
-  const downloadJobError = apiOperationErrors.find(
-    element => element.action === actionCreators.download.downloadJob.toString());
+  const [modalContent, setModalContent] = useDefault(
+    <div>
+      <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+        <p>The download is being processed on the server.</p>
+      </div>
+      <Spinner />
+      <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+        <CancelButton actionType='DOWNLOAD' />
+      </div>
+    </div>
+  );
+  const [modalHeader, setModalHeader] = useDefault('Download In Progress');
 
   /**
    * Watch for the downloadStatus to change to 'failure' or 'success'.
@@ -66,13 +67,14 @@ export default function DownloadModal() {
       setModalContent(
         <Fragment>
           <div
-            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>              <ErrorOutlineIcon color="error"/>
+            css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
+            <ErrorOutlineIcon color="error"/>
               <span css={{ marginLeft: 5 }}>{errorMessage}</span>
           </div>
           <div css={{justifyContent: 'center', display: 'flex'}}>
               <RetryDownloadButton
                 setModalContent={setModalContent}
-                modalDefaultMessage={modalDefaultMessage}
+                setModalHeader={setModalHeader}
               />
           </div>
         </Fragment>
@@ -92,6 +94,21 @@ export default function DownloadModal() {
         </div>
       );
     }
+    // Cancel Failed!
+    else if (downloadStatus === 'cancelFailure') {
+      setModalHeader('Download In Progress');
+      setModalContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The download is continuing.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='DOWNLOAD' />
+          </div>
+        </div>
+      )
+    }
     else if (downloadStatus === 'cancelled') {
       setModalHeader('Download Cancelled');
       setModalContent(
@@ -104,7 +121,7 @@ export default function DownloadModal() {
           <div css={{justifyContent: 'center', display: 'flex'}}>
               <RetryDownloadButton
                 setModalContent={setModalContent}
-                modalDefaultMessage={modalDefaultMessage}
+                setModalHeader={setModalHeader}
               />
           </div>
         </Fragment>
@@ -112,10 +129,31 @@ export default function DownloadModal() {
     }
 
     // Download successful
-    else if (downloadStatus === "success") {
-      FileSaver.saveAs(downloadData, "PresQT_Download.zip");
-      dispatch(actionCreators.download.hideDownloadModal());
-      dispatch(actionCreators.download.clearDownloadData());
+    else if (downloadStatus === "finished") {
+      FileSaver.saveAs(downloadData.file, downloadData.zipName);
+      setModalHeader("Download Successful!");
+      setModalContent(
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item md>
+            <List dense={true}>
+              <SuccessListItem message={downloadData.message}/>
+              {downloadData.failedFixity.length <= 0
+                ? <SuccessListItem message='All files passed fixity checks' />
+                : null
+              }
+            </List>
+            {downloadData.failedFixity.length > 0
+              ? <WarningList resources={downloadData.failedFixity}
+                             header='The following files failed fixity checks:'/>
+              : null}
+          </Grid>
+        </Grid>
+      )
     }
   }, [downloadStatus]);
 
@@ -125,7 +163,8 @@ export default function DownloadModal() {
    **/
   const handleClose = () => {
     dispatch(actionCreators.download.hideDownloadModal());
-    setModalContent(modalDefaultMessage);
+    setModalContent();
+    setModalHeader();
     dispatch(actionCreators.download.clearDownloadData());
     dispatch(
       actionCreators.resources.removeFromErrorList(
@@ -144,12 +183,12 @@ export default function DownloadModal() {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        disableEscapeKeyDown={downloadStatus === 'pending'}
+        disableEscapeKeyDown={true}
       >
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={downloadStatus === 'pending'}
+          disabled={downloadStatus === 'pending' || downloadStatus === 'cancelPending'}
         >
           {modalHeader}
         </DialogTitle>

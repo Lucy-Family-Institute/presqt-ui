@@ -8,6 +8,7 @@ import TransferResourceButton from "./TransferResourceButton";
 import TransferResourcesHeader from "./TransferResourcesHeader";
 import textStyles from "../../styles/text";
 import {basicFadeIn} from "../../styles/animations";
+import getError from "../../utils/getError";
 
 export default function TransferResourceBrowser() {
   const dispatch = useDispatch();
@@ -15,12 +16,10 @@ export default function TransferResourceBrowser() {
   const available = useSelector(state => state.available);
   const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
   const transferTargetResources = useSelector(state => state.transferTargetResources);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
-  const collectionError = apiOperationErrors.find(
-    element => element.action === actionCreators.transfer.loadFromTransferTarget.toString());
+  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 15 }]);
   const [message, setMessage] = useState("");

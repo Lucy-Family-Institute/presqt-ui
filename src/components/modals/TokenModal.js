@@ -7,10 +7,18 @@ import {useDispatch, useSelector} from "react-redux";
 import modalStyles from "../../styles/modal";
 import textStyles from "../../styles/text";
 import TokenTextField from "../widgets/text_fields/TokenTextField";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
+import getError from "../../utils/getError";
+import { InputAdornment } from "@material-ui/core";
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import buttons from "../../styles/buttons";
+
+
+
 
 export default function TokenModal() {
   const dispatch = useDispatch();
@@ -20,11 +28,10 @@ export default function TokenModal() {
   const tokenModalDisplay = useSelector(state => state.tokenModalDisplay);
   const connection = useSelector(state => state.selectedTarget);
 
+  const error = getError(actionCreators.resources.loadFromTarget);
 
   const [token, setToken] = useState('');
-
-  const error = apiOperationErrors.find(
-    element => element.action === actionCreators.resources.loadFromTarget.toString());
+  const [passwordIsMasked, setPasswordIsMasked] = useState(true);
 
   /**
    * Close the modal.
@@ -39,6 +46,7 @@ export default function TokenModal() {
       dispatch(actionCreators.authorization.removeToken(sourceTarget.name));
     }
     setToken('')
+    setPasswordIsMasked(true);
   };
 
   /**
@@ -55,6 +63,7 @@ export default function TokenModal() {
         actionCreators.resources.loadFromTarget.toString()));
     }
     setToken('');
+    setPasswordIsMasked(true);
   };
 
   return connection
@@ -89,13 +98,31 @@ export default function TokenModal() {
             >
               <TokenTextField
                 size="small"
-                type='text'
+                type={passwordIsMasked ? 'password' : 'text'}
                 value={token}
                 label="Insert API Token Here"
                 onChange={event => setToken(event.target.value)}
                 onAnimationEnd={(event) => { event.stopPropagation() }}
                 // If the enter button is pressed (code 13), submit the modal.
-                onKeyDown={(event) => {if (event.keyCode === 13 && token !== '') {modalSubmit()}}}
+                onKeyDown={(event) => { event.keyCode === 13 && token !== '' ? modalSubmit() : null }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      {passwordIsMasked
+                        ?
+                        <VisibilityOffIcon
+                          css={[buttons.inlineButton]}
+                          onClick={() => setPasswordIsMasked(!passwordIsMasked)}
+                        />
+                        :
+                        <VisibilityIcon
+                          css={[buttons.inlineButton]}
+                          onClick={() => setPasswordIsMasked(!passwordIsMasked)}
+                        />
+                      }
+                    </InputAdornment>
+                  )
+                }}
               />
               <ModalSubmitButton
                 variant="contained"

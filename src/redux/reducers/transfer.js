@@ -103,13 +103,14 @@ export const transferReducers = {
      * Saga call to Resource-Detail occurs with this action for transfer.
      **/
     [actionCreators.transfer.selectTransferResource]: (state, action) => {
+
       const updateTargetResources = transferTargetResources => {
         return transferTargetResources.map(resource => {
           return {
             ...resource,
             active: resource.id === action.payload.resource.id,
             children:
-              resource.kind === "container"
+              resource.kind === "container" && resource.children
                 ? updateTargetResources(resource.children)
                 : resource.children
           };
@@ -134,7 +135,7 @@ export const transferReducers = {
             ...resource,
             active: false,
             children:
-              resource.kind === "container"
+              resource.kind === "container" && resource.children
                 ? deselectTargetResource(resource.children)
                 : resource.children
           };
@@ -191,7 +192,9 @@ export const transferReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.transfer.transferResource,
         state.pendingAPIOperations
-      )
+      ),
+      transferStatus: 'pending'
+
     }),
     /**
      * Untrack API call.
@@ -247,7 +250,10 @@ export const transferReducers = {
         actionCreators.transfer.transferJob,
         state.pendingAPIOperations
       ),
-      transferStatus: action.payload.status,
+      transferStatus: state.transferStatus === 'cancelPending' &&
+                      action.payload.status === 'pending'
+        ? 'cancelPending'
+        : action.payload.status,
       transferData: action.payload.data
     }),
     /**
@@ -277,7 +283,9 @@ export const transferReducers = {
       pendingAPIOperations: trackAction(
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
-      )
+      ),
+      transferStatus: 'cancelPending'
+
     }),
     /**
      * Untrack API call.
@@ -289,7 +297,6 @@ export const transferReducers = {
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations
       ),
-      transferStatus: "cancelSuccess"
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -298,7 +305,7 @@ export const transferReducers = {
     [actionCreators.transfer.cancelTransferFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
-      transferStatus: "failure",
+      transferStatus: "cancelFailure",
       pendingAPIOperations: untrackAction(
         actionCreators.transfer.cancelTransfer,
         state.pendingAPIOperations

@@ -45,12 +45,16 @@ export default function TransferModal() {
         onClose={handleClose}
         aria-labelledby={"form-dialog-title"}
         disableBackdropClick={true}
-        disableEscapeKeyDown={transferStatus === 'pending' || transferStatus === 'success' || transferStatus === 'cancelSuccess'}
+        disableEscapeKeyDown={true}
       >
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={transferStatus === 'pending' || transferStatus === 'success' || transferStatus === 'cancelSuccess'}
+          disabled={
+            transferStatus === 'pending' ||
+            transferStatus === 'success' ||
+            transferStatus === 'cancelPending' ||
+            transferStatus === 'cancelSuccess'}
         >
           Transfer Resource: {selectedResource.title}
         </DialogTitle>

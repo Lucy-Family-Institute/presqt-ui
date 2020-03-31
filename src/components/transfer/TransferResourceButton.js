@@ -34,7 +34,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         setDisabled(false);
       }
     }
-  }, [transferStepInModal, transferStatus])
+  }, [transferStepInModal, transferStatus]);
 
   const iconSelector = () => {
     if (resource.kind === "container") {
@@ -52,7 +52,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         return fileIcon;
     }
   };
-  
+  console.log(disabled, resource.kind);
   return (
     <button
       disabled={resource.kind === 'item' || disabled}
@@ -66,6 +66,10 @@ export default function TransferResourceButton({resource, level, onClick }) {
         backgroundColor: "#FFFFFF",
         overflowWrap: "anywhere",
         textAlign: "left",
+        cursor: "pointer",
+        "&:disabled": {
+          cursor: 'not-allowed',
+        }
       },
         resource.kind === 'item' ? { opacity: 0.5 } : null
       ]}
@@ -94,7 +98,9 @@ export default function TransferResourceButton({resource, level, onClick }) {
       }
 
 
-      <span css={resource.active ? textStyles.selectedTransferListItem : textStyles.listItem}>
+      <span
+        css={resource.active ? textStyles.selectedTransferListItem : textStyles.listItem}
+      >
         {resource.title}
       </span>
     </button>

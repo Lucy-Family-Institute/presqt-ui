@@ -1,10 +1,18 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import {useState} from "react";
+import {Fragment, useState} from "react";
 import { actionCreators } from "../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchTextField from "./widgets/text_fields/SearchTextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import InfoIcon from '@material-ui/icons/Info';
+import Grid from "@material-ui/core/Grid";
+import SearchIcon from '@material-ui/icons/Search';
+import buttons from "../styles/buttons";
+import { InputAdornment } from "@material-ui/core";
+import RefreshIcon from '@material-ui/icons/Refresh';
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
   root: {
@@ -12,6 +20,13 @@ const useStyles = makeStyles({
       marginTop: 10,
       width: 250
     }
+  },
+  divider: {
+    height: 28,
+    backgroundColor: '#c4c4c4',
+    marginRight: 5,
+    marginLeft: 5,
+    width: 1
   }
 });
 
@@ -27,38 +42,103 @@ export default function TargetSearch() {
 
   const submitSearch = (event) => {
     event.preventDefault();
+
+    if (searchValue) {
+      dispatch(
+        actionCreators.resources.removeFromErrorList(
+          actionCreators.resources.loadFromTargetSearch.toString()
+        )
+      );
+
+      dispatch(
+        actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, searchValue)
+      );
+    }
+  };
+
+  const refreshResources = (event) => {
+    event.preventDefault();
+    setSearchValue('');
+
     dispatch(
       actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTargetSearch.toString()
       )
     );
-    dispatch(
-      actionCreators.resources.loadFromTargetSearch(
-        selectedTarget.name,
-        token,
-        searchValue
-      )
-    );
+
+    dispatch(actionCreators.resources.loadFromTargetSearch( selectedTarget.name, token, ''));
   };
 
   return (
-    <div css={{ marginBottom: 10 }}>
-      <form
-        onSubmit={event => submitSearch(event)}
-        className={classes.root}
-        noValidate
-        autoComplete="off"
+    <Grid container spacing={1} alignItems="flex-end">
+      <Grid item>
+        <div css={{ marginBottom: 10 }}>
+          <form
+            onSubmit={event => submitSearch(event)}
+            className={classes.root}
+            noValidate
+            autoComplete="off"
+          >
+            <SearchTextField
+              size="small"
+              type="text"
+              id="outlined-basic"
+              label={`Search ${selectedTarget.readable_name} By Title`}
+              variant="outlined"
+              value={searchValue}
+              onChange={event => setSearchValue(event.target.value)}
+              InputProps={{
+                style: {
+                  paddingRight: 5
+                },
+                endAdornment: (
+                  <InputAdornment
+                    position='end'
+                  >
+                    <SearchIcon
+                      css={searchValue ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
+                      onClick={event => submitSearch(event, 'search')}
+                    />
+                    <Divider
+                      className={classes.divider}
+                      orientation="vertical"
+                    />
+                    <Tooltip
+                      title={searchValue
+                        ? "Clear search and refresh user's resources"
+                        : "Refresh user's resources"}
+                      arrow placement="right"
+                    >
+                      <RefreshIcon
+                        css={[buttons.inlineButton]}
+                        onClick={event => refreshResources(event)}
+                      />
+                    </Tooltip>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </form>
+        </div>
+      </Grid>
+      <Grid
+        style={{marginBottom: 14}}
+        item
       >
-        <SearchTextField
-          size="small"
-          type="text"
-          id="outlined-basic"
-          label={"Search " + selectedTarget.readable_name}
-          variant="outlined"
-          value={searchValue}
-          onChange={event => setSearchValue(event.target.value)}
-        />
-      </form>
-    </div>
+        <Tooltip
+          title={
+            <Fragment>
+              Only the first page of paginated search results are returned.
+              <br />
+              If you don't see the desired project try a more specific search.
+            </Fragment>
+          }
+          arrow placement="right">
+          <InfoIcon
+            style={{ color: '#757575', cursor: 'help' }}
+          />
+        </Tooltip>
+      </Grid>
+    </Grid>
   );
 }

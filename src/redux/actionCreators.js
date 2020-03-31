@@ -30,7 +30,7 @@ export const actionCreators = createActions({
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
     },
     DOWNLOAD: {
-        DOWNLOAD_RESOURCE: (resource, targetToken) => ({resource, targetToken}),
+        DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
         DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,
@@ -39,6 +39,7 @@ export const actionCreators = createActions({
         CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
         CANCEL_DOWNLOAD_SUCCESS: undefined,
         CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
+        DOWNLOAD_FOR_SERVICE_SUCCESS: undefined,
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
@@ -97,8 +98,16 @@ export const actionCreators = createActions({
     TARGETS: {
         LOAD: undefined,
         LOAD_SUCCESS: undefined,
-        SWITCH_TARGET: undefined
+        SWITCH_TARGET: undefined,
+        CLEAR_TARGET: undefined
     },
+    SERVICES: {
+        LOAD_SERVICES: undefined,
+        LOAD_SERVICES_SUCCESS: undefined,
+        SELECT_SERVICE: (service) => ({service}),
+        SELECT_SERVICE_SUCCESS: undefined,
+        CLEAR_SERVICE: undefined
+      },
     GITHUB: {
         DISPLAY_ISSUE_MODAL: undefined,
         HIDE_ISSUE_MODAL: undefined,
@@ -106,5 +115,16 @@ export const actionCreators = createActions({
         SUBMIT_GITHUB_ISSUE_SUCCESS: undefined,
         SUBMIT_GITHUB_ISSUE_FAILURE: undefined,
         CLEAR_GITHUB_ISSUE: undefined
+    },
+    EAASI: {
+        DISPLAY_EAASI_MODAL: undefined,
+        HIDE_EAASI_MODAL: undefined,
+        SEND_EAASI_PROPOSAL: (ticket_number) => ({ticket_number}),
+        SEND_EAASI_PROPOSAL_SUCCESS: undefined,
+        SEND_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
+        GET_EAASI_PROPOSAL: (proposal_link) => ({proposal_link}),
+        GET_EAASI_PROPOSAL_SUCCESS: (data, status) => ({data, status}),
+        GET_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
+        CLEAR_EAASI_DATA: undefined
     }
 });
