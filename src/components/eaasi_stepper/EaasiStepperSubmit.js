@@ -21,7 +21,6 @@ export default function EaasiStepperSubmit({setActiveStep}) {
   const dispatch = useDispatch();
 
   const selectedResource = useSelector(state => state.selectedResource);
-  const downloadStatus = useSelector(state => state.downloadStatus);
   const apiTokens = useSelector(state => state.apiTokens);
   const selectedTarget = useSelector(state => state.selectedTarget);
 
@@ -36,14 +35,13 @@ export default function EaasiStepperSubmit({setActiveStep}) {
   return (
     <Fragment>
       <div css={{paddingBottom:10}}>
-        Clicking on this button will send the contents of {selectedResource.title} to EaaSI.
+        Send the contents of {selectedResource.title} to EaaSI.
         They will prepare the contents and return an image that can be run as an emulator.
       </div>
       <CustomEaasiButton
         onClick={submitProposal}
         variant="contained"
         color="primary"
-        disabled={downloadStatus ? downloadStatus === "pending" : false}
       >
         <span css={textStyles.buttonText}>Send</span>
       </CustomEaasiButton>
