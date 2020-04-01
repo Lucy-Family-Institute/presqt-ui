@@ -6,9 +6,19 @@ import buttonStyles from "../../../../styles/buttons";
 import textStyles from "../../../../styles/text";
 import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
+import colors from "../../../../styles/colors";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    height: "100%",
+    marginRight: theme.spacing(1),
+    color: colors.presqtBlue
+  }
+}));
 
 export default function RetryStartUploadOverButton({setActiveStep, setSelectedFile}) {
-  const classes = buttonStyles.RetryStartUploadOver();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const submitRetry = () => {

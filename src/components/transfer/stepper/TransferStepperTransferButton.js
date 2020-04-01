@@ -7,7 +7,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
 import textStyles from "../../../styles/text";
 import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
 import IconListItem from "../../widgets/list_items/IconListItem";
 import EditIcon from "@material-ui/icons/Edit";
 import WarningIcon from '@material-ui/icons/Warning';
