@@ -42,7 +42,8 @@ function* loadTargetResourcesSearch(action) {
     getTargetResourcesSearch,
     action.payload.target,
     action.payload.targetToken,
-    action.payload.searchValue
+    action.payload.searchValue,
+    action.payload.searchParameter
     );
     yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
   }

@@ -9,7 +9,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../styles/colors";
 
 const useStyles = makeStyles(theme => ({
-  button: {
+  step4Button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
     backgroundColor: colors.presqtBlue,
@@ -17,13 +17,20 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: '#0a4996',
     },
     color: 'white'
+  },
+  button: {
+      height: "100%",
+      marginRight: theme.spacing(1),
+      color: colors.presqtBlue
   }
 }));
 
 export default function TransferStartOverButton({setActiveStep, step}) {
-  let classes = buttonStyles.RetryStartUploadOver();
+  const classes = useStyles();
+
+  let buttonClass = classes.button;
   if (step === 4) {
-    classes = useStyles();
+    buttonClass = classes.step4Button
   }
   
   const dispatch = useDispatch();
@@ -39,7 +46,7 @@ export default function TransferStartOverButton({setActiveStep, step}) {
   };
 
   return (
-    <Button color="primary" onClick={submitRetry} className={classes.button}>
+    <Button color="primary" onClick={submitRetry} className={buttonClass}>
       <span css={textStyles.buttonText}>Start Over</span>
     </Button>
   );

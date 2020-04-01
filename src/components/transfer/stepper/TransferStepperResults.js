@@ -48,38 +48,6 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
     if (transferStatus === 'success') {
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
-    // Transfer cancelled. Refresh transfer resource browser
-    else if (transferStatus === 'cancelSuccess') {
-      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken));
-      setStepThreeContent(
-        <div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            Transfer is being cancelled...
-          </div>
-          <Spinner />
-          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='TRANSFER' />
-          </div>
-        </div>
-      )
-    }
-    // Cancel Failed!
-    else if (transferStatus === 'cancelFailure') {
-      setStepThreeContent(
-        <div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            Cancel Failed! The transfer is continuing.
-          </div>
-          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-            If you refresh or leave the page the transfer will still continue.
-          </div>
-          <Spinner />
-          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
-            <CancelButton actionType='TRANSFER' />
-          </div>
-        </div>
-      )
-    }
     // Transfer successful and transfer resource browser refreshed!
     else if (transferStatus === 'finished') {
       setStepThreeContent(
@@ -97,6 +65,41 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:'/> : null}
         </Grid>
       );
+    }
+    // Transfer cancelled started
+    else if (transferStatus === 'cancelPending') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Transfer is being cancelled...
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='TRANSFER' />
+          </div>
+        </div>
+      )
+    }
+    // Cancel successful. Refresh transfer resource browser
+    else if (transferStatus === 'cancelSuccess') {
+      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken));
+    }
+    // Cancel Failed!
+    else if (transferStatus === 'cancelFailure') {
+      setStepThreeContent(
+        <div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            Cancel Failed! The transfer is continuing.
+          </div>
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            If you refresh or leave the page the transfer will still continue.
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+            <CancelButton actionType='TRANSFER' />
+          </div>
+        </div>
+      )
     }
     // Transfer Failed or cancel finished
     else if (transferStatus === 'failure' || transferStatus === 'cancelled') {

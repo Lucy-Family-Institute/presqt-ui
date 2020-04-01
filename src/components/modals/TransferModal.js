@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import React, {useState} from "react";
+import React from "react";
 import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
@@ -50,7 +50,11 @@ export default function TransferModal() {
         <DialogTitle
           id="form-dialog-title"
           onClose={handleClose}
-          disabled={transferStatus === 'pending' || transferStatus === 'success' || transferStatus === 'cancelSuccess'}
+          disabled={
+            transferStatus === 'pending' ||
+            transferStatus === 'success' ||
+            transferStatus === 'cancelPending' ||
+            transferStatus === 'cancelSuccess'}
         >
           Transfer Resource: {selectedResource.title}
         </DialogTitle>

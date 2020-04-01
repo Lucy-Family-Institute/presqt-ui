@@ -1,5 +1,6 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "./colors";
+import { css } from "@emotion/core";
 
 export default {
   RetryUpload: makeStyles(theme => ({
@@ -29,13 +30,15 @@ export default {
       color: colors.presqtBlue
     }
   })),
-  CancelButton: makeStyles(theme => ({
-    button: {
-      height: "100%",
-      backgroundColor: colors.presqtBlue,
-      "&:hover": {
-        backgroundColor: colors.presqtBlueHover
-      }
+  inlineButton: css({
+    cursor: "pointer",
+    color: colors.presqtBlue,
+    "&:hover": {
+      color: colors.presqtBlueHover
     }
-  }))
+  }),
+  disabledInlineButton: css({
+    cursor: "not-allowed",
+    color: '#646464'
+  })
 };

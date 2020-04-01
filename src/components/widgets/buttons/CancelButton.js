@@ -1,14 +1,28 @@
 /** @jsx jsx */
-import { Fragment } from "react";
 import { jsx } from "@emotion/core";
 import textStyles from "../../../styles/text";
-import buttonStyles from "../../../styles/buttons";
 import Button from "@material-ui/core/Button/Button";
 import {actionCreators} from "../../../redux/actionCreators";
 import {useDispatch, useSelector} from "react-redux";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../../../styles/colors";
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    height: "100%",
+    backgroundColor: colors.presqtBlue,
+    "&:hover": {
+      backgroundColor: colors.presqtBlueHover
+    },
+    "&:disabled": {
+      cursor: 'not-allowed',
+      pointerEvents: 'auto'
+    }
+  }
+}));
 
 export default function CancelButton({actionType}) {
-  const classes = buttonStyles.CancelButton();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -32,16 +46,20 @@ export default function CancelButton({actionType}) {
   };
 
   return (
-    <Fragment>
       <Button
         variant="contained"
         color="primary"
         className={classes.button}
         onClick={submitCancel}
-        disabled={!ticketNumber || uploadStatus === 'cancelSuccess' || transferStatus === 'cancelSuccess' || downloadStatus === 'cancelPending'}
+        disabled={
+          !ticketNumber ||
+          uploadStatus === 'cancelPending' ||
+          uploadStatus === 'cancelSuccess' ||
+          transferStatus === 'cancelPending' ||
+          transferStatus === 'cancelSuccess' ||
+          downloadStatus === 'cancelPending'}
       >
         <span css={textStyles.buttonText}>Cancel</span>
       </Button>
-    </Fragment>
   );
 }

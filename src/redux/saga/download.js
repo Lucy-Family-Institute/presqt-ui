@@ -15,7 +15,8 @@ function* downloadTargetResource(action) {
     const response = yield call(
       getResourceDownload,
       action.payload.resource,
-      action.payload.targetToken
+      action.payload.targetToken,
+      action.payload.isService
     );
 
     yield put(actionCreators.download.downloadFromTargetSuccess(response.data));
@@ -36,32 +37,38 @@ function* downloadTargetResource(action) {
 
         // Download successful!
         if (downloadJobResponse.headers['content-type'] === 'application/zip') {
-          // Get the zip file
-          const downloadJobResponseData = new Blob(
-            [downloadJobResponse.data],
-            {type : 'application/json'}
-          );
-          yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseData, 'success'));
+          if (!action.payload.isService) {
+            // Get the zip file
+            const downloadJobResponseData = new Blob(
+              [downloadJobResponse.data],
+              { type: 'application/json' }
+            );
+            yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseData, 'success'));
 
-          // Make one more request to the download job endpoint to get the process results
-          yield put(actionCreators.download.downloadJob());
+            // Make one more request to the download job endpoint to get the process results
+            yield put(actionCreators.download.downloadJob());
 
-          const downloadJobResponseJSON = yield call(
-            resourceDownloadJobJSON,
-            response.data.download_job_json,
-            action.payload.targetToken
-          );
+            const downloadJobResponseJSON = yield call(
+              resourceDownloadJobJSON,
+              response.data.download_job_json,
+              action.payload.targetToken
+            );
 
-          const finalDownloadData = {
-            file : downloadJobResponseData,
-            message: downloadJobResponseJSON.data.message,
-            failedFixity: downloadJobResponseJSON.data.failed_fixity,
-            zipName: downloadJobResponseJSON.data.zip_name
-          };
+            const finalDownloadData = {
+              file : downloadJobResponseData,
+              message: downloadJobResponseJSON.data.message,
+              failedFixity: downloadJobResponseJSON.data.failed_fixity,
+              zipName: downloadJobResponseJSON.data.zip_name
+            };
 
-          yield put(actionCreators.download.downloadJobSuccess(finalDownloadData, 'finished'));
+            yield put(actionCreators.download.downloadJobSuccess(finalDownloadData, 'finished'));
 
-          downloadFinished = true;
+            downloadFinished = true;
+          }
+          else {
+            yield put(actionCreators.download.downloadForServiceSuccess());
+            downloadFinished = true;
+          }
         }
         // Download pending!
         else {

@@ -29,8 +29,12 @@ export default function AvailableConnections() {
 
   /**
    * Dispatch load action on page-load.
+   * Dispatch load services on page-load.
    */
-  useEffect(() => {dispatch(actionCreators.targets.load());}, [dispatch]);
+  useEffect(() => {
+    dispatch(actionCreators.targets.load());
+    dispatch(actionCreators.services.loadServices());
+  }, [dispatch]);
 
   /**
    * Watch for a change in apiOperationErrors.
@@ -85,9 +89,9 @@ export default function AvailableConnections() {
                 paddingRight: 10,
                 cursor: "pointer"
               },
-              mainStyles.hoverOrFocusTransform,
-              pendingAPIResponse || downloadStatus === 'pending'
-              || uploadStatus === 'pending' ? { opacity: 0.5 } : null
+              pendingAPIResponse || downloadStatus === 'pending' || uploadStatus === 'pending'
+                ? { cursor: 'not-allowed', opacity: 0.5 }
+                : mainStyles.hoverOrFocusTransform
             ]}
             onClick={() => handleSwitchTarget(connection)}
             disabled={
