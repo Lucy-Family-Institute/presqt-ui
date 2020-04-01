@@ -15,15 +15,15 @@ export function getTargetResources(target, targetToken) {
  **/
 export function getTargetResourcesSearch(target, targetToken, search, searchParameter) {
   const formatSearchParameter = searchParameter.toLowerCase();
-  if (formatSearchParameter === 'title') {
+  if (formatSearchParameter === 'title' || formatSearchParameter === 'author') {
     const searchValueNoSpaces = search.replace(/ /g, "+");
 
-    return axios.get(`${apiURLBase}targets/${target}/resources?title=${searchValueNoSpaces}`, {
+    return axios.get(`${apiURLBase}targets/${target}/resources?${formatSearchParameter}=${searchValueNoSpaces}`, {
       headers: { 'presqt-source-token': targetToken }
     });
   }
   else {
-    return axios.get(`${apiURLBase}targets/${target}/resources?id=${search}`, {
+    return axios.get(`${apiURLBase}targets/${target}/resources?${searchParameter}=${search}`, {
       headers: { 'presqt-source-token': targetToken }
     });
   }
