@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, Fragment } from "react";
 import { actionCreators } from "../../redux/actionCreators";
 import getError from "../../utils/getError";
-import EaasiStepper from "../eaasi/EaasiStepper";
+import EaasiStepper from "../eaasi_stepper/EaasiStepper";
 
 export default function EaasiModal() {
   const dispatch = useDispatch();

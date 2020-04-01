@@ -74,7 +74,7 @@ export default function ServicesSplitButton() {
     if (selectedIndex !== null) {
       dispatch(actionCreators.services.selectService(services[selectedIndex]));
 
-      if (services[selectedIndex].name === 'eaasi'){
+      if (services[selectedIndex].name === 'eaasi_stepper'){
         dispatch(actionCreators.eaasi.displayEaasiModal())
       }
     }
