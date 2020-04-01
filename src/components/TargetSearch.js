@@ -103,7 +103,7 @@ export default function TargetSearch() {
       )
     );
 
-    dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', 'title'));
+    dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
   };
 
   const handleMenuItemClick = (event, index) => {
