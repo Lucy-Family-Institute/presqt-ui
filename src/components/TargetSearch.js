@@ -41,7 +41,12 @@ const useStyles = makeStyles({
   }
 });
 
-const choices = ["ID", "Title"];
+const parameterTranslator = {
+  "title": "Title",
+  "general": "No Search Filter",
+  "author": "Author",
+  "id": "ID"
+}
 
 export default function TargetSearch() {
   const classes = useStyles();
@@ -50,11 +55,21 @@ export default function TargetSearch() {
 
   const selectedTarget = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[selectedTarget.name];
+  const choices = selectedTarget.search_parameters
 
-  const [selectedSearchParameter, setSelectedSearchParameter] = useState(choices[1]);
+  const [selectedSearchParameter, setSelectedSearchParameter] = useState(choices[0]);
   const [searchValue, setSearchValue] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const getLabel = () => {
+    if (selectedSearchParameter === 'general') {
+      return `Search ${selectedTarget.readable_name}`
+    }
+    else {
+      return `Search ${selectedTarget.readable_name} By ${parameterTranslator[selectedSearchParameter]}`
+    }
+  };
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -117,7 +132,7 @@ export default function TargetSearch() {
               type="text"
               ref={anchorRef}
               id="outlined-basic"
-              label={`Search ${selectedTarget.readable_name} By ${selectedSearchParameter}`}
+              label={getLabel()}
               variant="outlined"
               value={searchValue}
               onChange={event => setSearchValue(event.target.value)}
@@ -164,7 +179,7 @@ export default function TargetSearch() {
                                     }
                                   >
                                     <span css={textStyles.buttonText}>
-                                      {choice}
+                                      {parameterTranslator[choice]}
                                     </span>
                                   </MenuItem>
                                 ))}
