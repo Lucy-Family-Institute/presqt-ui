@@ -71,6 +71,12 @@ export default function TargetSearch() {
     }
   };
 
+  const searchKeystroke = (event) => {
+    setSearchValue(event.target.value);
+    if (open) {
+      setOpen(false);
+    }
+  }
   const submitSearch = (event) => {
     event.preventDefault();
 
@@ -135,7 +141,7 @@ export default function TargetSearch() {
               label={getLabel()}
               variant="outlined"
               value={searchValue}
-              onChange={event => setSearchValue(event.target.value)}
+              onChange={event => searchKeystroke(event)}
               InputProps={{
                 style: {
                   paddingRight: 5
