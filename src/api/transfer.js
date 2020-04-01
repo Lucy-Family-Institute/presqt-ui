@@ -23,7 +23,7 @@ export function postResourceTransfer(destinationTarget, destinationToken, source
     {
       headers: {
         'presqt-destination-token': destinationToken,
-        'presqt-sourc4e-token': sourceToken,
+        'presqt-source-token': sourceToken,
         'presqt-file-duplicate-action': duplicateAction,
         'Content-Type': 'application/json'
       }
