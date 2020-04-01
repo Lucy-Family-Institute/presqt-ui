@@ -3,16 +3,11 @@ import colors from "../../styles/colors";
 import withStyles from "@material-ui/core/styles/withStyles";
 import StepContent from "@material-ui/core/StepContent";
 import React, {useState} from "react";
-import {actionCreators} from "../../redux/actionCreators";
-import {useDispatch} from "react-redux";
-import TransferStepperTargets from "../transfer/stepper/TransferStepperTargets";
-import TransferStepperToken from "../transfer/stepper/TransferStepperToken";
 import Stepper from "@material-ui/core/Stepper";
 import UploadStepConnector from "../upload_stepper/UploadStepConnector";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import StepperBackButton from "../widgets/buttons/stepperBackButton";
 import EaasiStepperSubmit from "./EaasiStepperSubmit";
 import EaasiStepperResults from "./EaasiStepperResults";
 
@@ -45,9 +40,6 @@ const steps = [
   'Results'
 ];
 
-/**
- * This component renders the stepper for the EaaSI Modal.
- **/
 export default function EaasiStepper({}) {
   const classes = useStyles();
 
