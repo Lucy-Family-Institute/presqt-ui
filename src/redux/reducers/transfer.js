@@ -350,6 +350,13 @@ export const transferReducers = {
       )
     }),
     /**
+     * Clear the transfer target resources
+     **/
+    [actionCreators.transfer.clearTransferTargetResources]: state => ({
+      ...state,
+      transferTargetResources: null
+    }),
+    /**
      * Refresh the resources in the Transfer Resource Browser.
      * Saga call to Resource-Collection occurs with this action.
      **/

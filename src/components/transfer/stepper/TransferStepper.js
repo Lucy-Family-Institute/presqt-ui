@@ -81,6 +81,7 @@ export default function TransferStepper() {
   const handleBack = () => {
     if (activeStep === 2){
       dispatch(actionCreators.transfer.clearTransferToken());
+      dispatch(actionCreators.transfer.clearTransferTargetResources());
     }
     dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
     setActiveStep(prevActiveStep => prevActiveStep - 1);
