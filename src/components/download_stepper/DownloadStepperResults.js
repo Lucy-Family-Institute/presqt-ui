@@ -108,7 +108,6 @@ export default function DownloadStepperResults() {
           <div css={{justifyContent: 'center', display: 'flex'}}>
             <RetryDownloadButton
               setModalContent={setModalContent}
-              setModalHeader={setModalHeader}
             />
           </div>
         </Fragment>
