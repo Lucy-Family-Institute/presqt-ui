@@ -27,6 +27,18 @@ export default function AvailableConnections() {
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const tokenError = collectionError && collectionError.status === 401;
 
+  const outerList = [];
+  let newList = [];
+  for (let i=0; i<availableTargets.length; i++) {
+    newList.push(availableTargets[i]);
+    if ((i+1) % 4 === 0 || i+1 === availableTargets.length) {
+      outerList.push(newList);
+      newList = [];
+    }
+  }
+
+  console.log(outerList);
+
   const listOne = availableTargets.slice(0, 4)
   const listTwo = availableTargets.slice(4)
 
