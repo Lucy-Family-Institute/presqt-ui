@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, Fragment } from "react";
-import { actionCreators } from "../redux/actionCreators";
+import {jsx} from "@emotion/core";
+import {useSelector, useDispatch} from "react-redux";
+import {useEffect, Fragment} from "react";
+import {actionCreators} from "../redux/actionCreators";
 import text from "../styles/text";
 import colors from "../styles/colors";
-import { basicFadeIn } from "../styles/animations";
+import {basicFadeIn} from "../styles/animations";
 import mainStyles from "../styles/main";
 import getError from "../utils/getError";
 
@@ -27,20 +27,16 @@ export default function AvailableConnections() {
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const tokenError = collectionError && collectionError.status === 401;
 
+  // Split the list into groups of 4 to display on different lines
   const outerList = [];
   let newList = [];
-  for (let i=0; i<availableTargets.length; i++) {
+  for (let i = 0; i < availableTargets.length; i++) {
     newList.push(availableTargets[i]);
-    if ((i+1) % 4 === 0 || i+1 === availableTargets.length) {
+    if ((i + 1) % 4 === 0 || i + 1 === availableTargets.length) {
       outerList.push(newList);
       newList = [];
     }
   }
-
-  console.log(outerList);
-
-  const listOne = availableTargets.slice(0, 4)
-  const listTwo = availableTargets.slice(4)
 
   /**
    * Dispatch load action on page-load.
@@ -105,50 +101,9 @@ export default function AvailableConnections() {
       }}
     >
       <span css={text.mediumHeader}>Available Connections</span>
-      <div css={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
-        {listOne.map(connection => (
-              <button
-                key={connection.name}
-                css={[
-                  {
-                    backgroundColor: "white",
-                    border: "none",
-                    paddingLeft: 5,
-                    paddingRight: 10,
-                    cursor: "pointer",
-                  },
-                  pendingAPIResponse ||
-                    downloadStatus === "pending" ||
-                    uploadStatus === "pending"
-                    ? { cursor: "not-allowed", opacity: 0.5 }
-                    : mainStyles.hoverOrFocusTransform,
-                ]}
-                onClick={() => handleSwitchTarget(connection)}
-                disabled={
-                  pendingAPIResponse ||
-                  downloadStatus === "pending" ||
-                  uploadStatus === "pending"
-                }
-              >
-                <img
-                  src={require(`../images/available_connections/${connection.name}.png`)}
-                  alt={connection.readable_name}
-                />
-                {selectedTarget && selectedTarget.name === connection.name ? (
-                  <div
-                    css={{
-                      minHeight: 5,
-                      marginTop: 5,
-                      backgroundColor: colors.presqtOrange,
-                      animation: `${basicFadeIn} 1s`,
-                    }}
-                  ></div>
-                ) : null}
-                </button>
-        ))}
-      </div>
-      <div css={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
-      {listTwo.map(connection => (
+      {outerList.map((innerListItem, index) => (
+        <div key={index} css={{display: "flex", flexDirection: "row", paddingTop: 10}}>
+          {innerListItem.map(connection => (
           <button
             key={connection.name}
             css={[
@@ -160,9 +115,9 @@ export default function AvailableConnections() {
                 cursor: "pointer",
               },
               pendingAPIResponse ||
-                downloadStatus === "pending" ||
-                uploadStatus === "pending"
-                ? { cursor: "not-allowed", opacity: 0.5 }
+              downloadStatus === "pending" ||
+              uploadStatus === "pending"
+                ? {cursor: "not-allowed", opacity: 0.5}
                 : mainStyles.hoverOrFocusTransform,
             ]}
             onClick={() => handleSwitchTarget(connection)}
@@ -186,9 +141,11 @@ export default function AvailableConnections() {
                 }}
               ></div>
             ) : null}
-            </button>
-        ))}
-      </div>
-      </div>
+          </button>
+          ))}
+        </div>
+
+      ))}
+    </div>
   );
 }
