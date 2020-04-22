@@ -58,7 +58,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
     <button
       disabled={resource.kind === 'item' ||
         disabled ||
-        ['gitlab', 'github'].indexOf(transferDestinationTarget) > -1
+        ['gitlab'].indexOf(transferDestinationTarget) > -1
       }
       css={[{
         display: "flex",
@@ -76,7 +76,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
         }
       },
         resource.kind === 'item' ||
-        ['gitlab', 'github'].indexOf(transferDestinationTarget) > -1
+        ['gitlab'].indexOf(transferDestinationTarget) > -1
           ? { opacity: 0.5 }
           : null
       ]}
