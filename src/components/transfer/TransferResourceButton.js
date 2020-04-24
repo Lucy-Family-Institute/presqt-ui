@@ -15,7 +15,6 @@ const rectangle = require("../../images/icons/rectangle.png");
 export default function TransferResourceButton({resource, level, onClick }) {
   const transferStepInModal = useSelector(state => state.transferStepInModal);
   const transferStatus = useSelector(state => state.transferStatus);
-  const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const [disabled, setDisabled] = useState(false);
   
   useEffect(() => {
@@ -57,8 +56,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
   return (
     <button
       disabled={resource.kind === 'item' ||
-        disabled ||
-        ['gitlab'].indexOf(transferDestinationTarget) > -1
+        disabled
       }
       css={[{
         display: "flex",
@@ -75,8 +73,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
           cursor: 'not-allowed',
         }
       },
-        resource.kind === 'item' ||
-        ['gitlab'].indexOf(transferDestinationTarget) > -1
+        resource.kind === 'item'
           ? { opacity: 0.5 }
           : null
       ]}
