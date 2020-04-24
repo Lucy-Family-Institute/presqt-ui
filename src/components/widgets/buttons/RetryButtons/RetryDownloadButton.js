@@ -7,6 +7,8 @@ import { actionCreators } from "../../../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../../styles/colors";
+import Spinner from "../../spinners/Spinner";
+import CancelButton from "../../buttons/CancelButton";
 
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +42,16 @@ export default function RetryDownloadButton({setModalContent}) {
 
       dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
 
-      setModalContent();
+      setModalContent(
+        <div>
+          <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+            <p>The download is being processed on the server.</p>
+          </div>
+          <Spinner />
+          <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+            <CancelButton actionType='DOWNLOAD' />
+          </div>
+        </div>);
     };
 
   return (

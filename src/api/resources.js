@@ -14,11 +14,14 @@ export function getTargetResources(target, targetToken) {
  * Resource Collection Endpoint With Search Parameter
  **/
 export function getTargetResourcesSearch(target, targetToken, search, searchParameter) {
-  const formatSearchParameter = searchParameter.toLowerCase();
-  if (formatSearchParameter === 'title' || formatSearchParameter === 'author') {
+  if (searchParameter === '') {
+    return axios.get(`${apiURLBase}targets/${target}/resources/`, {
+      headers: { 'presqt-source-token': targetToken }
+    });
+  }
+  else if (searchParameter === 'title' || searchParameter === 'author') {
     const searchValueNoSpaces = search.replace(/ /g, "+");
-
-    return axios.get(`${apiURLBase}targets/${target}/resources?${formatSearchParameter}=${searchValueNoSpaces}`, {
+    return axios.get(`${apiURLBase}targets/${target}/resources?${searchParameter}=${searchValueNoSpaces}`, {
       headers: { 'presqt-source-token': targetToken }
     });
   }

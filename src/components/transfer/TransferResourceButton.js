@@ -55,7 +55,9 @@ export default function TransferResourceButton({resource, level, onClick }) {
 
   return (
     <button
-      disabled={resource.kind === 'item' || disabled}
+      disabled={resource.kind === 'item' ||
+        disabled
+      }
       css={[{
         display: "flex",
         flexDirection: "row",
@@ -71,7 +73,9 @@ export default function TransferResourceButton({resource, level, onClick }) {
           cursor: 'not-allowed',
         }
       },
-        resource.kind === 'item' ? { opacity: 0.5 } : null
+        resource.kind === 'item'
+          ? { opacity: 0.5 }
+          : null
       ]}
       onClick={() => onClick(resource)}
     >
