@@ -27,9 +27,7 @@ export default function AvailableConnections() {
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const tokenError = collectionError && collectionError.status === 401;
 
-  const status_status = useSelector((state) => state.statuses);
-
-  const [count, setCount] = useState(0);
+  const status_list = useSelector((state) => state.statuses);
 
   // Split the list into groups of 4 to display on different lines
   const outerList = [];
@@ -62,19 +60,6 @@ export default function AvailableConnections() {
     }
   }, [apiOperationErrors]);
 
-  useEffect( () => {
-      const interval = setInterval(() => {
-        var d = new Date();
-        var n = d.toISOString();
-        console.log(n);
-        setCount( oldCount => oldCount + 1);
-      }, 30*1000);
-      return () => clearInterval(interval);
-    }, []
-  );
-
-  // setInterval(() => {
-  //   console.log(n)}, 1000);
   /**
    * Set the selected target as the source target.
    * If a connection already exists with the target then dispatch loadFromTarget action.
@@ -110,6 +95,10 @@ export default function AvailableConnections() {
       );
     }
   };
+  const status_formatted = status_list
+    // .filter(stat => stat.status !== "ok")
+    .map(stat => <p title={stat.detail}>Warning! {stat.service} could not be reached because of a "{stat.status}" error.</p>);
+
 
   return (
     <div
@@ -164,8 +153,7 @@ export default function AvailableConnections() {
         </div>
 
       ))}
-      <p>{count}</p>
-      <p>{JSON.stringify(status_status)}</p>
+      <p>{status_formatted}</p>
     </div>
   );
 }

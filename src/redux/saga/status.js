@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "@redux-saga/core/effects";
+import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
 import {getStatuses} from "../../api/status";
 
@@ -8,6 +8,14 @@ export function* watchLoadStatuses() {
 }
 
 function* loadStatuses() {
-  const response = yield call(getStatuses);
-  yield put(actionCreators.statuses.loadStatusesSuccess(response.data));
+  while( true ) {
+    try {
+      const response = yield call(getStatuses);
+      yield put(actionCreators.statuses.loadStatusesSuccess(response.data));
+    } catch (e) {
+      //todo
+      console.log(e)
+    }
+    yield delay(10000);
+  }
 }
