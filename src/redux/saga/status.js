@@ -16,6 +16,6 @@ function* loadStatuses() {
       //todo
       console.log(e)
     }
-    yield delay(10000);
+    yield delay(60000);
   }
 }
