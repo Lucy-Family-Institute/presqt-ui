@@ -95,9 +95,23 @@ export default function AvailableConnections() {
       );
     }
   };
-  const status_formatted = status_list
-    // .filter(stat => stat.status !== "ok")
-    .map(stat => <p title={stat.detail}>Warning! {stat.service} could not be reached because of a "{stat.status}" error.</p>);
+
+  const error_statuses = status_list.filter(stat => stat.status !== "ok");
+
+  const status_formatted = error_statuses
+    .map(stat => <p
+      title={stat.detail}
+      css={{color: colors.chevelleRed}}
+    >Warning! {stat.readable_name} could not be reached because of a "{stat.status}" error.</p>);
+
+  const status_is_bad = name => {
+    for (const datum of error_statuses) {
+      if(datum.service === name){
+        return true;
+      }
+    }
+    return false;
+  };
 
 
   return (
@@ -123,7 +137,8 @@ export default function AvailableConnections() {
               },
               pendingAPIResponse ||
               downloadStatus === "pending" ||
-              uploadStatus === "pending"
+              uploadStatus === "pending" ||
+                status_is_bad(connection.name)
                 ? {cursor: "not-allowed", opacity: 0.5}
                 : mainStyles.hoverOrFocusTransform,
             ]}
@@ -131,7 +146,8 @@ export default function AvailableConnections() {
             disabled={
               pendingAPIResponse ||
               downloadStatus === "pending" ||
-              uploadStatus === "pending"
+              uploadStatus === "pending" ||
+                status_is_bad(connection.name)
             }
           >
             <img
