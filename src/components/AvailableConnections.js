@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {jsx} from "@emotion/core";
 import {useSelector, useDispatch} from "react-redux";
-import {useEffect, Fragment} from "react";
+import {useEffect, Fragment, useState} from "react";
 import {actionCreators} from "../redux/actionCreators";
 import text from "../styles/text";
 import colors from "../styles/colors";
@@ -27,6 +27,10 @@ export default function AvailableConnections() {
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const tokenError = collectionError && collectionError.status === 401;
 
+  const status_status = useSelector((state) => state.statuses);
+
+  const [count, setCount] = useState(0);
+
   // Split the list into groups of 4 to display on different lines
   const outerList = [];
   let newList = [];
@@ -45,6 +49,7 @@ export default function AvailableConnections() {
   useEffect(() => {
     dispatch(actionCreators.targets.load());
     dispatch(actionCreators.services.loadServices());
+    dispatch(actionCreators.statuses.loadStatuses());
   }, [dispatch]);
 
   /**
@@ -57,6 +62,19 @@ export default function AvailableConnections() {
     }
   }, [apiOperationErrors]);
 
+  useEffect( () => {
+      const interval = setInterval(() => {
+        var d = new Date();
+        var n = d.toISOString();
+        console.log(n);
+        setCount( oldCount => oldCount + 1);
+      }, 30*1000);
+      return () => clearInterval(interval);
+    }, []
+  );
+
+  // setInterval(() => {
+  //   console.log(n)}, 1000);
   /**
    * Set the selected target as the source target.
    * If a connection already exists with the target then dispatch loadFromTarget action.
@@ -146,6 +164,8 @@ export default function AvailableConnections() {
         </div>
 
       ))}
+      <p>{count}</p>
+      <p>{JSON.stringify(status_status)}</p>
     </div>
   );
 }

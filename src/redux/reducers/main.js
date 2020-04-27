@@ -8,6 +8,7 @@ import { authorizationReducers } from "./authorization";
 import { githubReducers } from "./github";
 import { servicesReducers } from "./services";
 import { eaasiReducers } from "./eaasi";
+import {statusesReducers} from "./statuses";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -16,6 +17,7 @@ const initialState = {
   activeTicketNumber: null,
   ...authorizationReducers.initialState,
   ...targetsReducers.initialState,
+  ...statusesReducers.initialState,
   ...resourceReducers.initialState,
   ...downloadReducers.initialState,
   ...uploadReducers.initialState,
@@ -29,6 +31,7 @@ export default handleActions(
   {
     ...authorizationReducers.reducers,
     ...targetsReducers.reducers,
+    ...statusesReducers.reducers,
     ...resourceReducers.reducers,
     ...downloadReducers.reducers,
     ...uploadReducers.reducers,

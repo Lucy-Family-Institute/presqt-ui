@@ -103,6 +103,10 @@ export const actionCreators = createActions({
         SWITCH_TARGET: undefined,
         CLEAR_TARGET: undefined
     },
+    STATUSES: {
+        LOAD_STATUSES: undefined,
+        LOAD_STATUSES_SUCCESS: undefined,
+      },
     SERVICES: {
         LOAD_SERVICES: undefined,
         LOAD_SERVICES_SUCCESS: undefined,
