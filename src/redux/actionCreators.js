@@ -143,5 +143,13 @@ export const actionCreators = createActions({
         SEND_KEYWORDS_SUCCESS: undefined,
         SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
         CLEAR_KEYWORD_DATA: undefined
+    },
+    BAGIT: {
+        DISPLAY_BAGIT_MODAL: undefined,
+        HIDE_BAGIT_MODAL: undefined,
+        SUBMIT_BAGIT_FILE: (file) => ({file}),
+        SUBMIT_BAGIT_FILE_SUCCESS: (data) => ({data}),
+        SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
+        CLEAR_BAGIT_DATA: undefined
     }
 });

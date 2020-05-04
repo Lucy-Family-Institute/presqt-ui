@@ -43,6 +43,17 @@ export default function HeaderMenu() {
       >
         Submit Feedback
       </a>
+      <a
+        css={[
+          textStyles.globalNav,
+          { textDecoration: "none", marginLeft: 25, cursor: "pointer" },
+          mainStyles.hoverOrFocusTransform,
+        ]}
+        rel="noopener noreferrer"
+        onClick={() => dispatch(actionCreators.bagit.displayBagitModal())}
+      >
+        BagIt Tool
+      </a>
     </div>
   );
 }
