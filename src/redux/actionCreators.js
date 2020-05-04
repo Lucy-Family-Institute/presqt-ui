@@ -133,6 +133,17 @@ export const actionCreators = createActions({
         GET_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
         CLEAR_EAASI_DATA: undefined
     },
+    KEYWORDS: {
+        DISPLAY_KEYWORD_MODAL: undefined,
+        HIDE_KEYWORD_MODAL: undefined,
+        GET_KEYWORDS: (resource, targetToken) => ({ resource, targetToken }),
+        GET_KEYWORDS_SUCCESS: undefined,
+        GET_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
+        SEND_KEYWORDS: (resource, targetToken, keywords) => ({ resource, targetToken, keywords }),
+        SEND_KEYWORDS_SUCCESS: undefined,
+        SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
+        CLEAR_KEYWORD_DATA: undefined
+    },
     BAGIT: {
         DISPLAY_BAGIT_MODAL: undefined,
         HIDE_BAGIT_MODAL: undefined,
