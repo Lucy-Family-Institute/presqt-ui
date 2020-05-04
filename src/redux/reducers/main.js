@@ -9,6 +9,7 @@ import { githubReducers } from "./github";
 import { servicesReducers } from "./services";
 import { eaasiReducers } from "./eaasi";
 import {statusesReducers} from "./statuses";
+import {bagitReducers} from "./bagit";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -24,7 +25,8 @@ const initialState = {
   ...transferReducers.initialState,
   ...githubReducers.initialState,
   ...servicesReducers.initialState,
-  ...eaasiReducers.initialState
+  ...eaasiReducers.initialState,
+  ...bagitReducers.initialState
 };
 
 export default handleActions(
@@ -38,7 +40,8 @@ export default handleActions(
     ...transferReducers.reducers,
     ...githubReducers.reducers,
     ...servicesReducers.reducers,
-    ...eaasiReducers.reducers
+    ...eaasiReducers.reducers,
+    ...bagitReducers.reducers
   },
   initialState
 );

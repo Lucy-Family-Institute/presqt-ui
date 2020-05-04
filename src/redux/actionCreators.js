@@ -132,5 +132,13 @@ export const actionCreators = createActions({
         GET_EAASI_PROPOSAL_SUCCESS: (data, status) => ({data, status}),
         GET_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
         CLEAR_EAASI_DATA: undefined
+    },
+    BAGIT: {
+        DISPLAY_BAGIT_MODAL: undefined,
+        HIDE_BAGIT_MODAL: undefined,
+        SUBMIT_BAGIT_FILE: (file) => ({file}),
+        SUBMIT_BAGIT_FILE_SUCCESS: (data) => ({data}),
+        SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
+        CLEAR_BAGIT_DATA: undefined
     }
 });

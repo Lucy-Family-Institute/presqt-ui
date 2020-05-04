@@ -13,7 +13,6 @@ function* loadStatuses() {
       const response = yield call(getStatuses);
       yield put(actionCreators.statuses.loadStatusesSuccess(response.data));
     } catch (e) {
-      console.log(e.toJSON());
       yield put(actionCreators.statuses.loadStatusesSuccess([{
         service: "presqt",
         readable_name: "PresQT",
