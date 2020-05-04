@@ -49,6 +49,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         onClick={enhanceKeywords}
         variant="contained"
         color="primary"
+        disabled={newKeywords.length > 0 ? false : true}
       >
         <span css={textStyles.buttonText}>Enhance Keywords</span>
       </CustomKeywordButton>

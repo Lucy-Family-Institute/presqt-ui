@@ -146,11 +146,9 @@ export default function ServicesSplitButton() {
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                       disabled={
-                        service.name === "keyword_enhancement" && keywords
-                          ? false
-                          : service.name !== "keyword_enhancement"
-                          ? false
-                          : true
+                        service.name === "keyword_enhancement" && !keywords
+                          ? true
+                          : false
                       }
                     >
                       <span css={textStyles.buttonText}>
