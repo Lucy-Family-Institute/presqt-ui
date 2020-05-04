@@ -13,7 +13,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-  }
+  },
+  checked: {
+    '&&:hover': {
+      backgroundColor: 'transparent'
+    }
+  },
 }));
 
 export default function KeywordEnhancementList({keywords, header, setNewKeywords}) {
@@ -61,6 +66,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ "aria-labelledby": labelId }}
+                  classes={{ root: classes.checked }}
                 />
               </ListItemIcon>
               <ListItemText id={labelId} primary={`${value}`} />
