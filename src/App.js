@@ -18,6 +18,7 @@ import {Fragment} from "react";
 import TransferModal from "./components/modals/TransferModal";
 import IssueModal from "./components/modals/IssueModal";
 import EaasiModal from "./components/modals/EaasiModal";
+import KeywordModal from "./components/modals/KeywordModal";
 
 const styles = {
   app: css({
@@ -59,6 +60,7 @@ function App() {
         <TransferModal />
         <IssueModal />
         <EaasiModal />
+        <KeywordModal />
       </div>
     </Fragment>
 
