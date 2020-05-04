@@ -44,16 +44,21 @@ export default function BagitStepper() {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   function getStepContent(step) {
     switch (step) {
       case 0: {
         return <BagitSelectFile
           setActiveStep={setActiveStep}
+          setSelectedFile={setSelectedFile}
+          selectedFile={selectedFile}
         />
       }
       case 1: {
-        return <BagitResults />
+        return <BagitResults
+          selectedFile={selectedFile}
+        />
       }
     }
   }

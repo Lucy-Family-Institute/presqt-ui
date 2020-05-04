@@ -40,11 +40,9 @@ const CustomButton = withStyles({
   },
 })(Button);
 
-export default function BagitSelectFile({setActiveStep}) {
+export default function BagitSelectFile({setActiveStep, setSelectedFile, selectedFile}) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const submitUpload = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);

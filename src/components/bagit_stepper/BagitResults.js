@@ -10,7 +10,7 @@ import {actionCreators} from "../../redux/actionCreators";
 import colors from "../../styles/colors";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
-export default function BagitResults() {
+export default function BagitResults({selectedFile}) {
   const bagitState = useSelector(state => state.bagitStatus);
   const bagitData = useSelector(state => state.bagitData);
 
@@ -20,7 +20,7 @@ export default function BagitResults() {
 
   useEffect(() => {
     if (bagitState === 'finished') {
-      FileSaver.saveAs(bagitData, 'presqt_yellow2.png.zip');
+      FileSaver.saveAs(bagitData, `presqt_${selectedFile.name}`);
       setContent(
         <div
           css={{ paddingTop: 20, paddingBottom: 20, display: 'flex',
@@ -44,7 +44,5 @@ export default function BagitResults() {
     }
   }, [bagitState]);
 
-  return (
-   content
-  )
+  return (content)
 }

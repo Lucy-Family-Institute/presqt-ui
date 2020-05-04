@@ -31,6 +31,6 @@ function* submitBagitFile(action) {
   }
 }
 
-function getErrorData(downloadJobResponseData) {
-  return downloadJobResponseData.text();
+function getErrorData(bagitResponseData) {
+  return bagitResponseData.text();
 }

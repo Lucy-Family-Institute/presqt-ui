@@ -22,6 +22,9 @@ export const bagitReducers = {
       ...state,
       bagitModalDisplay: false
     }),
+    /**
+     * Send Post to bagit_and_zip endpoint
+     **/
     [actionCreators.bagit.submitBagitFile]: (state, action) => ({
       ...state,
       pendingAPIResponse: true,
@@ -31,6 +34,9 @@ export const bagitReducers = {
       ),
       bagitStatus: 'pending'
     }),
+    /**
+     * On success, set bagitData and bagitStatus
+     **/
     [actionCreators.bagit.submitBagitFileSuccess]: (state, action) => ({
       ...state,
       bagitData: action.payload.data,
@@ -41,6 +47,9 @@ export const bagitReducers = {
       ),
       bagitStatus: 'finished'
     }),
+    /**
+     * On failure, track error
+     **/
     [actionCreators.bagit.submitBagitFileFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
@@ -55,6 +64,9 @@ export const bagitReducers = {
       ),
       bagitStatus: 'failure'
     }),
+    /**
+     * Clear bagit data from state
+     **/
     [actionCreators.bagit.clearBagitData]: state => ({
       ...state,
       bagitModalDisplay: false,
