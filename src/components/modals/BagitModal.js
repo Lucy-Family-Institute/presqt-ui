@@ -5,7 +5,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
-import BagitStepper from "../bagi_stepper/BagitStepper";
+import BagitStepper from "../bagit_stepper/BagitStepper";
 
 export default function BagitModal() {
   const dispatch = useDispatch();
