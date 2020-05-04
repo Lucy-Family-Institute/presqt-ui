@@ -7,15 +7,16 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import colors from "../../../styles/colors";
+import { GridList } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-  },
+  }
 }));
 
-export default function KeywordEnhancementList({ keywords, header, setNewKeywords }) {
+export default function KeywordEnhancementList({keywords, header, setNewKeywords}) {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
 
@@ -25,8 +26,7 @@ export default function KeywordEnhancementList({ keywords, header, setNewKeyword
 
     if (currentIndex === -1) {
       newChecked.push(value);
-    }
-    else {
+    } else {
       newChecked.splice(currentIndex, 1);
     }
     setChecked(newChecked);
@@ -42,31 +42,32 @@ export default function KeywordEnhancementList({ keywords, header, setNewKeyword
         </ListSubheader>
       }
     >
-      {keywords.map((value, index) => {
-        const labelId = `checkbox-list-label-${value}`;
-
-        return (
-          <ListItem
-            key={value + index}
-            role={undefined}
-            dense
-            button
-            onClick={handleToggle(value)}
-          >
-            <ListItemIcon>
-              <Checkbox
-                style={{ color: colors.presqtBlue }}
-                edge="start"
-                checked={checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`${value}`} />
-          </ListItem>
-        );
-      })}
+      <GridList cellHeight={50} style={{marginLeft: 15}}>
+        {keywords.map((value, index) => {
+          const labelId = `checkbox-list-label-${value}`;
+          return (
+            <ListItem
+              key={value + index}
+              role={undefined}
+              dense
+              button
+              onClick={handleToggle(value)}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  style={{ color: colors.presqtBlue }}
+                  edge="start"
+                  checked={checked.indexOf(value) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ "aria-labelledby": labelId }}
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={`${value}`} />
+            </ListItem>
+          );
+        })}
+      </GridList>
     </List>
   );
 }

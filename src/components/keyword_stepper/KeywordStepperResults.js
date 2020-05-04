@@ -68,11 +68,11 @@ export default function KeywordStepperResults({ newKeywords }) {
       setStepContent(
         <Fragment>
           <KeywordList
-            resources={updatedKeywords.keywords_added}
+            resources={updatedKeywords.keywords_added.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following keywords were added to ${selectedResource.title}:`}
           />
           <KeywordList
-            resources={updatedKeywords.final_keywords}
+            resources={updatedKeywords.final_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following are all keywords for ${selectedResource.title}:`}
           />
         </Fragment>

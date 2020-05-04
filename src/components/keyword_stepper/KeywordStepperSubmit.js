@@ -37,11 +37,11 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
   return (
     <Fragment>
       <KeywordList
-        resources={keywords.keywords}
+        resources={keywords.keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
         header={`The following keywords are currently assosciated with ${selectedResource.title}:`}
       />
       <KeywordEnhancementList
-        keywords={keywords.enhanced_keywords}
+        keywords={keywords.enhanced_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
         header={`Select from the following SciGraph keywords to enhance your resource:`}
         setNewKeywords={setNewKeywords}
       />
