@@ -29,8 +29,8 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
   const keywords = useSelector((state) => state.keywords);
 
   const enhanceKeywords = () => {
-    // Add call to get initial tags
     dispatch(actionCreators.keywords.sendKeywords(selectedResource, targetToken, newKeywords));
+    
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -49,7 +49,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         onClick={enhanceKeywords}
         variant="contained"
         color="primary"
-        disabled={newKeywords.length > 0 ? false : true}
+        disabled={!newKeywords.length}
       >
         <span css={textStyles.buttonText}>Enhance Keywords</span>
       </CustomKeywordButton>
