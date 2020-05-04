@@ -42,11 +42,7 @@ export default function KeywordStepperResults({ newKeywords }) {
   );
 
   const retryKeywords = () => {
-    setStepContent(
-      <div>
-        <Spinner />
-      </div>
-    );
+    setStepContent();
     if (apiOperationErrors.length > 0 && keywordPostError) {
       dispatch(
         actionCreators.resources.removeFromErrorList(

@@ -10,9 +10,9 @@ export function getInitialKeywords(resource, targetToken) {
 }
 
 export function sendEnhancedKeywords(resource, targetToken, keywords) {
-  const resourceDetailURL = resource.links.find((link) => link.name === "Upload").link;
+  const resourceUploadURL = resource.links.find((link) => link.name === "Upload").link;
 
-  return axios.post(`${resourceDetailURL}keywords/`, {"keywords": keywords}, {
+  return axios.post(`${resourceUploadURL}keywords/`, {"keywords": keywords}, {
     headers: { "presqt-source-token": targetToken },
   });
 }
