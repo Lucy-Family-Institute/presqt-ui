@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import textStyles from "../../styles/text";
 
-const CustomEaasiButton = withStyles({
+const CustomKeywordButton = withStyles({
   root: {
     backgroundColor: colors.presqtBlue,
     "&:hover": {
@@ -22,6 +22,7 @@ const CustomEaasiButton = withStyles({
 
 export default function KeywordStepperResults({ newKeywords }) {
   const dispatch = useDispatch();
+  
   const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
   const selectedResource = useSelector((state) => state.selectedResource);
   const updatedKeywords = useSelector((state) => state.updatedKeywords);
@@ -30,6 +31,9 @@ export default function KeywordStepperResults({ newKeywords }) {
   const targetToken = useSelector((state) =>
     state.selectedTarget ? state.apiTokens[state.selectedTarget.name] : null
   );
+  // This resource is needed to refresh the detail
+  const targetResources = useSelector(state => state.targetResources);
+  const resource = targetResources.find(resource => resource.id === selectedResource.id);
 
   const [stepContent, setStepContent] = useDefault(
     <div>
@@ -73,32 +77,52 @@ export default function KeywordStepperResults({ newKeywords }) {
           />
         </Fragment>
       );
-    } else if (keywordStatus === "postFailure") {
+      dispatch(actionCreators.resources.selectResource(resource, targetToken))
+      dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+    }
+    else if (keywordStatus === "postFailure") {
       setStepContent(
-        <div style={{ display: "flex", justifyContent: "center", padding: 10 }}>
+        <Fragment>
           <div
-            style={{
-              paddingTop: 20,
-              paddingBottom: 20,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={{ display: "flex", justifyContent: "center", padding: 10 }}
           >
-            <ErrorOutlineIcon color="error" />
-            <span style={{ marginLeft: 5, color: colors.chevelleRed }}>
-              {keywordPostError.data.error}
-            </span>
+            <div
+              style={{
+                paddingTop: 20,
+                paddingBottom: 20,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ErrorOutlineIcon color="error" />
+              <span style={{ marginLeft: 5, color: colors.chevelleRed }}>
+                {keywordPostError.data.error}
+              </span>
+            </div>
           </div>
-          <CustomEaasiButton
-            onClick={retryKeywords}
-            variant="contained"
-            color="primary"
+          <div
+            style={{ display: "flex", justifyContent: "center", padding: 5 }}
           >
-            <span css={textStyles.buttonText}>Retry</span>
-          </CustomEaasiButton>
-        </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CustomKeywordButton
+                onClick={retryKeywords}
+                variant="contained"
+                color="primary"
+              >
+                <span css={textStyles.buttonText}>Retry</span>
+              </CustomKeywordButton>
+            </div>
+          </div>
+        </Fragment>
       );
     }
   }, [keywordStatus]);

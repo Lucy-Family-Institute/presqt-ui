@@ -25,7 +25,7 @@ function* getKeywords(action) {
   }
 }
 
-/** Get Keywords **/
+/** Post Keywords **/
 export function* watchSendKeywords() {
   yield takeEvery(actionCreators.keywords.sendKeywords, sendKeywords);
 }
@@ -38,9 +38,9 @@ function* sendKeywords(action) {
       action.payload.targetToken,
       action.payload.keywords
     );
-    console.log(response.data)
     yield put(actionCreators.keywords.sendKeywordsSuccess(response.data));
-  } catch (error) {
+  }
+  catch (error) {
     yield put(
       actionCreators.keywords.sendKeywordsFailure(
         error.response.data,

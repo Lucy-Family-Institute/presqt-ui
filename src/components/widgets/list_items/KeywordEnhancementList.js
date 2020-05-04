@@ -11,12 +11,11 @@ import colors from "../../../styles/colors";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
 }));
 
-export default function CheckboxList({ keywords, header, setNewKeywords }) {
+export default function KeywordEnhancementList({ keywords, header, setNewKeywords }) {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
 
@@ -26,10 +25,10 @@ export default function CheckboxList({ keywords, header, setNewKeywords }) {
 
     if (currentIndex === -1) {
       newChecked.push(value);
-    } else {
+    }
+    else {
       newChecked.splice(currentIndex, 1);
     }
-
     setChecked(newChecked);
     setNewKeywords(newChecked);
   };
@@ -39,7 +38,7 @@ export default function CheckboxList({ keywords, header, setNewKeywords }) {
       className={classes.root}
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
-          SciGraph has suggested the following keywords:
+          {header}
         </ListSubheader>
       }
     >

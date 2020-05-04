@@ -8,9 +8,9 @@ import textStyles from "../../styles/text";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 import KeywordList from "../widgets/list_items/KeywordsList";
-import CheckboxList from "../widgets/list_items/KeywordEnhancementList";
+import KeywordEnhancementList from "../widgets/list_items/KeywordEnhancementList";
 
-const CustomEaasiButton = withStyles({
+const CustomKeywordButton = withStyles({
   root: {
     backgroundColor: colors.presqtBlue,
     "&:hover": {
@@ -40,18 +40,18 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         resources={keywords.keywords}
         header={`The following keywords are currently assosciated with ${selectedResource.title}:`}
       />
-      <CheckboxList
+      <KeywordEnhancementList
         keywords={keywords.enhanced_keywords}
-        header={`SciGraph has suggested the following keywords:`}
+        header={`Select from the following SciGraph keywords to enhance your resource:`}
         setNewKeywords={setNewKeywords}
       />
-      <CustomEaasiButton
+      <CustomKeywordButton
         onClick={enhanceKeywords}
         variant="contained"
         color="primary"
       >
         <span css={textStyles.buttonText}>Enhance Keywords</span>
-      </CustomEaasiButton>
+      </CustomKeywordButton>
     </Fragment>
   );
 }

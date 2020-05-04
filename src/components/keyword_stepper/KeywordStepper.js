@@ -42,6 +42,7 @@ export default function KeywordStepper({}) {
   const [activeStep, setActiveStep] = useState(0);
   const [newKeywords, setNewKeywords] = useState([]);
 
+  // Get appropriate Component
   function getStepContent(step) {
     switch (step) {
       case 0: {
