@@ -98,11 +98,15 @@ export default function AvailableConnections() {
 
   const error_statuses = status_list.filter(stat => stat.status !== "ok");
 
-  const status_formatted = error_statuses
-    .map(stat => <p
-      title={stat.detail}
-      css={{color: colors.chevelleRed}}
-    >Warning! {stat.readable_name} could not be reached because of a "{stat.status}" error.</p>);
+  const status_formatted = error_statuses.map(stat =>
+      <p
+        key={stat.readable_name}
+        title={stat.detail}
+        css={{color: colors.chevelleRed}}
+      >
+        Warning! {stat.readable_name} could not be reached because of a "{stat.status}" error.
+      </p>
+  );
 
   const status_is_bad = name => {
     for (const datum of error_statuses) {
@@ -169,7 +173,7 @@ export default function AvailableConnections() {
         </div>
 
       ))}
-      <p>{status_formatted}</p>
+      <div>{status_formatted}</div>
     </div>
   );
 }

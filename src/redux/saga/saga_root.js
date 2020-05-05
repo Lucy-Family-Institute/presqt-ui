@@ -20,6 +20,7 @@ import { watchLoadServices, watchLoadService } from './services';
 import {watchEaasiProposal, watchEaasiSuccess} from "./eaasi";
 import { watchLoadStatuses } from "./status";
 import { watchGetKeywords, watchSendKeywords } from "./keywords";
+import {watchSubmitBagitFile} from "./bagit";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -42,9 +43,10 @@ export default function* rootSaga() {
     watchSubmitIssue(),
     watchLoadServices(),
     watchLoadService(),
-    watchEaasiProposal(),
     watchEaasiSuccess(),
+    watchEaasiProposal(),
     watchGetKeywords(),
-    watchSendKeywords()
+    watchSendKeywords(),
+    watchSubmitBagitFile()
   ]);
 }

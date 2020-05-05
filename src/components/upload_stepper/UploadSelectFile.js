@@ -36,26 +36,26 @@ export default function UploadSelectFile({selectedFile, setSelectedFile}) {
 
   return (
     <div css={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-        <div className={classes.root}>
-          <input
-            accept="application/zip"
-            className={classes.input}
-            id="contained-button-file"
-            type="file"
-            onChange={event => setSelectedFile(event.target.files[0])}
-          />
-          <label htmlFor="contained-button-file">
-            <CustomButton
-              variant="contained"
-              component="span"
-              color="primary"
-              endIcon={<CloudUploadIcon />}
-              onAnimationEnd={(event) => {event.stopPropagation()}}
-            >
-              <span css={textStyles.buttonText}>Select File</span>
-            </CustomButton>
-          </label>
-        </div>
+      <div className={classes.root}>
+        <input
+          accept="application/zip"
+          className={classes.input}
+          id="contained-button-file"
+          type="file"
+          onChange={event => setSelectedFile(event.target.files[0])}
+        />
+        <label htmlFor="contained-button-file">
+          <CustomButton
+            variant="contained"
+            component="span"
+            color="primary"
+            endIcon={<CloudUploadIcon />}
+            onAnimationEnd={(event) => {event.stopPropagation()}}
+          >
+            <span css={textStyles.buttonText}>Select File</span>
+          </CustomButton>
+        </label>
+      </div>
       <span css={{color: '#696969'}}>{selectedFile ? selectedFile.name : null}</span>
     </div>
   )

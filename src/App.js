@@ -19,6 +19,7 @@ import TransferModal from "./components/modals/TransferModal";
 import IssueModal from "./components/modals/IssueModal";
 import EaasiModal from "./components/modals/EaasiModal";
 import KeywordModal from "./components/modals/KeywordModal";
+import BagitModal from "./components/modals/BagitModal";
 
 const styles = {
   app: css({
@@ -59,6 +60,7 @@ function App() {
         <DownloadModal />
         <TransferModal />
         <IssueModal />
+        <BagitModal />
         <EaasiModal />
         <KeywordModal />
       </div>

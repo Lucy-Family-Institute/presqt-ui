@@ -83,9 +83,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
             text={`New resource will be written in BagIt format as a ZIP file.`} />
             : null
           }
-
         </List>
-
       </div>
       <CustomUploadButton
         onClick={submitUpload}

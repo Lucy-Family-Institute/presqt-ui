@@ -12,7 +12,7 @@ import DialogTitle from "./modalHeader";
 import Spinner from "../widgets/spinners/Spinner";
 import useDefault from "../../hooks/useDefault";
 
-export default function TokenModal() {
+export default function IssueModal() {
   const dispatch = useDispatch();
 
   const issueModalDisplay = useSelector(state => state.issueModalDisplay);
