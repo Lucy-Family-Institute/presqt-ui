@@ -38,7 +38,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
     <Fragment>
       <KeywordList
         resources={keywords.keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
-        header={`The following keywords are currently assosciated with ${selectedResource.title}:`}
+        header={`The following keywords are currently associated with ${selectedResource.title}:`}
       />
       <KeywordEnhancementList
         keywords={keywords.enhanced_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
