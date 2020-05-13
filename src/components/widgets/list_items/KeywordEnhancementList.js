@@ -43,7 +43,8 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
 
     if (currentIndex === -1) {
       newChecked.push(value);
-    } else {
+    }
+    else {
       newChecked.splice(currentIndex, 1);
     }
     setChecked(newChecked);
@@ -53,9 +54,9 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
   const selectAllKeywords = () => {
     // Clear the values and then select them all
     setChecked([]);
-    console.log(keywords);
     var newChecked = [...checked];
-    for (var i = 0; i <= keywords.length; i++) {
+    
+    for (var i = 0; i < keywords.length; i++) {
       newChecked.push(keywords[i]);
     }
     setChecked(newChecked);
@@ -65,7 +66,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
   const deselectAllKeywords = () => {
     setChecked([]);
     setNewKeywords([]);
-  }
+  };
 
   return (
     <List
@@ -108,7 +109,9 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
         variant="contained"
         color="primary"
       >
-        <span css={textStyles.buttonText}>{!newKeywords.length ? "Select All Keywords" : "Deselect All Keywords"}</span>
+        <span css={textStyles.buttonText}>
+          {!newKeywords.length ? "Select All" : "Deselect All"}
+        </span>
       </CustomKeywordButton>
     </List>
   );

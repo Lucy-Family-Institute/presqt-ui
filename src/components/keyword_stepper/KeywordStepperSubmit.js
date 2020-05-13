@@ -29,7 +29,6 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
   const keywords = useSelector((state) => state.keywords);
 
   const enhanceKeywords = () => {
-    console.log(newKeywords);
     dispatch(actionCreators.keywords.sendKeywords(selectedResource, targetToken, newKeywords));
     
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
