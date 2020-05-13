@@ -46,6 +46,7 @@ export default function TargetResourceBrowser() {
       : dispatch(actionCreators.resources.openContainer(resource));
 
     dispatch(actionCreators.resources.selectResource(resource, targetToken));
+    dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
   };
 
   /**

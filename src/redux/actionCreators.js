@@ -103,6 +103,10 @@ export const actionCreators = createActions({
         SWITCH_TARGET: undefined,
         CLEAR_TARGET: undefined
     },
+    STATUSES: {
+        LOAD_STATUSES: undefined,
+        LOAD_STATUSES_SUCCESS: undefined,
+      },
     SERVICES: {
         LOAD_SERVICES: undefined,
         LOAD_SERVICES_SUCCESS: undefined,
@@ -128,5 +132,24 @@ export const actionCreators = createActions({
         GET_EAASI_PROPOSAL_SUCCESS: (data, status) => ({data, status}),
         GET_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
         CLEAR_EAASI_DATA: undefined
+    },
+    KEYWORDS: {
+        DISPLAY_KEYWORD_MODAL: undefined,
+        HIDE_KEYWORD_MODAL: undefined,
+        GET_KEYWORDS: (resource, targetToken) => ({ resource, targetToken }),
+        GET_KEYWORDS_SUCCESS: undefined,
+        GET_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
+        SEND_KEYWORDS: (resource, targetToken, keywords) => ({ resource, targetToken, keywords }),
+        SEND_KEYWORDS_SUCCESS: undefined,
+        SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
+        CLEAR_KEYWORD_DATA: undefined
+    },
+    BAGIT: {
+        DISPLAY_BAGIT_MODAL: undefined,
+        HIDE_BAGIT_MODAL: undefined,
+        SUBMIT_BAGIT_FILE: (file) => ({file}),
+        SUBMIT_BAGIT_FILE_SUCCESS: (data) => ({data}),
+        SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
+        CLEAR_BAGIT_DATA: undefined
     }
 });

@@ -2,7 +2,7 @@
 import Button from "@material-ui/core/Button/Button";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import React, {Fragment, useRef, useState,} from "react";
+import React, { Fragment, useRef, useState } from "react";
 import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -11,11 +11,11 @@ import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
-import {useSelector} from "react-redux";
-import {actionCreators} from "../../redux/actionCreators";
+import { useSelector } from "react-redux";
+import { actionCreators } from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
 import textStyles from "../../styles/text";
-import {jsx} from "@emotion/core";
+import { jsx } from "@emotion/core";
 
 const SplitActionButton = withStyles({
   root: {
@@ -27,9 +27,9 @@ const SplitActionButton = withStyles({
     boxShadow: "none",
     "&:hover": {
       boxShadow: "none",
-      backgroundColor: "#c96d02"
-    }
-  }
+      backgroundColor: "#c96d02",
+    },
+  },
 })(Button);
 
 const SplitArrowButton = withStyles({
@@ -44,38 +44,41 @@ const SplitArrowButton = withStyles({
     boxShadow: "none",
     "&:hover": {
       boxShadow: "none",
-      backgroundColor: "#c96d02"
-    }
-  }
+      backgroundColor: "#c96d02",
+    },
+  },
 })(Button);
 
 const ServicesButtonGroup = withStyles({
   root: {
-    boxShadow: "none"
+    boxShadow: "none",
   },
   groupedContainedPrimary: {
     "&:not(:last-child)": {
-      borderRight: "1px solid white"
-    }
-  }
+      borderRight: "1px solid white",
+    },
+  },
 })(ButtonGroup);
 
 export default function ServicesSplitButton() {
   const dispatch = useDispatch();
 
-  const services = useSelector(state => state.availableServices);
+  const services = useSelector((state) => state.availableServices);
+  const keywords = useSelector((state) => state.keywords);
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [label, setLabel] = useState('Services');
+  const [label, setLabel] = useState("Services");
 
   const handleClick = () => {
     if (selectedIndex !== null) {
       dispatch(actionCreators.services.selectService(services[selectedIndex]));
 
-      if (services[selectedIndex].name === 'eaasi'){
-        dispatch(actionCreators.eaasi.displayEaasiModal())
+      if (services[selectedIndex].name === "eaasi") {
+        dispatch(actionCreators.eaasi.displayEaasiModal());
+      } else if (services[selectedIndex].name === "keyword_enhancement") {
+        dispatch(actionCreators.keywords.displayKeywordModal());
       }
     }
   };
@@ -83,14 +86,14 @@ export default function ServicesSplitButton() {
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
     setOpen(false);
-    setLabel(services[index].readable_name)
+    setLabel(services[index].readable_name);
   };
 
   const handleToggle = () => {
     setOpen(!open);
   };
 
-  const handleClose = event => {
+  const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -99,49 +102,66 @@ export default function ServicesSplitButton() {
 
   return (
     <Fragment>
-        <ServicesButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-          <SplitActionButton
-            onClick={handleClick}
+      <ServicesButtonGroup
+        variant="contained"
+        color="primary"
+        ref={anchorRef}
+        aria-label="split button"
+      >
+        <SplitActionButton onClick={handleClick}>
+          <span css={textStyles.buttonText}>{label}</span>
+        </SplitActionButton>
+        <SplitArrowButton
+          size="small"
+          aria-controls={open ? "split-button-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-label="services"
+          aria-haspopup="menu"
+          onClick={handleToggle}
+        >
+          <ArrowDropDownIcon />
+        </SplitArrowButton>
+      </ServicesButtonGroup>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "center top" : "center bottom",
+            }}
           >
-            <span css={textStyles.buttonText}>{label}</span>
-          </SplitActionButton>
-          <SplitArrowButton
-            size="small"
-            aria-controls={open ? 'split-button-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-label="services"
-            aria-haspopup="menu"
-            onClick={handleToggle}
-          >
-            <ArrowDropDownIcon />
-          </SplitArrowButton>
-        </ServicesButtonGroup>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-              }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu">
-                    {services.map((service, index) => (
-                      <MenuItem
-                        key={service.readable_name}
-                        selected={index === selectedIndex}
-                        onClick={event => handleMenuItemClick(event, index)}
-                      >
-                        <span css={textStyles.buttonText}>{service.readable_name}</span>
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList id="split-button-menu">
+                  {services.map((service, index) => (
+                    <MenuItem
+                      key={service.readable_name}
+                      selected={index === selectedIndex}
+                      onClick={(event) => handleMenuItemClick(event, index)}
+                      disabled={
+                        service.name === "keyword_enhancement" && !keywords
+                          ? true
+                          : false
+                      }
+                    >
+                      <span css={textStyles.buttonText}>
+                        {service.readable_name}
+                      </span>
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </Fragment>
   );
 }
