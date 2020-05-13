@@ -25,7 +25,6 @@ export function postResourceTransfer(destinationTarget, destinationToken, source
         'presqt-destination-token': destinationToken,
         'presqt-source-token': sourceToken,
         'presqt-file-duplicate-action': duplicateAction,
-        'presqt-keyword-action': 'enhance',
         'Content-Type': 'application/json'
       }
     }
