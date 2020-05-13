@@ -29,6 +29,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
   const keywords = useSelector((state) => state.keywords);
 
   const enhanceKeywords = () => {
+    console.log(newKeywords);
     dispatch(actionCreators.keywords.sendKeywords(selectedResource, targetToken, newKeywords));
     
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -44,6 +45,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         keywords={keywords.enhanced_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
         header={`Select from the following SciGraph keywords to enhance your resource:`}
         setNewKeywords={setNewKeywords}
+        newKeywords={newKeywords}
       />
       <CustomKeywordButton
         onClick={enhanceKeywords}

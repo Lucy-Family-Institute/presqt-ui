@@ -8,6 +8,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import colors from "../../../styles/colors";
 import { GridList } from "@material-ui/core";
+import Button from "@material-ui/core/Button/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
+import textStyles from "../../../styles/text";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,13 +18,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   checked: {
-    '&&:hover': {
-      backgroundColor: 'transparent'
-    }
+    "&&:hover": {
+      backgroundColor: "transparent",
+    },
   },
 }));
 
-export default function KeywordEnhancementList({keywords, header, setNewKeywords}) {
+const CustomKeywordButton = withStyles({
+  root: {
+    backgroundColor: colors.presqtBlue,
+    "&:hover": {
+      backgroundColor: "#0a4996",
+    },
+  },
+})(Button);
+
+export default function KeywordEnhancementList({keywords, header, setNewKeywords, newKeywords}) {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
 
@@ -38,6 +50,23 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
     setNewKeywords(newChecked);
   };
 
+  const selectAllKeywords = () => {
+    // Clear the values and then select them all
+    setChecked([]);
+    console.log(keywords);
+    var newChecked = [...checked];
+    for (var i = 0; i <= keywords.length; i++) {
+      newChecked.push(keywords[i]);
+    }
+    setChecked(newChecked);
+    setNewKeywords(newChecked);
+  };
+
+  const deselectAllKeywords = () => {
+    setChecked([]);
+    setNewKeywords([]);
+  }
+
   return (
     <List
       className={classes.root}
@@ -47,7 +76,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
         </ListSubheader>
       }
     >
-      <GridList cellHeight={50} style={{marginLeft: 15}}>
+      <GridList cellHeight={50} style={{ marginLeft: 15, paddingBottom: 10 }}>
         {keywords.map((value, index) => {
           const labelId = `checkbox-list-label-${value}`;
           return (
@@ -74,6 +103,13 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
           );
         })}
       </GridList>
+      <CustomKeywordButton
+        onClick={!newKeywords.length ? selectAllKeywords : deselectAllKeywords}
+        variant="contained"
+        color="primary"
+      >
+        <span css={textStyles.buttonText}>{!newKeywords.length ? "Select All Keywords" : "Deselect All Keywords"}</span>
+      </CustomKeywordButton>
     </List>
   );
 }
