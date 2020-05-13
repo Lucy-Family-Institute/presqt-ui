@@ -19,18 +19,11 @@ const CustomKeywordButton = withStyles({
   },
 })(Button);
 
-export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, newKeywords }) {
-  const dispatch = useDispatch();
-
+export default function KeywordStepperOptions({ setActiveStep, setNewKeywords, newKeywords }) {
   const selectedResource = useSelector((state) => state.selectedResource);
-  const targetToken = useSelector((state) =>
-    state.selectedTarget ? state.apiTokens[state.selectedTarget.name] : null
-  );
   const keywords = useSelector((state) => state.keywords);
 
-  const enhanceKeywords = () => {
-    dispatch(actionCreators.keywords.sendKeywords(selectedResource, targetToken, newKeywords));
-    
+  const nextStep = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -47,12 +40,12 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         newKeywords={newKeywords}
       />
       <CustomKeywordButton
-        onClick={enhanceKeywords}
+        onClick={nextStep}
         variant="contained"
         color="primary"
         disabled={!newKeywords.length}
       >
-        <span css={textStyles.buttonText}>Enhance Keywords</span>
+        <span css={textStyles.buttonText}>Next</span>
       </CustomKeywordButton>
     </Fragment>
   );

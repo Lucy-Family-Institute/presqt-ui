@@ -8,8 +8,9 @@ import UploadStepConnector from "../upload_stepper/UploadStepConnector";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import KeywordStepperSubmit from "./KeywordStepperSubmit";
+import KeywordStepperOptions from "./KeywordStepperOptions";
 import KeywordStepperResults from "./KeywordStepperResults";
+import KeywordEnhanceButton from './KeywordEnhanceButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +36,7 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-const steps = ["Keywords and Potential Enhancements", "Updated Keywords"];
+const steps = ["Keywords and Potential Enhancements", "Enhance Keywords", "Updated Keywords"];
 
 export default function KeywordStepper({}) {
   const classes = useStyles();
@@ -47,7 +48,7 @@ export default function KeywordStepper({}) {
     switch (step) {
       case 0: {
         return (
-          <KeywordStepperSubmit
+          <KeywordStepperOptions
             setActiveStep={setActiveStep}
             setNewKeywords={setNewKeywords}
             newKeywords={newKeywords}
@@ -55,6 +56,9 @@ export default function KeywordStepper({}) {
         );
       }
       case 1: {
+        return <KeywordEnhanceButton setActiveStep={setActiveStep} newKeywords={newKeywords}/>
+      }
+      case 2: {
         return <KeywordStepperResults newKeywords={newKeywords} />;
       }
     }
