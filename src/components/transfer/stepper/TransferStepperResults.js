@@ -13,9 +13,10 @@ import TransferRetryButton from "../TransferRetryButton";
 import getError from "../../../utils/getError";
 import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
+import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 
 
-export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
+export default function TransferStepperResults({setActiveStep, selectedDuplicate, selectedKeywordAction}) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -56,7 +57,13 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               <SuccessListItem message={transferData.message}/>
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}
-            </List>
+          </List>
+            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'enhance'
+              ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
+              : null}
+            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'suggest'
+              ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been suggested for this project:" />
+              : null}
             {transferData.failed_fixity.length > 0
               ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' /> : null}
             {transferData.resources_ignored.length > 0
@@ -141,6 +148,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               <TransferRetryButton
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
+                selectedKeywordAction={selectedKeywordAction}
               />
             </span>
           </div>
