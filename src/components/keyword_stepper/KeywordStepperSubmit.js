@@ -44,6 +44,7 @@ export default function KeywordStepperSubmit({ setActiveStep, setNewKeywords, ne
         keywords={keywords.enhanced_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
         header={`Select from the following SciGraph keywords to enhance your resource:`}
         setNewKeywords={setNewKeywords}
+        newKeywords={newKeywords}
       />
       <CustomKeywordButton
         onClick={enhanceKeywords}
