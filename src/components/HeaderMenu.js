@@ -64,7 +64,7 @@ export default function HeaderMenu() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        ReadTheDocs
+        Documentation
       </a>
     </div>
   );
