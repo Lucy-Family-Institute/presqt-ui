@@ -45,7 +45,8 @@ const parameterTranslator = {
   "title": "Title",
   "general": "No Search Filter",
   "author": "Author",
-  "id": "ID"
+  "id": "ID",
+  "keywords": "Keywords"
 }
 
 export default function TargetSearch() {
