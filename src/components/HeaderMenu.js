@@ -54,6 +54,18 @@ export default function HeaderMenu() {
       >
         BagIt Tool
       </a>
+      <a
+        css={[
+          textStyles.globalNav,
+          { textDecoration: "none", marginLeft: 25, cursor: "pointer" },
+          mainStyles.hoverOrFocusTransform,
+        ]}
+        href="https://presqt.readthedocs.io/en/latest/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Documentation
+      </a>
     </div>
   );
 }

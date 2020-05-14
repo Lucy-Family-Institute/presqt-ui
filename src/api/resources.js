@@ -19,7 +19,7 @@ export function getTargetResourcesSearch(target, targetToken, search, searchPara
       headers: { 'presqt-source-token': targetToken }
     });
   }
-  else if (searchParameter === 'title' || searchParameter === 'author') {
+  else if (searchParameter === 'title' || searchParameter === 'author' || searchParameter === 'keywords') {
     const searchValueNoSpaces = search.replace(/ /g, "+");
     return axios.get(`${apiURLBase}targets/${target}/resources?${searchParameter}=${searchValueNoSpaces}`, {
       headers: { 'presqt-source-token': targetToken }
