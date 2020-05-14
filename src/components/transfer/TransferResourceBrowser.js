@@ -63,6 +63,7 @@ export default function TransferResourceBrowser() {
   };
 
   useEffect(() => {
+    let new_message_css = [textStyles.body, { marginTop: 15 }]
     // Display Resources
     if (transferTargetResources && transferTargetResources.length > 0) {
       setMessage(resourceHierarchy(
@@ -81,12 +82,13 @@ export default function TransferResourceBrowser() {
     }
     // Collection error occurred
     else if (collectionError){
-      setMessageCss([textStyles.body, { marginTop: 15 }, textStyles.cubsRed]);
+      new_message_css = [textStyles.body, { marginTop: 15 }, textStyles.cubsRed];
       setMessage(`${collectionError.data}`);
     }
     else {
       setMessage('');
     }
+    setMessageCss(new_message_css)
   }, [transferTargetResources, collectionError]);
 
   return (
