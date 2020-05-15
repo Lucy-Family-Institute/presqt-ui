@@ -10,6 +10,7 @@ import List from "@material-ui/core/List";
 import IconListItem from "../../widgets/list_items/IconListItem";
 import EditIcon from "@material-ui/icons/Edit";
 import WarningIcon from '@material-ui/icons/Warning';
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 
 const CustomTransferButton = withStyles({
@@ -26,7 +27,7 @@ const CustomTransferButton = withStyles({
  * Component responsible for rendering the transfer button in the transfer stepper and passing the
  * selected file to the Transfer API endpoint
  **/
-export default function TransferStepperTransferButton({handleNext, selectedDuplicate}) {
+export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -47,6 +48,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       transferDestinationToken,
       sourceResource,
       selectedDuplicate,
+      selectedKeywordAction,
       selectedTransferResource,
       selectedTarget.name,
       targetToken
@@ -82,6 +84,37 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             icon={<EditIcon />}
             text="Write or edit File Transfer Service Metadata file at the top level."
           />
+          {/* Keyword Statement GitHub */
+            (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'enhance'
+              ? <IconListItem
+                icon={<VpnKeyIcon />}
+                text="Enhanced Keywords on GitHub will be stored as 'topics'." />
+              : null
+          }
+
+          {/* Keyword Statement OSF */
+            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'enhance'
+            ? <IconListItem
+              icon={<VpnKeyIcon />}
+              text="Enhanced Keywords on OSF will be stored as 'tags'." />
+            : null
+          }
+
+          {/* Keyword Statement GitLab */
+            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'enhance'
+            ? <IconListItem
+              icon={<VpnKeyIcon />}
+              text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
+            : null
+          }
+          
+          {/* Keyword Statement Zenodo */
+            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'enhance'
+            ? <IconListItem
+              icon={<VpnKeyIcon />}
+              text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
+            : null
+        }
 
           {/* Github Statement */
             selectedTarget.name === 'github' || transferDestinationTarget === 'github'

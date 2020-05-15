@@ -14,6 +14,7 @@ import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import DuplicateActionRadioButtons from "../../widgets/buttons/duplicateActionRadioButtons";
+import KeywordActionRadioButton from "../../widgets/buttons/KeywordActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
 import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
@@ -51,6 +52,7 @@ const steps = [
   'Input destination target token',
   'Select resource or select nothing to create a new project',
   'Select the action to occur when a duplicate resource is found',
+  'Select the keyword action to occur',
   'Initiate transfer',
   'Results'
 ];
@@ -69,6 +71,7 @@ export default function TransferStepper() {
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
+  const [selectedKeywordAction, setSelectedKeywordAction] = useState('enhance');
 
   /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
@@ -124,15 +127,22 @@ export default function TransferStepper() {
         />
       }
       case 4: {
+        return <KeywordActionRadioButton
+          selectedKeywordAction={selectedKeywordAction}
+          setSelectedKeywordAction={setSelectedKeywordAction} />
+      }
+      case 5: {
         return <TransferStepperTransferButton
           handleNext={handleNext}
           selectedDuplicate={selectedDuplicate}
+          selectedKeywordAction={selectedKeywordAction}
         />
       }
-      case 5: {
+      case 6: {
         return <TransferStepperResults
           setActiveStep={setActiveStep}
           selectedDuplicate={selectedDuplicate}
+          selectedKeywordAction={selectedKeywordAction}
         />
       }
     }
@@ -159,19 +169,19 @@ export default function TransferStepper() {
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    {index !== 5
+                    {index !== 6
                     ? <StepperBackButton
                         handleBack={handleBack}
                         activeStep={activeStep}
                       />
                     : null
                     }
-                    {index === 4 
+                    {index === 5 
                       ? <TransferStartOverButton
                         setActiveStep={setActiveStep}
                         step={index}
                       />
-                      : index !== 5
+                      : index !== 6
                         ? <TransferStepperNextButton
                         handleNext={handleNext}
                         activeStep={activeStep}
