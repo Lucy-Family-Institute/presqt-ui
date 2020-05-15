@@ -58,18 +58,22 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}
           </List>
+            {transferData.failed_fixity.length > 0
+              ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' />
+              : null}
+            {transferData.resources_ignored.length > 0
+              ? <WarningList resources={transferData.resources_ignored} header='The following duplicate resources were ignored:' />
+              : null}
+            {transferData.resources_updated.length > 0
+              ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:' />
+              : null}
+            
             {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'enhance'
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
               : null}
             {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'suggest'
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been suggested for this project:" />
               : null}
-            {transferData.failed_fixity.length > 0
-              ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' /> : null}
-            {transferData.resources_ignored.length > 0
-              ? <WarningList resources={transferData.resources_ignored} header='The following duplicate resources were ignored:'/> : null}
-            {transferData.resources_updated.length > 0
-              ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:'/> : null}
         </Grid>
       );
     }
