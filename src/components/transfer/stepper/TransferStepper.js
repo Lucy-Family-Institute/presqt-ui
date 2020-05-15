@@ -72,8 +72,11 @@ export default function TransferStepper() {
 
   /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
-    if (activeStep === 2 && collectionError) {
-      handleBack();
+    if (activeStep >= 2 && collectionError) {
+      dispatch(actionCreators.transfer.clearTransferToken());
+      dispatch(actionCreators.transfer.clearTransferTargetResources());
+      dispatch(actionCreators.transfer.stepInTransferModal(1));
+      setActiveStep(prevActiveStep => 1);
     }
   }, [apiOperationErrors]);
 
