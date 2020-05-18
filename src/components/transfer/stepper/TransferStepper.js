@@ -115,6 +115,7 @@ export default function TransferStepper() {
       case 1: {
         return <TransferStepperToken
           handleNext={handleNext}
+          activeStep={activeStep}
         />
       }
       case 2: {

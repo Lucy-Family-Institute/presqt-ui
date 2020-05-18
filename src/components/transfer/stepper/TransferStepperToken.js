@@ -16,7 +16,7 @@ const TokenTextField = withStyles({
   }
 })(SearchTextField);
 
-export default function TransferStepperToken({ handleNext }) {
+export default function TransferStepperToken({ handleNext, activeStep }) {
   const dispatch = useDispatch();
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
 
@@ -30,7 +30,7 @@ export default function TransferStepperToken({ handleNext }) {
       value={transferDestinationToken}
       onChange={event => dispatch(actionCreators.transfer.saveTransferToken(event.target.value))}
       // If the enter button is pressed (code 13), go to the next step.
-      onKeyDown={(event) => { event.keyCode === 13 && transferDestinationToken !== '' ? handleNext() : null }}
+      onKeyDown={(event) => { event.keyCode === 13 && transferDestinationToken !== ''  && activeStep === 1 ? handleNext() : null }}
       InputProps={{
         endAdornment: (
           <InputAdornment position='end'>
