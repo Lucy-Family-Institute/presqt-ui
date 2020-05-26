@@ -43,12 +43,12 @@ export default function DuplicateActionRadioButtons({selectedKeywordAction, setS
           <FormControlLabel
             value="enhance"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
-            label="Enhance"
+            label="Automatic Enhancement"
           />
           <FormControlLabel
             value="suggest"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
-            label="Suggest"
+            label="Manual Enhancement"
           />
         </RadioGroup>
       </FormControl>
