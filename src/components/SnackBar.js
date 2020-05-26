@@ -141,7 +141,7 @@ export default function SnackBar() {
       setSnackBarText(`Keywords Enhanced Successfully`);
       setSnackBarClass(classes.success);
     }
-    else if (keywordStatus === 'postFaiure') {
+    else if (keywordStatus === 'postFailure') {
       setSnackBarOpen(true);
       setSnackBarText('Keywords Failed to Enhance');
       setSnackBarClass(classes.failure);
