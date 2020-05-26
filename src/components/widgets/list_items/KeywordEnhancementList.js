@@ -99,7 +99,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
                   classes={{ root: classes.checked }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`${value}`} />
+              <ListItemText id={labelId} primary={`${value}`} disableTypography={true}/>
             </ListItem>
           );
         })}

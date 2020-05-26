@@ -20,15 +20,15 @@ export default function KeywordList({ resources, header }) {
       }
     >
       <GridList cellHeight={50} style={{marginLeft: 15}}>
-      {resources.map((resource) => (
-        <ListItem key={resource}>
-          <ListItemIcon>
-            <VpnKeyIcon />
-          </ListItemIcon>
-          <ListItemText primary={resource} />
-        </ListItem>
-      ))}
-        </GridList>
+        {resources.map((resource) => (
+          <ListItem key={resource}>
+            <ListItemIcon>
+              <VpnKeyIcon />
+            </ListItemIcon>
+            <ListItemText primary={resource} />
+          </ListItem>
+        ))}
+      </GridList>
     </List>
   );
 }
