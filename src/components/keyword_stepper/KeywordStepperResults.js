@@ -66,7 +66,7 @@ export default function KeywordStepperResults({ newKeywords }) {
       setStepContent(
         <Fragment>
           <List dense={true}>
-            <SuccessListItem message={"Keywords Enhanced Successfully!"}/>
+            <SuccessListItem message={"Keywords Enhanced Successfully."}/>
           </List>
           <KeywordList
             resources={updatedKeywords.keywords_added.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
