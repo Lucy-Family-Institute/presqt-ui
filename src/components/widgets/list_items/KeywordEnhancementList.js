@@ -35,7 +35,7 @@ const CustomKeywordButton = withStyles({
 
 export default function KeywordEnhancementList({keywords, header, setNewKeywords, newKeywords}) {
   const classes = useStyles();
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState(newKeywords);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
