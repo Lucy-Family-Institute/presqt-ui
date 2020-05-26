@@ -29,6 +29,7 @@ export default function SnackBar() {
   const githubStatus = useSelector(state => state.githubStatus);
   const githubIssueData = useSelector(state => state.githubIssueData);
   const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
+  const keywordStatus = useSelector(state => state.keywordStatus);
 
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarText, setSnackBarText] = useState('');
@@ -131,6 +132,21 @@ export default function SnackBar() {
     }
   }, [eaasiProposalStatus]);
 
+   /**
+   * KEYWORD SERVICE
+   **/ 
+  useEffect(() => {
+    if (keywordStatus === 'postSuccess') {
+      setSnackBarOpen(true);
+      setSnackBarText(`Keywords Enhanced Successfully`);
+      setSnackBarClass(classes.success);
+    }
+    else if (keywordStatus === 'postFaiure') {
+      setSnackBarOpen(true);
+      setSnackBarText('Keywords Failed to Enhance');
+      setSnackBarClass(classes.failure);
+    }
+  }, [keywordStatus]);
 
   return (
     <Snackbar
