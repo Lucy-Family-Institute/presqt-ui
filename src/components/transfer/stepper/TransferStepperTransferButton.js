@@ -89,7 +89,11 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
               ? <IconListItem
                 icon={<VpnKeyIcon />}
                 text="Enhanced Keywords on GitHub will be stored as 'topics'." />
-              : null
+              : (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'suggest'
+            ? <IconListItem
+                icon={<VpnKeyIcon />}
+                  text="Keywords you select to enhance on GitHub will be stored as 'topics'." />
+            : null
           }
 
           {/* Keyword Statement OSF */
@@ -97,6 +101,10 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on OSF will be stored as 'tags'." />
+            : (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'suggest'
+            ? <IconListItem
+                icon={<VpnKeyIcon />}
+                  text="Keywords you select to enhance on OSF will be stored as 'tags'." />
             : null
           }
 
@@ -105,6 +113,10 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
+            : (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'suggest'
+            ? <IconListItem
+                icon={<VpnKeyIcon />}
+                  text="Keywords you select to enhance on GitLab will be stored as 'tag_list'." />
             : null
           }
           
@@ -113,6 +125,10 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
+            : (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'suggest'
+            ? <IconListItem
+                icon={<VpnKeyIcon />}
+                  text="Keywords you select to enhance on Zenodo will be stored as 'keywords'." />
             : null
         }
 
