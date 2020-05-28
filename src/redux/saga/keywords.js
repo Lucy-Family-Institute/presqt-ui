@@ -1,6 +1,6 @@
 import { call, put, delay, takeEvery } from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
-import { getInitialKeywords, sendEnhancedKeywords } from "../../api/keywords";
+import { getInitialKeywords, sendEnhancedKeywords, sendEnhancedTransferKeywords } from "../../api/keywords";
 
 /** Get Keywords **/
 export function* watchGetKeywords() {
@@ -58,8 +58,9 @@ export function* watchSendTransferKeywords() {
 function* sendTransferKeywords(action) {
   try {
     const response = yield call(
-      sendEnhancedKeywords,
-      action.payload.resource,
+      sendEnhancedTransferKeywords,
+      action.payload.resource_id,
+      action.payload.targetName,
       action.payload.targetToken,
       action.payload.keywords
     );

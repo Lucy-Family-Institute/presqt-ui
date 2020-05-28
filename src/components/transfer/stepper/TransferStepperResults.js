@@ -71,9 +71,9 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   const suggestClick = () => {
     setActiveStep(activeStep + 1);
     // Update keywords at source
-    dispatch(actionCreators.keywords.sendTransferKeywords(sourceResource, targetToken, newKeywords, 'source'));
+    dispatch(actionCreators.keywords.sendTransferKeywords(transferData.source_resource_id, selectedTarget.name, targetToken, newKeywords, 'source'));
     // Update keywords at destination
-    dispatch(actionCreators.keywords.sendTransferKeywords(selectedTransferResource, transferDestinationToken, newKeywords, 'destination'));
+    dispatch(actionCreators.keywords.sendTransferKeywords(transferData.destination_resource_id, transferDestinationTarget, transferDestinationToken, newKeywords, 'destination'));
   };
 
   useEffect(() => {
