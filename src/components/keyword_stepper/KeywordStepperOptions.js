@@ -32,10 +32,11 @@ export default function KeywordStepperOptions({ setActiveStep, setNewKeywords, n
       <KeywordList
         resources={keywords.keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
         header={`The following keywords are currently associated with ${selectedResource.title}:`}
+        colNumber={2}
       />
       <KeywordEnhancementList
         keywords={keywords.enhanced_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
-        header={`Select from the following SciGraph keywords to enhance your resource:`}
+        header="Select from the following SciGraph keywords to enhance your resource:"
         setNewKeywords={setNewKeywords}
         newKeywords={newKeywords}
       />

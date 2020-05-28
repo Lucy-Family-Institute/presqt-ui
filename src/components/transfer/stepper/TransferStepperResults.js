@@ -14,20 +14,44 @@ import getError from "../../../utils/getError";
 import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
+import Button from "@material-ui/core/Button/Button";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import colors from "../../../styles/colors";
+import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    backgroundColor: colors.presqtBlue,
+    '&:hover': {
+      backgroundColor: '#0a4996',
+    },
+    "&:disabled": {
+      cursor: 'not-allowed',
+      pointerEvents: 'auto'
+    }
+  }
+}));
 
-export default function TransferStepperResults({setActiveStep, selectedDuplicate, selectedKeywordAction}) {
+export default function TransferStepperResults({activeStep, setActiveStep, selectedDuplicate, selectedKeywordAction}) {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const transferStatus = useSelector(state => state.transferStatus);
   const transferData = useSelector(state => state.transferData);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
+  const sourceResource = useSelector(state => state.selectedResource);
+  const selectedTransferResource = useSelector(state => state.selectedTransferResource);
 
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
+  const [newKeywords, setNewKeywords] = useState([]);
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -43,6 +67,14 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
       </div>
     </div>
   );
+
+  const suggestClick = () => {
+    setActiveStep(activeStep + 1);
+    // Update keywords at source
+    dispatch(actionCreators.keywords.sendTransferKeywords(sourceResource, targetToken, newKeywords, 'source'));
+    // Update keywords at destination
+    dispatch(actionCreators.keywords.sendTransferKeywords(selectedTransferResource, transferDestinationToken, newKeywords, 'destination'));
+  };
 
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
@@ -67,13 +99,26 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
             {transferData.resources_updated.length > 0
               ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:' />
               : null}
-            
             {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'enhance'
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
               : null}
             {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'suggest'
-              ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been suggested for this project:" />
+              ? <KeywordTransferSuggestList
+                setNewKeywords={setNewKeywords}
+                newKeywords={newKeywords}
+                />
               : null}
+          {selectedKeywordAction === 'suggest'
+            ? <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={suggestClick}
+            >
+              Enhance Keywords
+            </Button>
+            : null
+          }
         </Grid>
       );
     }
@@ -159,7 +204,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
         </Fragment>
       );
     }
-  }, [transferStatus, apiOperationErrors]);
+  }, [transferStatus, apiOperationErrors, newKeywords]);
 
   return (stepThreeContent);
 }

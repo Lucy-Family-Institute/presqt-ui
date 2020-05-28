@@ -1,13 +1,14 @@
 import { actionCreators } from "../actionCreators";
 import { trackAction, trackError, untrackAction } from "./helpers/tracking";
-import ActionButton from "../../components/widgets/buttons/ActionButton";
 
 export const keywordReducers = {
   initialState: {
     keywordModalDisplay: false,
     keywords: null,
     updatedKeywords: null,
-    keywordStatus: null
+    keywordStatus: null,
+    sourceKeywordStatus: null,
+    destinationKeywordStatus: null
   },
   reducers: {
     /**
@@ -62,7 +63,7 @@ export const keywordReducers = {
     /**
      * Make sendKeywords Request
      **/
-    [actionCreators.keywords.sendKeywords]: (state, action) => ({
+    [actionCreators.keywords.sendKeywords]: state => ({
       ...state,
       pendingAPIResponse: true,
       keywordStatus: 'postPending',
@@ -103,12 +104,60 @@ export const keywordReducers = {
       ),
     }),
     /**
+     * Make sendTransferKeywords Request
+     **/
+    [actionCreators.keywords.sendTransferKeywords]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      sourceKeywordStatus: 'postPending',
+      destinationKeywordStatus: 'postPending',
+      pendingAPIOperations: trackAction(
+        actionCreators.keywords.sendTransferKeywords,
+        state.pendingAPIOperations
+      ),
+    }),
+    /**
+     * Successful sendTransferKeywords Request
+     **/
+    [actionCreators.keywords.sendTransferKeywordsSuccess]: (state, action) => ({
+      ...state,
+      updatedKeywords: action.payload.data,
+      sourceKeywordStatus: action.payload.targetType === 'source' ? 'postSuccess' : state.sourceKeywordStatus,
+      destinationKeywordStatus: action.payload.targetType === 'destination' ? 'postSuccess' : state.destinationKeywordStatus,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.keywords.sendTransferKeywords,
+        state.pendingAPIOperations
+      )
+    }),
+    /**
+     * Unsuccessful sendTransferKeywords Request
+     **/
+    [actionCreators.keywords.sendTransferKeywordsFailure]: (state, action) => ({
+      ...state,
+      updatedKeywords: null,
+      sourceKeywordStatus: action.payload.targetType === 'source' ? 'postFailure' : state.sourceKeywordStatus,
+      destinationKeywordStatus: action.payload.targetType === 'destination' ? 'postFailure' : state.destinationKeywordStatus,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.keywords.sendTransferKeywords,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        `${action.payload.targetType}-${actionCreators.keywords.sendTransferKeywords.toString()}`,
+        state.apiOperationErrors
+      ),
+    }),
+    /**
      * Clear Keyword Modal data
      **/
     [actionCreators.keywords.clearKeywordData]: (state) => ({
       ...state,
       updatedKeywords: null,
-      keywordStatus: null
+      keywordStatus: null,
+      sourceKeywordStatus: null,
+      destinationKeywordStatus: null
     })
   },
 };

@@ -49,3 +49,31 @@ function* sendKeywords(action) {
     );
   }
 }
+
+/** Post Keywords After Transfer**/
+export function* watchSendTransferKeywords() {
+  yield takeEvery(actionCreators.keywords.sendTransferKeywords, sendTransferKeywords);
+}
+
+function* sendTransferKeywords(action) {
+  try {
+    const response = yield call(
+      sendEnhancedKeywords,
+      action.payload.resource,
+      action.payload.targetToken,
+      action.payload.keywords
+    );
+    yield put(actionCreators.keywords.sendTransferKeywordsSuccess(response.data, action.payload.targetType));
+  }
+  catch (error) {
+    yield put(
+      actionCreators.keywords.sendTransferKeywordsFailure(
+        error.response.data,
+        error.response.status,
+        action.payload.targetType
+      )
+    );
+  }
+}
+
+
