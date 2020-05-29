@@ -8,7 +8,9 @@ export const keywordReducers = {
     updatedKeywords: null,
     keywordStatus: null,
     sourceKeywordStatus: null,
-    destinationKeywordStatus: null
+    destinationKeywordStatus: null,
+    sourceUpdatedKeywords: null,
+    destinationUpdatedKeywords: null
   },
   reducers: {
     /**
@@ -122,6 +124,8 @@ export const keywordReducers = {
     [actionCreators.keywords.sendTransferKeywordsSuccess]: (state, action) => ({
       ...state,
       updatedKeywords: action.payload.data,
+      sourceUpdatedKeywords: action.payload.targetType === 'source' ? action.payload.data : state.sourceUpdatedKeywords,
+      destinationUpdatedKeywords: action.payload.targetType === 'destination' ? action.payload.data : state.destinationUpdatedKeywords,
       sourceKeywordStatus: action.payload.targetType === 'source' ? 'postSuccess' : state.sourceKeywordStatus,
       destinationKeywordStatus: action.payload.targetType === 'destination' ? 'postSuccess' : state.destinationKeywordStatus,
       pendingAPIResponse: false,
@@ -156,8 +160,6 @@ export const keywordReducers = {
       ...state,
       updatedKeywords: null,
       keywordStatus: null,
-      sourceKeywordStatus: null,
-      destinationKeywordStatus: null
     })
   },
 };

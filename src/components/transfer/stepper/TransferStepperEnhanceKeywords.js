@@ -19,7 +19,8 @@ import ListItem from "@material-ui/core/ListItem";
 export default function TransferStepperEnhanceKeywords({}) {
   const sourceKeywordStatus = useSelector((state) => state.sourceKeywordStatus);
   const destinationKeywordStatus = useSelector((state) => state.destinationKeywordStatus);
-  const updatedKeywords = useSelector((state) => state.updatedKeywords);
+  const sourceUpdatedKeywords = useSelector((state) => state.sourceUpdatedKeywords);
+  const destinationUpdatedKeywords = useSelector((state) => state.destinationUpdatedKeywords);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
@@ -34,13 +35,12 @@ export default function TransferStepperEnhanceKeywords({}) {
   const sourceKeywordPostError = getError(`source-${actionCreators.keywords.sendTransferKeywords}`);
   const destinationKeywordPostError = getError(`destination-${actionCreators.keywords.sendTransferKeywords}`);
 
-
   const [content, setContent] = useState(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         Keyword Enhancement in progress.
       </div>
-      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+      <div css={{paddingBottom: 15, display: 'flex', verticalAlign: 'middle', textAlign: 'center', justifyContent: 'center'}}>
         If you refresh or leave the page the keyword enhancement will still continue.
       </div>
       <Spinner />
@@ -49,38 +49,33 @@ export default function TransferStepperEnhanceKeywords({}) {
 
   useEffect(() => {
     if (sourceKeywordStatus !== "postPending" && destinationKeywordStatus !== "postPending") {
-
-      let keywordHeader = null;
-      if (sourceKeywordStatus === 'postSuccess' && destinationKeywordStatus === 'postSuccess') {
-        keywordHeader = `The following keywords were added to ${selectedTarget.readable_name} and ${targetReadableName}:`
-      }
-      else if (sourceKeywordStatus === 'postFailure' && destinationKeywordStatus === 'postFailure') {
-        keywordHeader = null;
-      }
-      else if (sourceKeywordStatus === 'postFailure') {
-        keywordHeader = `The following keywords were added to ${targetReadableName}:`
-      }
-      else {
-        keywordHeader = `The following keywords were added to ${selectedTarget.readable_name}:`
-      }
-
       setContent(
         <Fragment>
           <List dense={true}
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
-                Keyword Enhancement Results
+               Source Keyword Enhancement Results
               </ListSubheader>
             }
           >
             {
               sourceKeywordStatus === "postSuccess"
-              ? <SuccessListItem message={"Source Keywords Enhanced Successfully!"}/>
-              : sourceKeywordStatus === "postFailure"
+                ?
+                <Fragment>
+                  <SuccessListItem message={`${selectedTarget.readable_name} Keywords Enhanced Successfully!`}/>
+                  <KeywordList
+                    resources={sourceUpdatedKeywords.keywords_added.sort(function (stringA, stringB) {
+                      return stringA.localeCompare(stringB)
+                    })}
+                    header={`The following keywords were added to ${selectedTarget.readable_name}:`}
+                    colNumber={1}
+                  />
+                </Fragment>
+                : sourceKeywordStatus === "postFailure"
                 ?
                   <ListItem>
                     <ListItemIcon>
-                      <ErrorOutlineIcon color="error" />
+                      <ErrorOutlineIcon color="error"/>
                     </ListItemIcon>
                     <ListItemText
                       primary={sourceKeywordPostError.data.error}
@@ -88,34 +83,41 @@ export default function TransferStepperEnhanceKeywords({}) {
                   </ListItem>
                 : null
             }
+          </List>
+          <List
+            dense={true}
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Destination Keyword Enhancement Results
+              </ListSubheader>
+            }
+          >
             {
               destinationKeywordStatus === "postSuccess"
-                ? <SuccessListItem message={"Destination Keywords Enhanced Successfully!"}/>
-                : destinationKeywordStatus === "postFailure"
-                  ?
-                    <ListItem>
-                      <ListItemIcon>
-                        <ErrorOutlineIcon color="error" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={destinationKeywordPostError.data.error}
-                      />
-                    </ListItem>
-                  : null
+                ? <Fragment>
+                    <SuccessListItem message={`${targetReadableName} Keywords Enhanced Successfully!`}/>
+                    <KeywordList
+                      // resources={SubtractArray(destinationUpdatedKeywords.final_keywords, destinationUpdatedKeywords.initial_keywords.keywords).sort(function (stringA, stringB) {
+                      resources={destinationUpdatedKeywords.final_keywords.filter(x => !destinationUpdatedKeywords.initial_keywords.keywords.includes(x)).sort(function (stringA, stringB) {
+                        return stringA.localeCompare(stringB)
+                      })}
+                      header={`The following keywords were added to ${targetReadableName}:`}
+                      colNumber={1}
+                    />
+                  </Fragment>
+                : sourceKeywordStatus === "postFailure"
+                ?
+                  <ListItem>
+                    <ListItemIcon>
+                      <ErrorOutlineIcon color="error"/>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={destinationKeywordPostError.data.error}
+                    />
+                  </ListItem>
+                : null
             }
           </List>
-          {
-            keywordHeader
-            ? <KeywordList
-                resources={updatedKeywords.keywords_added.sort(function (stringA, stringB) {
-                  return stringA.localeCompare(stringB)
-                })}
-                header={keywordHeader}
-                colNumber={1}
-              />
-            : null
-          }
-
         </Fragment>
       );
     }

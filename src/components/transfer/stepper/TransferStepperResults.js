@@ -18,6 +18,9 @@ import Button from "@material-ui/core/Button/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../styles/colors";
 import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -45,8 +48,6 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
-  const sourceResource = useSelector(state => state.selectedResource);
-  const selectedTransferResource = useSelector(state => state.selectedTransferResource);
 
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
@@ -108,16 +109,18 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
                 newKeywords={newKeywords}
                 />
               : null}
-          {selectedKeywordAction === 'suggest'
+          {selectedKeywordAction === 'suggest' && transferData.enhanced_keywords.length > 0
             ? <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={suggestClick}
-            >
-              Enhance Keywords
-            </Button>
-            : null
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={suggestClick}
+              >
+                Enhance Keywords
+              </Button>
+            : selectedKeywordAction === 'suggest'
+              ? <WarningList resources={[`No Keyword Enhancements available for this ${selectedTarget.readable_name} resource.`]} header="Keyword Enhancement Results:"/>
+              : null
           }
         </Grid>
       );

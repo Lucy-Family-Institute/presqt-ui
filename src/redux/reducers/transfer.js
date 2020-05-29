@@ -319,23 +319,35 @@ export const transferReducers = {
     /**
      * Clear all the transfer modal data so the modal starts fresh.
      **/
-    [actionCreators.transfer.clearTransferModalData]: state => ({
-      ...state,
-      transferStatus: null,
-      transferData: null,
-      selectedTransferResourceName: null,
-      selectedTransferResource: null,
-      openTransferResources: [],
-      transferTargetResources: null,
-      transferDestinationTarget: null,
-      transferDestinationToken: "",
-      transferStepInModal: null,
-      apiOperationErrors: state.apiOperationErrors.filter(
-        item =>
-          item.action !==
-          actionCreators.transfer.loadFromTransferTarget.toString()
-      )
-    }),
+    [actionCreators.transfer.clearTransferModalData]: state => {
+      let newApiOperationErrors = [...state.apiOperationErrors];
+      const errorsToClear = [
+        actionCreators.transfer.loadFromTransferTarget.toString(),
+        actionCreators.keywords.sendTransferKeywords.toString(),
+        actionCreators.keywords.sendKeywords.toString()
+      ];
+      newApiOperationErrors = newApiOperationErrors.filter(
+        item => errorsToClear.indexOf(item.action) === -1
+      );
+
+      return {
+        ...state,
+        transferStatus: null,
+        transferData: null,
+        selectedTransferResourceName: null,
+        selectedTransferResource: null,
+        openTransferResources: [],
+        transferTargetResources: null,
+        transferDestinationTarget: null,
+        transferDestinationToken: "",
+        transferStepInModal: null,
+        apiOperationErrors: newApiOperationErrors,
+        // Clear Keyword states
+        sourceKeywordStatus: null,
+        destinationKeywordStatus: null,
+      };
+    }
+    ,
     /**
      * Clear the transfer data so a transfer can retried
      **/
