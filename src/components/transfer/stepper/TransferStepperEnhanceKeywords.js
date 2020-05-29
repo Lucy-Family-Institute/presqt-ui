@@ -53,7 +53,7 @@ export default function TransferStepperEnhanceKeywords({}) {
         <Fragment>
           <List dense={true}
             subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
+              <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
                Source Keyword Enhancement Results
               </ListSubheader>
             }
@@ -87,7 +87,7 @@ export default function TransferStepperEnhanceKeywords({}) {
           <List
             dense={true}
             subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
+              <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
                 Destination Keyword Enhancement Results
               </ListSubheader>
             }

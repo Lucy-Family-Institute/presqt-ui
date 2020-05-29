@@ -45,7 +45,7 @@ export default function KeywordTransferSuggestList({setNewKeywords, newKeywords}
   return (
     <List
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
           Select the following keyword suggestions to enhance:
         </ListSubheader>
       }

@@ -65,7 +65,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
     <List
       className={classes.root}
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
           {header}
         </ListSubheader>
       }

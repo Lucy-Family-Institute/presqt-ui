@@ -12,7 +12,7 @@ export default function KeywordList({ resources, header }) {
   return (
     <List
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
           {header}
         </ListSubheader>
       }

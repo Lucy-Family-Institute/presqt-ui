@@ -14,7 +14,7 @@ export default function WarningList({resources, header}) {
     <List
       dense={true}
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
           {header}
         </ListSubheader>
       }
