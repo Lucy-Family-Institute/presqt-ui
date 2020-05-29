@@ -18,9 +18,6 @@ import Button from "@material-ui/core/Button/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../../../styles/colors";
 import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -48,6 +45,9 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
+  const selectedResource = useSelector(state => state.selectedResource);
+  const targetResources = useSelector(state => state.targetResources);
+  const resource = targetResources.find(resource => resource.id === selectedResource.id);
 
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
@@ -80,6 +80,10 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
+      if (selectedKeywordAction === 'enhance') {
+        dispatch(actionCreators.resources.selectResource(resource, targetToken));
+        dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+      }
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     // Transfer successful and transfer resource browser refreshed!
