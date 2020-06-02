@@ -80,7 +80,7 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
-      if (selectedKeywordAction === 'enhance') {
+      if (selectedKeywordAction === 'automatic') {
         dispatch(actionCreators.resources.selectResource(resource, targetToken));
         dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
       }
@@ -104,16 +104,16 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
             {transferData.resources_updated.length > 0
               ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:' />
               : null}
-            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'enhance'
+            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'automatic'
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
               : null}
-            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'suggest'
+            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'manual'
               ? <KeywordTransferSuggestList
                 setNewKeywords={setNewKeywords}
                 newKeywords={newKeywords}
                 />
               : null}
-          {selectedKeywordAction === 'suggest' && transferData.enhanced_keywords.length > 0
+          {selectedKeywordAction === 'manual' && transferData.enhanced_keywords.length > 0
             ? <Button
                 variant="contained"
                 color="primary"
@@ -122,7 +122,7 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
               >
                 Enhance Keywords
               </Button>
-            : selectedKeywordAction === 'suggest'
+            : selectedKeywordAction === 'manual'
               ? <WarningList resources={[`No Keyword Enhancements available for this ${selectedTarget.readable_name} resource.`]} header="Keyword Enhancement Results:"/>
               : null
           }

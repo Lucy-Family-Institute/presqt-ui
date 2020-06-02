@@ -85,11 +85,11 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             text="Write or edit File Transfer Service Metadata file at the top level."
           />
           {/* Keyword Statement GitHub */
-            (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'automatic'
               ? <IconListItem
                 icon={<VpnKeyIcon />}
                 text="Enhanced Keywords on GitHub will be stored as 'topics'." />
-              : (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'suggest'
+              : (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'manual'
             ? <IconListItem
                 icon={<VpnKeyIcon />}
                   text="Keywords you select to enhance on GitHub will be stored as 'topics'." />
@@ -97,11 +97,11 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           }
 
           {/* Keyword Statement OSF */
-            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'automatic'
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on OSF will be stored as 'tags'." />
-            : (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'suggest'
+            : (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'manual'
             ? <IconListItem
                 icon={<VpnKeyIcon />}
                   text="Keywords you select to enhance on OSF will be stored as 'tags'." />
@@ -109,11 +109,11 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           }
 
           {/* Keyword Statement GitLab */
-            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'automatic'
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
-            : (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'suggest'
+            : (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'manual'
             ? <IconListItem
                 icon={<VpnKeyIcon />}
                   text="Keywords you select to enhance on GitLab will be stored as 'tag_list'." />
@@ -121,11 +121,11 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           }
           
           {/* Keyword Statement Zenodo */
-            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'automatic'
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
-            : (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'suggest'
+            : (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'manual'
             ? <IconListItem
                 icon={<VpnKeyIcon />}
                   text="Keywords you select to enhance on Zenodo will be stored as 'keywords'." />

@@ -89,7 +89,7 @@ export default function TransferStepper({steps}) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
     }
-    else if (activeStep === 4 && selectedKeywordAction === 'suggest') {
+    else if (activeStep === 4 && selectedKeywordAction === 'manual') {
       steps.push('Enhance Keywords')
     }
 
