@@ -104,28 +104,9 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
             {transferData.resources_updated.length > 0
               ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:' />
               : null}
-            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'automatic'
+            {transferData.enhanced_keywords.length > 0
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
               : null}
-            {transferData.enhanced_keywords.length > 0 && selectedKeywordAction === 'manual'
-              ? <KeywordTransferSuggestList
-                setNewKeywords={setNewKeywords}
-                newKeywords={newKeywords}
-                />
-              : null}
-          {selectedKeywordAction === 'manual' && transferData.enhanced_keywords.length > 0
-            ? <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={suggestClick}
-              >
-                Enhance Keywords
-              </Button>
-            : selectedKeywordAction === 'manual'
-              ? <WarningList resources={[`No Keyword Enhancements available for this ${selectedTarget.readable_name} resource.`]} header="Keyword Enhancement Results:"/>
-              : null
-          }
         </Grid>
       );
     }
