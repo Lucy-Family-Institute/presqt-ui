@@ -8,6 +8,8 @@ import {useSelector} from "react-redux";
 import Checkbox from "@material-ui/core/Checkbox";
 import colors from "../../../styles/colors";
 import {makeStyles} from "@material-ui/core/styles";
+import WarningList from "../../widgets/list_items/WarningList";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function KeywordTransferSuggestList({setNewKeywords, newKeywords}) {
+export default function KeywordTransferSuggestList({setKeywordList, keywordList}) {
   const classes = useStyles();
-  const transferData = useSelector(state => state.transferData);
-  const keywordSuggestions  = transferData.enhanced_keywords;
+  const keywords = useSelector(state => state.keywords);
+  const selectedResource = useSelector(state => state.selectedResource);
   const [checked, setChecked] = useState([]);
 
   const handleToggle = (value) => {
@@ -39,42 +41,52 @@ export default function KeywordTransferSuggestList({setNewKeywords, newKeywords}
     }
 
     setChecked(newChecked);
-    setNewKeywords(newChecked);
+    setKeywordList(newChecked);
   };
 
-  return (
-    <List
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
-          Select the following keyword suggestions to enhance:
+  if (!keywords) {
+    return (
+      <Grid item md={12}>
+        <WarningList resources={[`No keywords or enhancements found for resource "${selectedResource.title}".`]} header=""/>
+      </Grid>
+    )
+  }
+  else {
+    return (
+      <List
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
+            Select the following keyword suggestions to enhance:
         </ListSubheader>
-      }
-    >
-      {keywordSuggestions.map((value, index) => {
-        const labelId = `checkbox-list-label-${value}`;
-        return (
-          <ListItem
-            key={value + index}
-            role={undefined}
-            dense
-            button
-            onClick={() => handleToggle(value)}
-          >
-            <ListItemIcon>
-              <Checkbox
-                style={{ color: colors.presqtBlue }}
-                edge="start"
-                checked={checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-                classes={{ root: classes.checked }}
-              />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`${value}`} />
-          </ListItem>
+        }
+      >
+        {keywords.enhanced_keywords.map((value, index) => {
+          const labelId = `checkbox-list-label-${value}`;
+          return (
+            <ListItem
+              key={value + index}
+              role={undefined}
+              dense
+              button
+              onClick={() => handleToggle(value)}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  style={{ color: colors.presqtBlue }}
+                  edge="start"
+                  checked={checked.indexOf(value) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ "aria-labelledby": labelId }}
+                  classes={{ root: classes.checked }}
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={`${value}`} />
+            </ListItem>
 
-      )})}
-    </List>
-  )
+          )
+        })}
+      </List>
+    )
+  }
 }
