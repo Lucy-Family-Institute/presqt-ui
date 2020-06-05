@@ -21,7 +21,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
 import TransferStartOverButton from "../TransferStartOverButton";
 import getError from "../../../utils/getError";
-import TransferStepperEnhanceKeywords from "./TransferStepperEnhanceKeywords";
+import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
 
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +61,8 @@ export default function TransferStepper({steps}) {
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
-  const [selectedKeywordAction, setSelectedKeywordAction] = useState('enhance');
+  const [selectedKeywordAction, setSelectedKeywordAction] = useState('automatic');
+  const [keywordList, setKeywordList] = useState([]);
 
   /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
@@ -73,6 +74,22 @@ export default function TransferStepper({steps}) {
     }
   }, [apiOperationErrors]);
 
+  useEffect(() => {
+    // Add the step for manual enhancement
+    if (selectedKeywordAction === 'manual') {
+      steps.splice(5, 0, "Keyword Enhancement Options")
+    }
+    // If we change back to automatic, remove the keyword enhancement step
+    else if (selectedKeywordAction === 'automatic') {
+      if (steps.length === 8) {
+        var index = steps.indexOf("Keyword Enhancement Options");
+        if (index > -1) {
+          steps.splice(index, 1);
+        }
+      }
+    }
+  }, [selectedKeywordAction]);
+  
   /** Decrement the step count when the Back button is pressed **/
   const handleBack = () => {
     if (activeStep === 2){
@@ -88,9 +105,6 @@ export default function TransferStepper({steps}) {
     if (activeStep === 1) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
-    }
-    else if (activeStep === 4 && selectedKeywordAction === 'manual') {
-      steps.push('Enhance Keywords')
     }
 
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -127,25 +141,60 @@ export default function TransferStepper({steps}) {
           setSelectedKeywordAction={setSelectedKeywordAction} />
       }
       case 5: {
-        return <TransferStepperTransferButton
-          handleNext={handleNext}
-          selectedDuplicate={selectedDuplicate}
-          selectedKeywordAction={selectedKeywordAction}
-        />
+        if (selectedKeywordAction == 'automatic') {
+          return (
+            <TransferStepperTransferButton
+              handleNext={handleNext}
+              selectedDuplicate={selectedDuplicate}
+              selectedKeywordAction={selectedKeywordAction}
+              keywordList={keywordList}
+            />
+          )
+        }
+        else if (selectedKeywordAction === 'manual') {
+          return (
+            <KeywordTransferSuggestList
+              setKeywordList={setKeywordList}
+              keywordList={keywordList}
+            />
+          )
+        }
       }
       case 6: {
-        return <TransferStepperResults
-          activeStep={activeStep}
-          setActiveStep={setActiveStep}
-          selectedDuplicate={selectedDuplicate}
-          selectedKeywordAction={selectedKeywordAction}
-        />
+        if (selectedKeywordAction === 'automatic') {
+          return (
+            <TransferStepperResults
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+              selectedDuplicate={selectedDuplicate}
+              selectedKeywordAction={selectedKeywordAction}
+            />
+          )
+        }  
+        if (selectedKeywordAction == 'manual') {
+          return (
+            <TransferStepperTransferButton
+              handleNext={handleNext}
+              selectedDuplicate={selectedDuplicate}
+              selectedKeywordAction={selectedKeywordAction}
+              keywordList={keywordList}
+            />
+          )
+        }
       }
       case 7: {
-        return <TransferStepperEnhanceKeywords />
+        return (
+          <TransferStepperResults
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            selectedDuplicate={selectedDuplicate}
+            selectedKeywordAction={selectedKeywordAction}
+          />
+        )
+        }
       }
     }
-  }
+  
   return (
     <div>
       <Stepper
@@ -168,25 +217,42 @@ export default function TransferStepper({steps}) {
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    {index !== 6 && index !== 7
+                    {index !== 6 && index !== 7 && selectedKeywordAction !== 'manual'
                     ? <StepperBackButton
                         handleBack={handleBack}
                         activeStep={activeStep}
                       />
-                    : null
+                      : index !== 7 && index !== 8 && selectedKeywordAction === "manual"
+                      ? <StepperBackButton
+                          handleBack={handleBack}
+                          activeStep={activeStep}
+                        />
+                      : null
                     }
-                    {index === 5 
+                    {index === 5 && selectedKeywordAction === "automatic"
                       ? <TransferStartOverButton
                         setActiveStep={setActiveStep}
                         step={index}
                       />
-                      : index !== 6 && index !== 7
+                      : index === 6 && selectedKeywordAction === "manual"
+                        ? <TransferStartOverButton
+                            setActiveStep={setActiveStep}
+                            step={index}
+                          />
+                      : index !== 6 && index !== 7 && selectedKeywordAction === 'automatic'
                         ? <TransferStepperNextButton
-                        handleNext={handleNext}
-                        activeStep={activeStep}
-                        transferTargetResources={transferTargetResources}
-                        steps={steps}
-                      />
+                            handleNext={handleNext}
+                            activeStep={activeStep}
+                            transferTargetResources={transferTargetResources}
+                            steps={steps}
+                          />
+                      : index !== 7 && index !== 8 && selectedKeywordAction === 'manual'
+                        ? <TransferStepperNextButton
+                            handleNext={handleNext}
+                            activeStep={activeStep}
+                            transferTargetResources={transferTargetResources}
+                            steps={steps}
+                          />
                       : null }
                   </div>
                 </div>
