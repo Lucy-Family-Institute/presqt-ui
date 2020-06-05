@@ -323,8 +323,6 @@ export const transferReducers = {
       let newApiOperationErrors = [...state.apiOperationErrors];
       const errorsToClear = [
         actionCreators.transfer.loadFromTransferTarget.toString(),
-        actionCreators.keywords.sendTransferKeywords.toString(),
-        actionCreators.keywords.sendKeywords.toString()
       ];
       newApiOperationErrors = newApiOperationErrors.filter(
         item => errorsToClear.indexOf(item.action) === -1
@@ -342,9 +340,6 @@ export const transferReducers = {
         transferDestinationToken: "",
         transferStepInModal: null,
         apiOperationErrors: newApiOperationErrors,
-        // Clear Keyword states
-        sourceKeywordStatus: null,
-        destinationKeywordStatus: null,
       };
     }
     ,

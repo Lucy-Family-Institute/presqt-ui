@@ -142,9 +142,6 @@ export const actionCreators = createActions({
         SEND_KEYWORDS: (resource, targetToken, keywords) => ({ resource, targetToken, keywords }),
         SEND_KEYWORDS_SUCCESS: undefined,
         SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
-        SEND_TRANSFER_KEYWORDS: (resource_id, targetName, targetToken, keywords, targetType) => ({ resource_id, targetName, targetToken, keywords, targetType }),
-        SEND_TRANSFER_KEYWORDS_SUCCESS: (data, targetType) => ({data, targetType}),
-        SEND_TRANSFER_KEYWORDS_FAILURE: (data, status, targetType) => ({ data, status, targetType }),
         CLEAR_KEYWORD_DATA: undefined
     },
     BAGIT: {
