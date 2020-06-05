@@ -37,6 +37,7 @@ export default function KeywordTransferSuggestList({setKeywordList, keywordList}
   const [newKeyValue, setNewKeyValue] = useState("");
   const [newKeywordList, setNewKeywordList] = useState([])
   
+  // Set on render
   useEffect(() => {
     if (keywords) {
       setNewKeywordList([...keywords.enhanced_keywords]);
