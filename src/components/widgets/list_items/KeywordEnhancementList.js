@@ -37,7 +37,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
   const classes = useStyles();
   const [checked, setChecked] = useState(newKeywords);
 
-  const handleToggle = (value) => () => {
+  const handleToggle = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -52,15 +52,8 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
   };
 
   const selectAllKeywords = () => {
-    // Clear the values and then select them all
-    setChecked([]);
-    var newChecked = [...checked];
-    
-    for (var i = 0; i < keywords.length; i++) {
-      newChecked.push(keywords[i]);
-    }
-    setChecked(newChecked);
-    setNewKeywords(newChecked);
+    setChecked(keywords);
+    setNewKeywords(keywords);
   };
 
   const deselectAllKeywords = () => {
@@ -72,7 +65,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
     <List
       className={classes.root}
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
           {header}
         </ListSubheader>
       }
@@ -86,7 +79,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
               role={undefined}
               dense
               button
-              onClick={handleToggle(value)}
+              onClick={() => handleToggle(value)}
             >
               <ListItemIcon>
                 <Checkbox

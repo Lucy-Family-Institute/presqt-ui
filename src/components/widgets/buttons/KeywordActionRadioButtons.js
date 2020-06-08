@@ -41,12 +41,12 @@ export default function DuplicateActionRadioButtons({selectedKeywordAction, setS
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >
           <FormControlLabel
-            value="enhance"
+            value="automatic"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Automatic Enhancement"
           />
           <FormControlLabel
-            value="suggest"
+            value="manual"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Manual Enhancement"
           />

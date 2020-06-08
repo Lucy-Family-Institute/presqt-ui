@@ -27,7 +27,7 @@ const CustomTransferButton = withStyles({
  * Component responsible for rendering the transfer button in the transfer stepper and passing the
  * selected file to the Transfer API endpoint
  **/
-export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction}) {
+export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction, keywordList}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -49,6 +49,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       sourceResource,
       selectedDuplicate,
       selectedKeywordAction,
+      keywordList,
       selectedTransferResource,
       selectedTarget.name,
       targetToken
@@ -85,15 +86,15 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             text="Write or edit File Transfer Service Metadata file at the top level."
           />
           {/* Keyword Statement GitHub */
-            (selectedTarget.name === 'github' || transferDestinationTarget === 'github') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'github' || transferDestinationTarget === 'github')
               ? <IconListItem
                 icon={<VpnKeyIcon />}
                 text="Enhanced Keywords on GitHub will be stored as 'topics'." />
-              : null
+            : null
           }
 
           {/* Keyword Statement OSF */
-            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf')
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on OSF will be stored as 'tags'." />
@@ -101,7 +102,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           }
 
           {/* Keyword Statement GitLab */
-            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab')
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
@@ -109,7 +110,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           }
           
           {/* Keyword Statement Zenodo */
-            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo') && selectedKeywordAction === 'enhance'
+            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo')
             ? <IconListItem
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />

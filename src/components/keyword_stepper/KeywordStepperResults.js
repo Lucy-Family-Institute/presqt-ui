@@ -71,14 +71,16 @@ export default function KeywordStepperResults({ newKeywords }) {
           <KeywordList
             resources={updatedKeywords.keywords_added.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following keywords were added to ${selectedResource.title}:`}
+            colNumber={2}
           />
           <KeywordList
             resources={updatedKeywords.final_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following are all keywords for ${selectedResource.title}:`}
+            colNumber={2}
           />
         </Fragment>
       );
-      dispatch(actionCreators.resources.selectResource(resource, targetToken))
+      dispatch(actionCreators.resources.selectResource(resource, targetToken));
       dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
     }
     else if (keywordStatus === "postFailure") {

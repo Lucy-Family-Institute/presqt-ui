@@ -1,6 +1,5 @@
 import { actionCreators } from "../actionCreators";
 import { trackAction, trackError, untrackAction } from "./helpers/tracking";
-import ActionButton from "../../components/widgets/buttons/ActionButton";
 
 export const keywordReducers = {
   initialState: {
@@ -62,7 +61,7 @@ export const keywordReducers = {
     /**
      * Make sendKeywords Request
      **/
-    [actionCreators.keywords.sendKeywords]: (state, action) => ({
+    [actionCreators.keywords.sendKeywords]: state => ({
       ...state,
       pendingAPIResponse: true,
       keywordStatus: 'postPending',
@@ -108,7 +107,7 @@ export const keywordReducers = {
     [actionCreators.keywords.clearKeywordData]: (state) => ({
       ...state,
       updatedKeywords: null,
-      keywordStatus: null
+      keywordStatus: null,
     })
   },
 };
