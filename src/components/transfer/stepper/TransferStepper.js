@@ -227,7 +227,7 @@ export default function TransferStepper() {
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    {index !== 6 && index !== 7 && selectedKeywordAction !== 'manual'
+                    {index !== 6 && index !== 7 && selectedKeywordAction === 'automatic'
                     ? <StepperBackButton
                         handleBack={handleBack}
                         activeStep={activeStep}
