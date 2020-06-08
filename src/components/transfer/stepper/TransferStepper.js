@@ -151,7 +151,7 @@ export default function TransferStepper() {
           setSelectedKeywordAction={setSelectedKeywordAction} />
       }
       case 5: {
-        if (selectedKeywordAction == 'automatic') {
+        if (selectedKeywordAction === 'automatic') {
           return (
             <TransferStepperTransferButton
               handleNext={handleNext}
@@ -181,7 +181,7 @@ export default function TransferStepper() {
             />
           )
         }  
-        if (selectedKeywordAction == 'manual') {
+        if (selectedKeywordAction === 'manual') {
           return (
             <TransferStepperTransferButton
               handleNext={handleNext}
