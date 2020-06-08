@@ -78,9 +78,9 @@ export default function KeywordTransferSuggestList({setKeywordList, keywordList}
     <List
       subheader={
         <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
-          {!keywords
-            ? "No keywords found for this resource."
-            : "Select the following keyword suggestions to enhance:"
+          {keywords
+            ? "Select the following keyword suggestions to enhance:"
+            : "No keywords found for this resource."
             }
       </ListSubheader>
       }
