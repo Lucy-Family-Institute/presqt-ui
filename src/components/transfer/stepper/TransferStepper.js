@@ -48,7 +48,17 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-export default function TransferStepper({steps}) {
+const steps = [
+  'Select destination target',
+  'Input destination target token',
+  'Select resource or select nothing to create a new project',
+  'Select the action to occur when a duplicate resource is found',
+  'Select the keyword action to occur',
+  'Initiate transfer',
+  'Transfer Results'
+];
+
+export default function TransferStepper() {
   const classes = useStyles();
   const dispatch = useDispatch();
 

@@ -21,16 +21,6 @@ const RightGrid = makeStyles(theme => ({
   }
 }));
 
-const steps = [
-  'Select destination target',
-  'Input destination target token',
-  'Select resource or select nothing to create a new project',
-  'Select the action to occur when a duplicate resource is found',
-  'Select the keyword action to occur',
-  'Initiate transfer',
-  'Transfer Results'
-];
-
 export default function TransferModal() {
   const dispatch = useDispatch();
   const leftGridClasses = leftGrid();
@@ -43,10 +33,6 @@ export default function TransferModal() {
   const handleClose = () => {
     dispatch(actionCreators.transfer.hideTransferModal());
     dispatch(actionCreators.transfer.clearTransferModalData());
-
-    if (steps.length === 8) {
-      steps.pop();
-    }
   };
 
   return transferModalDisplay
@@ -75,7 +61,7 @@ export default function TransferModal() {
         <DialogContent>
           <Grid container>
             <Grid item xs={7} className={leftGridClasses.root}>
-              <TransferStepper steps={steps}/>
+              <TransferStepper/>
             </Grid>
             <Grid className={RightGridClasses.root} item xs={5}>
               <TransferResourceBrowser/>
