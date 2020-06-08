@@ -87,12 +87,12 @@ export default function TransferStepper() {
   useEffect(() => {
     // Add the step for manual enhancement
     if (selectedKeywordAction === 'manual') {
-      steps.splice(5, 0, "Keyword Enhancement Options")
+      steps.splice(5, 0, "Keyword enhancement options")
     }
     // If we change back to automatic, remove the keyword enhancement step
     else if (selectedKeywordAction === 'automatic') {
       if (steps.length === 8) {
-        var index = steps.indexOf("Keyword Enhancement Options");
+        var index = steps.indexOf("Keyword enhancement options");
         if (index > -1) {
           steps.splice(index, 1);
         }
