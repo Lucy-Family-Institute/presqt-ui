@@ -14,29 +14,9 @@ import getError from "../../../utils/getError";
 import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
-import Button from "@material-ui/core/Button/Button";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import colors from "../../../styles/colors";
-import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    backgroundColor: colors.presqtBlue,
-    '&:hover': {
-      backgroundColor: '#0a4996',
-    },
-    "&:disabled": {
-      cursor: 'not-allowed',
-      pointerEvents: 'auto'
-    }
-  }
-}));
 
 export default function TransferStepperResults({activeStep, setActiveStep, selectedDuplicate, selectedKeywordAction}) {
   const dispatch = useDispatch();
-  const classes = useStyles();
 
   const transferStatus = useSelector(state => state.transferStatus);
   const transferData = useSelector(state => state.transferData);
@@ -46,9 +26,6 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
-  const targetResources = useSelector(state => state.targetResources);
-  const resource = targetResources.find(resource => resource.id === selectedResource.id);
-
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
@@ -72,8 +49,8 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
-      dispatch(actionCreators.resources.selectResource(resource, targetToken));
-      dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+      dispatch(actionCreators.resources.selectResource(selectedResource, targetToken));
+      dispatch(actionCreators.keywords.getKeywords(selectedResource, targetToken));
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     // Transfer successful and transfer resource browser refreshed!
