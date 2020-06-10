@@ -1,4 +1,3 @@
-import { apiURLBase } from "../config";
 import axios from "axios";
 
 export function getInitialKeywords(resource, targetToken) {
