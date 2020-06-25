@@ -11,6 +11,7 @@ import { GridList } from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import textStyles from "../../../styles/text";
+import {jsx} from "@emotion/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +71,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
         </ListSubheader>
       }
     >
-      <GridList cellHeight={50} style={{ marginLeft: 15, paddingBottom: 10 }}>
+      <GridList cellHeight='auto' style={{ marginLeft: 15, paddingBottom: 10 }}>
         {keywords.map((value, index) => {
           const labelId = `checkbox-list-label-${value}`;
           return (
@@ -80,6 +81,7 @@ export default function KeywordEnhancementList({keywords, header, setNewKeywords
               dense
               button
               onClick={() => handleToggle(value)}
+              style={{minHeight: 50, wordBreak: 'break-word'}}
             >
               <ListItemIcon>
                 <Checkbox
