@@ -142,7 +142,8 @@ export const actionCreators = createActions({
         SEND_KEYWORDS: (resource, targetToken, keywords) => ({ resource, targetToken, keywords }),
         SEND_KEYWORDS_SUCCESS: undefined,
         SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
-        CLEAR_KEYWORD_DATA: undefined
+        CLEAR_KEYWORD_DATA: undefined,
+        CLEAR_KEYWORDS: undefined
     },
     BAGIT: {
         DISPLAY_BAGIT_MODAL: undefined,

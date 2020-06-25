@@ -27,6 +27,7 @@ export default function TransferStepperNextButton({ handleNext, activeStep,
   const classes = useStyles();
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+  const keywords = useSelector((state) => state.keywords);
 
   return(
     <Button
@@ -37,7 +38,8 @@ export default function TransferStepperNextButton({ handleNext, activeStep,
       disabled={
         (activeStep === 0 && !transferDestinationTarget) ||
         (activeStep === 1 && transferDestinationToken === '') ||
-        (activeStep === 2 && !transferTargetResources)}
+        (activeStep === 2 && !transferTargetResources) ||
+        (activeStep === 5 && !keywords)}
     >
       <span css={textStyles.buttonText}>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</span>
     </Button>

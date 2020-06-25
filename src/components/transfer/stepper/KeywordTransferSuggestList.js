@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,6 +11,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import SearchTextField from "../../widgets/text_fields/SearchTextField";
 import { withStyles } from "@material-ui/styles";
 import isSpaces from "../../../utils/isSpaces";
+import Spinner from "../../widgets/spinners/Spinner";
+import {jsx} from "@emotion/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,19 +32,19 @@ const KeywordTextField = withStyles({
   }
 })(SearchTextField);
 
-export default function KeywordTransferSuggestList({setKeywordList, keywordList}) {
+export default function KeywordTransferSuggestList({setKeywordList}) {
   const classes = useStyles();
   const keywords = useSelector(state => state.keywords);
   const [checked, setChecked] = useState([]);
   const [newKeyValue, setNewKeyValue] = useState("");
-  const [newKeywordList, setNewKeywordList] = useState([])
+  const [newKeywordList, setNewKeywordList] = useState([]);
   
   // Set on render
   useEffect(() => {
     if (keywords) {
       setNewKeywordList([...keywords.enhanced_keywords]);
     }
-  }, [])
+  }, []);
   
 
   const handleToggle = (value) => {
@@ -62,61 +64,70 @@ export default function KeywordTransferSuggestList({setKeywordList, keywordList}
 
   const searchKeystroke = (event) => {
     setNewKeyValue(event.target.value);
-  }
+  };
 
   const putInList = () => {
     const newChecked = [...checked];
     // Add the new keyword to the list
     newKeywordList.push(newKeyValue);
-    newChecked.push(newKeyValue)
+    newChecked.push(newKeyValue);
     setChecked(newChecked);
     setKeywordList(newChecked);
     setNewKeyValue('');
-  }
+  };
 
   return (
-    <List
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
-          {keywords
-            ? "Select the following keyword suggestions to enhance:"
-            : "No keywords found for this resource."
-            }
-      </ListSubheader>
-      }
-    >
-      {newKeywordList.map((value, index) => {
-        const labelId = `checkbox-list-label-${value}`;
-        return (
-          <ListItem
-            key={value + index}
-            role={undefined}
-            dense
-            button
-            onClick={() => handleToggle(value)}
-          >
-            <ListItemIcon>
-              <Checkbox
-                style={{ color: colors.presqtBlue }}
-                edge="start"
-                checked={checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-                classes={{ root: classes.checked }}
+    keywords
+    ?
+      <List
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader" disableSticky={true}>
+            {keywords
+              ? "Select the following keyword suggestions to enhance:"
+              : "No keywords found for this resource."
+              }
+        </ListSubheader>
+        }
+      >
+        {newKeywordList.map((value, index) => {
+          const labelId = `checkbox-list-label-${value}`;
+          return (
+            <ListItem
+              key={value + index}
+              role={undefined}
+              dense
+              button
+              onClick={() => handleToggle(value)}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  style={{ color: colors.presqtBlue }}
+                  edge="start"
+                  checked={checked.indexOf(value) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ "aria-labelledby": labelId }}
+                  classes={{ root: classes.checked }}
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={`${value}`} />
+            </ListItem>
+          )
+        })}
+            <KeywordTextField
+              size="small"
+              label="Add Your Own Keywords Here"
+              value={newKeyValue}
+              onKeyDown={(event) => { event.keyCode === 13 && !isSpaces(event.target.value) ? putInList() : null }}
+              onChange={event => searchKeystroke(event)}
               />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`${value}`} />
-          </ListItem>
-        )
-      })}
-          <KeywordTextField
-            size="small"
-            label="Add Your Own Keywords Here"
-            value={newKeyValue}
-            onKeyDown={(event) => { event.keyCode === 13 && !isSpaces(event.target.value) ? putInList() : null }}
-            onChange={event => searchKeystroke(event)}
-            />
-    </List>
+      </List>
+    :
+      <Fragment>
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+          Gathering source keywords...
+        </div>
+        <Spinner />
+      </Fragment>
   )
 }

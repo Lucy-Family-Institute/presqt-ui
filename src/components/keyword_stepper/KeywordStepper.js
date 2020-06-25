@@ -52,6 +52,7 @@ export default function KeywordStepper({}) {
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
+
   // Get appropriate Component
   function getStepContent(step) {
     switch (step) {
