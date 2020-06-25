@@ -108,6 +108,10 @@ export const keywordReducers = {
       ...state,
       updatedKeywords: null,
       keywordStatus: null,
+    }),
+    [actionCreators.keywords.clearKeywords]: state => ({
+      ...state,
+      keywords: null
     })
   },
 };

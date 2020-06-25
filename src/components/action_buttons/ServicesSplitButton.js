@@ -63,8 +63,11 @@ const ServicesButtonGroup = withStyles({
 export default function ServicesSplitButton() {
   const dispatch = useDispatch();
 
-  const services = useSelector((state) => state.availableServices);
-  const keywords = useSelector((state) => state.keywords);
+  const services = useSelector(state => state.availableServices);
+  const targetToken = useSelector(state => state.selectedTarget
+    ? state.apiTokens[state.selectedTarget.name]
+    : null);
+  const resource = useSelector(state => state.selectedResource);
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -79,6 +82,7 @@ export default function ServicesSplitButton() {
         dispatch(actionCreators.eaasi.displayEaasiModal());
       } else if (services[selectedIndex].name === "keyword_enhancement") {
         dispatch(actionCreators.keywords.displayKeywordModal());
+        dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
       }
     }
   };
@@ -145,11 +149,6 @@ export default function ServicesSplitButton() {
                       key={service.readable_name}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
-                      disabled={
-                        service.name === "keyword_enhancement" && !keywords
-                          ? true
-                          : false
-                      }
                     >
                       <span css={textStyles.buttonText}>
                         {service.readable_name}
