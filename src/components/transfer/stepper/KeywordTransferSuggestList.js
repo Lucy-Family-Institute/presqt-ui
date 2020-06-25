@@ -42,7 +42,7 @@ export default function KeywordTransferSuggestList({setKeywordList, keywordList}
     if (keywords) {
       setNewKeywordList([...keywords.enhanced_keywords]);
     }
-  }, [])
+  }, []);
   
 
   const handleToggle = (value) => {
@@ -62,17 +62,17 @@ export default function KeywordTransferSuggestList({setKeywordList, keywordList}
 
   const searchKeystroke = (event) => {
     setNewKeyValue(event.target.value);
-  }
+  };
 
   const putInList = () => {
     const newChecked = [...checked];
     // Add the new keyword to the list
     newKeywordList.push(newKeyValue);
-    newChecked.push(newKeyValue)
+    newChecked.push(newKeyValue);
     setChecked(newChecked);
     setKeywordList(newChecked);
     setNewKeyValue('');
-  }
+  };
 
   return (
     <List
