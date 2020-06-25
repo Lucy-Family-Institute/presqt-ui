@@ -18,9 +18,9 @@ export default function KeywordList({ resources, header, colNumber }) {
         </ListSubheader>
       }
     >
-      <GridList cols={colNumber} cellHeight={50} style={{marginLeft: 15}}>
+      <GridList cols={colNumber} cellHeight='auto' style={{marginLeft: 15}}>
         {resources.map((resource) => (
-          <ListItem key={resource}>
+          <ListItem key={resource} style={{minHeight: 50, wordBreak: 'break-word'}}>
             <ListItemIcon>
               <VpnKeyIcon />
             </ListItemIcon>
