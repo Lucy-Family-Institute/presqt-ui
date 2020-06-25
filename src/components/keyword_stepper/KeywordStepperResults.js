@@ -81,7 +81,6 @@ export default function KeywordStepperResults({ newKeywords }) {
         </Fragment>
       );
       dispatch(actionCreators.resources.selectResource(resource, targetToken));
-      dispatch(actionCreators.keywords.clearKeywords());
     }
     else if (keywordStatus === "postFailure") {
       setStepContent(

@@ -50,7 +50,6 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
       dispatch(actionCreators.resources.selectResource(selectedResource, targetToken));
-      dispatch(actionCreators.keywords.clearKeywords());
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     // Transfer successful and transfer resource browser refreshed!
