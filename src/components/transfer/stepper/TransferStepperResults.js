@@ -15,7 +15,7 @@ import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 
-export default function TransferStepperResults({activeStep, setActiveStep, selectedDuplicate, selectedKeywordAction}) {
+export default function TransferStepperResults({setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList}) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -152,6 +152,7 @@ export default function TransferStepperResults({activeStep, setActiveStep, selec
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
                 selectedKeywordAction={selectedKeywordAction}
+                keywordList={keywordList}
               />
             </span>
           </div>

@@ -150,7 +150,7 @@ export default function ServicesSplitButton() {
                       key={service.readable_name}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
-                      disabled={!selectedTarget.supported_actions.keywords || !selectedTarget.supported_actions.keywords_upload}
+                      // disabled={!selectedTarget.supported_actions.keywords || !selectedTarget.supported_actions.keywords_upload}
                     >
                       <span css={textStyles.buttonText}>
                         {service.readable_name}
