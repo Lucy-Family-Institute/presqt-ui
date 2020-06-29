@@ -40,6 +40,7 @@ export const keywordReducers = {
     [actionCreators.keywords.getKeywordsSuccess]: (state, action) => ({
       ...state,
       keywords: action.payload,
+      keywordStatus: 'getSuccess',
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.keywords.getKeywords,
@@ -49,9 +50,10 @@ export const keywordReducers = {
     /**
      * Unsuccessful getKeywords Request
      **/
-    [actionCreators.keywords.getKeywordsFailure]: (state) => ({
+    [actionCreators.keywords.getKeywordsFailure]: (state, action) => ({
       ...state,
-      keywords: null,
+      keywords: action.payload.data,
+      keywordStatus: 'getFailure',
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
         actionCreators.keywords.getKeywords,

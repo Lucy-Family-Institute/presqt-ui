@@ -170,10 +170,10 @@ export default function TransferStepper() {
       case 7: {
         return (
           <TransferStepperResults
-            activeStep={activeStep}
             setActiveStep={setActiveStep}
             selectedDuplicate={selectedDuplicate}
             selectedKeywordAction={selectedKeywordAction}
+            keywordList={keywordList}
           />
         )
         }

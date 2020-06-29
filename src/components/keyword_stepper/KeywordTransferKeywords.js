@@ -9,12 +9,14 @@ import React, {Fragment} from "react";
 import Spinner from "../widgets/spinners/Spinner";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import {jsx} from "@emotion/core";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 export default function KeywordTransferKeywords() {
   const keywords = useSelector(state => state.keywords);
+  const keywordStatus = useSelector(state => state.keywordStatus);
 
   return (
-    keywords
+    keywordStatus === 'getSuccess'
       ?
       <List
         subheader={
@@ -41,6 +43,12 @@ export default function KeywordTransferKeywords() {
           })
         }
       </List>
+      : keywordStatus === 'getFailure'
+        ?
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+          <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+          {keywords.error}
+        </div>
       :
       <Fragment>
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
