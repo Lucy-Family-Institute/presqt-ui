@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import React, {Fragment} from "react";
-import Spinner from "../widgets/spinners/Spinner";
+import Spinner from "../../widgets/spinners/Spinner";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import {jsx} from "@emotion/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -26,7 +26,7 @@ export default function KeywordTransferKeywords() {
         }
       >
         {
-          keywords.keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)}).map((value, index) => {
+          keywords.all_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)}).map((value, index) => {
             return (
               <ListItem
                 key={value + index}

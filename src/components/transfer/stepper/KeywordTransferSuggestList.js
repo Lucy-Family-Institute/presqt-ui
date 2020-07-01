@@ -44,7 +44,7 @@ export default function KeywordTransferSuggestList({setKeywordList}) {
     if (keywords) {
       setNewKeywordList([...keywords.enhanced_keywords]);
     }
-  }, []);
+  }, [keywords]);
   
 
   const handleToggle = (value) => {
