@@ -22,7 +22,7 @@ import { actionCreators } from "../../../redux/actionCreators";
 import TransferStartOverButton from "../TransferStartOverButton";
 import getError from "../../../utils/getError";
 import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
-import KeywordTransferKeywords from "../../keyword_stepper/KeywordTransferKeywords";
+import KeywordTransferKeywords from "./KeywordTransferKeywords";
 
 
 const useStyles = makeStyles(theme => ({
