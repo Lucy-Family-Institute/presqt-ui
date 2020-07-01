@@ -69,6 +69,7 @@ export default function ServicesSplitButton() {
     : null);
   const resource = useSelector(state => state.selectedResource);
   const selectedTarget = useSelector(state => state.selectedTarget);
+  const searchValue = useSelector(state => state.searchValue);
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -150,7 +151,11 @@ export default function ServicesSplitButton() {
                       key={service.readable_name}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
-                      disabled={!selectedTarget.supported_actions.keywords || !selectedTarget.supported_actions.keywords_upload}
+                      disabled={
+                        !selectedTarget.supported_actions.keywords ||
+                        !selectedTarget.supported_actions.keywords_upload ||
+                        (service.name === 'keyword_enhancement' && searchValue)
+                      }
                     >
                       <span css={textStyles.buttonText}>
                         {service.readable_name}
