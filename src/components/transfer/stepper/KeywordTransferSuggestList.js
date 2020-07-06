@@ -13,6 +13,7 @@ import { withStyles } from "@material-ui/styles";
 import isSpaces from "../../../utils/isSpaces";
 import Spinner from "../../widgets/spinners/Spinner";
 import {jsx} from "@emotion/core";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,13 +36,13 @@ const KeywordTextField = withStyles({
 export default function KeywordTransferSuggestList({setKeywordList}) {
   const classes = useStyles();
   const keywords = useSelector(state => state.keywords);
+  const keywordStatus = useSelector(state => state.keywordStatus);
   const [checked, setChecked] = useState([]);
   const [newKeyValue, setNewKeyValue] = useState("");
   const [newKeywordList, setNewKeywordList] = useState([]);
   
-  // Set on render
   useEffect(() => {
-    if (keywords) {
+    if (keywords && keywordStatus === 'getSuccess') {
       setNewKeywordList([...keywords.enhanced_keywords]);
     }
   }, [keywords]);
@@ -77,7 +78,7 @@ export default function KeywordTransferSuggestList({setKeywordList}) {
   };
 
   return (
-    keywords
+    keywordStatus === 'getSuccess'
     ?
       <List
         subheader={
@@ -122,6 +123,12 @@ export default function KeywordTransferSuggestList({setKeywordList}) {
               onChange={event => searchKeystroke(event)}
               />
       </List>
+    : keywordStatus === 'getFailure'
+      ?
+        <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+          <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+          {keywords.error}
+        </div>
     :
       <Fragment>
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
