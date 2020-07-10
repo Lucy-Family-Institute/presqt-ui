@@ -13,9 +13,9 @@ import TransferRetryButton from "../TransferRetryButton";
 import getError from "../../../utils/getError";
 import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
+import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 
-
-export default function TransferStepperResults({setActiveStep, selectedDuplicate}) {
+export default function TransferStepperResults({setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList}) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -23,10 +23,13 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-
+  const selectedTarget = useSelector(state => state.selectedTarget);
+  const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
+  const selectedResource = useSelector(state => state.selectedResource);
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
+  const [newKeywords, setNewKeywords] = useState([]);
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -46,6 +49,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   useEffect(() => {
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
+      dispatch(actionCreators.resources.selectResource(selectedResource, targetToken));
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
     }
     // Transfer successful and transfer resource browser refreshed!
@@ -56,13 +60,19 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               <SuccessListItem message={transferData.message}/>
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}
-            </List>
+          </List>
             {transferData.failed_fixity.length > 0
-              ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' /> : null}
+              ? <WarningList resources={transferData.failed_fixity} header='The following files failed fixity checks:' />
+              : null}
             {transferData.resources_ignored.length > 0
-              ? <WarningList resources={transferData.resources_ignored} header='The following duplicate resources were ignored:'/> : null}
+              ? <WarningList resources={transferData.resources_ignored} header='The following duplicate resources were ignored:' />
+              : null}
             {transferData.resources_updated.length > 0
-              ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:'/> : null}
+              ? <WarningList resources={transferData.resources_updated} header='The following duplicate resources were updated:' />
+              : null}
+            {transferData.enhanced_keywords.length > 0
+              ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
+              : null}
         </Grid>
       );
     }
@@ -141,13 +151,15 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
               <TransferRetryButton
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
+                selectedKeywordAction={selectedKeywordAction}
+                keywordList={keywordList}
               />
             </span>
           </div>
         </Fragment>
       );
     }
-  }, [transferStatus, apiOperationErrors]);
+  }, [transferStatus, apiOperationErrors, newKeywords]);
 
   return (stepThreeContent);
 }

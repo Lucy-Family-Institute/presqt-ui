@@ -40,13 +40,12 @@ export default function TargetResourceBrowser() {
    * Else dispatch the openContainer action to expand the container
    * After the container action completes, dispatch selectResource to fetch resource details
    **/
-  const onResourceClicked = (resource, targetToken) => {
+  const onResourceClicked = (resource) => {
     resource.kind === "container" && resource.open
       ? dispatch(actionCreators.resources.closeContainer(resource))
       : dispatch(actionCreators.resources.openContainer(resource));
 
     dispatch(actionCreators.resources.selectResource(resource, targetToken));
-    dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
   };
 
   /**
@@ -107,7 +106,7 @@ export default function TargetResourceBrowser() {
     // If resources exist
     if (targetResources && targetResources.length > 0) {
       setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource, targetToken), targetResources))
+        resource => onResourceClicked(resource), targetResources))
     }
     // Search returned no results
     else if (targetResources && targetResources.length === 0 && searchValue) {

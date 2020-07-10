@@ -14,12 +14,15 @@ import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import DuplicateActionRadioButtons from "../../widgets/buttons/duplicateActionRadioButtons";
+import KeywordActionRadioButton from "../../widgets/buttons/KeywordActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
 import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
 import { actionCreators } from "../../../redux/actionCreators";
 import TransferStartOverButton from "../TransferStartOverButton";
 import getError from "../../../utils/getError";
+import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
+import KeywordTransferKeywords from "./KeywordTransferKeywords";
 
 
 const useStyles = makeStyles(theme => ({
@@ -51,10 +54,11 @@ const steps = [
   'Input destination target token',
   'Select resource or select nothing to create a new project',
   'Select the action to occur when a duplicate resource is found',
+  'Select the keyword action to occur',
+  "Keywords",
   'Initiate transfer',
-  'Results'
+  'Transfer Results'
 ];
-
 
 export default function TransferStepper() {
   const classes = useStyles();
@@ -64,19 +68,28 @@ export default function TransferStepper() {
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-
+  const targetToken = useSelector(state => state.selectedTarget
+    ? state.apiTokens[state.selectedTarget.name]
+    : null);
+  const resource = useSelector(state => state.selectedResource);
   const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
+  const [selectedKeywordAction, setSelectedKeywordAction] = useState('automatic');
+  const [keywordList, setKeywordList] = useState([]);
 
   /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
-    if (activeStep === 2 && collectionError) {
-      handleBack();
+    if (activeStep >= 2 && collectionError) {
+      dispatch(actionCreators.transfer.clearTransferToken());
+      dispatch(actionCreators.transfer.clearTransferTargetResources());
+      dispatch(actionCreators.transfer.stepInTransferModal(1));
+      setActiveStep(prevActiveStep => 1);
     }
   }, [apiOperationErrors]);
 
+  
   /** Decrement the step count when the Back button is pressed **/
   const handleBack = () => {
     if (activeStep === 2){
@@ -93,6 +106,10 @@ export default function TransferStepper() {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
     }
+    else if (activeStep === 4) {
+      dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+    }
+
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     dispatch(actionCreators.transfer.stepInTransferModal(activeStep + 1));
   };
@@ -109,6 +126,7 @@ export default function TransferStepper() {
       case 1: {
         return <TransferStepperToken
           handleNext={handleNext}
+          activeStep={activeStep}
         />
       }
       case 2: {
@@ -121,19 +139,47 @@ export default function TransferStepper() {
         />
       }
       case 4: {
-        return <TransferStepperTransferButton
-          handleNext={handleNext}
-          selectedDuplicate={selectedDuplicate}
-        />
+        return <KeywordActionRadioButton
+          selectedKeywordAction={selectedKeywordAction}
+          setSelectedKeywordAction={setSelectedKeywordAction} />
       }
       case 5: {
-        return <TransferStepperResults
-          setActiveStep={setActiveStep}
-          selectedDuplicate={selectedDuplicate}
-        />
+        if (selectedKeywordAction === 'manual') {
+          return (
+            <KeywordTransferSuggestList
+              setKeywordList={setKeywordList}
+            />
+          )
+        }
+        else {
+          return (
+            <KeywordTransferKeywords />
+          )
+        }
+      }
+      case 6: {
+          return (
+            <TransferStepperTransferButton
+              handleNext={handleNext}
+              selectedDuplicate={selectedDuplicate}
+              selectedKeywordAction={selectedKeywordAction}
+              keywordList={keywordList}
+            />
+          )
+      }
+      case 7: {
+        return (
+          <TransferStepperResults
+            setActiveStep={setActiveStep}
+            selectedDuplicate={selectedDuplicate}
+            selectedKeywordAction={selectedKeywordAction}
+            keywordList={keywordList}
+          />
+        )
+        }
       }
     }
-  }
+  
   return (
     <div>
       <Stepper
@@ -156,26 +202,37 @@ export default function TransferStepper() {
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>
                   <div>
-                    {index !== 5
-                    ? <StepperBackButton
-                        handleBack={handleBack}
-                        activeStep={activeStep}
-                      />
-                    : null
+                    {
+                      index !== 7 && index !== 8
+                      ?
+                        <StepperBackButton
+                          handleBack={handleBack}
+                          activeStep={activeStep}
+                        />
+                      :
+                        null
                     }
-                    {index === 4 
+                    {
+                      index !== 6 && index !== 7
+                      ?
+                        <TransferStepperNextButton
+                          handleNext={handleNext}
+                          activeStep={activeStep}
+                          transferTargetResources={transferTargetResources}
+                          steps={steps}
+                        />
+                      :
+                        null
+                    }
+
+                    {
+                      index === 6
                       ? <TransferStartOverButton
-                        setActiveStep={setActiveStep}
-                        step={index}
-                      />
-                      : index !== 5
-                        ? <TransferStepperNextButton
-                        handleNext={handleNext}
-                        activeStep={activeStep}
-                        transferTargetResources={transferTargetResources}
-                        steps={steps}
-                      />
-                      : null }
+                         setActiveStep={setActiveStep}
+                         step={index}
+                        />
+                      : null
+                    }
                   </div>
                 </div>
               </Typography>

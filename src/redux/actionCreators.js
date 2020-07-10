@@ -74,10 +74,10 @@ export const actionCreators = createActions({
         OPEN_TRANSFER_CONTAINER: container => ({container, open: true}),
         CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
         TRANSFER_RESOURCE: (
-          destinationTarget, destinationToken, sourceResource, duplicateAction,
+          destinationTarget, destinationToken, sourceResource, duplicateAction, keywordAction, keywordList,
           resourceToTransferTo, sourceTarget, sourceTargetToken, ) => ({
             destinationTarget, destinationToken, sourceResource,
-            duplicateAction, resourceToTransferTo, sourceTarget, sourceTargetToken}),
+            duplicateAction, keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceTargetToken}),
         TRANSFER_SUCCESS: (data) => ({data}),
         TRANSFER_FAILURE: (status, data) => ({ status, data }),
         TRANSFER_JOB: undefined,
@@ -142,7 +142,8 @@ export const actionCreators = createActions({
         SEND_KEYWORDS: (resource, targetToken, keywords) => ({ resource, targetToken, keywords }),
         SEND_KEYWORDS_SUCCESS: undefined,
         SEND_KEYWORDS_FAILURE: (data, status) => ({ data, status }),
-        CLEAR_KEYWORD_DATA: undefined
+        CLEAR_KEYWORD_DATA: undefined,
+        CLEAR_KEYWORDS: undefined
     },
     BAGIT: {
         DISPLAY_BAGIT_MODAL: undefined,

@@ -10,6 +10,8 @@ import { actionCreators } from "../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import textStyles from "../../styles/text";
+import SuccessListItem from "../widgets/list_items/SuccessListItem";
+import List from "@material-ui/core/List";
 
 const CustomKeywordButton = withStyles({
   root: {
@@ -63,18 +65,22 @@ export default function KeywordStepperResults({ newKeywords }) {
     if (keywordStatus === "postSuccess") {
       setStepContent(
         <Fragment>
+          <List dense={true}>
+            <SuccessListItem message={"Keywords Enhanced Successfully."}/>
+          </List>
           <KeywordList
             resources={updatedKeywords.keywords_added.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following keywords were added to ${selectedResource.title}:`}
+            colNumber={2}
           />
           <KeywordList
             resources={updatedKeywords.final_keywords.sort(function(stringA, stringB) {return stringA.localeCompare(stringB)})}
             header={`The following are all keywords for ${selectedResource.title}:`}
+            colNumber={2}
           />
         </Fragment>
       );
-      dispatch(actionCreators.resources.selectResource(resource, targetToken))
-      dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+      dispatch(actionCreators.resources.selectResource(resource, targetToken));
     }
     else if (keywordStatus === "postFailure") {
       setStepContent(

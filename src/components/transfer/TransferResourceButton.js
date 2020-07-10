@@ -19,10 +19,10 @@ export default function TransferResourceButton({resource, level, onClick }) {
   
   useEffect(() => {
     if (transferStepInModal) {
-      if (transferStepInModal.step === 3 || transferStepInModal.step === 4) {
+      if (transferStepInModal.step === 3 || transferStepInModal.step === 4 || transferStepInModal.step === 5) {
         setDisabled(true);
       }
-      else if (transferStepInModal.step === 5) {
+      else if (transferStepInModal.step === 6) {
         if (transferStatus && (transferStatus === "finished" || transferStatus === 'failure' || transferStatus === 'cancelled')) {
           setDisabled(false);
         }
@@ -30,7 +30,7 @@ export default function TransferResourceButton({resource, level, onClick }) {
           setDisabled(true);
         }
       }
-      else if (transferStepInModal.step !== 3 || transferStepInModal.step !== 4) {
+      else if (transferStepInModal.step !== 3 || transferStepInModal.step !== 4 || transferStepInModal.step !== 5) {
         setDisabled(false);
       }
     }

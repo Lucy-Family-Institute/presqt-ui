@@ -7,9 +7,8 @@ import List from "@material-ui/core/List";
 import { jsx } from "@emotion/core";
 import React from "react";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { GridList } from "@material-ui/core";
 
-export default function KeywordList({ resources, header, colNumber }) {
+export default function KeywordList({ resources, header }) {
   return (
     <List
       subheader={
@@ -18,16 +17,14 @@ export default function KeywordList({ resources, header, colNumber }) {
         </ListSubheader>
       }
     >
-      <GridList cols={colNumber} cellHeight='auto' style={{marginLeft: 15}}>
-        {resources.map((resource) => (
-          <ListItem key={resource} style={{minHeight: 50, wordBreak: 'break-word'}}>
-            <ListItemIcon>
-              <VpnKeyIcon />
-            </ListItemIcon>
-            <ListItemText primary={resource} />
-          </ListItem>
-        ))}
-      </GridList>
+      {resources.map((resource) => (
+        <ListItem key={resource}>
+          <ListItemIcon>
+            <VpnKeyIcon />
+          </ListItemIcon>
+          <ListItemText primary={resource} />
+        </ListItem>
+      ))}
     </List>
   );
 }

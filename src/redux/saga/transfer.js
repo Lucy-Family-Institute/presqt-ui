@@ -92,6 +92,8 @@ function* transferTargetResource(action) {
       action.payload.destinationToken,
       action.payload.sourceResource,
       action.payload.duplicateAction,
+      action.payload.keywordAction,
+      action.payload.keywordList,
       action.payload.resourceToTransferTo,
       action.payload.sourceTarget,
       action.payload.sourceTargetToken

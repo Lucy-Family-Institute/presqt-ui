@@ -5,7 +5,7 @@ import {apiURLBase} from "../config";
  * Resource Transfer Endpoint
  **/
 export function postResourceTransfer(destinationTarget, destinationToken, sourceResource, duplicateAction,
-                                     resourceToTransferTo, sourceTarget, sourceToken) {
+                                     keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceToken) {
 
   let resourceTransferURL;
   if (!resourceToTransferTo) {
@@ -13,18 +13,15 @@ export function postResourceTransfer(destinationTarget, destinationToken, source
   } else {
     resourceTransferURL = `${apiURLBase}targets/${destinationTarget}/resources/${resourceToTransferTo.id}/`;
   }
-  const bodyFormData = new FormData();
-
-  bodyFormData.set('source_target_name', sourceTarget);
-  bodyFormData.set('source_resource_id', sourceResource.id);
 
   return axios.post(resourceTransferURL,
-    bodyFormData,
+    {'source_target_name': sourceTarget, 'source_resource_id': sourceResource.id, 'keywords': keywordList},
     {
       headers: {
         'presqt-destination-token': destinationToken,
         'presqt-source-token': sourceToken,
         'presqt-file-duplicate-action': duplicateAction,
+        'presqt-keyword-action': keywordAction,
         'Content-Type': 'application/json'
       }
     }

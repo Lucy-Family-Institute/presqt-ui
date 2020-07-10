@@ -20,6 +20,6 @@ function* loadStatuses() {
         detail: e.message,
       }]));
     }
-    yield delay(60000);
+    yield delay(300000);
   }
 }

@@ -8,8 +8,10 @@ import UploadStepConnector from "../upload_stepper/UploadStepConnector";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import KeywordStepperSubmit from "./KeywordStepperSubmit";
+import KeywordStepperOptions from "./KeywordStepperOptions";
 import KeywordStepperResults from "./KeywordStepperResults";
+import KeywordEnhanceButton from "./KeywordEnhanceButton";
+import StepperBackButton from "../widgets/buttons/stepperBackButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,19 +37,28 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-const steps = ["Keywords and Potential Enhancements", "Updated Keywords"];
+const steps = [
+  "Keywords and Potential Enhancements",
+  "Enhance Keywords",
+  "Updated Keywords",
+];
 
 export default function KeywordStepper({}) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [newKeywords, setNewKeywords] = useState([]);
 
+  
+  const handleBack = () => {
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
+  };
+
   // Get appropriate Component
   function getStepContent(step) {
     switch (step) {
       case 0: {
         return (
-          <KeywordStepperSubmit
+          <KeywordStepperOptions
             setActiveStep={setActiveStep}
             setNewKeywords={setNewKeywords}
             newKeywords={newKeywords}
@@ -55,6 +66,14 @@ export default function KeywordStepper({}) {
         );
       }
       case 1: {
+        return (
+          <KeywordEnhanceButton
+            setActiveStep={setActiveStep}
+            newKeywords={newKeywords}
+          />
+        );
+      }
+      case 2: {
         return <KeywordStepperResults newKeywords={newKeywords} />;
       }
     }
@@ -81,6 +100,16 @@ export default function KeywordStepper({}) {
             </StepLabel>
             <PresQTStepContent>
               <Typography component={"div"}>{getStepContent(index)}</Typography>
+              <div className={classes.actionsContainer}>
+                <div>
+                  {steps.indexOf(label) === 1 ? (
+                    <StepperBackButton
+                      handleBack={handleBack}
+                      activeStep={activeStep}
+                    />
+                  ) : null}
+                </div>
+              </div>
             </PresQTStepContent>
           </Step>
         ))}
