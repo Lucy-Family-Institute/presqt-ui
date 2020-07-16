@@ -47,16 +47,17 @@ const parameterTranslator = {
   "author": "Author",
   "id": "ID",
   "keywords": "Keywords"
-}
+};
 
 export default function TargetSearch() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
 
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[selectedTarget.name];
-  const choices = selectedTarget.search_parameters
+  const choices = selectedTarget.search_parameters;
 
   const [selectedSearchParameter, setSelectedSearchParameter] = useState(choices[0]);
   const [searchValue, setSearchValue] = useState('');
@@ -77,11 +78,17 @@ export default function TargetSearch() {
     if (open) {
       setOpen(false);
     }
-  }
+  };
+
   const submitSearch = (event) => {
     event.preventDefault();
 
-    if (searchValue && !isSpaces(searchValue)) {
+    if (
+      searchValue &&
+      !isSpaces(searchValue) &&
+      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTarget.toString()) < 0 &&
+      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+    ){
       dispatch(
         actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromTargetSearch.toString()
@@ -96,15 +103,20 @@ export default function TargetSearch() {
 
   const refreshResources = (event) => {
     event.preventDefault();
-    setSearchValue('');
 
-    dispatch(
-      actionCreators.resources.removeFromErrorList(
-        actionCreators.resources.loadFromTargetSearch.toString()
-      )
-    );
+    if (
+      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
+      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+    ){
+      setSearchValue('');
+      dispatch(
+        actionCreators.resources.removeFromErrorList(
+          actionCreators.resources.loadFromTargetSearch.toString()
+        )
+      );
+      dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
+    }
 
-    dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
   };
 
   const handleMenuItemClick = (event, index) => {
@@ -203,7 +215,13 @@ export default function TargetSearch() {
                     position='end'
                   >
                     <SearchIcon
-                      css={searchValue && !isSpaces(searchValue) ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
+                      css={
+                        searchValue &&
+                        !isSpaces(searchValue) &&
+                        pendingAPIOperations.indexOf(actionCreators.resources.loadFromTarget.toString()) < 0 &&
+                        pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+                          ? [buttons.inlineButton]
+                          : [buttons.disabledInlineButton]}
                       onClick={event => submitSearch(event, 'search')}
                     />
                     <Divider
@@ -217,7 +235,10 @@ export default function TargetSearch() {
                       arrow placement="right"
                     >
                       <RefreshIcon
-                        css={[buttons.inlineButton]}
+                        css={
+                          pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
+                          pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+                            ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
                         onClick={event => refreshResources(event)}
                       />
                     </Tooltip>

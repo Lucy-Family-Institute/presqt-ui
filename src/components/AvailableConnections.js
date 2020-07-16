@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {jsx} from "@emotion/core";
 import {useSelector, useDispatch} from "react-redux";
-import {useEffect, Fragment, useState} from "react";
+import {useEffect} from "react";
 import {actionCreators} from "../redux/actionCreators";
 import text from "../styles/text";
 import colors from "../styles/colors";
@@ -23,13 +23,15 @@ export default function AvailableConnections() {
   const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
   const downloadStatus = useSelector((state) => state.downloadStatus);
   const uploadStatus = useSelector((state) => state.uploadStatus);
+  const status_list = useSelector((state) => state.statuses);
 
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const tokenError = collectionError && collectionError.status === 401;
 
-  const status_list = useSelector((state) => state.statuses);
 
-  // Split the list into groups of 4 to display on different lines
+  /**
+   * Split the list into groups of 4 to display on different lines
+   **/
   const outerList = [];
   let newList = [];
   for (let i = 0; i < availableTargets.length; i++) {
@@ -48,7 +50,7 @@ export default function AvailableConnections() {
     dispatch(actionCreators.targets.load());
     dispatch(actionCreators.services.loadServices());
     dispatch(actionCreators.statuses.loadStatuses());
-  }, [dispatch]);
+  }, []);
 
   /**
    * Watch for a change in apiOperationErrors.
