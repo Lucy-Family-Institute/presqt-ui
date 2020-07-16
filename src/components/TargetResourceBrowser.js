@@ -8,7 +8,7 @@ import textStyles from "../styles/text";
 import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
-import { useState, React, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {basicFadeIn} from "../styles/animations";
 import getError from "../utils/getError";
 
