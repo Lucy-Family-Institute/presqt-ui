@@ -20,6 +20,7 @@ import IssueModal from "./components/modals/IssueModal";
 import EaasiModal from "./components/modals/EaasiModal";
 import KeywordModal from "./components/modals/KeywordModal";
 import BagitModal from "./components/modals/BagitModal";
+import WarningBar from "./components/WarningBar";
 
 const styles = {
   app: css({
@@ -55,6 +56,7 @@ function App() {
       {/* Hidden Components */}
       <div id="hiddenComponents">
         <SnackBar />
+        <WarningBar />
         <UploadModal />
         <TokenModal />
         <DownloadModal />
