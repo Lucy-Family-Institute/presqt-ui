@@ -4,7 +4,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../styles/colors";
 import {useSelector} from "react-redux";
-import {actionCreators} from "../redux/actionCreators";
 
 const useStyles = makeStyles(theme => ({
   warningSnack: {
