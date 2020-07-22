@@ -14,13 +14,15 @@ import SnackBar from "./components/SnackBar";
 import UploadModal from "./components/modals/UploadModal";
 import TokenModal from "./components/modals/TokenModal";
 import DownloadModal from "./components/modals/DownloadModal";
-import {Fragment} from "react";
+import {Fragment, useEffect} from "react";
 import TransferModal from "./components/modals/TransferModal";
 import IssueModal from "./components/modals/IssueModal";
 import EaasiModal from "./components/modals/EaasiModal";
 import KeywordModal from "./components/modals/KeywordModal";
 import BagitModal from "./components/modals/BagitModal";
 import WarningBar from "./components/WarningBar";
+import {useDispatch} from "react-redux";
+import { actionCreators } from "./redux/actionCreators";
 
 const styles = {
   app: css({
@@ -40,6 +42,12 @@ const styles = {
 };
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actionCreators.announcements.getAnnouncements())
+  });
+
   return (
     <Fragment>
       <div css={styles.app}>

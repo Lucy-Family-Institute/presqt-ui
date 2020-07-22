@@ -3,6 +3,8 @@ import { jsx } from '@emotion/core';
 import Snackbar from "@material-ui/core/Snackbar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import colors from "../styles/colors";
+import {useSelector} from "react-redux";
+import {actionCreators} from "../redux/actionCreators";
 
 const useStyles = makeStyles(theme => ({
   warningSnack: {
@@ -16,18 +18,21 @@ const useStyles = makeStyles(theme => ({
 
 export default function WarningBar () {
   const classes = useStyles();
+  const announcement = useSelector(state => state.announcement);
 
   return (
-    <Snackbar
-      className={classes.snackbar}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      open={true}
-      message="The server is in the process being updated. You may experience delays or outages."
-      ContentProps={{
-        classes: {
-          root: classes.warningSnack
-        }
-      }}
-    />
+    announcement
+      ? <Snackbar
+        className={classes.snackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={true}
+        message={announcement}
+        ContentProps={{
+          classes: {
+            root: classes.warningSnack
+          }
+        }}
+      />
+      : null
   )
 }

@@ -152,5 +152,9 @@ export const actionCreators = createActions({
         SUBMIT_BAGIT_FILE_SUCCESS: (data) => ({data}),
         SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
         CLEAR_BAGIT_DATA: undefined
+    },
+    ANNOUNCEMENTS: {
+        GET_ANNOUNCEMENTS: undefined,
+        GET_ANNOUNCEMENTS_SUCCESS: (data) => ({data})
     }
 });

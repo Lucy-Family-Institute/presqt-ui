@@ -11,6 +11,7 @@ import { eaasiReducers } from "./eaasi";
 import { statusesReducers } from "./statuses";
 import {keywordReducers} from "./keywords"
 import {bagitReducers} from "./bagit";
+import {announcementsReducers} from "./announcements";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -28,7 +29,8 @@ const initialState = {
   ...servicesReducers.initialState,
   ...eaasiReducers.initialState,
   ...keywordReducers.initialState,
-  ...bagitReducers.initialState
+  ...bagitReducers.initialState,
+  ...announcementsReducers.initialState
 };
 
 export default handleActions(
@@ -44,7 +46,8 @@ export default handleActions(
     ...servicesReducers.reducers,
     ...eaasiReducers.reducers,
     ...keywordReducers.reducers,
-    ...bagitReducers.reducers
+    ...bagitReducers.reducers,
+    ...announcementsReducers.reducers
   },
   initialState
 );
