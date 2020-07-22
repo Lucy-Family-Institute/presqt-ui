@@ -9,7 +9,7 @@ import {actionCreators} from "../redux/actionCreators";
 const useStyles = makeStyles(theme => ({
   warningSnack: {
     backgroundColor: colors.chevelleRed,
-    color: 'white'
+    color: 'white',
   },
   snackbar: {
     marginTop: 100
@@ -22,11 +22,12 @@ export default function WarningBar () {
 
   return (
     announcement
-      ? <Snackbar
+      ?
+      <Snackbar
         className={classes.snackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={true}
-        message={announcement}
+        open={announcement.show}
+        message={announcement.message}
         ContentProps={{
           classes: {
             root: classes.warningSnack

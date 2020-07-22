@@ -2,7 +2,7 @@ import {actionCreators} from "../actionCreators";
 
 export const announcementsReducers = {
   initialState: {
-    announcement: ''
+    announcement: null
   },
   reducers: {
     [actionCreators.announcements.getAnnouncementsSuccess]: (state, action) => ({
