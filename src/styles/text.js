@@ -72,6 +72,12 @@ export default {
     fontSize: 14,
     color: colors.presqtBlue
   }),
+  noSelectedResource: css({
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 14,
+    color: "gray"
+  }),
   transferResource: css({
     fontFamily: "Roboto",
     fontWeight: 500,
