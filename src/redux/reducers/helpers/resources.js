@@ -56,8 +56,8 @@ function associateWithParentResource(openResources, possibleParents, child) {
 export default function buildResourceHierarchy(openResources, selectedResource, action) {
 
   let resourceHierarchy = [];
-  if (action.payload.length > 0) {
-    resourceHierarchy = action.payload.reduce(
+  if (action.payload.resources.length > 0) {
+    resourceHierarchy = action.payload.resources.reduce(
       (initial, resource, index, original) => {
         if (selectedResource && resource.id === selectedResource.id) {
           resource.active = true;
