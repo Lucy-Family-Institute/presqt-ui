@@ -18,7 +18,14 @@ export const actionCreators = createActions({
             searchParameter
         }),
         LOAD_FROM_TARGET_SEARCH_SUCCESS: undefined,
-        LOAD_FROM_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
+        LOAD_FROM_TARGET_SEARCH_FAILURE: (status, data) => ({ status, data }),
+        LOAD_FROM_TARGET_PAGINATION: (url, pageNumber, targetToken) => ({
+            url,
+            pageNumber,
+            targetToken
+        }),
+        LOAD_FROM_TARGET_PAGINATION_SUCCESS: undefined,
+        LOAD_FROM_TARGET_PAGINATION_FAILURE: (status, data) => ({status, data}),
         REMOVE_FROM_ERROR_LIST: (actionToRemove) => ({actionToRemove}),
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
