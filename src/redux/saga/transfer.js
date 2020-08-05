@@ -2,7 +2,8 @@ import {call, delay, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
 import {
   getResourceDetail,
-  getTargetResources
+  getTargetResources,
+  getTargetResourcesPagination
 } from "../../api/resources";
 import {
   cancelResourceTransferJob,
@@ -175,5 +176,36 @@ function* cancelTransfer(action) {
       error.response.status,
       error.response.data.error)
     )
+  }
+}
+
+/**
+ * Make an Axios request to Resource Collection with page parameter.
+ *  Dispatch either the success or failure actions accordingly.
+ **/
+export function* watchPageTransfer() {
+  yield takeEvery(
+    actionCreators.transfer.loadFromTransferTargetPagination,
+    loadTransferTargetResourcesPagination
+  );
+}
+
+function* loadTransferTargetResourcesPagination(action) {
+  try {
+    const response = yield call(
+      getTargetResourcesPagination,
+      action.payload.url,
+      action.payload.pageNumber,
+      action.payload.targetToken
+    );
+    yield put(actionCreators.transfer.loadFromTransferTargetPaginationSuccess(response.data));
+  }
+  catch (error) {
+    yield put(
+      actionCreators.transfer.loadFromTransferTargetPaginationFailure(
+        error.response.status,
+        error.response.data.error
+      )
+    );
   }
 }

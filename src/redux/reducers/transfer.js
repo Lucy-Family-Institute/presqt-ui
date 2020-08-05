@@ -7,6 +7,7 @@ import { trackAction, trackError, untrackAction } from "./helpers/tracking";
 export const transferReducers = {
   initialState: {
     transferTargetResources: null,
+    transferTargetResourcesPages: null,
     selectedTransferResource: null,
     selectedTransferResourceName: null,
     openTransferResources: [],
@@ -77,7 +78,8 @@ export const transferReducers = {
           actionCreators.transfer.loadFromTransferTarget,
           state.pendingAPIOperations
         ),
-        transferTargetResources: resourceHierarchy
+        transferTargetResources: resourceHierarchy,
+        transferTargetResourcesPages: action.payload.pages
       };
     },
     /**
@@ -96,7 +98,64 @@ export const transferReducers = {
         actionCreators.transfer.loadFromTransferTarget.toString(),
         state.apiOperationErrors
       ),
-      transferDestinationToken: ""
+      transferDestinationToken: "",
+      transferTargetResourcesPages: null
+    }),
+    [actionCreators.transfer.loadFromTransferTargetPagination]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.transfer.loadFromTransferTargetPagination,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: state.apiOperationErrors.filter(
+        item =>
+          item.action !==
+          actionCreators.transfer.loadFromTransferTargetPagination.toString()
+      ),
+      selectedTransferResource: null,
+      selectedTransferResourceName: null,
+      transferTargetResources: null
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Transfer Resource Collection call.
+     **/
+    [actionCreators.transfer.loadFromTransferTargetPaginationSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openTransferResources,
+        state.selectedTransferResource,
+        action
+      );
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.transfer.loadFromTransferTargetPagination,
+          state.pendingAPIOperations
+        ),
+        transferTargetResources: resourceHierarchy,
+        transferTargetResourcesPages: action.payload.pages
+      };
+    },
+    /**
+     * Untrack API call and track failure that occurred.
+     * Dispatched via Saga call on failed Transfer Resource Collection call.
+     **/
+    [actionCreators.transfer.loadFromTransferTargetPaginationFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.transfer.loadFromTransferTargetPagination,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.transfer.loadFromTransferTargetPagination.toString(),
+        state.apiOperationErrors
+      ),
+      transferDestinationToken: "",
+      transferTargetResourcesPages: null
     }),
     /**
      * Add API call to trackers.
@@ -339,6 +398,7 @@ export const transferReducers = {
         transferDestinationTarget: null,
         transferDestinationToken: "",
         transferStepInModal: null,
+        transferTargetResourcesPages: null,
         apiOperationErrors: newApiOperationErrors,
       };
     }
@@ -361,7 +421,8 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.clearTransferTargetResources]: state => ({
       ...state,
-      transferTargetResources: null
+      transferTargetResources: null,
+      transferTargetResourcesPages: null
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -393,6 +454,7 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
+        transferTargetResourcesPages: action.payload.pages,
         transferStatus:
           state.transferStatus === "success" ? "finished" : "cancelled"
       };
@@ -413,7 +475,8 @@ export const transferReducers = {
         actionCreators.transfer.refreshTransferTarget.toString(),
         state.apiOperationErrors
       ),
-      transferTargetResources: null
+      transferTargetResources: null,
+      transferTargetResourcesPages: null
     }),
     /** Clear the Transfer Token **/
     [actionCreators.transfer.clearTransferToken]: state => ({

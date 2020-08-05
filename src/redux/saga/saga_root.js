@@ -14,7 +14,8 @@ import {
   watchCancelTransfer,
   watchResourceTransfer,
   watchSelectTransferResource,
-  watchSwitchTransferTarget, watchTransferRefreshSource
+  watchSwitchTransferTarget, watchTransferRefreshSource,
+  watchPageTransfer
 } from "./transfer";
 import { watchSubmitIssue } from "./github";
 import { watchLoadServices, watchLoadService } from './services';
@@ -51,6 +52,7 @@ export default function* rootSaga() {
     watchSendKeywords(),
     watchSubmitBagitFile(),
     watchGetAnnouncements(),
-    watchPage()
+    watchPage(),
+    watchPageTransfer()
   ]);
 }

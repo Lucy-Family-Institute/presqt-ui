@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import React, {useEffect, useState} from "react";
 import { jsx, } from "@emotion/core";
-import {actionCreators} from "../../redux/actionCreators";
+import { actionCreators } from "../../redux/actionCreators";
+import { makeStyles } from "@material-ui/core/styles";
 import Spinner from "../widgets/spinners/Spinner";
 import {useDispatch, useSelector} from "react-redux";
 import TransferResourceButton from "./TransferResourceButton";
@@ -9,13 +10,31 @@ import TransferResourcesHeader from "./TransferResourcesHeader";
 import textStyles from "../../styles/text";
 import {basicFadeIn} from "../../styles/animations";
 import getError from "../../utils/getError";
+import Pagination from "@material-ui/lab/Pagination";
+import colors from "../../styles/colors";
 
-export default function TransferResourceBrowser() {
+const useStyles = makeStyles(() => ({
+  root: {
+    width: "75%",
+    paddingTop: 45,
+    paddingBottom: 45,
+    "& .Mui-selected": {
+      backgroundColor: colors.presqtBlue,
+      "&:hover": {
+        backgroundColor: colors.presqtBlueHover,
+      },
+    },
+  },
+}));
+
+export default function TransferResourceBrowser({setTransferPageNumber, transferPageNumber}) {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const available = useSelector(state => state.available);
   const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
   const transferTargetResources = useSelector(state => state.transferTargetResources);
+  const transferTargetResourcesPages = useSelector(state => state.transferTargetResourcesPages);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
 
@@ -91,6 +110,18 @@ export default function TransferResourceBrowser() {
     setMessageCss(new_message_css)
   }, [transferTargetResources, collectionError]);
 
+  const handlePageChange = (event, value) => {
+    setTransferPageNumber(value);
+    // Make call to get page selected resources
+    dispatch(
+      actionCreators.transfer.loadFromTransferTargetPagination(
+        transferTargetResourcesPages.base_page,
+        value,
+        transferDestinationToken
+      )
+    );
+  };
+
   return (
     <div css={{
       minHeight: "25vh",
@@ -99,12 +130,29 @@ export default function TransferResourceBrowser() {
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TransferResourcesHeader />
         {pendingAPIOperations.includes(actionCreators.transfer.loadFromTransferTarget.toString())
+          ||
+          pendingAPIOperations.includes(
+            actionCreators.transfer.loadFromTransferTargetPagination.toString()
+          )
           ? <Spinner />
           :
             <div css={messageCss}>
               {message}
             </div>
         }
+        {!transferTargetResourcesPages ? null : (
+          <Pagination
+            classes={{ root: classes.root }}
+            count={transferTargetResourcesPages.total_pages}
+            size="small"
+            showFirstButton
+            showLastButton
+            siblingCount={0}
+            color="primary"
+            page={transferPageNumber}
+            onChange={handlePageChange}
+          />
+        )}
       </div>
     </div>
   )
