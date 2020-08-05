@@ -121,11 +121,10 @@ export const resourceReducers = {
       ...state,
       pendingAPIResponse: true,
       pendingAPIOperations: trackAction(
-        actionCreators.resources.loadFromTargetSearch,
+        actionCreators.resources.loadFromTargetPagination,
         state.pendingAPIOperations
       ),
       selectedResource: null,
-      targetResourcesPages: null,
       openResources: []
     }),
     /**
@@ -139,7 +138,7 @@ export const resourceReducers = {
         ...state,
         pendingAPIResponse: false,
         pendingAPIOperations: untrackAction(
-          actionCreators.resources.loadFromTargetSearch,
+          actionCreators.resources.loadFromTargetPagination,
           state.pendingAPIOperations
         ),
         targetResources: resourceHierarchy,
@@ -154,12 +153,12 @@ export const resourceReducers = {
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
-        actionCreators.resources.loadFromTargetSearch,
+        actionCreators.resources.loadFromTargetPagination,
         state.pendingAPIOperations
       ),
       apiOperationErrors: trackError(
         action,
-        actionCreators.resources.loadFromTargetSearch,
+        actionCreators.resources.loadFromTargetPagination,
         state.apiOperationErrors
       ),
       targetResources: null,
