@@ -190,7 +190,7 @@ export default function TargetResourceBrowser() {
         ) : (
           <div css={messageCss}>{message}</div>
         )}
-        {!targetResourcesPages || targetResources !== [] ? null : (
+        {!targetResourcesPages ? null : (
           <Pagination
             classes={{ root: classes.root }}
             count={targetResourcesPages.total_pages}
