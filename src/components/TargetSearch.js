@@ -49,7 +49,7 @@ const parameterTranslator = {
   "keywords": "Keywords"
 };
 
-export default function TargetSearch() {
+export default function TargetSearch({setPageNumber}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
@@ -98,6 +98,8 @@ export default function TargetSearch() {
         actionCreators.resources.loadFromTargetSearch(
           selectedTarget.name, token, searchValue, selectedSearchParameter)
       );
+      // Reset the page number to 1
+      setPageNumber(1);
     }
   };
 
@@ -109,6 +111,8 @@ export default function TargetSearch() {
       pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
     ){
       setSearchValue('');
+      // Reset the page number to 1
+      setPageNumber(1);
       dispatch(
         actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromTargetSearch.toString()

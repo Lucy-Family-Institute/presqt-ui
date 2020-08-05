@@ -5,7 +5,8 @@ import {
   watchRefreshSource,
   watchSearch,
   watchSelectResource,
-  watchSwitchTarget
+  watchSwitchTarget,
+  watchPage
 } from "./resources";
 import {watchCancelDownload, watchResourceDownload} from "./download";
 import {watchCancelUpload, watchResourceUpload} from "./upload";
@@ -49,6 +50,7 @@ export default function* rootSaga() {
     watchGetKeywords(),
     watchSendKeywords(),
     watchSubmitBagitFile(),
-    watchGetAnnouncements()
+    watchGetAnnouncements(),
+    watchPage()
   ]);
 }

@@ -33,6 +33,14 @@ export function getTargetResourcesSearch(target, targetToken, search, searchPara
 }
 
 /**
+ * Resource Collection Endpoint With Page Parameter
+ **/
+export function getTargetResourcesPagination(url, pageNumber, targetToken) {
+  const pageUrl = url.concat(pageNumber.toString());
+  return axios.get(pageUrl, {headers: { 'presqt-source-token': targetToken }});
+  }
+
+/**
  * Resource Detail Endpoint
  **/
 export function getResourceDetail(resource, targetToken) {

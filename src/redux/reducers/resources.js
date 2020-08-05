@@ -7,6 +7,7 @@ import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 export const resourceReducers = {
   initialState: {
     targetResources: null,
+    targetResourcesPages: null,
     selectedResource: null,
     searchValue: null,
     openResources: []
@@ -23,7 +24,8 @@ export const resourceReducers = {
         actionCreators.resources.loadFromTarget,
         state.pendingAPIOperations
       ),
-      targetResources: null
+      targetResources: null,
+      targetResourcesPages: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -39,7 +41,8 @@ export const resourceReducers = {
           actionCreators.resources.loadFromTarget,
           state.pendingAPIOperations
         ),
-        targetResources: resourceHierarchy
+        targetResources: resourceHierarchy,
+        targetResourcesPages: action.payload.pages
       };
     },
     /**
@@ -58,7 +61,8 @@ export const resourceReducers = {
         actionCreators.resources.loadFromTarget.toString(),
         state.apiOperationErrors
       ),
-      targetResources: null
+      targetResources: null,
+      targetResourcesPages: null
     }),
     /**
      * Add API call to trackers.
@@ -72,6 +76,7 @@ export const resourceReducers = {
         state.pendingAPIOperations
       ),
       selectedResource: null,
+      targetResourcesPages: null,
       searchValue: action.payload.searchValue,
       openResources: []
     }),
@@ -89,7 +94,8 @@ export const resourceReducers = {
           actionCreators.resources.loadFromTargetSearch,
           state.pendingAPIOperations
         ),
-        targetResources: resourceHierarchy
+        targetResources: resourceHierarchy,
+        targetResourcesPages: action.payload.pages
       };
     },
     /**
@@ -108,7 +114,55 @@ export const resourceReducers = {
         actionCreators.resources.loadFromTargetSearch,
         state.apiOperationErrors
       ),
-      targetResources: null
+      targetResources: null,
+      targetResourcesPages: null
+    }),
+    [actionCreators.resources.loadFromTargetPagination]: state => ({
+      ...state,
+      pendingAPIResponse: true,
+      pendingAPIOperations: trackAction(
+        actionCreators.resources.loadFromTargetPagination,
+        state.pendingAPIOperations
+      ),
+      selectedResource: null,
+      openResources: []
+    }),
+    /**
+     * Sort the resources into the correct hierarchy.
+     * Dispatched via Saga call on successful Resource Collection with pagination call.
+     **/
+    [actionCreators.resources.loadFromTargetPaginationSuccess]: (state, action) => {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openResources, state.selectedResource, action);
+      return {
+        ...state,
+        pendingAPIResponse: false,
+        pendingAPIOperations: untrackAction(
+          actionCreators.resources.loadFromTargetPagination,
+          state.pendingAPIOperations
+        ),
+        targetResources: resourceHierarchy,
+        targetResourcesPages: action.payload.pages
+      };
+    },
+    /**
+     * Untrack API search call and track failure that occurred.
+     * Dispatched via Saga call on failed Resource Collection pagination call.
+     **/
+    [actionCreators.resources.loadFromTargetPaginationFailure]: (state, action) => ({
+      ...state,
+      pendingAPIResponse: false,
+      pendingAPIOperations: untrackAction(
+        actionCreators.resources.loadFromTargetPagination,
+        state.pendingAPIOperations
+      ),
+      apiOperationErrors: trackError(
+        action,
+        actionCreators.resources.loadFromTargetPagination,
+        state.apiOperationErrors
+      ),
+      targetResources: null,
+      targetResourcesPages: null
     }),
     [combineActions(
       /**
@@ -188,6 +242,7 @@ export const resourceReducers = {
       return {
         ...state,
         targetResources: null,
+        targetResourcesPages: null,
         selectedResource: null,
         searchValue: null,
         openResources: []
@@ -221,6 +276,7 @@ export const resourceReducers = {
           state.pendingAPIOperations
         ),
         targetResources: resourceHierarchy,
+        targetResourcesPages: action.payload.pages,
         uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
       };
     },
@@ -240,7 +296,8 @@ export const resourceReducers = {
         actionCreators.resources.refreshTarget.toString(),
         state.apiOperationErrors
       ),
-      targetResources: null
+      targetResources: null,
+      targetResourcesPages: null
     }),
     /**
      * Clear the ticket number

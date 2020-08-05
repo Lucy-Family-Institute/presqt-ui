@@ -1,29 +1,29 @@
 import {call, put, takeEvery} from "@redux-saga/core/effects";
 import {actionCreators} from "../actionCreators";
-import {getResourceDetail, getTargetResources, getTargetResourcesSearch} from "../../api/resources";
+import {getResourceDetail, getTargetResources, getTargetResourcesSearch, getTargetResourcesPagination} from "../../api/resources";
 
 /** Resource Collection **/
 export function* watchSwitchTarget() {
   yield takeEvery(actionCreators.resources.loadFromTarget, loadTargetResources);
 }
 
- /**
+/**
  * Make an Axios request to Resource Collection.
  * Dispatch either the success or failure actions accordingly.
  **/
 function* loadTargetResources(action) {
   try {
     const response = yield call(
-    getTargetResources,
-    action.payload.target.name,
-    action.payload.targetToken
+      getTargetResources,
+      action.payload.target.name,
+      action.payload.targetToken
     );
     yield put(actionCreators.resources.loadFromTargetSuccess(response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetFailure(
-      error.response.status,
-      error.response.data.error)
+        error.response.status,
+        error.response.data.error)
     );
   }
 }
@@ -39,18 +39,18 @@ export function* watchSearch() {
 function* loadTargetResourcesSearch(action) {
   try {
     const response = yield call(
-    getTargetResourcesSearch,
-    action.payload.target,
-    action.payload.targetToken,
-    action.payload.searchValue,
-    action.payload.searchParameter
+      getTargetResourcesSearch,
+      action.payload.target,
+      action.payload.targetToken,
+      action.payload.searchValue,
+      action.payload.searchParameter
     );
     yield put(actionCreators.resources.loadFromTargetSearchSuccess(response.data));
   }
   catch (error) {
     yield put(actionCreators.resources.loadFromTargetSearchFailure(
-      error.response.status,
-      error.response.data.error)
+        error.response.status,
+        error.response.data.error)
     );
   }
 }
@@ -93,8 +93,39 @@ function* refreshTargetResources(action) {
   }
   catch (error) {
     yield put(actionCreators.resources.refreshTargetFailure(
-      error.response.status,
-      error.response.data.error)
+        error.response.status,
+        error.response.data.error)
+    );
+  }
+}
+
+/**
+ * Make an Axios request to Resource Collection with page parameter.
+ *  Dispatch either the success or failure actions accordingly.
+ **/
+export function* watchPage() {
+  yield takeEvery(
+    actionCreators.resources.loadFromTargetPagination,
+    loadTargetResourcesPagination
+  );
+}
+
+function* loadTargetResourcesPagination(action) {
+  try {
+    const response = yield call(
+      getTargetResourcesPagination,
+      action.payload.url,
+      action.payload.pageNumber,
+      action.payload.targetToken
+    );
+    yield put(actionCreators.resources.loadFromTargetPaginationSuccess(response.data));
+  }
+  catch (error) {
+    yield put(
+      actionCreators.resources.loadFromTargetPaginationFailure(
+        error.response.status,
+        error.response.data.error
+      )
     );
   }
 }
