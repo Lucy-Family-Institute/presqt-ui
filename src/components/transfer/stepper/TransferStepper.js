@@ -60,7 +60,7 @@ const steps = [
   'Transfer Results'
 ];
 
-export default function TransferStepper() {
+export default function TransferStepper({setTransferPageNumber, transferPageNumber}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -95,6 +95,7 @@ export default function TransferStepper() {
     if (activeStep === 2){
       dispatch(actionCreators.transfer.clearTransferToken());
       dispatch(actionCreators.transfer.clearTransferTargetResources());
+      setTransferPageNumber(1);
     }
     dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
     setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -174,6 +175,8 @@ export default function TransferStepper() {
             selectedDuplicate={selectedDuplicate}
             selectedKeywordAction={selectedKeywordAction}
             keywordList={keywordList}
+            setTransferPageNumber={setTransferPageNumber}
+            transferPageNumber={transferPageNumber}
           />
         )
         }
@@ -228,8 +231,9 @@ export default function TransferStepper() {
                     {
                       index === 6
                       ? <TransferStartOverButton
-                         setActiveStep={setActiveStep}
-                         step={index}
+                          setActiveStep={setActiveStep}
+                          step={index}
+                          setTransferPageNumber={setTransferPageNumber}
                         />
                       : null
                     }

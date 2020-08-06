@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransferStartOverButton({setActiveStep, step}) {
+export default function TransferStartOverButton({setActiveStep, step, setTransferPageNumber}) {
   const classes = useStyles();
 
   let buttonClass = classes.button;
@@ -42,6 +42,7 @@ export default function TransferStartOverButton({setActiveStep, step}) {
       )
     );
     setActiveStep(0);
+    setTransferPageNumber(1);
   };
 
   return (

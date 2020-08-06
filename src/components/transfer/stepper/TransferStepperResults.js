@@ -15,7 +15,8 @@ import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 
-export default function TransferStepperResults({setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList}) {
+export default function TransferStepperResults(
+  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber }) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -26,6 +27,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
+  const transferTargetResourcesPages = useSelector(state => state.transferTargetResourcesPages)
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
@@ -50,7 +52,7 @@ export default function TransferStepperResults({setActiveStep, selectedDuplicate
     // Transfer Successful! Refresh transfer resource browser
     if (transferStatus === 'success') {
       dispatch(actionCreators.resources.selectResource(selectedResource, targetToken));
-      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferDestinationToken))
+      dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferPageNumber, transferDestinationToken));
     }
     // Transfer successful and transfer resource browser refreshed!
     else if (transferStatus === 'finished') {
