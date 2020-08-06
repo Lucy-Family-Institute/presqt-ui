@@ -37,6 +37,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
   const transferTargetResourcesPages = useSelector(state => state.transferTargetResourcesPages);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
+  const transferStatus = useSelector(state => state.transferStatus)
 
   const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
@@ -151,6 +152,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
             color="primary"
             page={transferPageNumber}
             onChange={handlePageChange}
+            disabled={transferStatus && transferStatus === ('pending' || 'success') }
           />
         )}
       </div>
