@@ -86,9 +86,9 @@ export default function TargetSearch({setPageNumber}) {
     if (
       searchValue &&
       !isSpaces(searchValue) &&
-      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTarget.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
+      pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString()) &&
+      pendingAPIOperations.includes(actionCreators.resources.selectResource.toString()) &&
+      pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())
     ){
       dispatch(
         actionCreators.resources.removeFromErrorList(
@@ -108,9 +108,9 @@ export default function TargetSearch({setPageNumber}) {
     event.preventDefault();
 
     if (
-      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
+      pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()) &&
+      pendingAPIOperations.includes(actionCreators.resources.selectResource.toString()) &&
+      pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())
     ){
       setSearchValue('');
       // Reset the page number to 1
@@ -224,8 +224,8 @@ export default function TargetSearch({setPageNumber}) {
                       css={
                         searchValue &&
                         !isSpaces(searchValue) &&
-                        pendingAPIOperations.indexOf(actionCreators.resources.loadFromTarget.toString()) < 0 &&
-                        pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+                        pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString()) &&
+                        pendingAPIOperations.includes(actionCreators.resources.selectResource.toString())
                           ? [buttons.inlineButton]
                           : [buttons.disabledInlineButton]}
                       onClick={event => submitSearch(event, 'search')}
@@ -242,9 +242,9 @@ export default function TargetSearch({setPageNumber}) {
                     >
                       <RefreshIcon
                         css={
-                            pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
-                            pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
-                            pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
+                            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()) &&
+                            pendingAPIOperations.includes(actionCreators.resources.selectResource.toString()) &&
+                            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())
                             ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
                         onClick={event => refreshResources(event)}
                       />
