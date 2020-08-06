@@ -40,6 +40,15 @@ export function getTargetResourcesPagination(url, pageNumber, targetToken) {
   return axios.get(pageUrl, {headers: { 'presqt-source-token': targetToken }});
   }
 
+  /**
+ * Resource Collection Endpoint
+ **/
+export function getTargetResourcesTransfer(destinationTarget, pageNumber, targetToken) {
+  return axios.get(`${apiURLBase}targets/${destinationTarget}/resources?page=${pageNumber}`, {
+    headers: {'presqt-source-token': targetToken}
+  });
+}
+
 /**
  * Resource Detail Endpoint
  **/

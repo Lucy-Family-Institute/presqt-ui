@@ -3,7 +3,8 @@ import {actionCreators} from "../actionCreators";
 import {
   getResourceDetail,
   getTargetResources,
-  getTargetResourcesPagination
+  getTargetResourcesPagination,
+  getTargetResourcesTransfer
 } from "../../api/resources";
 import {
   cancelResourceTransferJob,
@@ -50,8 +51,9 @@ function* refreshTransferTargetResources(action) {
 
   try {
     const response = yield call(
-      getTargetResources,
-      action.payload.target,
+      getTargetResourcesTransfer,
+      action.payload.destinationTarget,
+      action.payload.pageNumber,
       action.payload.targetToken
     );
     yield put(actionCreators.transfer.refreshTransferTargetSuccess(response.data));

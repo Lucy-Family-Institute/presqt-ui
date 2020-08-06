@@ -60,7 +60,7 @@ const steps = [
   'Transfer Results'
 ];
 
-export default function TransferStepper({setTransferPageNumber}) {
+export default function TransferStepper({setTransferPageNumber, transferPageNumber}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -175,6 +175,8 @@ export default function TransferStepper({setTransferPageNumber}) {
             selectedDuplicate={selectedDuplicate}
             selectedKeywordAction={selectedKeywordAction}
             keywordList={keywordList}
+            setTransferPageNumber={setTransferPageNumber}
+            transferPageNumber={transferPageNumber}
           />
         )
         }

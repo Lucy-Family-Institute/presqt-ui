@@ -66,7 +66,9 @@ export default function TransferModal() {
           <Grid container>
             <Grid item xs={7} className={leftGridClasses.root}>
               <TransferStepper
-                setTransferPageNumber={setTransferPageNumber} />
+                setTransferPageNumber={setTransferPageNumber}
+                transferPageNumber={transferPageNumber}
+              />
             </Grid>
             <Grid className={RightGridClasses.root} item xs={5}>
               <TransferResourceBrowser
