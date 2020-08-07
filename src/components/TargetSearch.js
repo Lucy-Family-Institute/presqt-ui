@@ -87,7 +87,8 @@ export default function TargetSearch({setPageNumber}) {
       searchValue &&
       !isSpaces(searchValue) &&
       pendingAPIOperations.indexOf(actionCreators.resources.loadFromTarget.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
+      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
     ){
       dispatch(
         actionCreators.resources.removeFromErrorList(
@@ -108,7 +109,8 @@ export default function TargetSearch({setPageNumber}) {
 
     if (
       pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
-      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+      pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
+      pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
     ){
       setSearchValue('');
       // Reset the page number to 1
@@ -240,8 +242,9 @@ export default function TargetSearch({setPageNumber}) {
                     >
                       <RefreshIcon
                         css={
-                          pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
-                          pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
+                            pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetSearch.toString()) < 0 &&
+                            pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0 &&
+                            pendingAPIOperations.indexOf(actionCreators.resources.loadFromTargetPagination.toString()) < 0
                             ? [buttons.inlineButton] : [buttons.disabledInlineButton]}
                         onClick={event => refreshResources(event)}
                       />

@@ -201,6 +201,9 @@ export default function TargetResourceBrowser() {
             color="primary"
             page={pageNumber}
             onChange={handlePageChange}
+            disabled={pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString()) ||
+            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()) ||
+            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())}
           />
         )}
       </div>
