@@ -36,6 +36,9 @@ export const actionCreators = createActions({
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        LOAD_COLLECTION_PROGRESS: (targetToken) => ({targetToken}),
+        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined,
+        LOAD_COLLECTION_PROGRESS_FAILURE: (status, data) => ({status, data})
     },
     DOWNLOAD: {
         DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
