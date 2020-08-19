@@ -25,11 +25,13 @@ function* loadCollectionProgress(action) {
       // Update the status
       status = response.data.status;
     } catch (error) {
-      console.log(error);
+      // Exit this loop
+      status = 'in_progress';
+      yield delay(1000)
     }
   }
 
-  while (percentage != 100) {
+  while (percentage != 99) {
     try {
       const response = yield call(
         getCollectionProgress,
@@ -37,12 +39,14 @@ function* loadCollectionProgress(action) {
       );
       // Update the percentage to the current percentage.....percentage
       percentage = response.data.job_percentage;
+      console.log(response.data)
       yield put(
         actionCreators.resources.loadCollectionProgressSuccess(response.data)
       );
     } catch (error) {
-      console.log(error);
+      // Exit this process
+      percentage = 99;
     }
-    yield delay(2000);
+    yield delay(1000);
   }
 }

@@ -63,7 +63,6 @@ export default function TokenModal() {
         actionCreators.resources.loadFromTarget.toString()));
     }
     if (apiOperationErrors.length == 0) {
-      console.log("GO BABY");
       dispatch(actionCreators.resources.loadCollectionProgress(token));
     }
     setToken('');
