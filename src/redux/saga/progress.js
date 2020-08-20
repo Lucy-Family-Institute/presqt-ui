@@ -39,7 +39,6 @@ function* loadCollectionProgress(action) {
       );
       // Update the percentage to the current percentage.....percentage
       percentage = response.data.job_percentage;
-      console.log(response.data)
       yield put(
         actionCreators.resources.loadCollectionProgressSuccess(response.data)
       );
