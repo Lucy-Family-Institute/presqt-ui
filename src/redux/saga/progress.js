@@ -16,6 +16,8 @@ export function* watchCollectionProgress() {
 function* loadCollectionProgress(action) {
   let percentage = 0;
   let status = "";
+  // The file on the backend doesn't update immediately, so if it's 'finished', we want to wait until
+  // it's 'in_progress' again.
   while (status != "in_progress") {
     try {
       const response = yield call(
@@ -30,7 +32,8 @@ function* loadCollectionProgress(action) {
       yield delay(1000)
     }
   }
-
+  // Keep hitting the status endpoint until the percentage == 99, 
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99) {
     try {
       const response = yield call(
