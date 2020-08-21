@@ -26,7 +26,7 @@ const ColorCircularProgress = withStyles({
 function CircularProgressWithLabel(props) {
   return (
     <Box position="relative" display="inline-flex">
-      <CircularProgress variant="static" {...props} />
+      <ColorCircularProgress variant="static" {...props} />
       <Box
         top={0}
         left={0}
