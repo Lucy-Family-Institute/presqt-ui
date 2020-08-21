@@ -10,7 +10,8 @@ export const resourceReducers = {
     targetResourcesPages: null,
     selectedResource: null,
     searchValue: null,
-    openResources: []
+    openResources: [],
+    collectionProgress: 0
   },
   reducers: {
     /**
@@ -62,7 +63,8 @@ export const resourceReducers = {
         state.apiOperationErrors
       ),
       targetResources: null,
-      targetResourcesPages: null
+      targetResourcesPages: null,
+      collectionProgress: 0
     }),
     /**
      * Add API call to trackers.
@@ -78,7 +80,8 @@ export const resourceReducers = {
       selectedResource: null,
       targetResourcesPages: null,
       searchValue: action.payload.searchValue,
-      openResources: []
+      openResources: [],
+      collectionProgress: 0
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -95,7 +98,8 @@ export const resourceReducers = {
           state.pendingAPIOperations
         ),
         targetResources: resourceHierarchy,
-        targetResourcesPages: action.payload.pages
+        targetResourcesPages: action.payload.pages,
+        collectionProgress: 0
       };
     },
     /**
@@ -115,7 +119,8 @@ export const resourceReducers = {
         state.apiOperationErrors
       ),
       targetResources: null,
-      targetResourcesPages: null
+      targetResourcesPages: null,
+      collectionProgress: 0
     }),
     [actionCreators.resources.loadFromTargetPagination]: state => ({
       ...state,
@@ -125,7 +130,8 @@ export const resourceReducers = {
         state.pendingAPIOperations
       ),
       selectedResource: null,
-      openResources: []
+      openResources: [],
+      collectionProgress: 0
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -162,7 +168,8 @@ export const resourceReducers = {
         state.apiOperationErrors
       ),
       targetResources: null,
-      targetResourcesPages: null
+      targetResourcesPages: null,
+      collectionProgress: 0
     }),
     [combineActions(
       /**
@@ -297,7 +304,8 @@ export const resourceReducers = {
         state.apiOperationErrors
       ),
       targetResources: null,
-      targetResourcesPages: null
+      targetResourcesPages: null,
+      collectionProgress: 0
     }),
     /**
      * Clear the ticket number
@@ -306,5 +314,13 @@ export const resourceReducers = {
       ...state,
       activeTicketNumber: null
     }),
+    [actionCreators.resources.loadCollectionProgress]: (state, action) => ({
+      ...state,
+      collectionProgress: 0
+    }),
+    [actionCreators.resources.loadCollectionProgressSuccess]: (state, action) => ({
+      ...state,
+      collectionProgress: action.payload.job_percentage
+    })
   }
 };

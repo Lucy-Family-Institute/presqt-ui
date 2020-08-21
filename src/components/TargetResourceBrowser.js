@@ -7,7 +7,7 @@ import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import { makeStyles } from "@material-ui/core/styles";
 import TargetSearch from "./TargetSearch";
-import Spinner from "./widgets/spinners/Spinner";
+import SpinnerCollection from "./widgets/spinners/SpinnerCollection";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, useEffect } from "react";
 import { basicFadeIn } from "../styles/animations";
@@ -158,8 +158,8 @@ export default function TargetResourceBrowser() {
         targetResourcesPages.base_page,
         value,
         targetToken
-      )
-    );
+      ));
+    dispatch(actionCreators.resources.loadCollectionProgress(targetToken));
   };
 
   return (
@@ -186,7 +186,7 @@ export default function TargetResourceBrowser() {
         pendingAPIOperations.includes(
           actionCreators.resources.loadFromTargetPagination.toString()
         ) ? (
-          <Spinner />
+          <SpinnerCollection />
         ) : (
           <div css={messageCss}>{message}</div>
         )}

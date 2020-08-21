@@ -16,7 +16,7 @@ import { InputAdornment } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import buttons from "../../styles/buttons";
-
+import { getCollectionProgress } from "../../api/progress";
 
 
 
@@ -61,6 +61,9 @@ export default function TokenModal() {
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
+    }
+    if (apiOperationErrors.length == 0) {
+      dispatch(actionCreators.resources.loadCollectionProgress(token));
     }
     setToken('');
     setPasswordIsMasked(true);
