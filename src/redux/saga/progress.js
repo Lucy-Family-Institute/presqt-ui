@@ -29,11 +29,11 @@ function* loadCollectionProgress(action) {
     } catch (error) {
       // Exit this loop
       status = 'in_progress';
-      yield delay(1000)
+      yield delay(2000)
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
   while (percentage != 99) {
     try {
       const response = yield call(
