@@ -98,7 +98,8 @@ export const resourceReducers = {
           state.pendingAPIOperations
         ),
         targetResources: resourceHierarchy,
-        targetResourcesPages: action.payload.pages
+        targetResourcesPages: action.payload.pages,
+        collectionProgress: 0
       };
     },
     /**
