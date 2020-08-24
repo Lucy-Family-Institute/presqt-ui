@@ -54,6 +54,9 @@ export const actionCreators = createActions({
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
+        LOAD_DOWNLOAD_PROGRESS: (targetToken) => ({targetToken}),
+        LOAD_DOWNLOAD_PROGRESS_SUCCESS: undefined,
+        LOAD_DOWNLOAD_PROGRESS_FAILURE: (status, data) => ({status, data})
     },
     UPLOAD: {
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>

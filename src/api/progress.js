@@ -6,3 +6,10 @@ export function getCollectionProgress(targetToken) {
       headers: {'presqt-source-token': targetToken}
     });
 }
+
+
+export function getDownloadProgress(targetToken) {
+  return axios.get(`${apiURLBase}job_status/download/`, {
+    headers: {'presqt-source-token': targetToken}
+  });
+}

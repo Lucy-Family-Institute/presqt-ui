@@ -2,6 +2,7 @@
 import {Fragment, useEffect, useState} from "react";
 import {jsx} from "@emotion/core";
 import Spinner from "../widgets/spinners/Spinner";
+import SpinnerDownload from "../widgets/spinners/SpinnerDownload";
 import CancelButton from "../widgets/buttons/CancelButton";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
@@ -26,7 +27,7 @@ export default function DownloadStepperResults() {
       <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
         <p>The download is being processed on the server.</p>
       </div>
-      <Spinner />
+      <SpinnerDownload />
       <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
         <CancelButton actionType='DOWNLOAD' />
       </div>

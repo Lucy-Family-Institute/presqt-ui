@@ -31,6 +31,7 @@ export default function DownloadStepperSubmit({setActiveStep}) {
   const submitDownload = () => {
     dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    dispatch(actionCreators.download.loadDownloadProgress(targetToken));
   };
 
   return (
