@@ -9,6 +9,7 @@ export const downloadReducers = {
     downloadForService: false,
     downloadForServiceStatus: null,
     downloadProgress: 0,
+    downloadMessage: "Download is being processed on the server"
   },
   reducers: {
     /**
@@ -164,7 +165,8 @@ export const downloadReducers = {
       downloadData: null,
       downloadForService: false,
       downloadForServiceStatus: null,
-      downloadProgress: 0
+      downloadProgress: 0,
+      downloadMessage: "Download is being processed on the server"
     }),
     /**
      * Display the Download Modal
@@ -186,7 +188,8 @@ export const downloadReducers = {
     }),
     [actionCreators.download.loadDownloadProgressSuccess]: (state, action) => ({
       ...state,
-      downloadProgress: action.payload.job_percentage
+      downloadProgress: action.payload.job_percentage,
+      downloadMessage: action.payload.message
     })
   },
 };

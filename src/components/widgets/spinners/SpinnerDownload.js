@@ -60,7 +60,7 @@ export default function SpinnerDownload() {
   return (
     <div className={classes.root}>
       <CircularProgressWithLabel
-        value={downloadProgress}
+        value={downloadProgress >= 5 ? downloadProgress : 5}
         onAnimationEnd={(event) => {event.stopPropagation()}}
       />
     </div>
