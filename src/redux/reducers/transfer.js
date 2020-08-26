@@ -16,7 +16,10 @@ export const transferReducers = {
     transferModalDisplay: false,
     transferDestinationTarget: null,
     transferDestinationToken: "",
-    transferStepInModal: null
+    transferStepInModal: null,
+    transferProgress: 0,
+    transferMessage: "Transfer is being processed on the server"
+
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -456,7 +459,7 @@ export const transferReducers = {
         transferTargetResources: resourceHierarchy,
         transferTargetResourcesPages: action.payload.pages,
         transferStatus:
-          state.transferStatus === "success" ? "finished" : "cancelled"
+          state.transferStatus === "success" || state.transferStatus === "finished" ? "finished" : "cancelled"
       };
     },
     /**
@@ -491,6 +494,15 @@ export const transferReducers = {
       ...state,
       selectedTransferResource: null,
       selectedTransferResourceName: null
+    }),
+    [actionCreators.transfer.loadTransferProgress]: (state, action) => ({
+      ...state,
+      transferProgress: 0
+    }),
+    [actionCreators.transfer.loadTransferProgressSuccess]: (state, action) => ({
+      ...state,
+      transferProgress: action.payload.job_percentage,
+      transferMessage: action.payload.message
     })
   }
 };

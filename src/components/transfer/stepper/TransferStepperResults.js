@@ -8,6 +8,7 @@ import { jsx } from '@emotion/core';
 import {actionCreators} from "../../../redux/actionCreators";
 import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
+import SpinnerTransfer from "../../widgets/spinners/SpinnerTransfer";
 import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
 import getError from "../../../utils/getError";
@@ -20,6 +21,7 @@ export default function TransferStepperResults(
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
+  const transferMessage = useSelector(state => state.transferMessage)
   const transferData = useSelector(state => state.transferData);
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
@@ -36,7 +38,7 @@ export default function TransferStepperResults(
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        The transfer is being processed on the server.
+        Transfer is being processed on the server.
       </div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the transfer will still continue.
@@ -55,6 +57,23 @@ export default function TransferStepperResults(
       dispatch(actionCreators.transfer.refreshTransferTarget(transferDestinationTarget, transferPageNumber, transferDestinationToken));
     }
     // Transfer successful and transfer resource browser refreshed!
+    if (transferStatus === 'pending') {
+      setStepThreeContent(
+        <div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        {transferMessage}
+      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        If you refresh or leave the page the transfer will still continue.
+      </div>
+      <SpinnerTransfer />
+      <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+        <CancelButton actionType='TRANSFER' />
+      </div>
+    </div>
+  );
+    }
+
     else if (transferStatus === 'finished') {
       setStepThreeContent(
         <Grid item md={12}>
@@ -161,7 +180,7 @@ export default function TransferStepperResults(
         </Fragment>
       );
     }
-  }, [transferStatus, apiOperationErrors, newKeywords]);
+  }, [transferStatus, apiOperationErrors, newKeywords, transferMessage]);
 
   return (stepThreeContent);
 }

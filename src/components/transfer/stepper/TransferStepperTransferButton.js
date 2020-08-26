@@ -54,8 +54,9 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       selectedTarget.name,
       targetToken
     ));
+    dispatch(actionCreators.transfer.loadTransferProgress(transferDestinationToken, targetToken));
 
-      handleNext()
+    handleNext()
   };
 
   let destinationTargetReadableName = '';

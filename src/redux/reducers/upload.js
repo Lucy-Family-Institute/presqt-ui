@@ -8,7 +8,7 @@ export const uploadReducers = {
     uploadModalDisplay: false,
     uploadType: null,
     uploadProgress: 0,
-    uploadMessage: "Download is being processed on the server"
+    uploadMessage: "Upload is being processed on the server"
   },
   reducers: {
     /**

@@ -14,8 +14,19 @@ export function getDownloadProgress(targetToken) {
   });
 }
 
+
 export function getUploadProgress(destinationToken) {
   return axios.get(`${apiURLBase}job_status/upload/`, {
     headers: {'presqt-destination-token': destinationToken}
+  });
+}
+
+
+export function getTransferProgress(destinationToken, targetToken) {
+  return axios.get(`${apiURLBase}job_status/transfer/`, {
+    headers: {
+      'presqt-destination-token': destinationToken,
+      'presqt-source-token': targetToken
+    }
   });
 }

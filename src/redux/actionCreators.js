@@ -114,7 +114,10 @@ export const actionCreators = createActions({
         REFRESH_TRANSFER_TARGET: (destinationTarget, pageNumber, targetToken) => ({destinationTarget, pageNumber, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
-        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
+        LOAD_TRANSFER_PROGRESS: (destinationToken, targetToken) => ({destinationToken, targetToken}),
+        LOAD_TRANSFER_PROGRESS_SUCCESS: undefined,
+        LOAD_TRANSFER_PROGRESS_FAILURE: (status, data) => ({status, data})
     },
     TARGETS: {
         LOAD: undefined,
