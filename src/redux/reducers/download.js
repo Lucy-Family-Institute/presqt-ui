@@ -37,7 +37,6 @@ export const downloadReducers = {
         actionCreators.download.downloadResource,
         state.pendingAPIOperations
       ),
-      activeTicketNumber: action.payload.data.ticket_number,
     }),
     /**
      * Untrack API call and track failure that occurred.

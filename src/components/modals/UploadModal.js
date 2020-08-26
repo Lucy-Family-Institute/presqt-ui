@@ -25,7 +25,6 @@ export default function UploadModal()  {
     dispatch(actionCreators.upload.clearUploadData());
     dispatch(actionCreators.resources.removeFromErrorList(
       actionCreators.upload.uploadToTarget.toString()));
-    dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
 
 
