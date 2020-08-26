@@ -72,6 +72,9 @@ export const actionCreators = createActions({
         CLEAR_UPLOAD_DATA: undefined,
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
         HIDE_UPLOAD_MODAL: undefined,
+        LOAD_UPLOAD_PROGRESS: (destinationToken) => ({destinationToken}),
+        LOAD_UPLOAD_PROGRESS_SUCCESS: undefined,
+        LOAD_UPLOAD_PROGRESS_FAILURE: (status, data) => ({status, data})
     },
     TRANSFER: {
         SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),

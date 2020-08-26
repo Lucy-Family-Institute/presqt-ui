@@ -13,3 +13,9 @@ export function getDownloadProgress(targetToken) {
     headers: {'presqt-source-token': targetToken}
   });
 }
+
+export function getUploadProgress(destinationToken) {
+  return axios.get(`${apiURLBase}job_status/upload/`, {
+    headers: {'presqt-destination-token': destinationToken}
+  });
+}

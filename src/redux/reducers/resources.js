@@ -284,7 +284,7 @@ export const resourceReducers = {
         ),
         targetResources: resourceHierarchy,
         targetResourcesPages: action.payload.pages,
-        uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
+        uploadStatus: state.uploadStatus === 'success' || state.uploadStatus === 'finished' ? "finished" : 'cancelled'
       };
     },
     /**

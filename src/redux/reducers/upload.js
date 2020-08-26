@@ -6,7 +6,9 @@ export const uploadReducers = {
     uploadStatus: null,
     uploadData: null,
     uploadModalDisplay: false,
-    uploadType: null
+    uploadType: null,
+    uploadProgress: 0,
+    uploadMessage: "Download is being processed on the server"
   },
   reducers: {
     /**
@@ -163,5 +165,14 @@ export const uploadReducers = {
         state.apiOperationErrors
       ),
     }),
+    [actionCreators.upload.loadUploadProgress]: (state, action) => ({
+      ...state,
+      uploadProgress: 0
+    }),
+    [actionCreators.upload.loadUploadProgressSuccess]: (state, action) => ({
+      ...state,
+      uploadProgress: action.payload.job_percentage,
+      uploadMessage: action.payload.message
+    })
   }
 };
