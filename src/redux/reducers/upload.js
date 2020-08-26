@@ -105,7 +105,9 @@ export const uploadReducers = {
     [actionCreators.upload.clearUploadData]: state => ({
       ...state,
       uploadStatus: null,
-      uploadData: null
+      uploadData: null,
+      uploadProgress: 0,
+      uploadMessage: "Upload is being processed on the server"
     }),
     /**
      * Display the Upload Modal

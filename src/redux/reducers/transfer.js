@@ -402,6 +402,8 @@ export const transferReducers = {
         transferStepInModal: null,
         transferTargetResourcesPages: null,
         apiOperationErrors: newApiOperationErrors,
+        transferProgress: 0,
+        transferMessage: "Transfer is being processed on the server"
       };
     }
     ,
@@ -412,6 +414,8 @@ export const transferReducers = {
       ...state,
       transferStatus: null,
       transferData: null,
+      transferProgress: 0,
+      transferMessage: "Transfer is being processed on the server",
       apiOperationErrors: state.apiOperationErrors.filter(
         item =>
           item.action !==
