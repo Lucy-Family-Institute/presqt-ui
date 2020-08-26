@@ -26,7 +26,6 @@ export default function CancelButton({actionType}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
-  const ticketNumber = useSelector(state => state.activeTicketNumber);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const uploadStatus = useSelector(state => state.uploadStatus);
   const downloadStatus = useSelector(state => state.downloadStatus);
@@ -35,13 +34,13 @@ export default function CancelButton({actionType}) {
 
   const submitCancel = () => {
     if (actionType === 'DOWNLOAD') {
-      dispatch(actionCreators.download.cancelDownload(ticketNumber, targetToken))
+      dispatch(actionCreators.download.cancelDownload(targetToken))
     }
     else if (actionType === 'UPLOAD') {
-      dispatch(actionCreators.upload.cancelUpload(ticketNumber, targetToken))
+      dispatch(actionCreators.upload.cancelUpload(targetToken))
     }
     else if (actionType === 'TRANSFER') {
-      dispatch(actionCreators.transfer.cancelTransfer(ticketNumber, targetToken, transferDestinationToken))
+      dispatch(actionCreators.transfer.cancelTransfer(targetToken, transferDestinationToken))
     }
   };
 
@@ -52,7 +51,6 @@ export default function CancelButton({actionType}) {
         className={classes.button}
         onClick={submitCancel}
         disabled={
-          !ticketNumber ||
           uploadStatus === 'cancelPending' ||
           uploadStatus === 'cancelSuccess' ||
           transferStatus === 'cancelPending' ||

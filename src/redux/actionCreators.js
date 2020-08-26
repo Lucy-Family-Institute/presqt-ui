@@ -47,7 +47,7 @@ export const actionCreators = createActions({
         DOWNLOAD_JOB: undefined,
         DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         DOWNLOAD_JOB_FAILURE: (status, data) => ({status, data}),
-        CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_DOWNLOAD: (targetToken) => ({targetToken}),
         CANCEL_DOWNLOAD_SUCCESS: undefined,
         CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_FOR_SERVICE_SUCCESS: undefined,
@@ -66,7 +66,7 @@ export const actionCreators = createActions({
         UPLOAD_JOB: undefined,
         UPLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         UPLOAD_JOB_FAILURE: (status, data) => ({ status, data }),
-        CANCEL_UPLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_UPLOAD: (targetToken) => ({targetToken}),
         CANCEL_UPLOAD_SUCCESS: undefined,
         CANCEL_UPLOAD_FAILURE: (status, data) => ({ status, data }),
         CLEAR_UPLOAD_DATA: undefined,
@@ -102,8 +102,8 @@ export const actionCreators = createActions({
         TRANSFER_JOB: undefined,
         TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
         TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
-        CANCEL_TRANSFER: (ticketNumber, sourceToken, destinationToken) =>
-          ({ticketNumber, sourceToken, destinationToken}),
+        CANCEL_TRANSFER: (sourceToken, destinationToken) =>
+          ({sourceToken, destinationToken}),
         CANCEL_TRANSFER_SUCCESS: undefined,
         CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
         CLEAR_TRANSFER_MODAL_DATA: undefined,

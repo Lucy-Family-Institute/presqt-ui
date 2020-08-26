@@ -33,8 +33,7 @@ export const uploadReducers = {
       pendingAPIOperations: untrackAction(
         actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
-      ),
-      activeTicketNumber: action.payload.data.ticket_number
+      )
     }),
     /**
      * Untrack API call and track failure that occurred.

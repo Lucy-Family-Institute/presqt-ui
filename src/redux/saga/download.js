@@ -125,7 +125,6 @@ function* cancelDownload(action) {
   try {
     yield call(
       cancelResourceDownloadJob,
-      action.payload.ticketNumber,
       action.payload.targetToken
     );
 

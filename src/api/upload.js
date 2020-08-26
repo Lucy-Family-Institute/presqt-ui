@@ -37,6 +37,6 @@ export function resourceUploadJob(uploadJobURL, targetToken) {
 /**
  * Cancel Upload Job Endpoint
  **/
-export function cancelResourceUploadJob(ticketNumber, targetToken) {
-  return axios.patch(`${apiURLBase}uploads/${ticketNumber}/`, null, {headers: {'presqt-destination-token': targetToken}});
+export function cancelResourceUploadJob(targetToken) {
+  return axios.patch(`${apiURLBase}job_status/upload/`, null, {headers: {'presqt-destination-token': targetToken}});
 }

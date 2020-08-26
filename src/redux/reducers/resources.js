@@ -307,13 +307,6 @@ export const resourceReducers = {
       targetResourcesPages: null,
       collectionProgress: 0
     }),
-    /**
-     * Clear the ticket number
-     **/
-    [actionCreators.resources.clearActiveTicketNumber]: state => ({
-      ...state,
-      activeTicketNumber: null
-    }),
     [actionCreators.resources.loadCollectionProgress]: (state, action) => ({
       ...state,
       collectionProgress: 0
