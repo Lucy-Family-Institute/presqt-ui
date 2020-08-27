@@ -27,7 +27,6 @@ export default function DownloadModal() {
         actionCreators.download.downloadResource.toString()
       )
     );
-    dispatch(actionCreators.resources.clearActiveTicketNumber());
   };
 
   return downloadModalDisplay ? (

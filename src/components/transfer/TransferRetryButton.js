@@ -37,13 +37,11 @@ export default function TransferRetryButton({selectedDuplicate, setStepThreeCont
   const submitRetry = () => {
     dispatch(actionCreators.transfer.clearTransferData());
 
-    dispatch(
-      actionCreators.resources.removeFromErrorList(
+    dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.transfer.transferResource.toString()
       )
     );
-    dispatch(
-      actionCreators.transfer.transferResource(
+    dispatch(actionCreators.transfer.transferResource(
         transferDestinationTarget,
         transferDestinationToken,
         selectedResource,
@@ -52,9 +50,9 @@ export default function TransferRetryButton({selectedDuplicate, setStepThreeCont
         keywordList,
         selectedTransferResource,
         sourceTarget,
-        sourceToken
-      )
-    );
+        sourceToken));
+    dispatch(actionCreators.transfer.loadTransferProgress(transferDestinationToken, sourceToken));
+    
     setStepThreeContent(
       <div>
         <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>

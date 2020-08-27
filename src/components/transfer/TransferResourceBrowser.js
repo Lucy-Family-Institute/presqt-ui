@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { jsx, } from "@emotion/core";
 import { actionCreators } from "../../redux/actionCreators";
 import { makeStyles } from "@material-ui/core/styles";
-import Spinner from "../widgets/spinners/Spinner";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
 import {useDispatch, useSelector} from "react-redux";
 import TransferResourceButton from "./TransferResourceButton";
 import TransferResourcesHeader from "./TransferResourcesHeader";
@@ -12,6 +12,7 @@ import {basicFadeIn} from "../../styles/animations";
 import getError from "../../utils/getError";
 import Pagination from "@material-ui/lab/Pagination";
 import colors from "../../styles/colors";
+import FakeSpinner from "../widgets/spinners/FakeSpinner";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,6 +39,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const transferStatus = useSelector(state => state.transferStatus)
+  const transferTargetResourcesProgress = useSelector((state) => state.transferTargetResourcesProgress)
 
   const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
@@ -121,6 +123,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
         transferDestinationToken
       )
     );
+    dispatch(actionCreators.transfer.loadFromTransferTargetProgress(transferDestinationToken));
   };
 
   return (
@@ -135,7 +138,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
           pendingAPIOperations.includes(
             actionCreators.transfer.loadFromTransferTargetPagination.toString()
           )
-          ? <Spinner />
+          ? transferTargetResourcesProgress <= 10 ? <FakeSpinner /> : <SpinnerProgress action={'TRANSFER_COLLECTION'} />
           :
             <div css={messageCss}>
               {message}

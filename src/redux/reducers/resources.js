@@ -284,7 +284,7 @@ export const resourceReducers = {
         ),
         targetResources: resourceHierarchy,
         targetResourcesPages: action.payload.pages,
-        uploadStatus: state.uploadStatus === 'success' ? "finished" : 'cancelled'
+        uploadStatus: state.uploadStatus === 'success' || state.uploadStatus === 'finished' ? "finished" : 'cancelled'
       };
     },
     /**
@@ -306,13 +306,6 @@ export const resourceReducers = {
       targetResources: null,
       targetResourcesPages: null,
       collectionProgress: 0
-    }),
-    /**
-     * Clear the ticket number
-     **/
-    [actionCreators.resources.clearActiveTicketNumber]: state => ({
-      ...state,
-      activeTicketNumber: null
     }),
     [actionCreators.resources.loadCollectionProgress]: (state, action) => ({
       ...state,

@@ -164,7 +164,6 @@ function* cancelTransfer(action) {
   try {
     yield call(
       cancelResourceTransferJob,
-      action.payload.ticketNumber,
       action.payload.sourceToken,
       action.payload.destinationToken
     );

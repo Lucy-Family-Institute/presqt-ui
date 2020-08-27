@@ -10,10 +10,12 @@ import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
 import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
 import SuccessListItem from "../widgets/list_items/SuccessListItem";
 import WarningList from "../widgets/list_items/WarningList";
+import FakeSpinner from "../widgets/spinners/FakeSpinner";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -24,6 +26,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const dispatch = useDispatch();
 
   const uploadStatus = useSelector(state => state.uploadStatus);
+  const uploadMessage = useSelector(state => state.uploadMessage);
   const uploadData = useSelector(state => state.uploadData);
   const connection = useSelector(state => state.selectedTarget);
   const token = useSelector(state => state.apiTokens)[connection.name];
@@ -35,7 +38,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const [stepThreeContent, setStepThreeContent] = useDefault(
     <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        The upload is being processed on the server.
+        Upload is being processed on the server.
       </div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the upload will still continue.
@@ -55,6 +58,22 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
     // Upload Successful! Refresh resource browser
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));
+    }
+    else if (uploadStatus === 'pending') {
+      setStepThreeContent(
+        <div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        {uploadMessage}
+      </div>
+      <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+        If you refresh or leave the page the upload will still continue.
+      </div>
+      {uploadMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"UPLOAD"}/>}
+      <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
+        <CancelButton actionType='UPLOAD' />
+      </div>
+    </div>
+      )
     }
     // Upload successful and resource browser refreshed!
     else if (uploadStatus === 'finished') {
@@ -170,7 +189,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         </Fragment>
       );
     }
-  }, [uploadStatus, apiOperationErrors]);
+  }, [uploadStatus, uploadMessage, apiOperationErrors]);
 
   return(stepThreeContent)
 }

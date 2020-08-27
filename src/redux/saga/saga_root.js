@@ -24,7 +24,13 @@ import { watchLoadStatuses } from "./status";
 import {watchGetKeywords, watchSendKeywords} from "./keywords";
 import {watchSubmitBagitFile} from "./bagit";
 import { watchGetAnnouncements } from "./announcements";
-import { watchCollectionProgress } from "./progress";
+import {
+  watchCollectionProgress,
+  watchDownloadProgress,
+  watchUploadProgress,
+  watchTransferProgress,
+  watchTransferCollectionProgress
+} from "./progress";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -55,6 +61,10 @@ export default function* rootSaga() {
     watchGetAnnouncements(),
     watchPage(),
     watchPageTransfer(),
-    watchCollectionProgress()
+    watchCollectionProgress(),
+    watchDownloadProgress(),
+    watchUploadProgress(),
+    watchTransferProgress(),
+    watchTransferCollectionProgress()
   ]);
 }

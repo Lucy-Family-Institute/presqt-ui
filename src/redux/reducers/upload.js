@@ -6,7 +6,9 @@ export const uploadReducers = {
     uploadStatus: null,
     uploadData: null,
     uploadModalDisplay: false,
-    uploadType: null
+    uploadType: null,
+    uploadProgress: 0,
+    uploadMessage: "Upload is being processed on the server"
   },
   reducers: {
     /**
@@ -31,8 +33,7 @@ export const uploadReducers = {
       pendingAPIOperations: untrackAction(
         actionCreators.upload.uploadToTarget,
         state.pendingAPIOperations
-      ),
-      activeTicketNumber: action.payload.data.ticket_number
+      )
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -104,7 +105,9 @@ export const uploadReducers = {
     [actionCreators.upload.clearUploadData]: state => ({
       ...state,
       uploadStatus: null,
-      uploadData: null
+      uploadData: null,
+      uploadProgress: 0,
+      uploadMessage: "Upload is being processed on the server"
     }),
     /**
      * Display the Upload Modal
@@ -163,5 +166,14 @@ export const uploadReducers = {
         state.apiOperationErrors
       ),
     }),
+    [actionCreators.upload.loadUploadProgress]: (state, action) => ({
+      ...state,
+      uploadProgress: 0
+    }),
+    [actionCreators.upload.loadUploadProgressSuccess]: (state, action) => ({
+      ...state,
+      uploadProgress: action.payload.job_percentage,
+      uploadMessage: action.payload.message
+    })
   }
 };

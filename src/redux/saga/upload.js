@@ -76,7 +76,6 @@ function* cancelUpload(action) {
   try {
     yield call(
       cancelResourceUploadJob,
-      action.payload.ticketNumber,
       action.payload.targetToken
     );
 
