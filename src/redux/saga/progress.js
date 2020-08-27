@@ -128,7 +128,6 @@ function* loadUploadProgress(action) {
   // it's 'in_progress' again.
   while (status != "in_progress") {
     try {
-      console.log(action.payload.destinationToken);
       const response = yield call(
         getUploadProgress,
         action.payload.destinationToken
@@ -184,7 +183,6 @@ function* loadTransferProgress(action) {
   // it's 'in_progress' again.
   while (status != "in_progress") {
     try {
-      console.log(action.payload.destinationToken);
       const response = yield call(
         getTransferProgress,
         action.payload.destinationToken,
@@ -192,10 +190,8 @@ function* loadTransferProgress(action) {
       );
       // Update the status
       status = response.data.status;
-      console.log(status)
     } catch (error) {
       // Exit this loop
-      console.log('error1', error)
       status = 'in_progress';
       yield delay(2000)
     }
@@ -212,12 +208,10 @@ function* loadTransferProgress(action) {
       // Update the percentage to the current percentage.....percentage
       percentage = response.data.job_percentage;
       message = response.data.message
-      console.log(message);
       yield put(
         actionCreators.transfer.loadTransferProgressSuccess(response.data)
       );
     } catch (error) {
-      console.log('error2', error)
       // Exit this process
       message = 'successful'
       percentage = 99;
