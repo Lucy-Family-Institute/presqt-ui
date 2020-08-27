@@ -61,6 +61,7 @@ export default function SpinnerProgress({ action }) {
   const downloadProgress = useSelector((state) => state.downloadProgress);
   const transferProgress = useSelector((state) => state.transferProgress);
   const uploadProgress = useSelector((state) => state.uploadProgress);
+  const transferTargetResourcesProgress = useSelector((state) => state.transferTargetResourcesProgress)
 
   let actionProgress = collectionProgress
    
@@ -72,6 +73,9 @@ export default function SpinnerProgress({ action }) {
   }
   else if (action === 'TRANSFER') {
     actionProgress = transferProgress;
+  }
+  else if (action === 'TRANSFER_COLLECTION') {
+    actionProgress = transferTargetResourcesProgress;
   }
 
   return (

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { jsx, } from "@emotion/core";
 import { actionCreators } from "../../redux/actionCreators";
 import { makeStyles } from "@material-ui/core/styles";
-import Spinner from "../widgets/spinners/Spinner";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
 import {useDispatch, useSelector} from "react-redux";
 import TransferResourceButton from "./TransferResourceButton";
 import TransferResourcesHeader from "./TransferResourcesHeader";
@@ -121,6 +121,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
         transferDestinationToken
       )
     );
+    dispatch(actionCreators.transfer.loadFromTransferTargetProgress(transferDestinationToken));
   };
 
   return (
@@ -135,7 +136,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
           pendingAPIOperations.includes(
             actionCreators.transfer.loadFromTransferTargetPagination.toString()
           )
-          ? <Spinner />
+          ? <SpinnerProgress action={'TRANSFER_COLLECTION'} />
           :
             <div css={messageCss}>
               {message}

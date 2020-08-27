@@ -106,6 +106,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
     if (activeStep === 1) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
+      dispatch(actionCreators.transfer.loadFromTransferTargetProgress(transferDestinationToken));
     }
     else if (activeStep === 4) {
       dispatch(actionCreators.keywords.getKeywords(resource, targetToken));

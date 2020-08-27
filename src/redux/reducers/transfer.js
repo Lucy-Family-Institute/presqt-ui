@@ -18,8 +18,8 @@ export const transferReducers = {
     transferDestinationToken: "",
     transferStepInModal: null,
     transferProgress: 0,
-    transferMessage: "Transfer is being processed on the server"
-
+    transferMessage: "Transfer is being processed on the server",
+    transferTargetResourcesProgress: 0
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -416,6 +416,7 @@ export const transferReducers = {
       transferData: null,
       transferProgress: 0,
       transferMessage: "Transfer is being processed on the server",
+      transferTargetResourcesProgress: 0,
       apiOperationErrors: state.apiOperationErrors.filter(
         item =>
           item.action !==
@@ -506,6 +507,14 @@ export const transferReducers = {
       ...state,
       transferProgress: action.payload.job_percentage,
       transferMessage: action.payload.message
-    })
+    }),
+    [actionCreators.transfer.loadFromTransferTargetProgress]: (state, action) => ({
+      ...state,
+      transferTargetResourcesProgress: 0
+    }),
+    [actionCreators.transfer.loadFromTransferTargetProgressSuccess]: (state, action) => ({
+      ...state,
+      transferTargetResourcesProgress: action.payload.job_percentage
+    }),
   }
 };
