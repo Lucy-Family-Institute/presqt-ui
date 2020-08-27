@@ -64,7 +64,8 @@ export default function SpinnerProgress({ action }) {
   const transferTargetResourcesProgress = useSelector((state) => state.transferTargetResourcesProgress)
 
   let actionProgress = collectionProgress
-   
+  
+  // Get the appropriate progress for the spinner
   if (action === 'DOWNLOAD') {
     actionProgress = downloadProgress;
   }

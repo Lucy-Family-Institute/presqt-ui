@@ -117,7 +117,7 @@ export function* watchUploadProgress() {
 }
 
 /**
- * Make an Axios request to Download job.
+ * Make an Axios request to Upload job.
  * Dispatch either the success or failure actions accordingly.
  **/
 function* loadUploadProgress(action) {
@@ -172,7 +172,7 @@ export function* watchTransferProgress() {
 }
 
 /**
- * Make an Axios request to Download job.
+ * Make an Axios request to Transfer job.
  * Dispatch either the success or failure actions accordingly.
  **/
 function* loadTransferProgress(action) {

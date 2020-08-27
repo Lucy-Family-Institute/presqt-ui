@@ -54,7 +54,6 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
    * occur, update the state content to the new component that displays the result of the upload.
    **/
   useEffect(() => {
-    console.log(uploadStatus);
     // Upload Successful! Refresh resource browser
     if (uploadStatus === 'success') {
       dispatch(actionCreators.resources.refreshTarget(connection, token));

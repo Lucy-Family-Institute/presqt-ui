@@ -44,6 +44,7 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
         targetToken
       )
     );
+    dispatch(actionCreators.upload.loadUploadProgress(targetToken));
     setStepThreeContent()
   };
 
