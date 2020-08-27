@@ -2,7 +2,7 @@
 import {Fragment, useEffect, useState} from "react";
 import {jsx} from "@emotion/core";
 import Spinner from "../widgets/spinners/Spinner";
-import SpinnerDownload from "../widgets/spinners/SpinnerDownload";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
 import FakeSpinner from "../widgets/spinners/FakeSpinner";
 import CancelButton from "../widgets/buttons/CancelButton";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -123,7 +123,7 @@ export default function DownloadStepperResults() {
           <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
             <p>{downloadMessage}</p>
           </div>
-          {downloadMessage.includes("processed") ? <FakeSpinner /> : <SpinnerDownload />}
+          {downloadMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"DOWNLOAD"}/>}
           <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
             <CancelButton actionType='DOWNLOAD' />
           </div>

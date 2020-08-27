@@ -7,7 +7,7 @@ import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import { makeStyles } from "@material-ui/core/styles";
 import TargetSearch from "./TargetSearch";
-import SpinnerCollection from "./widgets/spinners/SpinnerCollection";
+import SpinnerProgress from "./widgets/spinners/SpinnerProgress";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, useEffect } from "react";
 import { basicFadeIn } from "../styles/animations";
@@ -186,7 +186,7 @@ export default function TargetResourceBrowser() {
         pendingAPIOperations.includes(
           actionCreators.resources.loadFromTargetPagination.toString()
         ) ? (
-          <SpinnerCollection />
+          <SpinnerProgress action={"COLLECTION"} />
         ) : (
           <div css={messageCss}>{message}</div>
         )}

@@ -10,7 +10,7 @@ import RetryUploadButton from "../widgets/buttons/RetryButtons/RetryUploadButton
 import RetryStartUploadOverButton from "../widgets/buttons/RetryButtons/RetryStartUploadOverButton";
 import CancelButton from "../widgets/buttons/CancelButton";
 import Spinner from "../widgets/spinners/Spinner";
-import SpinnerUpload from "../widgets/spinners/SpinnerUpload";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
 import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
 import SuccessListItem from "../widgets/list_items/SuccessListItem";
@@ -68,7 +68,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the upload will still continue.
       </div>
-      <SpinnerUpload />
+          <SpinnerProgress action={"UPLOAD"}/>
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
         <CancelButton actionType='UPLOAD' />
       </div>

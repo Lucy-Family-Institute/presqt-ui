@@ -8,7 +8,7 @@ import { jsx } from '@emotion/core';
 import {actionCreators} from "../../../redux/actionCreators";
 import CancelButton from "../../widgets/buttons/CancelButton";
 import Spinner from "../../widgets/spinners/Spinner";
-import SpinnerTransfer from "../../widgets/spinners/SpinnerTransfer";
+import SpinnerProgress from "../../widgets/spinners/SpinnerProgress";
 import TransferStartOverButton from "../TransferStartOverButton";
 import TransferRetryButton from "../TransferRetryButton";
 import getError from "../../../utils/getError";
@@ -66,7 +66,7 @@ export default function TransferStepperResults(
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the transfer will still continue.
       </div>
-      <SpinnerTransfer />
+          <SpinnerProgress action={"TRANSFER"}/>
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
         <CancelButton actionType='TRANSFER' />
       </div>
