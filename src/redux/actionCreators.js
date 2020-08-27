@@ -37,8 +37,7 @@ export const actionCreators = createActions({
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
         LOAD_COLLECTION_PROGRESS: (targetToken) => ({targetToken}),
-        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined,
-        LOAD_COLLECTION_PROGRESS_FAILURE: (status, data) => ({status, data})
+        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined
     },
     DOWNLOAD: {
         DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
@@ -55,8 +54,7 @@ export const actionCreators = createActions({
         DISPLAY_DOWNLOAD_MODAL: undefined,
         HIDE_DOWNLOAD_MODAL: undefined,
         LOAD_DOWNLOAD_PROGRESS: (targetToken) => ({targetToken}),
-        LOAD_DOWNLOAD_PROGRESS_SUCCESS: undefined,
-        LOAD_DOWNLOAD_PROGRESS_FAILURE: (status, data) => ({status, data})
+        LOAD_DOWNLOAD_PROGRESS_SUCCESS: undefined
     },
     UPLOAD: {
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
@@ -73,8 +71,7 @@ export const actionCreators = createActions({
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
         HIDE_UPLOAD_MODAL: undefined,
         LOAD_UPLOAD_PROGRESS: (destinationToken) => ({destinationToken}),
-        LOAD_UPLOAD_PROGRESS_SUCCESS: undefined,
-        LOAD_UPLOAD_PROGRESS_FAILURE: (status, data) => ({status, data})
+        LOAD_UPLOAD_PROGRESS_SUCCESS: undefined
     },
     TRANSFER: {
         SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),
@@ -117,10 +114,8 @@ export const actionCreators = createActions({
         STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
         LOAD_TRANSFER_PROGRESS: (destinationToken, targetToken) => ({destinationToken, targetToken}),
         LOAD_TRANSFER_PROGRESS_SUCCESS: undefined,
-        LOAD_TRANSFER_PROGRESS_FAILURE: (status, data) => ({ status, data }),
         LOAD_FROM_TRANSFER_TARGET_PROGRESS: (targetToken) => ({ targetToken }),
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined,
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS_FAILURE: (status, data) => ({ status, data }),
+        LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined
     },
     TARGETS: {
         LOAD: undefined,

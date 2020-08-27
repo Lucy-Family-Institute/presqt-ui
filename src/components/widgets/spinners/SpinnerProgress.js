@@ -82,7 +82,7 @@ export default function SpinnerProgress({ action }) {
   return (
     <div className={classes.root}>
       <CircularProgressWithLabel
-        value={actionProgress}
+        value={actionProgress >= 10 ? actionProgress : 10}
         onAnimationEnd={(event) => {
           event.stopPropagation();
         }}

@@ -15,6 +15,7 @@ import getError from "../../utils/getError";
 import useDefault from "../../hooks/useDefault";
 import SuccessListItem from "../widgets/list_items/SuccessListItem";
 import WarningList from "../widgets/list_items/WarningList";
+import FakeSpinner from "../widgets/spinners/FakeSpinner";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -62,12 +63,12 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       setStepThreeContent(
         <div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
-        {uploadMessage ? uploadMessage : `Upload is being processed on the server.`}
+        {uploadMessage}
       </div>
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the upload will still continue.
       </div>
-          <SpinnerProgress action={"UPLOAD"}/>
+      {uploadMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"UPLOAD"}/>}
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
         <CancelButton actionType='UPLOAD' />
       </div>

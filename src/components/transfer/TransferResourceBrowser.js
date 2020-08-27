@@ -12,6 +12,7 @@ import {basicFadeIn} from "../../styles/animations";
 import getError from "../../utils/getError";
 import Pagination from "@material-ui/lab/Pagination";
 import colors from "../../styles/colors";
+import FakeSpinner from "../widgets/spinners/FakeSpinner";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,6 +39,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const transferStatus = useSelector(state => state.transferStatus)
+  const transferTargetResourcesProgress = useSelector((state) => state.transferTargetResourcesProgress)
 
   const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
 
@@ -136,7 +138,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
           pendingAPIOperations.includes(
             actionCreators.transfer.loadFromTransferTargetPagination.toString()
           )
-          ? <SpinnerProgress action={'TRANSFER_COLLECTION'} />
+          ? transferTargetResourcesProgress <= 10 ? <FakeSpinner /> : <SpinnerProgress action={'TRANSFER_COLLECTION'} />
           :
             <div css={messageCss}>
               {message}

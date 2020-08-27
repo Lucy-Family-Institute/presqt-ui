@@ -33,7 +33,7 @@ function* loadCollectionProgress(action) {
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99) {
     try {
       const response = yield call(
@@ -86,7 +86,7 @@ function* loadDownloadProgress(action) {
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99 && !message.includes('successful')) {
     try {
       const response = yield call(
@@ -141,7 +141,7 @@ function* loadUploadProgress(action) {
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99 && !message.includes('successful')) {
     try {
       const response = yield call(
@@ -197,7 +197,7 @@ function* loadTransferProgress(action) {
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99 && !message.includes('successful')) {
     try {
       const response = yield call(
@@ -252,7 +252,7 @@ function* loadTransferCollectionProgress(action) {
     }
   }
   // Keep hitting the status endpoint until the percentage == 99, 
-  // which indicates the process is complete (There's a bit of a lag as the FE builds re)
+  // which indicates the process is complete (There's a bit of a lag as the FE builds resources)
   while (percentage != 99) {
     try {
       const response = yield call(

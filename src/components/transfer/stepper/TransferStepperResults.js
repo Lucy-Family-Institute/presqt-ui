@@ -15,6 +15,7 @@ import getError from "../../../utils/getError";
 import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
+import FakeSpinner from "../../widgets/spinners/FakeSpinner";
 
 export default function TransferStepperResults(
   { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber }) {
@@ -66,7 +67,7 @@ export default function TransferStepperResults(
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the transfer will still continue.
       </div>
-          <SpinnerProgress action={"TRANSFER"}/>
+      {transferMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"TRANSFER"}/>}
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
         <CancelButton actionType='TRANSFER' />
       </div>
