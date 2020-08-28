@@ -16,7 +16,6 @@ import { InputAdornment } from "@material-ui/core";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import buttons from "../../styles/buttons";
-import { getCollectionProgress } from "../../api/progress";
 
 
 

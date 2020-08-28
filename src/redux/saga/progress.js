@@ -1,6 +1,6 @@
 import { call, put, delay, takeEvery } from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
-import { getCollectionProgress, getDownloadProgress, getUploadProgress, getTransferProgress } from "../../api/progress";
+import { getCollectionProgress } from "../../api/progress";
 
 export function* watchCollectionProgress() {
   yield takeEvery(
