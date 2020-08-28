@@ -124,7 +124,7 @@ function* transferTargetResource(action) {
           transferFinished = true;
         }
         else {
-          yield put(actionCreators.transfer.transferJobSuccess(null, 'pending'));
+          yield put(actionCreators.transfer.transferJobSuccess(transferJobResponse.data, 'pending'));
           yield delay(1000);
         }
       }

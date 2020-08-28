@@ -315,7 +315,9 @@ export const transferReducers = {
                       action.payload.status === 'pending'
         ? 'cancelPending'
         : action.payload.status,
-      transferData: action.payload.data
+      transferData: action.payload.data,
+      transferProgress: action.payload.data.job_percentage,
+      transferMessage: action.payload.data.message
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -498,15 +500,6 @@ export const transferReducers = {
       ...state,
       selectedTransferResource: null,
       selectedTransferResourceName: null
-    }),
-    [actionCreators.transfer.loadTransferProgress]: (state, action) => ({
-      ...state,
-      transferProgress: 0
-    }),
-    [actionCreators.transfer.loadTransferProgressSuccess]: (state, action) => ({
-      ...state,
-      transferProgress: action.payload.job_percentage,
-      transferMessage: action.payload.message
     }),
     [actionCreators.transfer.loadFromTransferTargetProgress]: (state, action) => ({
       ...state,
