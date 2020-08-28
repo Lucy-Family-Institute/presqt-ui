@@ -26,9 +26,6 @@ import {watchSubmitBagitFile} from "./bagit";
 import { watchGetAnnouncements } from "./announcements";
 import {
   watchCollectionProgress,
-  watchDownloadProgress,
-  watchUploadProgress,
-  watchTransferProgress,
   watchTransferCollectionProgress
 } from "./progress";
 
@@ -62,9 +59,6 @@ export default function* rootSaga() {
     watchPage(),
     watchPageTransfer(),
     watchCollectionProgress(),
-    watchDownloadProgress(),
-    watchUploadProgress(),
-    watchTransferProgress(),
     watchTransferCollectionProgress()
   ]);
 }

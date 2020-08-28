@@ -51,7 +51,6 @@ export default function TransferRetryButton({selectedDuplicate, setStepThreeCont
         selectedTransferResource,
         sourceTarget,
         sourceToken));
-    dispatch(actionCreators.transfer.loadTransferProgress(transferDestinationToken, sourceToken));
     
     setStepThreeContent(
       <div>

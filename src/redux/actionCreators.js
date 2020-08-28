@@ -52,9 +52,7 @@ export const actionCreators = createActions({
         DOWNLOAD_FOR_SERVICE_SUCCESS: undefined,
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
-        HIDE_DOWNLOAD_MODAL: undefined,
-        LOAD_DOWNLOAD_PROGRESS: (targetToken) => ({targetToken}),
-        LOAD_DOWNLOAD_PROGRESS_SUCCESS: undefined
+        HIDE_DOWNLOAD_MODAL: undefined
     },
     UPLOAD: {
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
@@ -69,9 +67,7 @@ export const actionCreators = createActions({
         CANCEL_UPLOAD_FAILURE: (status, data) => ({ status, data }),
         CLEAR_UPLOAD_DATA: undefined,
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
-        HIDE_UPLOAD_MODAL: undefined,
-        LOAD_UPLOAD_PROGRESS: (destinationToken) => ({destinationToken}),
-        LOAD_UPLOAD_PROGRESS_SUCCESS: undefined
+        HIDE_UPLOAD_MODAL: undefined
     },
     TRANSFER: {
         SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),
@@ -112,8 +108,6 @@ export const actionCreators = createActions({
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
         STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
-        LOAD_TRANSFER_PROGRESS: (destinationToken, targetToken) => ({destinationToken, targetToken}),
-        LOAD_TRANSFER_PROGRESS_SUCCESS: undefined,
         LOAD_FROM_TRANSFER_TARGET_PROGRESS: (targetToken) => ({ targetToken }),
         LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined
     },

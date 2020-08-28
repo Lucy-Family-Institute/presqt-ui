@@ -86,6 +86,8 @@ export const downloadReducers = {
           ? state.downloadStatus
           : action.payload.status,
       downloadData: action.payload.data,
+      downloadProgress: action.payload.data.job_percentage,
+      downloadMessage: action.payload.data.message
     }),
     /**
      * Untrack API call and track failure that occurred.
@@ -180,15 +182,6 @@ export const downloadReducers = {
     [actionCreators.download.hideDownloadModal]: (state) => ({
       ...state,
       downloadModalDisplay: false,
-    }),
-    [actionCreators.download.loadDownloadProgress]: (state, action) => ({
-      ...state,
-      downloadProgress: 0
-    }),
-    [actionCreators.download.loadDownloadProgressSuccess]: (state, action) => ({
-      ...state,
-      downloadProgress: action.payload.job_percentage,
-      downloadMessage: action.payload.message
     })
   },
 };
