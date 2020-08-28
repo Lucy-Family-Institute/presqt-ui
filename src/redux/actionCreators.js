@@ -18,7 +18,14 @@ export const actionCreators = createActions({
             searchParameter
         }),
         LOAD_FROM_TARGET_SEARCH_SUCCESS: undefined,
-        LOAD_FROM_TARGET_SEARCH_FAILURE: (status, data) => ({status, data}),
+        LOAD_FROM_TARGET_SEARCH_FAILURE: (status, data) => ({ status, data }),
+        LOAD_FROM_TARGET_PAGINATION: (url, pageNumber, targetToken) => ({
+            url,
+            pageNumber,
+            targetToken
+        }),
+        LOAD_FROM_TARGET_PAGINATION_SUCCESS: undefined,
+        LOAD_FROM_TARGET_PAGINATION_FAILURE: (status, data) => ({status, data}),
         REMOVE_FROM_ERROR_LIST: (actionToRemove) => ({actionToRemove}),
         OPEN_CONTAINER: container => ({container, open: true}),
         CLOSE_CONTAINER: container => ({container, open: false}),
@@ -29,6 +36,8 @@ export const actionCreators = createActions({
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
+        LOAD_COLLECTION_PROGRESS: (targetToken) => ({targetToken}),
+        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined
     },
     DOWNLOAD: {
         DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
@@ -37,13 +46,13 @@ export const actionCreators = createActions({
         DOWNLOAD_JOB: undefined,
         DOWNLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         DOWNLOAD_JOB_FAILURE: (status, data) => ({status, data}),
-        CANCEL_DOWNLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_DOWNLOAD: (targetToken) => ({targetToken}),
         CANCEL_DOWNLOAD_SUCCESS: undefined,
         CANCEL_DOWNLOAD_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_FOR_SERVICE_SUCCESS: undefined,
         CLEAR_DOWNLOAD_DATA: undefined,
         DISPLAY_DOWNLOAD_MODAL: undefined,
-        HIDE_DOWNLOAD_MODAL: undefined,
+        HIDE_DOWNLOAD_MODAL: undefined
     },
     UPLOAD: {
         UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
@@ -53,19 +62,22 @@ export const actionCreators = createActions({
         UPLOAD_JOB: undefined,
         UPLOAD_JOB_SUCCESS: (data, status) => ({data, status}),
         UPLOAD_JOB_FAILURE: (status, data) => ({ status, data }),
-        CANCEL_UPLOAD: (ticketNumber, targetToken) => ({ticketNumber, targetToken}),
+        CANCEL_UPLOAD: (targetToken) => ({targetToken}),
         CANCEL_UPLOAD_SUCCESS: undefined,
         CANCEL_UPLOAD_FAILURE: (status, data) => ({ status, data }),
         CLEAR_UPLOAD_DATA: undefined,
         DISPLAY_UPLOAD_MODAL: (uploadType) => ({uploadType}),
-        HIDE_UPLOAD_MODAL: undefined,
+        HIDE_UPLOAD_MODAL: undefined
     },
     TRANSFER: {
         SAVE_TRANSFER_TOKEN: (targetToken) => ({targetToken}),
         SAVE_TRANSFER_DESTINATION_TARGET: (target) => ({target}),
         LOAD_FROM_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
         LOAD_FROM_TRANSFER_TARGET_SUCCESS: undefined,
-        LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({status, data}),
+        LOAD_FROM_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
+        LOAD_FROM_TRANSFER_TARGET_PAGINATION: (url, pageNumber, targetToken) => ({url, pageNumber, targetToken}),
+        LOAD_FROM_TRANSFER_TARGET_PAGINATION_SUCCESS: undefined,
+        LOAD_FROM_TRANSFER_TARGET_PAGINATION_FAILURE: (status, data) => ({status, data}),
         SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({ resource, targetToken }),
         DESELECT_TRANSFER_RESOURCE: undefined,
         SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
@@ -83,8 +95,8 @@ export const actionCreators = createActions({
         TRANSFER_JOB: undefined,
         TRANSFER_JOB_SUCCESS: (data, status) => ({data, status}),
         TRANSFER_JOB_FAILURE: (status, data) => ({ status, data }),
-        CANCEL_TRANSFER: (ticketNumber, sourceToken, destinationToken) =>
-          ({ticketNumber, sourceToken, destinationToken}),
+        CANCEL_TRANSFER: (sourceToken, destinationToken) =>
+          ({sourceToken, destinationToken}),
         CANCEL_TRANSFER_SUCCESS: undefined,
         CANCEL_TRANSFER_FAILURE: (status, data) => ({ status, data }),
         CLEAR_TRANSFER_MODAL_DATA: undefined,
@@ -92,10 +104,12 @@ export const actionCreators = createActions({
         CLEAR_TRANSFER_TOKEN: undefined,
         CLEAR_TRANSFER_RESOURCE: undefined,
         CLEAR_TRANSFER_TARGET_RESOURCES: undefined,
-        REFRESH_TRANSFER_TARGET: (target, targetToken) => ({target, targetToken}),
+        REFRESH_TRANSFER_TARGET: (destinationTarget, pageNumber, targetToken) => ({destinationTarget, pageNumber, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
-        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
+        LOAD_FROM_TRANSFER_TARGET_PROGRESS: (targetToken) => ({ targetToken }),
+        LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined
     },
     TARGETS: {
         LOAD: undefined,
@@ -152,5 +166,9 @@ export const actionCreators = createActions({
         SUBMIT_BAGIT_FILE_SUCCESS: (data) => ({data}),
         SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
         CLEAR_BAGIT_DATA: undefined
+    },
+    ANNOUNCEMENTS: {
+        GET_ANNOUNCEMENTS: undefined,
+        GET_ANNOUNCEMENTS_SUCCESS: (data) => ({data})
     }
 });

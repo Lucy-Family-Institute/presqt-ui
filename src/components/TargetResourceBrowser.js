@@ -5,12 +5,29 @@ import { actionCreators } from "../redux/actionCreators";
 import ResourceButton from "./widgets/buttons/ResourceButton";
 import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
+import { makeStyles } from "@material-ui/core/styles";
 import TargetSearch from "./TargetSearch";
-import Spinner from "./widgets/spinners/Spinner";
+import SpinnerProgress from "./widgets/spinners/SpinnerProgress";
 import UploadActionButton from "./action_buttons/UploadActionButton";
-import { useState, React, useEffect } from "react";
-import {basicFadeIn} from "../styles/animations";
+import { useState, useEffect } from "react";
+import { basicFadeIn } from "../styles/animations";
 import getError from "../utils/getError";
+import Pagination from "@material-ui/lab/Pagination";
+import colors from "../styles/colors";
+import FakeSpinner from "./widgets/spinners/FakeSpinner";
+
+const useStyles = makeStyles(() => ({
+  root: {
+    width: "75%",
+    paddingTop: 45,
+    "& .Mui-selected": {
+      backgroundColor: colors.presqtBlue,
+      "&:hover": {
+        backgroundColor: colors.presqtBlueHover,
+      },
+    },
+  },
+}));
 
 /**
  * This component handles actions within the resource browser. It will open/close containers,
@@ -18,22 +35,26 @@ import getError from "../utils/getError";
  **/
 export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
-  const targetToken = useSelector(state => state.selectedTarget
-      ? state.apiTokens[state.selectedTarget.name]
-      : null);
+  const targetToken = useSelector((state) => state.selectedTarget
+    ? state.apiTokens[state.selectedTarget.name]
+    : null);
 
   const targetResources = useSelector(state => state.targetResources);
+  const targetResourcesPages = useSelector(state => state.targetResourcesPages);
   const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const searchValue = useSelector(state => state.searchValue);
+  const collectionProgress = useSelector((state) => state.collectionProgress);
 
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const searchError = getError(actionCreators.resources.loadFromTargetSearch);
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -80,7 +101,7 @@ export default function TargetResourceBrowser() {
       return null;
     }
     else if (targetResources || searchValue) {
-      return <TargetSearch />;
+      return <TargetSearch setPageNumber={setPageNumber} />;
     }
   };
 
@@ -105,8 +126,7 @@ export default function TargetResourceBrowser() {
   useEffect(() => {
     // If resources exist
     if (targetResources && targetResources.length > 0) {
-      setMessage(resourceHierarchy(
-        resource => onResourceClicked(resource), targetResources))
+      setMessage(resourceHierarchy(resource => onResourceClicked(resource), targetResources));
     }
     // Search returned no results
     else if (targetResources && targetResources.length === 0 && searchValue) {
@@ -132,6 +152,18 @@ export default function TargetResourceBrowser() {
     }
   }, [targetResources, apiOperationErrors]);
 
+  const handlePageChange = (event, value) => {
+    setPageNumber(value);
+    // Make call to get page selected resources
+    dispatch(
+      actionCreators.resources.loadFromTargetPagination(
+        targetResourcesPages.base_page,
+        value,
+        targetToken
+      ));
+    dispatch(actionCreators.resources.loadCollectionProgress(targetToken));
+  };
+
   return (
     <div
       css={{
@@ -143,7 +175,6 @@ export default function TargetResourceBrowser() {
         display: "flex"
       }}
     >
-
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <TargetResourcesHeader />
         {search()}
@@ -153,9 +184,29 @@ export default function TargetResourceBrowser() {
         ) ||
         pendingAPIOperations.includes(
           actionCreators.resources.loadFromTargetSearch.toString()
-        ) ? <Spinner />
-          : (
-            <div css={messageCss}>{message}</div>
+        ) ||
+        pendingAPIOperations.includes(
+          actionCreators.resources.loadFromTargetPagination.toString()
+        ) ? (
+          collectionProgress <= 10 ? <FakeSpinner /> : <SpinnerProgress action={"COLLECTION"} />
+        ) : (
+          <div css={messageCss}>{message}</div>
+        )}
+        {!targetResourcesPages ? null : (
+          <Pagination
+            classes={{ root: classes.root }}
+            count={targetResourcesPages.total_pages}
+            size="small"
+            showFirstButton
+            showLastButton
+            siblingCount={0}
+            color="primary"
+            page={pageNumber}
+            onChange={handlePageChange}
+            disabled={pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString()) ||
+            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()) ||
+            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())}
+          />
         )}
       </div>
     </div>

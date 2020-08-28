@@ -2,6 +2,8 @@
 import {Fragment, useEffect, useState} from "react";
 import {jsx} from "@emotion/core";
 import Spinner from "../widgets/spinners/Spinner";
+import SpinnerProgress from "../widgets/spinners/SpinnerProgress";
+import FakeSpinner from "../widgets/spinners/FakeSpinner";
 import CancelButton from "../widgets/buttons/CancelButton";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import RetryDownloadButton from "../widgets/buttons/RetryButtons/RetryDownloadButton";
@@ -17,6 +19,7 @@ import {actionCreators} from "../../redux/actionCreators";
 export default function DownloadStepperResults() {
   const downloadData = useSelector(state => state.downloadData);
   const downloadStatus = useSelector(state => state.downloadStatus);
+  const downloadMessage = useSelector(state => state.downloadMessage);
 
   const downloadError = getError(actionCreators.download.downloadResource);
   const downloadJobError = getError(actionCreators.download.downloadJob);
@@ -24,9 +27,9 @@ export default function DownloadStepperResults() {
   const [modalContent, setModalContent] = useState(
     <div>
       <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
-        <p>The download is being processed on the server.</p>
+        <p>Download is being processed on the server</p>
       </div>
-      <Spinner />
+      <Spinner/>
       <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
         <CancelButton actionType='DOWNLOAD' />
       </div>
@@ -113,6 +116,20 @@ export default function DownloadStepperResults() {
         </Fragment>
       )
     }
+    
+    else if (downloadStatus === 'pending') {
+      setModalContent(
+        <div>
+          <div css={{ paddingBottom: 15, display: 'flex',  justifyContent:'center' }}>
+            <p>{downloadMessage}</p>
+          </div>
+          {downloadMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"DOWNLOAD"}/>}
+          <div css={{paddingTop: 15, paddingBottom: 15, display: 'flex',  justifyContent:'center'}}>
+            <CancelButton actionType='DOWNLOAD' />
+          </div>
+        </div>
+      )
+    }
 
     // Download successful
     else if (downloadStatus === "finished") {
@@ -140,7 +157,7 @@ export default function DownloadStepperResults() {
         </Grid>
       )
     }
-  }, [downloadStatus]);
+  }, [downloadStatus, downloadMessage]);
 
   return(modalContent)
 }

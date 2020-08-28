@@ -37,7 +37,7 @@ function* uploadTargetResource(action) {
           uploadFinished = true;
         }
         else {
-          yield put(actionCreators.upload.uploadJobSuccess(null, 'pending'));
+          yield put(actionCreators.upload.uploadJobSuccess(uploadJobResponse.data, 'pending'));
           yield delay(1000);
         }
       }
@@ -76,7 +76,6 @@ function* cancelUpload(action) {
   try {
     yield call(
       cancelResourceUploadJob,
-      action.payload.ticketNumber,
       action.payload.targetToken
     );
 

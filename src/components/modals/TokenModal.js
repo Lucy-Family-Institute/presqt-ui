@@ -19,7 +19,6 @@ import buttons from "../../styles/buttons";
 
 
 
-
 export default function TokenModal() {
   const dispatch = useDispatch();
 
@@ -61,6 +60,9 @@ export default function TokenModal() {
     if (apiOperationErrors.length > 0 && error){
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
+    }
+    if (apiOperationErrors.length == 0) {
+      dispatch(actionCreators.resources.loadCollectionProgress(token));
     }
     setToken('');
     setPasswordIsMasked(true);

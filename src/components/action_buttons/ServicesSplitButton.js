@@ -56,6 +56,7 @@ const ServicesButtonGroup = withStyles({
   groupedContainedPrimary: {
     "&:not(:last-child)": {
       borderRight: "1px solid white",
+      borderColor: colors.presqtOrange
     },
   },
 })(ButtonGroup);

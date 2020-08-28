@@ -58,7 +58,8 @@ function* downloadTargetResource(action) {
               file : downloadJobResponseData,
               message: downloadJobResponseJSON.data.message,
               failedFixity: downloadJobResponseJSON.data.failed_fixity,
-              zipName: downloadJobResponseJSON.data.zip_name
+              zipName: downloadJobResponseJSON.data.zip_name,
+              job_percentage: downloadJobResponseJSON.data.job_percentage
             };
 
             yield put(actionCreators.download.downloadJobSuccess(finalDownloadData, 'finished'));
@@ -72,7 +73,13 @@ function* downloadTargetResource(action) {
         }
         // Download pending!
         else {
-          yield put(actionCreators.download.downloadJobSuccess(null, 'pending'));
+          // Call to get the json
+          const downloadJobResponseJSON = yield call(
+            resourceDownloadJobJSON,
+            response.data.download_job_json,
+            action.payload.targetToken
+          );
+          yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseJSON.data, 'pending'));
           yield delay(1000);
         }
       }
@@ -125,7 +132,6 @@ function* cancelDownload(action) {
   try {
     yield call(
       cancelResourceDownloadJob,
-      action.payload.ticketNumber,
       action.payload.targetToken
     );
 

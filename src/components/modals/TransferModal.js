@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import React from "react";
+import React, {useState} from "react";
 import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
@@ -29,12 +29,14 @@ export default function TransferModal() {
   const transferModalDisplay = useSelector(state => state.transferModalDisplay);
   const selectedResource = useSelector(state => state.selectedResource);
   const transferStatus = useSelector(state => state.transferStatus);
+  const [transferPageNumber, setTransferPageNumber] = useState(1);
 
   const handleClose = () => {
     dispatch(actionCreators.transfer.hideTransferModal());
     dispatch(actionCreators.transfer.clearTransferModalData());
     dispatch(actionCreators.keywords.clearKeywords());
     dispatch(actionCreators.keywords.clearKeywordData());
+    setTransferPageNumber(1);
   };
 
   return transferModalDisplay
@@ -63,10 +65,15 @@ export default function TransferModal() {
         <DialogContent>
           <Grid container>
             <Grid item xs={7} className={leftGridClasses.root}>
-              <TransferStepper/>
+              <TransferStepper
+                setTransferPageNumber={setTransferPageNumber}
+                transferPageNumber={transferPageNumber}
+              />
             </Grid>
             <Grid className={RightGridClasses.root} item xs={5}>
-              <TransferResourceBrowser/>
+              <TransferResourceBrowser
+                setTransferPageNumber={setTransferPageNumber}
+                transferPageNumber={transferPageNumber} />
             </Grid>
           </Grid>
         </DialogContent>

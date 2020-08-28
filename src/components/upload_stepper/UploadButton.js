@@ -45,7 +45,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
       resourceToUploadTo,
       targetToken));
 
-      handleNext()
+    handleNext()
   };
 
   return (

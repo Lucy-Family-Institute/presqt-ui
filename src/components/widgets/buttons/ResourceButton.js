@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-
 import textStyles from "../../../styles/text";
 import {Fragment} from "react";
+import {actionCreators} from "../../../redux/actionCreators";
+import {useSelector} from "react-redux";
 
 const closedFolderIcon = require("../../../images/icons/closedFolder.png");
 const openFolderIcon = require("../../../images/icons/openFolder.png");
@@ -11,6 +12,8 @@ const presqtMetadataFileIcon = require("../../../images/icons/presqtMetadataFile
 const rectangle = require("../../../images/icons/rectangle.png");
 
 export default function ResourceButton({resource, level, onClick }) {
+  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
+
   const iconSelector = () => {
     if (resource.kind === "container") {
       if (resource.open) {
@@ -40,9 +43,10 @@ export default function ResourceButton({resource, level, onClick }) {
         backgroundColor: "#FFFFFF",
         overflowWrap: "anywhere",
         textAlign: "left",
-        cursor: "pointer"
+        cursor: pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) > -1 ? "not-allowed" : "pointer",
       }}
       onClick={() => onClick(resource)}
+      disabled={pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) > -1}
     >
       {
         resource.active
@@ -66,8 +70,7 @@ export default function ResourceButton({resource, level, onClick }) {
           />
       }
 
-
-      <span css={[textStyles.listItem, {cursor: "pointer"}]}>{resource.title}</span>
+      <span css={[textStyles.listItem, {cursor: pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) > -1 ? "not-allowed" : "pointer"}]}>{resource.title}</span>
     </button>
   );
 }

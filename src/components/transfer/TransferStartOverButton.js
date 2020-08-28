@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { useDispatch } from "react-redux";
 import { jsx } from "@emotion/core";
-import buttonStyles from "../../styles/buttons";
 import { actionCreators } from "../../redux/actionCreators";
 import Button from "@material-ui/core/Button/Button";
 import textStyles from "../../styles/text";
@@ -25,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransferStartOverButton({setActiveStep, step}) {
+export default function TransferStartOverButton({setActiveStep, step, setTransferPageNumber}) {
   const classes = useStyles();
 
   let buttonClass = classes.button;
@@ -43,6 +42,7 @@ export default function TransferStartOverButton({setActiveStep, step}) {
       )
     );
     setActiveStep(0);
+    setTransferPageNumber(1);
   };
 
   return (

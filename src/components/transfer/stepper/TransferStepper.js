@@ -52,7 +52,7 @@ const PresQTStepContent = withStyles({
 const steps = [
   'Select destination target',
   'Input destination target token',
-  'Select resource or select nothing to create a new project',
+  'Select resource to transfer to or select nothing to transfer as a new project',
   'Select the action to occur when a duplicate resource is found',
   'Select the keyword action to occur',
   "Keywords",
@@ -60,7 +60,7 @@ const steps = [
   'Transfer Results'
 ];
 
-export default function TransferStepper() {
+export default function TransferStepper({setTransferPageNumber, transferPageNumber}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -95,6 +95,7 @@ export default function TransferStepper() {
     if (activeStep === 2){
       dispatch(actionCreators.transfer.clearTransferToken());
       dispatch(actionCreators.transfer.clearTransferTargetResources());
+      setTransferPageNumber(1);
     }
     dispatch(actionCreators.transfer.stepInTransferModal(activeStep - 1));
     setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -105,6 +106,7 @@ export default function TransferStepper() {
     if (activeStep === 1) {
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
+      dispatch(actionCreators.transfer.loadFromTransferTargetProgress(transferDestinationToken));
     }
     else if (activeStep === 4) {
       dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
@@ -174,6 +176,8 @@ export default function TransferStepper() {
             selectedDuplicate={selectedDuplicate}
             selectedKeywordAction={selectedKeywordAction}
             keywordList={keywordList}
+            setTransferPageNumber={setTransferPageNumber}
+            transferPageNumber={transferPageNumber}
           />
         )
         }
@@ -228,8 +232,9 @@ export default function TransferStepper() {
                     {
                       index === 6
                       ? <TransferStartOverButton
-                         setActiveStep={setActiveStep}
-                         step={index}
+                          setActiveStep={setActiveStep}
+                          step={index}
+                          setTransferPageNumber={setTransferPageNumber}
                         />
                       : null
                     }
