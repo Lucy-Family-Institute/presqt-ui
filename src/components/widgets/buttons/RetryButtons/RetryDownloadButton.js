@@ -41,8 +41,6 @@ export default function RetryDownloadButton({setModalContent}) {
         actionCreators.download.downloadResource.toString()));
 
       dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
-      // START UP THE SPINNER  
-      dispatch(actionCreators.download.loadDownloadProgress(targetToken));
 
       setModalContent(
         <div>
