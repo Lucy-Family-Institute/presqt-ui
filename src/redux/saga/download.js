@@ -79,7 +79,6 @@ function* downloadTargetResource(action) {
             response.data.download_job_json,
             action.payload.targetToken
           );
-          console.log(downloadJobResponseJSON.data);
           yield put(actionCreators.download.downloadJobSuccess(downloadJobResponseJSON.data, 'pending'));
           yield delay(1000);
         }

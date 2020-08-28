@@ -44,7 +44,6 @@ export default function UploadButton({selectedFile, selectedDuplicate,
       selectedDuplicate,
       resourceToUploadTo,
       targetToken));
-    dispatch(actionCreators.upload.loadUploadProgress(targetToken));
 
     handleNext()
   };
