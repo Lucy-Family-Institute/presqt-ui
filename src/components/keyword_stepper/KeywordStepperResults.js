@@ -24,13 +24,15 @@ const CustomKeywordButton = withStyles({
 
 export default function KeywordStepperResults({ newKeywords }) {
   const dispatch = useDispatch();
+
+  const selectedTarget = useSelector((state) => state.selectedTarget);
+  const selectedResource = useSelector((state) => state.selectedResource);
   // These 3 variables are for the message displayed while enhancing keywords
-  const messageOptions = ["Updating keywords at the source...", "Updating PRESQT_FTS_METADATA file...", "Finalizing changes..."];
+  const messageOptions = [`Updating keywords for ${selectedResource.title} on ${selectedTarget.readable_name}...`, "Updating PRESQT_FTS_METADATA file...", "Finalizing changes..."];
   const [message, setMessage] = useDefault(messageOptions[0]);
   let index = 0;
 
   const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
-  const selectedResource = useSelector((state) => state.selectedResource);
   const updatedKeywords = useSelector((state) => state.updatedKeywords);
   const keywordStatus = useSelector((state) => state.keywordStatus);
   const keywordPostError = getError(actionCreators.keywords.sendKeywords);
