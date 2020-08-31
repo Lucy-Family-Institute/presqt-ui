@@ -28,7 +28,7 @@ export default function KeywordStepperResults({ newKeywords }) {
   const selectedTarget = useSelector((state) => state.selectedTarget);
   const selectedResource = useSelector((state) => state.selectedResource);
   // These 3 variables are for the message displayed while enhancing keywords
-  const messageOptions = [`Updating keywords for ${selectedResource.title} on ${selectedTarget.readable_name}...`, "Updating PRESQT_FTS_METADATA file...", "Finalizing changes..."];
+  const messageOptions = [`Updating keywords for ${selectedResource.title} on ${selectedTarget.readable_name}...`, `Updating PRESQT_FTS_METADATA file for ${selectedResource.title}...`, `Finalizing changes made to ${selectedResource.title}...`];
   const [message, setMessage] = useDefault(messageOptions[0]);
   let index = 0;
 
