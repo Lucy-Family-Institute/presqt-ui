@@ -1,13 +1,15 @@
-
-
 export default function removeDuplicateResources(array1, array2) {
-    // Join the two arrays together
-    var newArray = array1.concat(array2);
-    // Make a set of this new array
-    var setArray = new Set(newArray);
-    // Make the set back into an array
-    var finalArray = Array.from(setArray);
+  let newArray1 = [...array1];
+  let newArray2 = [...array2];
+  // Join the two arrays together
+  var newArray = newArray1.concat(newArray2);
 
-    console.log(finalArray);
-    return finalArray;
+  // Make sure all entries are unique
+  const uniqueArray = newArray.filter(
+    (resource, index) =>
+      index === newArray.findIndex((obj) => obj["id"] === resource["id"])
+  );
+
+  console.log(uniqueArray);
+  return uniqueArray;
 }

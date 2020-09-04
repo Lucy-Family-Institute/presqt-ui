@@ -67,9 +67,8 @@ function* loadResourceDetail(action) {
     action.payload.targetToken
   );
 
-  yield put(
-    actionCreators.resources.selectResourceSuccess(response.data)
-  );
+  yield put(actionCreators.resources.selectResourceSuccess(response.data));
+  yield put(actionCreators.resources.updateTargetResourcesWithChildren());
 }
 
 /** Refresh Resource Collection **/
