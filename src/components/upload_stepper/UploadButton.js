@@ -77,7 +77,7 @@ export default function UploadButton({selectedFile, selectedDuplicate,
             ? <IconListItem
             icon={<WarningIcon />}
             text="Github does not provide checksums for files."/>
-            : selectedTarget.name === 'zenodo'
+            : selectedTarget.name === 'zenodo' || selectedTarget.name === 'figshare'
             ? <IconListItem
             icon={<EditIcon />}
             text={`New resource will be written in BagIt format as a ZIP file.`} />
