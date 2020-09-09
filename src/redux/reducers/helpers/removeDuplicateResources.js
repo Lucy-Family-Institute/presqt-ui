@@ -10,6 +10,5 @@ export default function removeDuplicateResources(array1, array2) {
       index === newArray.findIndex((obj) => obj["id"] === resource["id"])
   );
 
-  console.log(uniqueArray);
   return uniqueArray;
 }
