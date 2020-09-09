@@ -54,12 +54,10 @@ function associateWithParentResource(openResources, possibleParents, child) {
  * Sort the target's resources into their proper hierarchy
  **/
 export default function buildResourceHierarchy(openResources, selectedResource, resources) {
-  
-  let newResources = [...resources]
-  
+
   let resourceHierarchy = [];
-  if (newResources.length > 0) {
-    resourceHierarchy = newResources.reduce(
+  if (resources.length > 0) {
+    resourceHierarchy = resources.reduce(
       (initial, resource, index, original) => {
         if (selectedResource && resource.id === selectedResource.id) {
           resource.active = true;
