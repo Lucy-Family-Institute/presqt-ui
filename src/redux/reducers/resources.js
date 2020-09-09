@@ -36,10 +36,8 @@ export const resourceReducers = {
      * Dispatched via Saga call on successful Resource Collection call.
      **/
     [actionCreators.resources.loadFromTargetSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-          state.openResources, state.selectedResource, resources);
+          state.openResources, state.selectedResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -96,10 +94,8 @@ export const resourceReducers = {
      * Dispatched via Saga call on successful Resource Collection with search call.
      **/
     [actionCreators.resources.loadFromTargetSearchSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openResources, state.selectedResource, resources);
+        state.openResources, state.selectedResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -151,10 +147,8 @@ export const resourceReducers = {
      * Dispatched via Saga call on successful Resource Collection with pagination call.
      **/
     [actionCreators.resources.loadFromTargetPaginationSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openResources, state.selectedResource, resources);
+        state.openResources, state.selectedResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -294,10 +288,8 @@ export const resourceReducers = {
      * Dispatched via Saga call on successful Resource Collection Refresh call.
      **/
     [actionCreators.resources.refreshTargetSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openResources, state.selectedResource, resources);
+        state.openResources, state.selectedResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -341,9 +333,8 @@ export const resourceReducers = {
       collectionProgress: action.payload.job_percentage
     }),
     [actionCreators.resources.updateTargetResourcesWithChildren]: state => {
-      let resources = JSON.parse(JSON.stringify(state.allTargetResources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openResources, state.selectedResource, resources);
+        state.openResources, state.selectedResource, state.allTargetResources);
       return {
         ...state,
         targetResources: resourceHierarchy
