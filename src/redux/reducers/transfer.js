@@ -72,10 +72,8 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
     [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, resources);
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -130,10 +128,8 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
     [actionCreators.transfer.loadFromTransferTargetPaginationSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, resources);
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -171,7 +167,6 @@ export const transferReducers = {
      * Saga call to Resource-Detail occurs with this action for transfer.
      **/
     [actionCreators.transfer.selectTransferResource]: (state, action) => {
-
       const updateTargetResources = transferTargetResources => {
         return transferTargetResources.map(resource => {
           return {
@@ -236,9 +231,8 @@ export const transferReducers = {
       };
     },
     [actionCreators.transfer.updateTransferTargetResourcesWithChildren]: state => {
-      let resources = JSON.parse(JSON.stringify(state.allTransferTargetResources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, resources);
+        state.openTransferResources, state.selectedTransferResource, state.allTransferTargetResources);
       return {
         ...state,
         transferTargetResources: resourceHierarchy
@@ -470,10 +464,8 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Transfer Resource Collection Refresh call.
      **/
     [actionCreators.transfer.refreshTransferTargetSuccess]: (state, action) => {
-      // Deep clone of the resources so we don't mutate what is coming in from the api
-      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources, state.selectedTransferResource, resources);
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
