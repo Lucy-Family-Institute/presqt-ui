@@ -423,7 +423,8 @@ export const transferReducers = {
         transferTargetResourcesPages: null,
         apiOperationErrors: newApiOperationErrors,
         transferProgress: 0,
-        transferMessage: "Transfer is being processed on the server"
+        transferMessage: "Transfer is being processed on the server",
+        allTransferTargetResources: null
       };
     }
     ,
@@ -449,7 +450,8 @@ export const transferReducers = {
     [actionCreators.transfer.clearTransferTargetResources]: state => ({
       ...state,
       transferTargetResources: null,
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -482,7 +484,8 @@ export const transferReducers = {
         transferTargetResources: resourceHierarchy,
         transferTargetResourcesPages: action.payload.pages,
         transferStatus:
-          state.transferStatus === "success" || state.transferStatus === "finished" ? "finished" : "cancelled"
+          state.transferStatus === "success" || state.transferStatus === "finished" ? "finished" : "cancelled",
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -502,7 +505,8 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferTargetResources: null,
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /** Clear the Transfer Token **/
     [actionCreators.transfer.clearTransferToken]: state => ({
