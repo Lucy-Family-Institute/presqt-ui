@@ -3,6 +3,7 @@ import buildResourceHierarchy from "./helpers/resources";
 import { combineActions } from "redux-actions";
 import updateOpenClose from "./helpers/updateOpenClose";
 import { trackAction, trackError, untrackAction } from "./helpers/tracking";
+import removeDuplicateResources from "./helpers/removeDuplicateResources";
 
 export const transferReducers = {
   initialState: {
@@ -19,7 +20,8 @@ export const transferReducers = {
     transferStepInModal: null,
     transferProgress: 0,
     transferMessage: "Transfer is being processed on the server",
-    transferTargetResourcesProgress: 0
+    transferTargetResourcesProgress: 0,
+    allTransferTargetResources: null
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -62,18 +64,18 @@ export const transferReducers = {
       ),
       selectedTransferResource: null,
       selectedTransferResourceName: null,
-      transferTargetResources: null
+      transferTargetResources: null,
+      allTransferTargetResources: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
     [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
+      // Deep clone of the resources so we don't mutate what is coming in from the api
+      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -82,7 +84,8 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
-        transferTargetResourcesPages: action.payload.pages
+        transferTargetResourcesPages: action.payload.pages,
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -102,7 +105,8 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferDestinationToken: "",
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     [actionCreators.transfer.loadFromTransferTargetPagination]: state => ({
       ...state,
@@ -118,18 +122,18 @@ export const transferReducers = {
       ),
       selectedTransferResource: null,
       selectedTransferResourceName: null,
-      transferTargetResources: null
+      transferTargetResources: null,
+      allTransferTargetResources: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
      * Dispatched via Saga call on successful Transfer Resource Collection call.
      **/
     [actionCreators.transfer.loadFromTransferTargetPaginationSuccess]: (state, action) => {
+      // Deep clone of the resources so we don't mutate what is coming in from the api
+      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -138,7 +142,8 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
-        transferTargetResourcesPages: action.payload.pages
+        transferTargetResourcesPages: action.payload.pages,
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -158,7 +163,8 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferDestinationToken: "",
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /**
      * Add API call to trackers.
@@ -216,6 +222,8 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Resource Detail call for transfer.
      **/
     [actionCreators.transfer.selectTransferResourceSuccess]: (state, action) => {
+      const newAllTransferTargetResources = removeDuplicateResources(
+        state.allTransferTargetResources, action.payload.children)
       return {
         ...state,
         selectedTransferResource: action.payload,
@@ -223,8 +231,18 @@ export const transferReducers = {
         pendingAPIOperations: untrackAction(
           actionCreators.transfer.selectTransferResource,
           state.pendingAPIOperations
-        )
+        ),
+        allTransferTargetResources: newAllTransferTargetResources
       };
+    },
+    [actionCreators.transfer.updateTransferTargetResourcesWithChildren]: state => {
+      let resources = JSON.parse(JSON.stringify(state.allTransferTargetResources))
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openTransferResources, state.selectedTransferResource, resources);
+      return {
+        ...state,
+        transferTargetResources: resourceHierarchy
+      }
     },
     [combineActions(
       /**
@@ -450,11 +468,10 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Transfer Resource Collection Refresh call.
      **/
     [actionCreators.transfer.refreshTransferTargetSuccess]: (state, action) => {
+      // Deep clone of the resources so we don't mutate what is coming in from the api
+      let resources = JSON.parse(JSON.stringify(action.payload.resources))
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, resources);
       return {
         ...state,
         pendingAPIResponse: false,
