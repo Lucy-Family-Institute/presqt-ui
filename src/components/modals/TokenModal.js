@@ -61,9 +61,6 @@ export default function TokenModal() {
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.resources.loadFromTarget.toString()));
     }
-    if (apiOperationErrors.length == 0) {
-      dispatch(actionCreators.resources.loadCollectionProgress(token));
-    }
     setToken('');
     setPasswordIsMasked(true);
   };
