@@ -12,7 +12,6 @@ export const resourceReducers = {
     selectedResource: null,
     searchValue: null,
     openResources: [],
-    collectionProgress: 0,
     allTargetResources: null
   },
   reducers: {
@@ -68,7 +67,6 @@ export const resourceReducers = {
       ),
       targetResources: null,
       targetResourcesPages: null,
-      collectionProgress: 0,
       allTargetResources: null
     }),
     /**
@@ -86,7 +84,6 @@ export const resourceReducers = {
       targetResourcesPages: null,
       searchValue: action.payload.searchValue,
       openResources: [],
-      collectionProgress: 0,
       allTargetResources: null
     }),
     /**
@@ -105,7 +102,6 @@ export const resourceReducers = {
         ),
         targetResources: resourceHierarchy,
         targetResourcesPages: action.payload.pages,
-        collectionProgress: 0,
         allTargetResources: action.payload.resources
       };
     },
@@ -127,7 +123,6 @@ export const resourceReducers = {
       ),
       targetResources: null,
       targetResourcesPages: null,
-      collectionProgress: 0,
       allTargetResources: null
     }),
     [actionCreators.resources.loadFromTargetPagination]: state => ({
@@ -139,7 +134,6 @@ export const resourceReducers = {
       ),
       selectedResource: null,
       openResources: [],
-      collectionProgress: 0,
       allTargetResources: null
     }),
     /**
@@ -179,7 +173,6 @@ export const resourceReducers = {
       ),
       targetResources: null,
       targetResourcesPages: null,
-      collectionProgress: 0,
       allTargetResources: null
     }),
     [combineActions(
@@ -321,16 +314,7 @@ export const resourceReducers = {
       ),
       targetResources: null,
       targetResourcesPages: null,
-      collectionProgress: 0,
       allTargetResources: null
-    }),
-    [actionCreators.resources.loadCollectionProgress]: (state, action) => ({
-      ...state,
-      collectionProgress: 0
-    }),
-    [actionCreators.resources.loadCollectionProgressSuccess]: (state, action) => ({
-      ...state,
-      collectionProgress: action.payload.job_percentage
     }),
     [actionCreators.resources.updateTargetResourcesWithChildren]: state => {
       const resourceHierarchy = buildResourceHierarchy(
