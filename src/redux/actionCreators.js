@@ -36,8 +36,6 @@ export const actionCreators = createActions({
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
-        LOAD_COLLECTION_PROGRESS: (targetToken) => ({targetToken}),
-        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined,
         UPDATE_TARGET_RESOURCES_WITH_CHILDREN: undefined
     },
     DOWNLOAD: {
@@ -109,9 +107,7 @@ export const actionCreators = createActions({
         REFRESH_TRANSFER_TARGET: (destinationTarget, pageNumber, targetToken) => ({destinationTarget, pageNumber, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
-        STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS: (targetToken) => ({ targetToken }),
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
     },
     TARGETS: {
         LOAD: undefined,

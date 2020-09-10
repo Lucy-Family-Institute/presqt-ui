@@ -7,14 +7,13 @@ import TargetResourcesHeader from "./widgets/headers/TargetResourcesHeader";
 import textStyles from "../styles/text";
 import { makeStyles } from "@material-ui/core/styles";
 import TargetSearch from "./TargetSearch";
-import SpinnerProgress from "./widgets/spinners/SpinnerProgress";
+import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
 import { useState, useEffect } from "react";
 import { basicFadeIn } from "../styles/animations";
 import getError from "../utils/getError";
 import Pagination from "@material-ui/lab/Pagination";
 import colors from "../styles/colors";
-import FakeSpinner from "./widgets/spinners/FakeSpinner";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -47,7 +46,6 @@ export default function TargetResourceBrowser() {
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const selectedTarget = useSelector(state => state.selectedTarget);
   const searchValue = useSelector(state => state.searchValue);
-  const collectionProgress = useSelector((state) => state.collectionProgress);
 
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const searchError = getError(actionCreators.resources.loadFromTargetSearch);
@@ -161,7 +159,6 @@ export default function TargetResourceBrowser() {
         value,
         targetToken
       ));
-    dispatch(actionCreators.resources.loadCollectionProgress(targetToken));
   };
 
   return (
@@ -188,7 +185,7 @@ export default function TargetResourceBrowser() {
         pendingAPIOperations.includes(
           actionCreators.resources.loadFromTargetPagination.toString()
         ) ? (
-          collectionProgress <= 10 ? <FakeSpinner /> : <SpinnerProgress action={"COLLECTION"} />
+          <Spinner />
         ) : (
           <div css={messageCss}>{message}</div>
         )}
