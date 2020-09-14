@@ -4,7 +4,7 @@ import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import { jsx } from "@emotion/core";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, Fragment } from "react";
+import { useEffect } from "react";
 import { actionCreators } from "../../redux/actionCreators";
 import getError from "../../utils/getError";
 import EaasiStepper from "../eaasi_stepper/EaasiStepper";
@@ -16,8 +16,10 @@ export default function EaasiModal() {
   const eaasiModalDisplay = useSelector(state => state.eaasiModalDisplay);
   const downloadForServiceStatus = useSelector(state => state.downloadForServiceStatus);
   const downloadStatus = useSelector(state => state.downloadStatus);
-  const activeTicketNumber = useSelector(state => state.activeTicketNumber);
   const eaasiProposalStatus = useSelector(state => state.eaasiProposalStatus);
+  const token = useSelector((state) => state.selectedTarget
+    ? state.apiTokens[state.selectedTarget.name]
+    : null);
 
   const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal);
   const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal);
@@ -43,7 +45,7 @@ export default function EaasiModal() {
 
   useEffect(() => {
     if (downloadForServiceStatus === "finished") {
-      dispatch(actionCreators.eaasi.sendEaasiProposal(activeTicketNumber));
+      dispatch(actionCreators.eaasi.sendEaasiProposal(token));
     }
   }, [downloadForServiceStatus]);
 

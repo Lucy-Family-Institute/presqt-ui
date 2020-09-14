@@ -11,7 +11,7 @@ function* sendEaasiProposal(action) {
   try {
     const response = yield call(
       postEaasiProposal,
-      action.payload.ticket_number
+      action.payload.sourceToken
     );
     yield put(actionCreators.eaasi.sendEaasiProposalSuccess(response.data))
   }
