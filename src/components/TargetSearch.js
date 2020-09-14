@@ -99,7 +99,6 @@ export default function TargetSearch({setPageNumber}) {
         actionCreators.resources.loadFromTargetSearch(
           selectedTarget.name, token, searchValue, selectedSearchParameter)
       );
-      dispatch(actionCreators.resources.loadCollectionProgress(token));
       // Reset the page number to 1
       setPageNumber(1);
     }
@@ -122,7 +121,6 @@ export default function TargetSearch({setPageNumber}) {
         )
       );
       dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
-      dispatch(actionCreators.resources.loadCollectionProgress(token));
     }
 
   };
