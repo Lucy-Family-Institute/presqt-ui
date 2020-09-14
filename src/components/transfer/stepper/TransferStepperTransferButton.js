@@ -115,6 +115,14 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
               icon={<VpnKeyIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
             : null
+          }
+          
+          {/* Keyword Statement FigShare */
+            (selectedTarget.name === 'figshare' || transferDestinationTarget === 'figshare')
+            ? <IconListItem
+              icon={<VpnKeyIcon />}
+              text="Enhanced Keywords on FigShare will be stored as 'tags'." />
+            : null
         }
 
           {/* Github Statement */
@@ -138,7 +146,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
             ? <IconListItem
                 icon={<EditIcon />}
                 text={`'${sourceResource.title}' will be stored in OSF Storage by default.`} />
-            : transferDestinationTarget === 'zenodo'
+            : transferDestinationTarget === 'zenodo' || transferDestinationTarget === 'figshare'
             ? <IconListItem
                 icon={<EditIcon />}
                 text={`'${sourceResource.title}' will be written in BagIt format as a ZIP file.`} />

@@ -78,9 +78,8 @@ function* loadTransferResourceDetail(action) {
     action.payload.targetToken
   );
 
-  yield put(
-    actionCreators.transfer.selectTransferResourceSuccess(response.data)
-  );
+  yield put(actionCreators.transfer.selectTransferResourceSuccess(response.data));
+  yield put(actionCreators.transfer.updateTransferTargetResourcesWithChildren());
 }
 
 export function* watchResourceTransfer() {

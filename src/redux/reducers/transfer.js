@@ -3,6 +3,7 @@ import buildResourceHierarchy from "./helpers/resources";
 import { combineActions } from "redux-actions";
 import updateOpenClose from "./helpers/updateOpenClose";
 import { trackAction, trackError, untrackAction } from "./helpers/tracking";
+import removeDuplicateResources from "./helpers/removeDuplicateResources";
 
 export const transferReducers = {
   initialState: {
@@ -19,7 +20,7 @@ export const transferReducers = {
     transferStepInModal: null,
     transferProgress: 0,
     transferMessage: "Transfer is being processed on the server",
-    transferTargetResourcesProgress: 0
+    allTransferTargetResources: null
   },
   reducers: {
     [actionCreators.transfer.saveTransferToken]: (state, action) => ({
@@ -62,7 +63,8 @@ export const transferReducers = {
       ),
       selectedTransferResource: null,
       selectedTransferResourceName: null,
-      transferTargetResources: null
+      transferTargetResources: null,
+      allTransferTargetResources: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -70,10 +72,7 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.loadFromTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -82,7 +81,8 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
-        transferTargetResourcesPages: action.payload.pages
+        transferTargetResourcesPages: action.payload.pages,
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -102,7 +102,8 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferDestinationToken: "",
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     [actionCreators.transfer.loadFromTransferTargetPagination]: state => ({
       ...state,
@@ -118,7 +119,8 @@ export const transferReducers = {
       ),
       selectedTransferResource: null,
       selectedTransferResourceName: null,
-      transferTargetResources: null
+      transferTargetResources: null,
+      allTransferTargetResources: null
     }),
     /**
      * Sort the resources into the correct hierarchy.
@@ -126,10 +128,7 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.loadFromTransferTargetPaginationSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -138,7 +137,8 @@ export const transferReducers = {
           state.pendingAPIOperations
         ),
         transferTargetResources: resourceHierarchy,
-        transferTargetResourcesPages: action.payload.pages
+        transferTargetResourcesPages: action.payload.pages,
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -158,14 +158,14 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferDestinationToken: "",
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /**
      * Add API call to trackers.
      * Saga call to Resource-Detail occurs with this action for transfer.
      **/
     [actionCreators.transfer.selectTransferResource]: (state, action) => {
-
       const updateTargetResources = transferTargetResources => {
         return transferTargetResources.map(resource => {
           return {
@@ -216,6 +216,8 @@ export const transferReducers = {
      * Dispatched via Saga call on successful Resource Detail call for transfer.
      **/
     [actionCreators.transfer.selectTransferResourceSuccess]: (state, action) => {
+      const newAllTransferTargetResources = removeDuplicateResources(
+        state.allTransferTargetResources, action.payload.children)
       return {
         ...state,
         selectedTransferResource: action.payload,
@@ -223,8 +225,17 @@ export const transferReducers = {
         pendingAPIOperations: untrackAction(
           actionCreators.transfer.selectTransferResource,
           state.pendingAPIOperations
-        )
+        ),
+        allTransferTargetResources: newAllTransferTargetResources
       };
+    },
+    [actionCreators.transfer.updateTransferTargetResourcesWithChildren]: state => {
+      const resourceHierarchy = buildResourceHierarchy(
+        state.openTransferResources, state.selectedTransferResource, state.allTransferTargetResources);
+      return {
+        ...state,
+        transferTargetResources: resourceHierarchy
+      }
     },
     [combineActions(
       /**
@@ -405,7 +416,8 @@ export const transferReducers = {
         transferTargetResourcesPages: null,
         apiOperationErrors: newApiOperationErrors,
         transferProgress: 0,
-        transferMessage: "Transfer is being processed on the server"
+        transferMessage: "Transfer is being processed on the server",
+        allTransferTargetResources: null
       };
     }
     ,
@@ -418,7 +430,6 @@ export const transferReducers = {
       transferData: null,
       transferProgress: 0,
       transferMessage: "Transfer is being processed on the server",
-      transferTargetResourcesProgress: 0,
       apiOperationErrors: state.apiOperationErrors.filter(
         item =>
           item.action !==
@@ -431,7 +442,8 @@ export const transferReducers = {
     [actionCreators.transfer.clearTransferTargetResources]: state => ({
       ...state,
       transferTargetResources: null,
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /**
      * Refresh the resources in the Transfer Resource Browser.
@@ -451,10 +463,7 @@ export const transferReducers = {
      **/
     [actionCreators.transfer.refreshTransferTargetSuccess]: (state, action) => {
       const resourceHierarchy = buildResourceHierarchy(
-        state.openTransferResources,
-        state.selectedTransferResource,
-        action
-      );
+        state.openTransferResources, state.selectedTransferResource, action.payload.resources);
       return {
         ...state,
         pendingAPIResponse: false,
@@ -465,7 +474,8 @@ export const transferReducers = {
         transferTargetResources: resourceHierarchy,
         transferTargetResourcesPages: action.payload.pages,
         transferStatus:
-          state.transferStatus === "success" || state.transferStatus === "finished" ? "finished" : "cancelled"
+          state.transferStatus === "success" || state.transferStatus === "finished" ? "finished" : "cancelled",
+        allTransferTargetResources: action.payload.resources
       };
     },
     /**
@@ -485,7 +495,8 @@ export const transferReducers = {
         state.apiOperationErrors
       ),
       transferTargetResources: null,
-      transferTargetResourcesPages: null
+      transferTargetResourcesPages: null,
+      allTransferTargetResources: null
     }),
     /** Clear the Transfer Token **/
     [actionCreators.transfer.clearTransferToken]: state => ({
@@ -500,14 +511,6 @@ export const transferReducers = {
       ...state,
       selectedTransferResource: null,
       selectedTransferResourceName: null
-    }),
-    [actionCreators.transfer.loadFromTransferTargetProgress]: (state, action) => ({
-      ...state,
-      transferTargetResourcesProgress: 0
-    }),
-    [actionCreators.transfer.loadFromTransferTargetProgressSuccess]: (state, action) => ({
-      ...state,
-      transferTargetResourcesProgress: action.payload.job_percentage
-    }),
+    })
   }
 };

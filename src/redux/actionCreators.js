@@ -36,8 +36,7 @@ export const actionCreators = createActions({
         REFRESH_TARGET_SUCCESS: undefined,
         REFRESH_TARGET_FAILURE: (status, data) => ({status, data}),
         CLEAR_ACTIVE_TICKET_NUMBER: undefined,
-        LOAD_COLLECTION_PROGRESS: (targetToken) => ({targetToken}),
-        LOAD_COLLECTION_PROGRESS_SUCCESS: undefined
+        UPDATE_TARGET_RESOURCES_WITH_CHILDREN: undefined
     },
     DOWNLOAD: {
         DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
@@ -81,6 +80,7 @@ export const actionCreators = createActions({
         SELECT_TRANSFER_RESOURCE: (resource, targetToken) => ({ resource, targetToken }),
         DESELECT_TRANSFER_RESOURCE: undefined,
         SELECT_TRANSFER_RESOURCE_SUCCESS: undefined,
+        UPDATE_TRANSFER_TARGET_RESOURCES_WITH_CHILDREN: undefined,
         DISPLAY_TRANSFER_MODAL: undefined,
         HIDE_TRANSFER_MODAL: undefined,
         OPEN_TRANSFER_CONTAINER: container => ({container, open: true}),
@@ -107,9 +107,7 @@ export const actionCreators = createActions({
         REFRESH_TRANSFER_TARGET: (destinationTarget, pageNumber, targetToken) => ({destinationTarget, pageNumber, targetToken}),
         REFRESH_TRANSFER_TARGET_SUCCESS: undefined,
         REFRESH_TRANSFER_TARGET_FAILURE: (status, data) => ({ status, data }),
-        STEP_IN_TRANSFER_MODAL: (step) => ({ step }),
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS: (targetToken) => ({ targetToken }),
-        LOAD_FROM_TRANSFER_TARGET_PROGRESS_SUCCESS: undefined
+        STEP_IN_TRANSFER_MODAL: (step) => ({ step })
     },
     TARGETS: {
         LOAD: undefined,
