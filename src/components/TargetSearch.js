@@ -230,6 +230,7 @@ export default function TargetSearch({setPageNumber}) {
                         pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
                           ? [buttons.inlineButton]
                           : [buttons.disabledInlineButton]}
+
                       onClick={event => submitSearch(event, 'search')}
                     />
                     <Divider

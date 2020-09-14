@@ -137,7 +137,7 @@ export const actionCreators = createActions({
     EAASI: {
         DISPLAY_EAASI_MODAL: undefined,
         HIDE_EAASI_MODAL: undefined,
-        SEND_EAASI_PROPOSAL: (ticket_number) => ({ticket_number}),
+        SEND_EAASI_PROPOSAL: (sourceToken) => ({sourceToken}),
         SEND_EAASI_PROPOSAL_SUCCESS: undefined,
         SEND_EAASI_PROPOSAL_FAILURE: (data, status) => ({data, status}),
         GET_EAASI_PROPOSAL: (proposal_link) => ({proposal_link}),
