@@ -13,50 +13,18 @@ import WarningIcon from '@material-ui/icons/Warning';
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 
-const CustomTransferButton = withStyles({
-  root: {
-    backgroundColor: colors.presqtBlue,
-    '&:hover': {
-      backgroundColor: '#0a4996',
-    },
-    width: 167
-  },
-})(Button);
-
 /**
- * Component responsible for rendering the transfer button in the transfer stepper and passing the
- * selected file to the Transfer API endpoint
+ * Component responsible for rendering the transfer agreement in the transfer stepper
  **/
-export default function TransferStepperAgreement({handleNext, selectedDuplicate, selectedKeywordAction, keywordList}) {
+export default function TransferStepperAgreement() {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
-  const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const sourceResource = useSelector(state => state.selectedResource);
   const selectedTransferResource = useSelector(state => state.selectedTransferResource);
-  const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const available = useSelector(state => state.available);
 
-  /**
-   * When the transfer button is pushed, dispatch the Transfer action and transfer the stepper
-   * index to move forward.
-   **/
-  const submitTransfer = () => {
-    dispatch(actionCreators.transfer.transferResource(
-      transferDestinationTarget,
-      transferDestinationToken,
-      sourceResource,
-      selectedDuplicate,
-      selectedKeywordAction,
-      keywordList,
-      selectedTransferResource,
-      selectedTarget.name,
-      targetToken
-    ));
-
-    handleNext()
-  };
 
   let destinationTargetReadableName = '';
   for (let i = 0; i < available.length; i++) {
