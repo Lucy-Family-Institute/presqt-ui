@@ -56,15 +56,14 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
     handleNext()
   };
 
-  const searchKeystroke = (event) => {
+  const emailKeystroke = (event) => {
     setEmailValue(event.target.value);
   };
 
   return (
     <Fragment>
       <div css={{paddingBottom:10}}>
-        If you don't have time to wait on this page for the transfer to finish, you can input your email
-        below and we will notify you once it's complete. Inputing your email
+        You can input your email below and we will notify you once this transfer is complete. Inputing your email
         is not mandatory and we will not store this information on the server once the process has 
         finished.
       </div>
@@ -76,7 +75,7 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
           label="Email Address"
           variant="outlined"
           value={emailValue}
-          onChange={event => searchKeystroke(event)}
+          onChange={event => emailKeystroke(event)}
         />
       </div>
       <CustomTransferButton

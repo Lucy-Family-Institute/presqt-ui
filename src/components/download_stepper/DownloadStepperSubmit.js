@@ -29,16 +29,15 @@ export default function DownloadStepperSubmit({setActiveStep, setEmailValue, ema
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
-  const searchKeystroke = (event) => {
+  const emailKeystroke = (event) => {
     setEmailValue(event.target.value);
   };
 
   return (
     <Fragment>
       <div css={{paddingBottom:10}}>
-        If you don't have time to wait on this page for the download to finish, you can input your email
-        below and we will notify you once it's complete. The zip will be attached. Inputing your email
-        is not mandatory and we will not store this information on the server once the process has 
+        You can input your email below and we will notify you once this download is complete. The zip will be 
+        attached. Inputing your email is not mandatory and we will not store this information on the server once the process has 
         finished.
       </div>
       <div css={{paddingBottom:10}}>
@@ -49,7 +48,7 @@ export default function DownloadStepperSubmit({setActiveStep, setEmailValue, ema
           label="Email Address"
           variant="outlined"
           value={emailValue}
-          onChange={event => searchKeystroke(event)}
+          onChange={event => emailKeystroke(event)}
         />
       </div>
       <CustomDownloadButton
