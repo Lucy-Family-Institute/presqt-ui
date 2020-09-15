@@ -39,7 +39,7 @@ export const actionCreators = createActions({
         UPDATE_TARGET_RESOURCES_WITH_CHILDREN: undefined
     },
     DOWNLOAD: {
-        DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
+        DOWNLOAD_RESOURCE: (resource, targetToken, isService, emailAddress) => ({resource, targetToken, isService, emailAddress}),
         DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,

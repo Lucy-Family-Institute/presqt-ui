@@ -16,7 +16,8 @@ function* downloadTargetResource(action) {
       getResourceDownload,
       action.payload.resource,
       action.payload.targetToken,
-      action.payload.isService
+      action.payload.isService,
+      action.payload.emailAddress
     );
 
     yield put(actionCreators.download.downloadFromTargetSuccess(response.data));
