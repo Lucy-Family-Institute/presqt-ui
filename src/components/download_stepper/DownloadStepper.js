@@ -46,6 +46,7 @@ export default function DownloadStepper({}) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
+  const [emailValue, setEmailValue] = useState('');
 
   function getStepContent(step) {
     switch (step) {
@@ -57,10 +58,14 @@ export default function DownloadStepper({}) {
       case 1: {
         return <DownloadStepperSubmit
           setActiveStep={setActiveStep}
+          setEmailValue={setEmailValue}
+          emailValue={emailValue}
         />
       }
       case 2: {
-        return <DownloadStepperResults />
+        return <DownloadStepperResults
+          emailValue={emailValue}
+        />
       }
     }
   }

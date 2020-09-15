@@ -8,7 +8,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import UploadSelectFile from "./UploadSelectFile";
 import DuplicateActionRadioButtons from "../widgets/buttons/duplicateActionRadioButtons";
-import UploadButton from "./UploadButton";
+import UploadAgreement from "./UploadAgreement";
 import UploadResultsContent from "./UploadResultsContent";
 import UploadStepConnector from "./UploadStepConnector";
 import StepContent from "@material-ui/core/StepContent";
@@ -16,6 +16,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import StepperBackButton from "../widgets/buttons/stepperBackButton";
 import UploadStepperNextButton from "./UploadStepperNextButton";
 import colors from "../../styles/colors";
+import UploadButton from "./UploadButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,13 +45,14 @@ const PresQTStepContent = withStyles({
 const possibleSteps = [
   'Select a file to upload. Note: The file must be a Zip file in BagIt format',
   'Select the action to occur when a duplicate resource is found',
-  'Initiate Upload',
+  'Upload Agreement',
+  'Email Opt-In',
   'Results'
 ];
 
 function getSteps(uploadType) {
   if (uploadType === "NEW") {
-    return [...possibleSteps.slice(0, 1), ...possibleSteps.slice(2, 4)];
+    return [...possibleSteps.slice(0, 1), ...possibleSteps.slice(2, 5)];
   }
   else {
     return possibleSteps;
@@ -67,6 +69,7 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
   const [activeStep, setActiveStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
+  const [emailValue, setEmailValue] = useState("");
 
   /**
    * Decrement the step count when the Back button is pressed
@@ -96,9 +99,7 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
       }
       case 1:
         if (uploadType === 'NEW') {
-          return <UploadButton
-            selectedFile={selectedFile}
-            selectedDuplicate={selectedDuplicate}
+          return <UploadAgreement
             handleNext={handleNext}
             resourceToUploadTo={resourceToUploadTo}
           />;
@@ -111,12 +112,30 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
         }
       case 2:
         if (uploadType === 'NEW') {
+          return <UploadButton
+          selectedFile={selectedFile}
+          selectedDuplicate={selectedDuplicate}
+          handleNext={handleNext}
+          resourceToUploadTo={resourceToUploadTo}
+          emailValue={emailValue}
+          setEmailValue={setEmailValue}
+          />;
+        }
+        else {
+          return <UploadAgreement
+            handleNext={handleNext}
+            resourceToUploadTo={resourceToUploadTo}
+          />;
+        }
+      case 3:
+        if (uploadType === 'NEW') {
           return <UploadResultsContent
             setActiveStep={setActiveStep}
             setSelectedFile={setSelectedFile}
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
             resourceToUploadTo={resourceToUploadTo}
+            emailValue={emailValue}
           />;
         }
         else {
@@ -125,16 +144,19 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
             selectedDuplicate={selectedDuplicate}
             handleNext={handleNext}
             resourceToUploadTo={resourceToUploadTo}
+            emailValue={emailValue}
+            setEmailValue={setEmailValue}
           />;
         }
-      case 3:
-        if (uploadType !== 'NEW') {
+      case 4:
+        if (uploadType !== "NEW") {
           return <UploadResultsContent
             setActiveStep={setActiveStep}
             setSelectedFile={setSelectedFile}
             selectedFile={selectedFile}
             selectedDuplicate={selectedDuplicate}
             resourceToUploadTo={resourceToUploadTo}
+            emailValue={emailValue}
           />;
         }
     }
@@ -163,13 +185,13 @@ export default function UploadStepper({resourceToUploadTo, uploadType}) {
               </Typography>
               <div className={classes.actionsContainer}>
                 <div>
-                  {possibleSteps.indexOf(label) !== 3
+                  {possibleSteps.indexOf(label) !== 4
                     ? <StepperBackButton
                       handleBack={handleBack}
                       activeStep={activeStep}
                     />
                     : null }
-                  {possibleSteps.indexOf(label) === 0 || possibleSteps.indexOf(label) === 1
+                  {possibleSteps.indexOf(label) === 0 || possibleSteps.indexOf(label) === 1 || possibleSteps.indexOf(label) === 2
                     ? <UploadStepperNextButton
                           handleNext={handleNext}
                           activeStep={activeStep}

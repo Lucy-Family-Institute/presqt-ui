@@ -18,12 +18,11 @@ const CustomDownloadButton = withStyles({
   }
 })(Button);
 
-export default function DownloadStepperSubmit({setActiveStep}) {
+export default function DownloadStepperSubmit({setActiveStep, setEmailValue, emailValue}) {
   const dispatch = useDispatch();
 
   const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
-  const [emailValue, setEmailValue] = useState('');
 
   const submitDownload = () => {
     dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false, emailValue));
@@ -39,7 +38,7 @@ export default function DownloadStepperSubmit({setActiveStep}) {
       <div css={{paddingBottom:10}}>
         If you don't have time to wait on this page for the download to finish, you can input your email
         below and we will notify you once it's complete. The zip will be attached. Inputing your email
-        is not mandatory and we will not be store this information on the server once the process has 
+        is not mandatory and we will not store this information on the server once the process has 
         finished.
       </div>
       <div css={{paddingBottom:10}}>

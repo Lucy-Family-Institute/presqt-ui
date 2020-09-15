@@ -14,7 +14,8 @@ function* uploadTargetResource(action) {
       action.payload.file,
       action.payload.duplicateAction,
       action.payload.resourceToUploadTo,
-      action.payload.targetToken
+      action.payload.targetToken,
+      action.payload.emailAddress
     );
     yield put(actionCreators.upload.uploadToTargetSuccess(response.data));
 

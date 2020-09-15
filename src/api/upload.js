@@ -4,7 +4,7 @@ import {apiURLBase} from "../config";
 /**
  * Resource Upload Endpoint
  **/
-export function postResourceUpload(target, file, duplicateAction, resourceToUploadTo, targetToken) {
+export function postResourceUpload(target, file, duplicateAction, resourceToUploadTo, targetToken, emailAddress) {
   let resourceUploadURL;
   if (!resourceToUploadTo) {
     resourceUploadURL = `${apiURLBase}targets/${target}/resources/`;
@@ -19,7 +19,8 @@ export function postResourceUpload(target, file, duplicateAction, resourceToUplo
     {
       headers: {
         'presqt-destination-token': targetToken,
-        'presqt-file-duplicate-action': duplicateAction
+        'presqt-file-duplicate-action': duplicateAction,
+        'presqt-email-opt-in': emailAddress
       }
     }
   )

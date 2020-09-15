@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
  * It is responsible for dispatching the action that will make the download API call and open
  * a modal to display the download status.
  **/
-export default function RetryDownloadButton({setModalContent}) {
+export default function RetryDownloadButton({setModalContent, emailValue}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ export default function RetryDownloadButton({setModalContent}) {
       dispatch(actionCreators.resources.removeFromErrorList(
         actionCreators.download.downloadResource.toString()));
 
-      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
+      dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false, emailValue));
 
       setModalContent(
         <div>
