@@ -8,8 +8,9 @@ import UploadStepConnector from "../upload_stepper/UploadStepConnector";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import DownloadStepperSubmit from "./DownloadStepperSubmit";
+import DownloadStepperAgreement from "./DownloadStepperAgreement";
 import DownloadStepperResults from "./DownloadStepperResults";
+import DownloadStepperSubmit from "./DownloadStepperSubmit";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +37,8 @@ const PresQTStepContent = withStyles({
 })(StepContent);
 
 const steps = [
-  'Submit Download',
+  'Download Agreement',
+  'Email Opt-In',
   'Results'
 ];
 
@@ -44,16 +46,26 @@ export default function DownloadStepper({}) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
+  const [emailValue, setEmailValue] = useState('');
 
   function getStepContent(step) {
     switch (step) {
       case 0: {
-        return <DownloadStepperSubmit
+        return <DownloadStepperAgreement
           setActiveStep={setActiveStep}
         />
       }
       case 1: {
-        return <DownloadStepperResults />
+        return <DownloadStepperSubmit
+          setActiveStep={setActiveStep}
+          setEmailValue={setEmailValue}
+          emailValue={emailValue}
+        />
+      }
+      case 2: {
+        return <DownloadStepperResults
+          emailValue={emailValue}
+        />
       }
     }
   }

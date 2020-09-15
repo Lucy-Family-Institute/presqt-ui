@@ -39,7 +39,7 @@ export const actionCreators = createActions({
         UPDATE_TARGET_RESOURCES_WITH_CHILDREN: undefined
     },
     DOWNLOAD: {
-        DOWNLOAD_RESOURCE: (resource, targetToken, isService) => ({resource, targetToken, isService}),
+        DOWNLOAD_RESOURCE: (resource, targetToken, isService, emailAddress) => ({resource, targetToken, isService, emailAddress}),
         DOWNLOAD_FROM_TARGET_SUCCESS: (data) => ({data}),
         DOWNLOAD_FROM_TARGET_FAILURE: (status, data) => ({ status, data }),
         DOWNLOAD_JOB: undefined,
@@ -54,8 +54,8 @@ export const actionCreators = createActions({
         HIDE_DOWNLOAD_MODAL: undefined
     },
     UPLOAD: {
-        UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken) =>
-          ({target, file, duplicateAction, resourceToUploadTo, targetToken}),
+        UPLOAD_TO_TARGET: (target, file, duplicateAction, resourceToUploadTo, targetToken, emailAddress) =>
+          ({target, file, duplicateAction, resourceToUploadTo, targetToken, emailAddress}),
         UPLOAD_TO_TARGET_SUCCESS: (data) => ({data}),
         UPLOAD_TO_TARGET_FAILURE: (status, data) => ({status, data}),
         UPLOAD_JOB: undefined,
@@ -87,9 +87,9 @@ export const actionCreators = createActions({
         CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
         TRANSFER_RESOURCE: (
           destinationTarget, destinationToken, sourceResource, duplicateAction, keywordAction, keywordList,
-          resourceToTransferTo, sourceTarget, sourceTargetToken, ) => ({
+          resourceToTransferTo, sourceTarget, sourceTargetToken, emailAddress) => ({
             destinationTarget, destinationToken, sourceResource,
-            duplicateAction, keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceTargetToken}),
+            duplicateAction, keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceTargetToken, emailAddress}),
         TRANSFER_SUCCESS: (data) => ({data}),
         TRANSFER_FAILURE: (status, data) => ({ status, data }),
         TRANSFER_JOB: undefined,

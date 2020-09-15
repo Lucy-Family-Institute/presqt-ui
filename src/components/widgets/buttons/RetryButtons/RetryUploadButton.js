@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function RetryUploadButton({selectedFile, selectedDuplicate,
-                                           setStepThreeContent, resourceToUploadTo}) {
+                                           setStepThreeContent, resourceToUploadTo, emailValue}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -41,7 +41,8 @@ export default function RetryUploadButton({selectedFile, selectedDuplicate,
         selectedFile,
         selectedDuplicate,
         resourceToUploadTo,
-        targetToken
+        targetToken,
+        emailValue
       )
     );
     setStepThreeContent()

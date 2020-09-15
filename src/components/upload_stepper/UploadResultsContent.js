@@ -22,7 +22,8 @@ import FakeSpinner from "../widgets/spinners/FakeSpinner";
  * component to display the results of the upload.
  **/
 export default function UploadResultsContent({setActiveStep, setSelectedFile,
-                                               selectedFile, selectedDuplicate, resourceToUploadTo}) {
+                                              selectedFile, selectedDuplicate,
+                                              resourceToUploadTo, emailValue }) {
   const dispatch = useDispatch();
 
   const uploadStatus = useSelector(state => state.uploadStatus);
@@ -183,6 +184,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
                 selectedDuplicate={selectedDuplicate}
                 setStepThreeContent={setStepThreeContent}
                 resourceToUploadTo={resourceToUploadTo}
+                emailValue={emailValue}
               />
             </span>
           </div>

@@ -10,6 +10,7 @@ import StepContent from "@material-ui/core/StepContent";
 import Typography from "@material-ui/core/Typography";
 import TransferStepperTargets from "./TransferStepperTargets";
 import TransferStepperToken from "./TransferStepperToken";
+import TransferStepperAgreement from "./TransferStepperAgreement";
 import TransferStepperTransferButton from "./TransferStepperTransferButton";
 import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
@@ -56,7 +57,8 @@ const steps = [
   'Select the action to occur when a duplicate resource is found',
   'Select the keyword action to occur',
   "Keywords",
-  'Initiate transfer',
+  'Transfer Agreement',
+  'Email Opt-In',
   'Transfer Results'
 ];
 
@@ -78,6 +80,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
   const [selectedKeywordAction, setSelectedKeywordAction] = useState('automatic');
   const [keywordList, setKeywordList] = useState([]);
+  const [emailValue, setEmailValue] = useState('');
 
   /**  If the token given is invalid then step back to the token step **/
   useEffect(() => {
@@ -159,16 +162,23 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
         }
       }
       case 6: {
+        return (
+          <TransferStepperAgreement />
+        )
+        }
+      case 7: {
           return (
             <TransferStepperTransferButton
               handleNext={handleNext}
               selectedDuplicate={selectedDuplicate}
               selectedKeywordAction={selectedKeywordAction}
               keywordList={keywordList}
+              emailValue={emailValue}
+              setEmailValue={setEmailValue}
             />
           )
       }
-      case 7: {
+      case 8: {
         return (
           <TransferStepperResults
             setActiveStep={setActiveStep}
@@ -177,6 +187,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
             keywordList={keywordList}
             setTransferPageNumber={setTransferPageNumber}
             transferPageNumber={transferPageNumber}
+            emailValue={emailValue}
           />
         )
         }
@@ -206,7 +217,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                 <div className={classes.actionsContainer}>
                   <div>
                     {
-                      index !== 7 && index !== 8
+                      index !== 8 && index !== 9
                       ?
                         <StepperBackButton
                           handleBack={handleBack}
@@ -216,7 +227,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                         null
                     }
                     {
-                      index !== 6 && index !== 7
+                      index !== 7 && index !== 8
                       ?
                         <TransferStepperNextButton
                           handleNext={handleNext}
@@ -229,7 +240,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                     }
 
                     {
-                      index === 6
+                      index === 7
                       ? <TransferStartOverButton
                           setActiveStep={setActiveStep}
                           step={index}

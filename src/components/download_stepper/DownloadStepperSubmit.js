@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {Fragment} from "react";
+import {Fragment, useState} from "react";
 import textStyles from "../../styles/text";
 import {jsx} from "@emotion/core";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -7,10 +7,7 @@ import colors from "../../styles/colors";
 import Button from "@material-ui/core/Button/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {actionCreators} from "../../redux/actionCreators";
-import List from "@material-ui/core/List";
-import IconListItem from "../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
-import WarningIcon from "@material-ui/icons/Warning";
+import SearchTextField from "../widgets/text_fields/SearchTextField";
 
 const CustomDownloadButton = withStyles({
   root: {
@@ -21,48 +18,38 @@ const CustomDownloadButton = withStyles({
   }
 })(Button);
 
-export default function DownloadStepperSubmit({setActiveStep}) {
+export default function DownloadStepperSubmit({setActiveStep, setEmailValue, emailValue}) {
   const dispatch = useDispatch();
 
-  const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[state.selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
 
   const submitDownload = () => {
-    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false));
+    dispatch(actionCreators.download.downloadResource(selectedResource, targetToken, false, emailValue));
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+  };
+
+  const emailKeystroke = (event) => {
+    setEmailValue(event.target.value);
   };
 
   return (
     <Fragment>
       <div css={{paddingBottom:10}}>
-        The following actions will occur with this transaction:
-        <List>
-          {/* Download Statement*/}
-          <IconListItem
-            icon={<EditIcon />}
-            text="Resource will be downloaded as a BagIt file in ZIP format."
-          />
-
-          {/* Metadata Statement*/}
-          <IconListItem
-            icon={<EditIcon />}
-            text="File Transfer Service Metadata file will be written to the downloaded resource's top level."
-          />
-
-          {/* Source Target Statement*/
-            selectedTarget.name === 'osf'
-              ? <IconListItem
-                icon={<WarningIcon />}
-                text="OSF will only provide checksums for OSF Storage files." />
-            : selectedTarget.name === 'github'
-              ? <IconListItem
-                icon={<WarningIcon />}
-                text="Github does not provide checksums for files." />
-            : null
-
-          }
-        </List>
+        You can input your email below and we will notify you once this download is complete. The zip will be 
+        attached. Inputing your email is not mandatory and we will not store this information on the server once the process has 
+        finished.
+      </div>
+      <div css={{paddingBottom:10}}>
+        <SearchTextField
+          size="small"
+          type="text"
+          id="outlined-basic"
+          label="Email Address"
+          variant="outlined"
+          value={emailValue}
+          onChange={event => emailKeystroke(event)}
+        />
       </div>
       <CustomDownloadButton
         onClick={submitDownload}

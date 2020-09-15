@@ -4,9 +4,15 @@ import {apiURLBase} from "../config";
 /**
  * Resource Download Endpoint
  **/
-export function getResourceDownload(resource, targetToken) {
+export function getResourceDownload(resource, targetToken, isService, emailAddress) {
   const resourceDownloadURL = resource.links.find(link => link.name === 'Download').link;
-  return axios.get(resourceDownloadURL, {headers: {'presqt-source-token': targetToken}});
+  console.log(emailAddress);
+  return axios.get(resourceDownloadURL, {
+    headers: {
+      'presqt-source-token': targetToken,
+      'presqt-email-opt-in': emailAddress
+    }
+  });
 }
 
 /**
