@@ -87,9 +87,9 @@ export const actionCreators = createActions({
         CLOSE_TRANSFER_CONTAINER: container => ({container, open: false}),
         TRANSFER_RESOURCE: (
           destinationTarget, destinationToken, sourceResource, duplicateAction, keywordAction, keywordList,
-          resourceToTransferTo, sourceTarget, sourceTargetToken, ) => ({
+          resourceToTransferTo, sourceTarget, sourceTargetToken, emailAddress) => ({
             destinationTarget, destinationToken, sourceResource,
-            duplicateAction, keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceTargetToken}),
+            duplicateAction, keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceTargetToken, emailAddress}),
         TRANSFER_SUCCESS: (data) => ({data}),
         TRANSFER_FAILURE: (status, data) => ({ status, data }),
         TRANSFER_JOB: undefined,

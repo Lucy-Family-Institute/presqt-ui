@@ -5,7 +5,7 @@ import {apiURLBase} from "../config";
  * Resource Transfer Endpoint
  **/
 export function postResourceTransfer(destinationTarget, destinationToken, sourceResource, duplicateAction,
-                                     keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceToken) {
+                                     keywordAction, keywordList, resourceToTransferTo, sourceTarget, sourceToken, emailAddress) {
 
   let resourceTransferURL;
   if (!resourceToTransferTo) {
@@ -22,6 +22,7 @@ export function postResourceTransfer(destinationTarget, destinationToken, source
         'presqt-source-token': sourceToken,
         'presqt-file-duplicate-action': duplicateAction,
         'presqt-keyword-action': keywordAction,
+        'presqt-email-opt-in': emailAddress,
         'Content-Type': 'application/json'
       }
     }

@@ -18,7 +18,7 @@ import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 import FakeSpinner from "../../widgets/spinners/FakeSpinner";
 
 export default function TransferStepperResults(
-  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber }) {
+  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue }) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -175,6 +175,7 @@ export default function TransferStepperResults(
                 setStepThreeContent={setStepThreeContent}
                 selectedKeywordAction={selectedKeywordAction}
                 keywordList={keywordList}
+                emailValue={emailValue}
               />
             </span>
           </div>

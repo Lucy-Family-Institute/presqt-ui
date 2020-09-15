@@ -6,11 +6,8 @@ import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../../styles/colors";
 import textStyles from "../../../styles/text";
-import List from "@material-ui/core/List";
-import IconListItem from "../../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
-import WarningIcon from '@material-ui/icons/Warning';
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import { Fragment } from 'react';
+import SearchTextField from "../../widgets/text_fields/SearchTextField";
 
 
 const CustomTransferButton = withStyles({
@@ -27,7 +24,7 @@ const CustomTransferButton = withStyles({
  * Component responsible for rendering the transfer button in the transfer stepper and passing the
  * selected file to the Transfer API endpoint
  **/
-export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction, keywordList}) {
+export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction, keywordList, emailValue, setEmailValue}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -52,107 +49,35 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       keywordList,
       selectedTransferResource,
       selectedTarget.name,
-      targetToken
+      targetToken,
+      emailValue
     ));
 
     handleNext()
   };
 
-  let destinationTargetReadableName = '';
-  for (let i = 0; i < available.length; i++) {
-    if (available[i].name === transferDestinationTarget) {
-      destinationTargetReadableName = available[i].readable_name
-    }
-  }
+  const searchKeystroke = (event) => {
+    setEmailValue(event.target.value);
+  };
 
   return (
-    <div>
-      <div>
-        The following actions will occur with this transaction:
-        <List>
-          {/* Transfer Statement */}
-          <IconListItem
-            icon={<EditIcon />}
-            text={
-              selectedTransferResource
-              ? `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`
-              : `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to ${destinationTargetReadableName} as a new project.`
-            }
-          />
-
-          {/* Metadata Statement*/}
-          <IconListItem
-            icon={<EditIcon />}
-            text="Write or edit File Transfer Service Metadata file at the top level."
-          />
-          {/* Keyword Statement GitHub */
-            (selectedTarget.name === 'github' || transferDestinationTarget === 'github')
-              ? <IconListItem
-                icon={<VpnKeyIcon />}
-                text="Enhanced Keywords on GitHub will be stored as 'topics'." />
-            : null
-          }
-
-          {/* Keyword Statement OSF */
-            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf')
-            ? <IconListItem
-              icon={<VpnKeyIcon />}
-              text="Enhanced Keywords on OSF will be stored as 'tags'." />
-            : null
-          }
-
-          {/* Keyword Statement GitLab */
-            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab')
-            ? <IconListItem
-              icon={<VpnKeyIcon />}
-              text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
-            : null
-          }
-          
-          {/* Keyword Statement Zenodo */
-            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo')
-            ? <IconListItem
-              icon={<VpnKeyIcon />}
-              text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
-            : null
-          }
-          
-          {/* Keyword Statement FigShare */
-            (selectedTarget.name === 'figshare' || transferDestinationTarget === 'figshare')
-            ? <IconListItem
-              icon={<VpnKeyIcon />}
-              text="Enhanced Keywords on FigShare will be stored as 'tags'." />
-            : null
-        }
-
-          {/* Github Statement */
-            selectedTarget.name === 'github' || transferDestinationTarget === 'github'
-            ? <IconListItem
-                icon={<WarningIcon />}
-                text="Github does not provide checksums for files."/>
-            : null
-          }
-
-          {/* Source Target Statement*/
-            selectedTarget.name === 'osf'
-              ? <IconListItem
-                icon={<WarningIcon />}
-                text="OSF will only provide checksums for OSF Storage files." />
-              : null
-          }
-
-          {/* Destination Target Statement*/
-            transferDestinationTarget === 'osf'
-            ? <IconListItem
-                icon={<EditIcon />}
-                text={`'${sourceResource.title}' will be stored in OSF Storage by default.`} />
-            : transferDestinationTarget === 'zenodo' || transferDestinationTarget === 'figshare'
-            ? <IconListItem
-                icon={<EditIcon />}
-                text={`'${sourceResource.title}' will be written in BagIt format as a ZIP file.`} />
-            : null
-          }
-        </List>
+    <Fragment>
+      <div css={{paddingBottom:10}}>
+        If you don't have time to wait on this page for the transfer to finish, you can input your email
+        below and we will notify you once it's complete. Inputing your email
+        is not mandatory and we will not store this information on the server once the process has 
+        finished.
+      </div>
+      <div css={{paddingBottom:10}}>
+        <SearchTextField
+          size="small"
+          type="text"
+          id="outlined-basic"
+          label="Email Address"
+          variant="outlined"
+          value={emailValue}
+          onChange={event => searchKeystroke(event)}
+        />
       </div>
       <CustomTransferButton
         onClick={submitTransfer}
@@ -161,7 +86,6 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       >
         <span css={textStyles.buttonText}>Transfer File</span>
       </CustomTransferButton>
-    </div>
-
+    </Fragment>
   )
 }
