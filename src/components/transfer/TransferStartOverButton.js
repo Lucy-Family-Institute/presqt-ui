@@ -28,7 +28,7 @@ export default function TransferStartOverButton({setActiveStep, step, setTransfe
   const classes = useStyles();
 
   let buttonClass = classes.button;
-  if (step === 5 || step === 6) {
+  if (step === 6 || step === 7) {
     buttonClass = classes.step4Button
   }
   
