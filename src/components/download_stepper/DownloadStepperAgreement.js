@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button/Button";
 import {useSelector} from "react-redux";
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
+import GetAppIcon from '@material-ui/icons/GetApp';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import GitHubIcon from '../../images/partner_icons/github';
 import OSFIcon from "../../images/partner_icons/osf";
@@ -36,7 +36,7 @@ export default function DownloadStepperAgreement({setActiveStep}) {
         <List>
           {/* Download Statement*/}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<GetAppIcon />}
             text="Resource will be downloaded as a BagIt file in ZIP format."
           />
 

@@ -6,7 +6,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
+import PublishIcon from '@material-ui/icons/Publish';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import OSFIcon from "../../images/partner_icons/osf";
 import GitHubIcon from "../../images/partner_icons/github";
@@ -46,7 +46,7 @@ export default function UploadAgreement({handleNext, resourceToUploadTo}) {
         <List>
           {/* Upload Statement */}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<PublishIcon />}
             text={
               resourceToUploadTo
                 ? `Upload to the ${selectedTarget.readable_name} resource '${sourceResource.title}'.`

@@ -3,7 +3,7 @@ import {jsx} from "@emotion/core";
 import {useDispatch, useSelector} from "react-redux";
 import List from "@material-ui/core/List";
 import IconListItem from "../../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
+import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import OSFIcon from "../../../images/partner_icons/osf";
 import GitHubIcon from "../../../images/partner_icons/github";
 import ZenodoIcon from "../../../images/partner_icons/zenodo";
@@ -39,7 +39,7 @@ export default function TransferStepperAgreement() {
         <List>
           {/* Transfer Statement */}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<SyncAltIcon />}
             text={
               selectedTransferResource
               ? `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`
