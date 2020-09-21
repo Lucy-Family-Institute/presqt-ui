@@ -1,17 +1,17 @@
 /** @jsx jsx */
-import {Fragment, useState} from "react";
+import {Fragment} from "react";
 import textStyles from "../../styles/text";
 import {jsx} from "@emotion/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
 import Button from "@material-ui/core/Button/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {actionCreators} from "../../redux/actionCreators";
+import {useSelector} from "react-redux";
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
-import WarningIcon from "@material-ui/icons/Warning";
-import SearchTextField from "../widgets/text_fields/SearchTextField";
+import GetAppIcon from '@material-ui/icons/GetApp';
+import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import GitHubIcon from '../../images/partner_icons/github';
+import OSFIcon from "../../images/partner_icons/osf";
 
 const CustomDownloadButton = withStyles({
   root: {
@@ -36,24 +36,24 @@ export default function DownloadStepperAgreement({setActiveStep}) {
         <List>
           {/* Download Statement*/}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<GetAppIcon />}
             text="Resource will be downloaded as a BagIt file in ZIP format."
           />
 
           {/* Metadata Statement*/}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<LocalParkingIcon />}
             text="File Transfer Service Metadata file will be written to the downloaded resource's top level."
           />
 
           {/* Source Target Statement*/
             selectedTarget.name === 'osf'
               ? <IconListItem
-                icon={<WarningIcon />}
+                icon={<OSFIcon />}
                 text="OSF will only provide checksums for OSF Storage files." />
             : selectedTarget.name === 'github'
               ? <IconListItem
-                icon={<WarningIcon />}
+                icon={<GitHubIcon />}
                 text="Github does not provide checksums for files." />
             : null
 

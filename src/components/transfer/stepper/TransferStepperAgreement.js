@@ -1,16 +1,15 @@
 /** @jsx jsx */
 import {jsx} from "@emotion/core";
 import {useDispatch, useSelector} from "react-redux";
-import {actionCreators} from "../../../redux/actionCreators";
-import Button from "@material-ui/core/Button/Button";
-import withStyles from "@material-ui/core/styles/withStyles";
-import colors from "../../../styles/colors";
-import textStyles from "../../../styles/text";
 import List from "@material-ui/core/List";
 import IconListItem from "../../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
-import WarningIcon from '@material-ui/icons/Warning';
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import SyncAltIcon from '@material-ui/icons/SyncAlt';
+import OSFIcon from "../../../images/partner_icons/osf";
+import GitHubIcon from "../../../images/partner_icons/github";
+import ZenodoIcon from "../../../images/partner_icons/zenodo";
+import FigshareIcon from "../../../images/partner_icons/figshare";
+import GitLabIcon from "../../../images/partner_icons/gitlab";
+import LocalParkingIcon from '@material-ui/icons/LocalParking';
 
 
 /**
@@ -40,7 +39,7 @@ export default function TransferStepperAgreement() {
         <List>
           {/* Transfer Statement */}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<SyncAltIcon />}
             text={
               selectedTransferResource
               ? `Transfer ${selectedTarget.readable_name} resource '${sourceResource.title}' to the ${destinationTargetReadableName} resource '${selectedTransferResource.title}'.`
@@ -50,13 +49,13 @@ export default function TransferStepperAgreement() {
 
           {/* Metadata Statement*/}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<LocalParkingIcon />}
             text="Write or edit File Transfer Service Metadata file at the top level."
           />
           {/* Keyword Statement GitHub */
             (selectedTarget.name === 'github' || transferDestinationTarget === 'github')
               ? <IconListItem
-                icon={<VpnKeyIcon />}
+                icon={<GitHubIcon />}
                 text="Enhanced Keywords on GitHub will be stored as 'topics'." />
             : null
           }
@@ -64,7 +63,7 @@ export default function TransferStepperAgreement() {
           {/* Keyword Statement OSF */
             (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf')
             ? <IconListItem
-              icon={<VpnKeyIcon />}
+              icon={<OSFIcon />}
               text="Enhanced Keywords on OSF will be stored as 'tags'." />
             : null
           }
@@ -72,7 +71,7 @@ export default function TransferStepperAgreement() {
           {/* Keyword Statement GitLab */
             (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab')
             ? <IconListItem
-              icon={<VpnKeyIcon />}
+              icon={<GitLabIcon />}
               text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
             : null
           }
@@ -80,7 +79,7 @@ export default function TransferStepperAgreement() {
           {/* Keyword Statement Zenodo */
             (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo')
             ? <IconListItem
-              icon={<VpnKeyIcon />}
+              icon={<ZenodoIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
             : null
           }
@@ -88,7 +87,7 @@ export default function TransferStepperAgreement() {
           {/* Keyword Statement FigShare */
             (selectedTarget.name === 'figshare' || transferDestinationTarget === 'figshare')
             ? <IconListItem
-              icon={<VpnKeyIcon />}
+              icon={<FigshareIcon />}
               text="Enhanced Keywords on FigShare will be stored as 'tags'." />
             : null
         }
@@ -96,7 +95,7 @@ export default function TransferStepperAgreement() {
           {/* Github Statement */
             selectedTarget.name === 'github' || transferDestinationTarget === 'github'
             ? <IconListItem
-                icon={<WarningIcon />}
+                icon={<GitHubIcon />}
                 text="Github does not provide checksums for files."/>
             : null
           }
@@ -104,7 +103,7 @@ export default function TransferStepperAgreement() {
           {/* Source Target Statement*/
             selectedTarget.name === 'osf'
               ? <IconListItem
-                icon={<WarningIcon />}
+                icon={<OSFIcon />}
                 text="OSF will only provide checksums for OSF Storage files." />
               : null
           }
@@ -112,11 +111,15 @@ export default function TransferStepperAgreement() {
           {/* Destination Target Statement*/
             transferDestinationTarget === 'osf'
             ? <IconListItem
-                icon={<EditIcon />}
+                icon={<OSFIcon />}
                 text={`'${sourceResource.title}' will be stored in OSF Storage by default.`} />
-            : transferDestinationTarget === 'zenodo' || transferDestinationTarget === 'figshare'
+            : transferDestinationTarget === 'zenodo'
             ? <IconListItem
-                icon={<EditIcon />}
+                icon={<ZenodoIcon />}
+                text={`'${sourceResource.title}' will be written in BagIt format as a ZIP file.`} />
+            : transferDestinationTarget === 'figshare'
+            ? <IconListItem
+                icon={<FigshareIcon />}
                 text={`'${sourceResource.title}' will be written in BagIt format as a ZIP file.`} />
             : null
           }

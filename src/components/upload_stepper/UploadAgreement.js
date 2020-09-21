@@ -4,11 +4,14 @@ import {useSelector} from "react-redux";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import colors from "../../styles/colors";
-import textStyles from "../../styles/text";
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem";
-import EditIcon from "@material-ui/icons/Edit";
-import WarningIcon from "@material-ui/icons/Warning";
+import PublishIcon from '@material-ui/icons/Publish';
+import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import OSFIcon from "../../images/partner_icons/osf";
+import GitHubIcon from "../../images/partner_icons/github";
+import ZenodoIcon from "../../images/partner_icons/zenodo";
+import FigshareIcon from "../../images/partner_icons/figshare";
 
 const CustomUploadButton = withStyles({
   root: {
@@ -43,7 +46,7 @@ export default function UploadAgreement({handleNext, resourceToUploadTo}) {
         <List>
           {/* Upload Statement */}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<PublishIcon />}
             text={
               resourceToUploadTo
                 ? `Upload to the ${selectedTarget.readable_name} resource '${sourceResource.title}'.`
@@ -53,21 +56,25 @@ export default function UploadAgreement({handleNext, resourceToUploadTo}) {
 
           {/* Metadata Statement*/}
           <IconListItem
-            icon={<EditIcon />}
+            icon={<LocalParkingIcon />}
             text="Write or edit File Transfer Service Metadata file at the top level." />
 
           {/* Destination Target Statement*/
             selectedTarget.name === 'osf'
             ? <IconListItem
-            icon={<EditIcon />}
+            icon={<OSFIcon />}
             text={`Resources will be stored in OSF Storage by default.`} />
             : selectedTarget.name === 'github'
             ? <IconListItem
-            icon={<WarningIcon />}
+            icon={<GitHubIcon />}
             text="Github does not provide checksums for files."/>
-            : selectedTarget.name === 'zenodo' || selectedTarget.name === 'figshare'
+            : selectedTarget.name === 'zenodo'
             ? <IconListItem
-            icon={<EditIcon />}
+            icon={<ZenodoIcon />}
+            text={`New resource will be written in BagIt format as a ZIP file.`} />
+            : selectedTarget.name === 'figshare'
+            ? <IconListItem
+            icon={<FigshareIcon />}
             text={`New resource will be written in BagIt format as a ZIP file.`} />
             : null
           }
