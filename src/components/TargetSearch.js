@@ -257,11 +257,6 @@ export default function TargetSearch({setPageNumber}) {
           </form>
         </div>
       </Grid>
-      <Grid
-        style={{marginBottom: 14}}
-        item
-      >
-      </Grid>
     </Grid>
   );
 }
