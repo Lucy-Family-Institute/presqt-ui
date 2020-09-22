@@ -61,7 +61,7 @@ export default function TargetResourceBrowser() {
   ]);
   const [message, setMessage] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [manualPageNumber, setManualPageNumber] = useState(1);
+  const [manualPageNumber, setManualPageNumber] = useState("1");
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
