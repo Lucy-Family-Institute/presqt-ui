@@ -257,24 +257,6 @@ export default function TargetSearch({setPageNumber}) {
           </form>
         </div>
       </Grid>
-      <Grid
-        style={{marginBottom: 14}}
-        item
-      >
-        <Tooltip
-          title={
-            <Fragment>
-              Only the first page of paginated search results are returned.
-              <br />
-              If you don't see the desired project try a more specific search.
-            </Fragment>
-          }
-          arrow placement="right">
-          <InfoIcon
-            style={{ color: '#757575', cursor: 'help' }}
-          />
-        </Tooltip>
-      </Grid>
     </Grid>
   );
 }
