@@ -123,6 +123,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
         transferDestinationToken
       )
     );
+    setManualTransferPageNumber(value.toString());
   };
 
   const handleManualPageChange = (event, value) => {

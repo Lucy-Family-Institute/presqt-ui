@@ -177,6 +177,7 @@ export default function TargetResourceBrowser() {
         targetToken
       )
     );
+    setManualPageNumber(value.toString());
   };
 
   const handleManualPageChange = (event, value) => {
