@@ -232,7 +232,11 @@ export default function TargetResourceBrowser() {
                   max={targetResourcesPages.total_pages}
                   value={manualPageNumber}
                   onChange={event => setManualPageNumber(event.target.value)}
-                  onKeyDown={(event) => { event.keyCode === 13 && manualPageNumber !== '' && parseInt(manualPageNumber) <= targetResourcesPages.total_pages ? handleManualPageChange(event, event.target.value) : null }} />
+                  onKeyDown={(event) => {
+                    event.keyCode === 13 && manualPageNumber !== '' && parseInt(manualPageNumber) <= targetResourcesPages.total_pages
+                      ? handleManualPageChange(event, event.target.value)
+                      : null
+                  }} />
               </Typography>
             </div>
             <Pagination
