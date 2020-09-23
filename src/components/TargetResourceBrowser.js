@@ -107,7 +107,7 @@ export default function TargetResourceBrowser() {
     if (collectionError && collectionError.status === 401) {
       return null;
     } else if (targetResources || searchValue) {
-      return <TargetSearch setPageNumber={setPageNumber} />;
+      return <TargetSearch setPageNumber={setPageNumber} setManualPageNumber={setManualPageNumber} />;
     }
   };
 

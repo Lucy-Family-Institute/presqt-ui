@@ -49,7 +49,7 @@ const parameterTranslator = {
   "keywords": "Keywords"
 };
 
-export default function TargetSearch({setPageNumber}) {
+export default function TargetSearch({setPageNumber, setManualPageNumber}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
@@ -101,6 +101,7 @@ export default function TargetSearch({setPageNumber}) {
       );
       // Reset the page number to 1
       setPageNumber(1);
+      setManualPageNumber('1');
     }
   };
 
@@ -115,6 +116,7 @@ export default function TargetSearch({setPageNumber}) {
       setSearchValue('');
       // Reset the page number to 1
       setPageNumber(1);
+      setManualPageNumber('1');
       dispatch(
         actionCreators.resources.removeFromErrorList(
           actionCreators.resources.loadFromTargetSearch.toString()
