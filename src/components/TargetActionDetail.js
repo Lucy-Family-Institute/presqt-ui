@@ -51,7 +51,7 @@ export default function TargetActionDetail() {
     }
     return (
       <div
-        css={{ display: "flex", flexDirection: "column", paddingBottom: 10 }}
+        css={{ display: "flex", flexDirection: "column", paddingBottom: 10, flex: "1 1 45%" }}
         key={key}
       >
         <span css={[textStyles.body, { fontWeight: 500 }]}>{key}</span>
@@ -119,7 +119,7 @@ export default function TargetActionDetail() {
         ? (
           <div>
             <MediumHeader text="Resource Details" />
-            <div css={{ paddingTop: 10 }}>
+            <div css={{ paddingTop: 10, display: "flex", flexWrap: "wrap", justifyContent: "center", maxWidth: "55%" }}>
               {detailsToRender(selectedResource).map(resourceData =>
                 renderDetailItem(resourceData)
               )}
