@@ -9,16 +9,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import TargetSearch from "./TargetSearch";
 import Spinner from "./widgets/spinners/Spinner";
 import UploadActionButton from "./action_buttons/UploadActionButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { basicFadeIn } from "../styles/animations";
 import getError from "../utils/getError";
 import Pagination from "@material-ui/lab/Pagination";
 import colors from "../styles/colors";
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(() => ({
   root: {
     width: "75%",
-    paddingTop: 45,
+    paddingTop: 10,
     "& .Mui-selected": {
       backgroundColor: colors.presqtBlue,
       "&:hover": {
@@ -36,23 +37,31 @@ export default function TargetResourceBrowser() {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const targetToken = useSelector((state) => state.selectedTarget
-    ? state.apiTokens[state.selectedTarget.name]
-    : null);
+  const targetToken = useSelector((state) =>
+    state.selectedTarget ? state.apiTokens[state.selectedTarget.name] : null
+  );
 
-  const targetResources = useSelector(state => state.targetResources);
-  const targetResourcesPages = useSelector(state => state.targetResourcesPages);
-  const pendingAPIOperations = useSelector(state => state.pendingAPIOperations);
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
-  const selectedTarget = useSelector(state => state.selectedTarget);
-  const searchValue = useSelector(state => state.searchValue);
+  const targetResources = useSelector((state) => state.targetResources);
+  const targetResourcesPages = useSelector(
+    (state) => state.targetResourcesPages
+  );
+  const pendingAPIOperations = useSelector(
+    (state) => state.pendingAPIOperations
+  );
+  const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
+  const selectedTarget = useSelector((state) => state.selectedTarget);
+  const searchValue = useSelector((state) => state.searchValue);
 
   const collectionError = getError(actionCreators.resources.loadFromTarget);
   const searchError = getError(actionCreators.resources.loadFromTargetSearch);
 
-  const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
+  const [messageCss, setMessageCss] = useState([
+    textStyles.body,
+    { marginTop: 10 },
+  ]);
   const [message, setMessage] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [manualPageNumber, setManualPageNumber] = useState("1");
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -72,7 +81,7 @@ export default function TargetResourceBrowser() {
    * hierarchy of a given target.
    **/
   const resourceHierarchy = (onResourceClicked, resources, level = 0) => {
-    return resources.map(resource => {
+    return resources.map((resource) => {
       return (
         <div key={resource.id} css={{ animation: `${basicFadeIn} .5s ease` }}>
           <ResourceButton
@@ -97,8 +106,7 @@ export default function TargetResourceBrowser() {
   const search = () => {
     if (collectionError && collectionError.status === 401) {
       return null;
-    }
-    else if (targetResources || searchValue) {
+    } else if (targetResources || searchValue) {
       return <TargetSearch setPageNumber={setPageNumber} />;
     }
   };
@@ -106,8 +114,7 @@ export default function TargetResourceBrowser() {
   const upload = () => {
     if (collectionError && collectionError.status === 401) {
       return null;
-    }
-    else if (targetResources || searchValue) {
+    } else if (targetResources || searchValue) {
       return (
         <UploadActionButton
           style={{ width: 250 }}
@@ -115,7 +122,11 @@ export default function TargetResourceBrowser() {
           type="NEW"
           // If there is no search value and the target supports resource upload, this button is clickable.
           // Otherwise, it's disabled.
-          disabled={!searchValue && selectedTarget.supported_actions["resource_upload"] ? false : true}
+          disabled={
+            !searchValue && selectedTarget.supported_actions["resource_upload"]
+              ? false
+              : true
+          }
         />
       );
     }
@@ -124,7 +135,12 @@ export default function TargetResourceBrowser() {
   useEffect(() => {
     // If resources exist
     if (targetResources && targetResources.length > 0) {
-      setMessage(resourceHierarchy(resource => onResourceClicked(resource), targetResources));
+      setMessage(
+        resourceHierarchy(
+          (resource) => onResourceClicked(resource),
+          targetResources
+        )
+      );
     }
     // Search returned no results
     else if (targetResources && targetResources.length === 0 && searchValue) {
@@ -133,7 +149,9 @@ export default function TargetResourceBrowser() {
     }
     // No resources exist
     else if (targetResources && targetResources.length === 0) {
-      setMessage(`No ${selectedTarget.readable_name} resources found for this user.`);
+      setMessage(
+        `No ${selectedTarget.readable_name} resources found for this user.`
+      );
     }
     // Searched returned an error
     else if (searchError) {
@@ -144,9 +162,8 @@ export default function TargetResourceBrowser() {
     else if (collectionError && collectionError.status !== 401) {
       setMessageCss([textStyles.body, { marginTop: 10 }, textStyles.cubsRed]);
       setMessage(`${collectionError.data}`);
-    }
-    else {
-      setMessage('');
+    } else {
+      setMessage("");
     }
   }, [targetResources, apiOperationErrors]);
 
@@ -158,8 +175,20 @@ export default function TargetResourceBrowser() {
         targetResourcesPages.base_page,
         value,
         targetToken
-      ));
+      )
+    );
+    setManualPageNumber(value.toString());
   };
+
+  const handleManualPageChange = (event, value) => {
+    setPageNumber(parseInt(value));
+    dispatch(
+      actionCreators.resources.loadFromTargetPagination(
+        targetResourcesPages.base_page,
+        parseInt(value),
+        targetToken
+      ));
+  }
 
   return (
     <div
@@ -169,7 +198,7 @@ export default function TargetResourceBrowser() {
         paddingBottom: 50,
         minHeight: "25vh",
         flex: 1,
-        display: "flex"
+        display: "flex",
       }}
     >
       <div css={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -190,20 +219,49 @@ export default function TargetResourceBrowser() {
           <div css={messageCss}>{message}</div>
         )}
         {!targetResourcesPages ? null : (
-          <Pagination
-            classes={{ root: classes.root }}
-            count={targetResourcesPages.total_pages}
-            size="small"
-            showFirstButton
-            showLastButton
-            siblingCount={0}
-            color="primary"
-            page={pageNumber}
-            onChange={handlePageChange}
-            disabled={pendingAPIOperations.includes(actionCreators.resources.loadFromTarget.toString()) ||
-            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetSearch.toString()) ||
-            pendingAPIOperations.includes(actionCreators.resources.loadFromTargetPagination.toString())}
-          />
+          <Fragment>
+            <div style={{paddingTop: 30, paddingLeft: 8}}>
+              <Typography
+                style={{ fontSize: 12 }}>
+                Page: <input
+                  type="number"
+                  placeholder={pageNumber}
+                  size="3"
+                  maxLength="3"
+                  min="1"
+                  max={targetResourcesPages.total_pages}
+                  value={manualPageNumber}
+                  onChange={event => setManualPageNumber(event.target.value)}
+                  onKeyDown={(event) => {
+                    event.keyCode === 13 && manualPageNumber !== '' && parseInt(manualPageNumber) <= targetResourcesPages.total_pages
+                      ? handleManualPageChange(event, event.target.value)
+                      : null
+                  }} />
+              </Typography>
+            </div>
+            <Pagination
+              classes={{ root: classes.root }}
+              count={targetResourcesPages.total_pages}
+              size="small"
+              showFirstButton
+              showLastButton
+              siblingCount={0}
+              color="primary"
+              page={pageNumber}
+              onChange={handlePageChange}
+              disabled={
+                pendingAPIOperations.includes(
+                  actionCreators.resources.loadFromTarget.toString()
+                ) ||
+                pendingAPIOperations.includes(
+                  actionCreators.resources.loadFromTargetSearch.toString()
+                ) ||
+                pendingAPIOperations.includes(
+                  actionCreators.resources.loadFromTargetPagination.toString()
+                )
+              }
+            />
+          </Fragment>
         )}
       </div>
     </div>

@@ -98,7 +98,8 @@ function* transferTargetResource(action) {
       action.payload.keywordList,
       action.payload.resourceToTransferTo,
       action.payload.sourceTarget,
-      action.payload.sourceTargetToken
+      action.payload.sourceTargetToken,
+      action.payload.emailAddress
     );
 
     yield put(actionCreators.transfer.transferSuccess(response.data));

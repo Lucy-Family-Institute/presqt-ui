@@ -16,7 +16,7 @@ import {useSelector} from "react-redux";
 import getError from "../../utils/getError";
 import {actionCreators} from "../../redux/actionCreators";
 
-export default function DownloadStepperResults() {
+export default function DownloadStepperResults({emailValue}) {
   const downloadData = useSelector(state => state.downloadData);
   const downloadStatus = useSelector(state => state.downloadStatus);
   const downloadMessage = useSelector(state => state.downloadMessage);
@@ -68,6 +68,7 @@ export default function DownloadStepperResults() {
           <div css={{justifyContent: 'center', display: 'flex'}}>
             <RetryDownloadButton
               setModalContent={setModalContent}
+              emailValue={emailValue}
             />
           </div>
         </Fragment>

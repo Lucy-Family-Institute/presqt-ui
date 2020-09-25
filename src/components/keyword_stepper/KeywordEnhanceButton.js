@@ -9,8 +9,7 @@ import textStyles from "../../styles/text";
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem";
 import EditIcon from "@material-ui/icons/Edit";
-import ListItemText from "@material-ui/core/ListItemText";
-import WarningIcon from "@material-ui/icons/Warning";
+import LocalParkingIcon from '@material-ui/icons/LocalParking';
 
 const CustomEnhanceButton = withStyles({
   root: {
@@ -49,7 +48,7 @@ export default function KeywordEnhanceButton({ setActiveStep, newKeywords }) {
                     />
                     {/* Metadata Statement*/}
                     <IconListItem
-                        icon={<EditIcon />}
+                        icon={<LocalParkingIcon />}
                         text="Write or edit File Transfer Service Metadata file at the top level."
                     />
                 </List>

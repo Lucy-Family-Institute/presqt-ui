@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, Fragment} from "react";
 import { jsx, } from "@emotion/core";
 import { actionCreators } from "../../redux/actionCreators";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,11 +12,12 @@ import {basicFadeIn} from "../../styles/animations";
 import getError from "../../utils/getError";
 import Pagination from "@material-ui/lab/Pagination";
 import colors from "../../styles/colors";
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(() => ({
   root: {
     width: "75%",
-    paddingTop: 45,
+    paddingTop: 10,
     paddingBottom: 45,
     "& .Mui-selected": {
       backgroundColor: colors.presqtBlue,
@@ -43,6 +44,7 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 15 }]);
   const [message, setMessage] = useState("");
+  const [manualTransferPageNumber, setManualTransferPageNumber] = useState("1");
 
   /**
    * If clicked container is open then dispatch the closeContainer action to minimize the container
@@ -121,7 +123,19 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
         transferDestinationToken
       )
     );
+    setManualTransferPageNumber(value.toString());
   };
+
+  const handleManualPageChange = (event, value) => {
+    console.log("hERE");
+    setTransferPageNumber(parseInt(value));
+    dispatch(
+      actionCreators.transfer.loadFromTransferTargetPagination(
+        transferTargetResourcesPages.base_page,
+        parseInt(value),
+        transferDestinationToken
+      ));
+  }
 
   return (
     <div css={{
@@ -142,6 +156,26 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
             </div>
         }
         {!transferTargetResourcesPages ? null : (
+          <Fragment>
+          <div style={{paddingTop: 30, paddingLeft: 8}}>
+            <Typography
+              style={{ fontSize: 12 }}>
+                Page: <input
+                type="number"
+                placeholder={transferPageNumber}
+                size="3"
+                maxLength="3"
+                min="1"
+                max={transferTargetResourcesPages.total_pages}
+                value={manualTransferPageNumber}
+                onChange={event => setManualTransferPageNumber(event.target.value)}
+                  onKeyDown={(event) => {
+                    event.keyCode === 13 && manualTransferPageNumber !== '' && parseInt(manualTransferPageNumber) <= transferTargetResourcesPages.total_pages
+                      ? handleManualPageChange(event, event.target.value)
+                      : null
+                  }} />
+            </Typography>
+          </div>
           <Pagination
             classes={{ root: classes.root }}
             count={transferTargetResourcesPages.total_pages}
@@ -153,7 +187,8 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
             page={transferPageNumber}
             onChange={handlePageChange}
             disabled={transferStatus && transferStatus === ('pending' || 'success') }
-          />
+            />
+          </Fragment>
         )}
       </div>
     </div>

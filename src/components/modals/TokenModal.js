@@ -83,9 +83,9 @@ export default function TokenModal() {
             }}
           >
               <p>In order to connect to {connection.readable_name} you will
-              need to supply your API token. This will not be saved, so if
-              you come back to this website, you will need to provide your
-              token again.
+              need to supply your <a href={`${connection.token_url}`} target="_blank" rel="noopener noreferrer">
+              API token</a>. This will not be saved, so if you come back to this website, you will 
+              need to provide your token again.
               </p>
             <div
               css={{

@@ -2,12 +2,13 @@ import {apiURLBase} from "../config";
 import axios from "axios";
 
 /** EaaSI Proposal **/
-export function postEaasiProposal(ticket_number) {
+export function postEaasiProposal(sourceToken) {
   const proposalURL = `${apiURLBase}services/eaasi/proposals/`;
-  const bodyFormData = new FormData();
-  bodyFormData.set('ticket_number', ticket_number);
 
-  return axios.post(proposalURL, bodyFormData);
+  return axios.post(proposalURL, {}, {
+    headers: {
+      'presqt-source-token': sourceToken
+    }});
 }
 
 export function getEaasiProposal(proposal_link) {

@@ -99,7 +99,6 @@ export default function TargetSearch({setPageNumber}) {
         actionCreators.resources.loadFromTargetSearch(
           selectedTarget.name, token, searchValue, selectedSearchParameter)
       );
-      dispatch(actionCreators.resources.loadCollectionProgress(token));
       // Reset the page number to 1
       setPageNumber(1);
     }
@@ -122,7 +121,6 @@ export default function TargetSearch({setPageNumber}) {
         )
       );
       dispatch(actionCreators.resources.loadFromTargetSearch(selectedTarget.name, token, '', ''));
-      dispatch(actionCreators.resources.loadCollectionProgress(token));
     }
 
   };
@@ -230,6 +228,7 @@ export default function TargetSearch({setPageNumber}) {
                         pendingAPIOperations.indexOf(actionCreators.resources.selectResource.toString()) < 0
                           ? [buttons.inlineButton]
                           : [buttons.disabledInlineButton]}
+
                       onClick={event => submitSearch(event, 'search')}
                     />
                     <Divider
@@ -257,24 +256,6 @@ export default function TargetSearch({setPageNumber}) {
             />
           </form>
         </div>
-      </Grid>
-      <Grid
-        style={{marginBottom: 14}}
-        item
-      >
-        <Tooltip
-          title={
-            <Fragment>
-              Only the first page of paginated search results are returned.
-              <br />
-              If you don't see the desired project try a more specific search.
-            </Fragment>
-          }
-          arrow placement="right">
-          <InfoIcon
-            style={{ color: '#757575', cursor: 'help' }}
-          />
-        </Tooltip>
       </Grid>
     </Grid>
   );
