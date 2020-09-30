@@ -9,6 +9,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import FAIRshareStepperSubmit from "./FAIRshareStepperSubmit";
+import FAIRshareStepperResults from "./FAIRshareStepperResults";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +47,7 @@ export default function FAIRshareStepper({}) {
         return <FAIRshareStepperSubmit setActiveStep={setActiveStep} />;
       }
       case 1: {
-        <p>Eggs</p>
+        return <FAIRshareStepperResults />
       }
     }
   }

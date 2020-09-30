@@ -16,7 +16,8 @@ export default function FAIRshareModal() {
     const fairshareModalDisplay = useSelector(state => state.fairshareModalDisplay);
 
     const handleClose = () => {
-        dispatch(actionCreators.fairshare.hideFairshareModal());
+      dispatch(actionCreators.fairshare.hideFairshareModal());
+      dispatch(actionCreators.fairshare.clearFairshareData());
     }
 
     return fairshareModalDisplay ? (
