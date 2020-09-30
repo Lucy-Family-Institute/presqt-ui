@@ -1,8 +1,9 @@
 import axios from "axios";
 import { apiURLBase } from "../config";
 
-export default function postFairshareEvaluator(resourceID) {
+export function postFairshareEvaluator(doi) {
+  console.log("API CALL");
   return axios.post(`${apiURLBase}services/fairshare/evaluator/`, {
-    resource_id: resourceID,
+    resource_id: doi,
   });
 }
