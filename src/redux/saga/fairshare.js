@@ -14,11 +14,12 @@ function* sendFairshareEvaluation(action) {
         action.payload.doi
     );
 
-    yield put(actionCreators.fairshare.sendFairshareEvalutionSuccess(response.data));
+    yield put(actionCreators.fairshare.sendFairshareEvaluationSuccess(response.data));
   }
   catch (error) {
+    console.log(error);
     yield put(
-      actionCreators.fairshare.sendFairshareEvalutionFailure(
+      actionCreators.fairshare.sendFairshareEvaluationFailure(
         error.response.data,
         error.response.status
       )
