@@ -9,9 +9,10 @@ import { githubReducers } from "./github";
 import { servicesReducers } from "./services";
 import { eaasiReducers } from "./eaasi";
 import { statusesReducers } from "./statuses";
-import {keywordReducers} from "./keywords"
-import {bagitReducers} from "./bagit";
-import {announcementsReducers} from "./announcements";
+import { keywordReducers } from "./keywords";
+import { bagitReducers } from "./bagit";
+import { announcementsReducers } from "./announcements";
+import { fairshareReducers } from "./fairshare";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -30,7 +31,8 @@ const initialState = {
   ...eaasiReducers.initialState,
   ...keywordReducers.initialState,
   ...bagitReducers.initialState,
-  ...announcementsReducers.initialState
+  ...announcementsReducers.initialState,
+  ...fairshareReducers.initialState,
 };
 
 export default handleActions(
@@ -47,7 +49,8 @@ export default handleActions(
     ...eaasiReducers.reducers,
     ...keywordReducers.reducers,
     ...bagitReducers.reducers,
-    ...announcementsReducers.reducers
+    ...announcementsReducers.reducers,
+    ...fairshareReducers.reducers,
   },
   initialState
 );
