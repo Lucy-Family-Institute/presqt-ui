@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { actionCreators } from "../../redux/actionCreators";
 import getError from "../../utils/getError";
+import FAIRshareStepper from "../fairshare_stepper/FAIRshareStepper";
 
 export default function FAIRshareModal() {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export default function FAIRshareModal() {
               FAIRshare Evaluator Service
             </DialogTitle>
             <DialogContent style={{ padding: 20 }}>
-              Put the Stepper Here....
+              <FAIRshareStepper />
             </DialogContent>
           </Dialog>
         </div>
