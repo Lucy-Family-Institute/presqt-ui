@@ -167,7 +167,11 @@ export const actionCreators = createActions({
     },
     FAIRSHARE: {
         DISPLAY_FAIRSHARE_MODAL: undefined,
-        HIDE_FAIRSHARE_MODAL: undefined
+        HIDE_FAIRSHARE_MODAL: undefined,
+        SEND_FAIRSHARE_EVALUATION: (doi) => ({doi}),
+        SEND_FAIRSHARE_EVALUATION_SUCCESS: undefined,
+        SEND_FAIRSHARE_EVALUATION_FAILURE: (data, status) => ({ data, status }),
+        CLEAR_FAIRSHARE_DATA: undefined
     },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,
