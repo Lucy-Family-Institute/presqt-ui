@@ -2,12 +2,10 @@
 import { Fragment, useEffect, useState } from "react";
 import Spinner from "../widgets/spinners/Spinner";
 import { actionCreators } from "../../redux/actionCreators";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { jsx } from "@emotion/core";
 import { useDispatch, useSelector } from "react-redux";
-import colors from "../../styles/colors";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import getError from "../../utils/getError";
+import FAIRshareResultsContent from "./FAIRshareResultsContent";
 
 export default function FAIRshareStepperResults() {
   const dispatch = useDispatch();
@@ -18,21 +16,35 @@ export default function FAIRshareStepperResults() {
 
   const fairsharePostError = getError(actionCreators.fairshare.sendFairshareEvaluation);
 
-  const [modalContentHeader, setModalContentHeader] = useState("Evaluation task is being processed on the FAIRshare server, this may take several minutes...");
-  const [modalContentBody, setModalContentBody] = useState(<Spinner />);
+  const [stepContent, setStepContent] = useState(
+    <div>
+      <div
+        css={{
+          paddingBottom: 15,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
+        Evaluation task is being processed on the FAIRshare server, this may
+        take several minutes...
+      </div>
+      <Spinner />
+    </div>
+  );
 
   useEffect(() => {
     if (fairshareEvaluationStatus === "postFinished") {
-      setModalContentHeader(
+      setStepContent(
         <Fragment>
-          //STYLE THIS
-          {fairshareResultsData.toString()}
+          {fairshareResultsData.map((testInfo) => (
+            <FAIRshareResultsContent testInfo={testInfo} />
+          ))}
         </Fragment>
-      );
-      setModalContentBody("");
-    }
-    else if (fairshareEvaluationStatus === "postFailure") {
-      setModalContentHeader(
+    );
+    } else if (fairshareEvaluationStatus === "postFailure") {
+      setStepContent(
         <div
           css={{
             paddingTop: 20,
@@ -49,18 +61,8 @@ export default function FAIRshareStepperResults() {
           </span>
         </div>
       );
-      setModalContentBody("");
     }
-  }, [fairshareEvaluationStatus, fairshareModalDisplay]);
-    
-  return(
-    <Fragment>
-      <div css={{ display: "flex", justifyContent: "center", padding: 10 }}>
-        {modalContentHeader}
-      </div>
-      <div css={{ display: "flex", justifyContent: "center" }}>
-        {modalContentBody}
-      </div>
-    </Fragment>
-  )
+  }, [fairshareModalDisplay, fairshareEvaluationStatus]);
+
+  return stepContent;
 }
