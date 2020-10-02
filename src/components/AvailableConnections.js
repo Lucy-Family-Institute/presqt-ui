@@ -50,6 +50,7 @@ export default function AvailableConnections() {
     dispatch(actionCreators.targets.load());
     dispatch(actionCreators.services.loadServices());
     dispatch(actionCreators.statuses.loadStatuses());
+    dispatch(actionCreators.fairshare.loadFairshareTests());
   }, []);
 
   /**
