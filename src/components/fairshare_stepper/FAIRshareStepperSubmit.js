@@ -40,11 +40,11 @@ export default function FAIRshareStepperSubmit({ setActiveStep }) {
       <div css={{ paddingBottom: 10 }}>
         Submit a FAIRshare Evaluator request for <i>{selectedResource.title}</i>{" "}
         with doi <i>{selectedResource.doi}</i>. They will return the results of
-        a number of tests identified as of interest to the PresQT community.
+        the tests you select to run below.
       </div>
       <FAIRshareTestsList
         tests={fairshareTests}
-        header={"List of FAIRshare tests supported by PresQT"}
+        header={"FAIRshare tests supported by PresQT"}
         setNewTests={setNewTests}
         newTests={newTests}
       />
