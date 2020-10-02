@@ -14,11 +14,17 @@ export default function FAIRshareModal() {
 
     const apiOperationErrors = useSelector(state => state.apiOperationErrors);
     const fairshareModalDisplay = useSelector(state => state.fairshareModalDisplay);
+    const fairshareEvaluationStatus = useSelector(state => state.fairshareEvaluationStatus)
 
     const handleClose = () => {
       dispatch(actionCreators.fairshare.hideFairshareModal());
       dispatch(actionCreators.fairshare.clearFairshareData());
     }
+  
+    const checkDisabled = () => {
+      const disabledStatus = ['postPending'];
+      return (disabledStatus.indexOf(fairshareEvaluationStatus) > -1)
+    };
 
     return fairshareModalDisplay ? (
         <div css={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -34,7 +40,7 @@ export default function FAIRshareModal() {
             <DialogTitle
               id="form-dialog-title"
               onClose={handleClose}
-            //   disabled={checkDisabled()}
+              disabled={checkDisabled()}
             >
               FAIRshare Evaluator Service
             </DialogTitle>
