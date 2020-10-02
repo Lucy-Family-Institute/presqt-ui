@@ -159,7 +159,7 @@ export default function ServicesSplitButton() {
                       disabled={
                         !selectedTarget.supported_actions.keywords ||
                         !selectedTarget.supported_actions.keywords_upload ||
-                        (service.name === 'keyword_enhancement' && searchValue.length > 0) ||
+                        (service.name === 'keyword_enhancement' && searchValue && searchValue.length > 0) ||
                         (service.name === 'fairshare' && !resource.doi)
                       }
                     >
