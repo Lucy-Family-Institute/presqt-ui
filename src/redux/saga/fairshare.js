@@ -25,7 +25,6 @@ function* sendFairshareEvaluation(action) {
       actionCreators.fairshare.sendFairshareEvaluationSuccess(response.data)
     );
   } catch (error) {
-    console.log(error);
     yield put(
       actionCreators.fairshare.sendFairshareEvaluationFailure(
         error.response.data,
