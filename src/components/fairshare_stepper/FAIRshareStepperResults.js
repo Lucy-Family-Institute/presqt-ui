@@ -6,6 +6,7 @@ import { jsx } from "@emotion/core";
 import { useDispatch, useSelector } from "react-redux";
 import getError from "../../utils/getError";
 import FAIRshareResultsContent from "./FAIRshareResultsContent";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 export default function FAIRshareStepperResults() {
   const dispatch = useDispatch();
