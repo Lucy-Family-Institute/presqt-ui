@@ -12,7 +12,6 @@ export default function FAIRshareStepperResults() {
   const dispatch = useDispatch();
 
   const fairshareEvaluationStatus = useSelector((state) => state.fairshareEvaluationStatus);
-  const fairshareModalDisplay = useSelector((state) => state.fairshareModalDisplay);
   const fairshareResultsData = useSelector((state) => state.fairshareResultsData);
 
   const fairsharePostError = getError(actionCreators.fairshare.sendFairshareEvaluation);
@@ -63,7 +62,7 @@ export default function FAIRshareStepperResults() {
         </div>
       );
     }
-  }, [fairshareModalDisplay, fairshareEvaluationStatus]);
+  }, [fairshareEvaluationStatus]);
 
   return stepContent;
 }
