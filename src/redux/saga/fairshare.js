@@ -1,6 +1,6 @@
 import { call, put, delay, takeEvery } from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
-import { postFairshareEvaluator } from "../../api/fairshare";
+import { postFairshareEvaluator, getFairshareEvaluatorTests } from "../../api/fairshare";
 
 /** FAIRshare Evaluation POST **/
 export function* watchFairshareEvaluation() {
@@ -25,4 +25,16 @@ function* sendFairshareEvaluation(action) {
       )
     );
   }
+}
+
+
+/** Get FAIRshare tests list **/
+export function* watchGetFairshareEvaluationTests() {
+  yield takeEvery(actionCreators.fairshare.loadFairshareTests, loadFairshareTests);
+}
+
+function* loadFairshareTests() {
+    const response = yield call(getFairshareEvaluatorTests);
+    console.log(response.data);
+    yield put(actionCreators.fairshare.loadFairshareTestsSuccess(response.data));
 }

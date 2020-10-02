@@ -6,3 +6,8 @@ export function postFairshareEvaluator(doi) {
     resource_id: doi,
   });
 }
+
+export function getFairshareEvaluatorTests() {
+  console.log("HERE");
+  return axios.get(`${apiURLBase}services/fairshare/evaluator/`);
+}

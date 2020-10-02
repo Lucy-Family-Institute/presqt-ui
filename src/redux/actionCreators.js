@@ -171,7 +171,9 @@ export const actionCreators = createActions({
         SEND_FAIRSHARE_EVALUATION: (doi) => ({doi}),
         SEND_FAIRSHARE_EVALUATION_SUCCESS: undefined,
         SEND_FAIRSHARE_EVALUATION_FAILURE: (data, status) => ({ data, status }),
-        CLEAR_FAIRSHARE_DATA: undefined
+        CLEAR_FAIRSHARE_DATA: undefined,
+        LOAD_FAIRSHARE_TESTS: undefined,
+        LOAD_FAIRSHARE_TESTS_SUCCESS: undefined
     },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,

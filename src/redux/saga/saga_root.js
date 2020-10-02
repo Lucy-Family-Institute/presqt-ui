@@ -25,7 +25,7 @@ import { watchLoadStatuses } from "./status";
 import { watchGetKeywords, watchSendKeywords } from "./keywords";
 import { watchSubmitBagitFile } from "./bagit";
 import { watchGetAnnouncements } from "./announcements";
-import { watchFairshareEvaluation } from "./fairshare";
+import { watchFairshareEvaluation, watchGetFairshareEvaluationTests } from "./fairshare";
 
 // Notice how we now only export the rootSaga single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -57,5 +57,6 @@ export default function* rootSaga() {
     watchPage(),
     watchPageTransfer(),
     watchFairshareEvaluation(),
+    watchGetFairshareEvaluationTests(),
   ]);
 }

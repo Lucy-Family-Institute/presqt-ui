@@ -6,6 +6,7 @@ export const fairshareReducers = {
     fairshareModalDisplay: false,
     fairshareEvaluationStatus: null,
     fairshareResultsData: null,
+    fairshareTests: null
   },
   reducers: {
     /**
@@ -44,7 +45,7 @@ export const fairshareReducers = {
       fairshareEvaluationStatus: "postFinished",
     }),
     // FAILURE
-    [actionCreators.eaasi.sendFairshareEvaluationFailure]: (state, action) => ({
+    [actionCreators.fairshare.sendFairshareEvaluationFailure]: (state, action) => ({
       ...state,
       pendingAPIResponse: false,
       pendingAPIOperations: untrackAction(
@@ -64,5 +65,9 @@ export const fairshareReducers = {
       fairshareEvaluationStatus: null,
       fairshareResultsData: null,
     }),
+    [actionCreators.fairshare.loadFairshareTestsSuccess]: (state, action) => ({
+      ...state,
+      fairshareTests: action.payload,
+  }),
   },
 };
