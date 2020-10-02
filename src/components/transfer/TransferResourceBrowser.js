@@ -127,7 +127,6 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
   };
 
   const handleManualPageChange = (event, value) => {
-    console.log("hERE");
     setTransferPageNumber(parseInt(value));
     dispatch(
       actionCreators.transfer.loadFromTransferTargetPagination(
