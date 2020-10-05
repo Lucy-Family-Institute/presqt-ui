@@ -24,6 +24,8 @@ import TransferStartOverButton from "../TransferStartOverButton";
 import getError from "../../../utils/getError";
 import KeywordTransferSuggestList from "./KeywordTransferSuggestList";
 import KeywordTransferKeywords from "./KeywordTransferKeywords";
+import PersonIcon from '@material-ui/icons/Person';
+import IconListItem from "../../widgets/list_items/IconListItem";
 
 
 const useStyles = makeStyles(theme => ({
@@ -110,7 +112,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
       dispatch(actionCreators.transfer.loadFromTransferTarget(
         transferDestinationTarget, transferDestinationToken));
     }
-    else if (activeStep === 4) {
+    else if (activeStep === 4 && selectedKeywordAction != 'none') {
       dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
     }
 
@@ -155,9 +157,17 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
             />
           )
         }
-        else {
+        else if (selectedKeywordAction === 'automatic') {
           return (
             <KeywordTransferKeywords />
+          )
+        }
+        else { // NONE
+          return (
+            <IconListItem
+              icon={<PersonIcon style={{color: colors.presqtBlue}}/>}
+              text={"User has opted not to enhance keywords."}
+            />
           )
         }
       }
@@ -234,6 +244,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                           activeStep={activeStep}
                           transferTargetResources={transferTargetResources}
                           steps={steps}
+                          selectedKeywordAction={selectedKeywordAction}
                         />
                       :
                         null
