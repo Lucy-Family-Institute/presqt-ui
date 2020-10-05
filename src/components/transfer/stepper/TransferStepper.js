@@ -166,7 +166,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
           return (
             <IconListItem
               icon={<PersonIcon style={{color: colors.presqtBlue}}/>}
-              text={"User has opted not to enhance keywords."}
+              text={"User has opted out of keyword enhancement."}
             />
           )
         }
