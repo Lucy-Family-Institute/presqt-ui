@@ -173,7 +173,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
       }
       case 6: {
         return (
-          <TransferStepperAgreement />
+          <TransferStepperAgreement selectedKeywordAction={selectedKeywordAction} />
         )
         }
       case 7: {

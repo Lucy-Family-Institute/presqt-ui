@@ -15,7 +15,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 /**
  * Component responsible for rendering the transfer agreement in the transfer stepper
  **/
-export default function TransferStepperAgreement() {
+export default function TransferStepperAgreement({selectedKeywordAction}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -53,7 +53,7 @@ export default function TransferStepperAgreement() {
             text="Write or edit File Transfer Service Metadata file at the top level."
           />
           {/* Keyword Statement GitHub */
-            (selectedTarget.name === 'github' || transferDestinationTarget === 'github')
+            (selectedTarget.name === 'github' && selectedKeywordAction != 'none' || transferDestinationTarget === 'github' && selectedKeywordAction != 'none')
               ? <IconListItem
                 icon={<GitHubIcon />}
                 text="Enhanced Keywords on GitHub will be stored as 'topics'." />
@@ -61,7 +61,7 @@ export default function TransferStepperAgreement() {
           }
 
           {/* Keyword Statement OSF */
-            (selectedTarget.name === 'osf' || transferDestinationTarget === 'osf')
+            (selectedTarget.name === 'osf' && selectedKeywordAction != 'none' || transferDestinationTarget === 'osf' && selectedKeywordAction != 'none')
             ? <IconListItem
               icon={<OSFIcon />}
               text="Enhanced Keywords on OSF will be stored as 'tags'." />
@@ -69,7 +69,7 @@ export default function TransferStepperAgreement() {
           }
 
           {/* Keyword Statement GitLab */
-            (selectedTarget.name === 'gitlab' || transferDestinationTarget === 'gitlab')
+            (selectedTarget.name === 'gitlab' && selectedKeywordAction != 'none' || transferDestinationTarget === 'gitlab' && selectedKeywordAction != 'none')
             ? <IconListItem
               icon={<GitLabIcon />}
               text="Enhanced Keywords on GitLab will be stored as 'tag_list'." />
@@ -77,7 +77,7 @@ export default function TransferStepperAgreement() {
           }
           
           {/* Keyword Statement Zenodo */
-            (selectedTarget.name === 'zenodo' || transferDestinationTarget === 'zenodo')
+            (selectedTarget.name === 'zenodo' && selectedKeywordAction != 'none' || transferDestinationTarget === 'zenodo' && selectedKeywordAction != 'none')
             ? <IconListItem
               icon={<ZenodoIcon />}
               text="Enhanced Keywords on Zenodo will be stored as 'keywords'." />
@@ -85,7 +85,7 @@ export default function TransferStepperAgreement() {
           }
           
           {/* Keyword Statement FigShare */
-            (selectedTarget.name === 'figshare' || transferDestinationTarget === 'figshare')
+            (selectedTarget.name === 'figshare' && selectedKeywordAction != 'none' || transferDestinationTarget === 'figshare' && selectedKeywordAction != 'none')
             ? <IconListItem
               icon={<FigshareIcon />}
               text="Enhanced Keywords on FigShare will be stored as 'tags'." />
