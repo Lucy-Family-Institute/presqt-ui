@@ -18,7 +18,8 @@ function* sendFairshareEvaluation(action) {
     const response = yield call(
       postFairshareEvaluator,
       action.payload.doi,
-      action.payload.testList
+      action.payload.testList,
+      action.payload.email
     );
 
     yield put(
