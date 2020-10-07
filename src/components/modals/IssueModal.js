@@ -49,7 +49,7 @@ export default function IssueModal() {
                 type="text"
                 value={title}
                 label="Insert Title of The Issue Here..."
-                onChange={event => setTitle(event.target.value)}
+                onChange={event => setTitle(filter.clean(event.target.value))}
                 onAnimationEnd={event => event.stopPropagation()}
               />
             </div>
