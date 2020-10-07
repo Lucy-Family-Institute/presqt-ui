@@ -14,6 +14,8 @@ import useDefault from "../../hooks/useDefault";
 
 export default function IssueModal() {
   const dispatch = useDispatch();
+  var Filter = require('bad-words');
+  const filter = new Filter();
 
   const issueModalDisplay = useSelector(state => state.issueModalDisplay);
   const githubStatus = useSelector(state => state.githubStatus);
@@ -62,7 +64,7 @@ export default function IssueModal() {
               <TokenTextField
                 id="outlined-multiline-static"
                 label="Insert Content of The Issue Here..."
-                onChange={event => setBody(event.target.value)}
+                onChange={event => setBody(filter.clean(event.target.value))}
                 value={body}
                 multiline
                 rows="4"
