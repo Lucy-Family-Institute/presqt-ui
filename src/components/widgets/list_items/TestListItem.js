@@ -11,10 +11,10 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 export default function TestListItem({ message, testInfo, setOpen, open }) {
-  let icon = <CheckCircleOutlineIcon fontSize='small' style={{ color: colors.successGreen,  verticalAlign: 'middle' }} />;
+  let icon = <CheckCircleOutlineIcon fontSize='inherit' style={{ color: colors.successGreen,  verticalAlign: 'middle' }} />;
 
   if (testInfo.failures.length > 0) {
-    icon = <ErrorOutlineIcon fontSize='small' style={{ color: colors.chevelleRed, verticalAlign: 'middle' }} />;
+    icon = <ErrorOutlineIcon fontSize='inherit' style={{ color: colors.chevelleRed, verticalAlign: 'middle' }} />;
   }
 
   return (
