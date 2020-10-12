@@ -16,7 +16,7 @@ export default function FAIRshareResultsContent({ testInfo }) {
       <List dense={true}>
         <TestListItem
           message={testInfo.test_name}
-          link={testInfo.metric_link}
+          testInfo={testInfo}
           setOpen={setOpen}
           open={open}
         />
