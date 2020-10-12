@@ -157,10 +157,10 @@ export default function ServicesSplitButton() {
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                       disabled={
-                        !selectedTarget.supported_actions.keywords ||
-                        !selectedTarget.supported_actions.keywords_upload ||
+                        (service.name === 'keyword_enhancement' && !selectedTarget.supported_actions.keywords) ||
+                        (service.name === 'keyword_enhancement' && !selectedTarget.supported_actions.keywords_upload) ||
                         (service.name === 'keyword_enhancement' && searchValue && searchValue.length > 0) ||
-                        (service.name === 'fairshare' && !resource.doi)
+                        (service.name === 'fairshare' && !resource.identifier)
                       }
                     >
                       <span css={textStyles.buttonText}>

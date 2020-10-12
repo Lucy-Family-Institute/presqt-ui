@@ -37,7 +37,7 @@ export default function FAIRshareStepperSubmit({ setActiveStep }) {
     const pushThoseTests = (newTests.map((value, index) => {
       testsToPost.push(value.test_id);
     }));
-    dispatch(actionCreators.fairshare.sendFairshareEvaluation(selectedResource.doi, testsToPost, email));
+    dispatch(actionCreators.fairshare.sendFairshareEvaluation(selectedResource.identifier, testsToPost, email));
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -45,7 +45,7 @@ export default function FAIRshareStepperSubmit({ setActiveStep }) {
     <Fragment>
       <div css={{ paddingBottom: 10 }}>
         Submit a FAIRshare Evaluator request for <i>{selectedResource.title}</i>{" "}
-        with doi <i>{selectedResource.doi}</i>. They will return the results of
+        with identifier <i>{selectedResource.identifier}</i>. They will return the results of
         the tests you select to run below.
       </div>
       <FAIRshareTestsList
