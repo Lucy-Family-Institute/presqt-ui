@@ -4,6 +4,7 @@ import { trackAction, trackError, untrackAction } from "./helpers/tracking";
 export const fairshareReducers = {
   initialState: {
     fairshareModalDisplay: false,
+    fairshareTransferModalDisplay: false,
     fairshareEvaluationStatus: null,
     fairshareResultsData: null,
     fairshareTests: null
@@ -22,6 +23,20 @@ export const fairshareReducers = {
     [actionCreators.fairshare.hideFairshareModal]: (state) => ({
       ...state,
       fairshareModalDisplay: false,
+    }),
+    /**
+     * Display the FAIRshare Transfer Modal
+     **/
+    [actionCreators.fairshare.displayFairshareTransferModal]: (state) => ({
+      ...state,
+      fairshareTransferModalDisplay: true,
+    }),
+    /**`
+     * Hide the FAIRshare Transfer Modal
+     **/
+    [actionCreators.fairshare.hideFairshareTransferModal]: (state) => ({
+      ...state,
+      fairshareTransferModalDisplay: false,
     }),
     // Send the evaluation request
     [actionCreators.fairshare.sendFairshareEvaluation]: (state) => ({

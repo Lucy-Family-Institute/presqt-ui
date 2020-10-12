@@ -22,6 +22,7 @@ import KeywordModal from "./components/modals/KeywordModal";
 import BagitModal from "./components/modals/BagitModal";
 import WarningBar from "./components/WarningBar";
 import FAIRshareModal from "./components/modals/FAIRshareModal";
+import FAIRshareTransferModal from "./components/modals/FAIRshareTransferModal";
 import {useDispatch} from "react-redux";
 import { actionCreators } from "./redux/actionCreators";
 
@@ -75,6 +76,7 @@ function App() {
         <EaasiModal />
         <KeywordModal />
         <FAIRshareModal />
+        <FAIRshareTransferModal />
       </div>
     </Fragment>
 
