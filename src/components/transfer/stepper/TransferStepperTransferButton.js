@@ -24,7 +24,7 @@ const CustomTransferButton = withStyles({
  * Component responsible for rendering the transfer button in the transfer stepper and passing the
  * selected file to the Transfer API endpoint
  **/
-export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction, keywordList, emailValue, setEmailValue}) {
+export default function TransferStepperTransferButton({handleNext, selectedDuplicate, selectedKeywordAction, keywordList, emailValue, setEmailValue, selectedFairshareAction}) {
   const dispatch = useDispatch();
 
   const selectedTarget = useSelector(state => state.selectedTarget);
@@ -50,7 +50,8 @@ export default function TransferStepperTransferButton({handleNext, selectedDupli
       selectedTransferResource,
       selectedTarget.name,
       targetToken,
-      emailValue
+      emailValue,
+      selectedFairshareAction
     ));
 
     handleNext()
