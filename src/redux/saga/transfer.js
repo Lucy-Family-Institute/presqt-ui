@@ -99,7 +99,8 @@ function* transferTargetResource(action) {
       action.payload.resourceToTransferTo,
       action.payload.sourceTarget,
       action.payload.sourceTargetToken,
-      action.payload.emailAddress
+      action.payload.emailAddress,
+      action.payload.fairshareAction
     );
 
     yield put(actionCreators.transfer.transferSuccess(response.data));

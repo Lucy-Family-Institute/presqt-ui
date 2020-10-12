@@ -16,6 +16,7 @@ import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 import FakeSpinner from "../../widgets/spinners/FakeSpinner";
+import FAIRshareResultsContent from "../../fairshare_stepper/FAIRshareResultsContent";
 
 export default function TransferStepperResults(
   { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue }) {
@@ -94,7 +95,12 @@ export default function TransferStepperResults(
               : null}
             {transferData.enhanced_keywords.length > 0
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
-              : null}
+            : null}
+          {transferData.fairshare_evaluation_results.length > 1
+            ? transferData.fairshare_evaluation_results.map((testInfo) => (
+              <FAIRshareResultsContent testInfo={testInfo} />
+            ))
+        : null}
         </Grid>
       );
     }
