@@ -7,7 +7,6 @@ import FAIRshareSuccessMessageList from "../widgets/list_items/FAIRshareSuccessM
 import FAIRshareWarningMessageList from "../widgets/list_items/FAIRshareWarningMessageList";
 import FAIRshareFailureMessageList from "../widgets/list_items/FAIRshareFailureMessageList";
 import { Collapse } from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
 
 export default function FAIRshareResultsContent({ testInfo }) {
   const [open, setOpen] = useState(false);
