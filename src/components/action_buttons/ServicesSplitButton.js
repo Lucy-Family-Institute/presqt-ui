@@ -83,9 +83,13 @@ export default function ServicesSplitButton() {
 
       if (services[selectedIndex].name === "eaasi") {
         dispatch(actionCreators.eaasi.displayEaasiModal());
-      } else if (services[selectedIndex].name === "keyword_enhancement") {
+      }
+      else if (services[selectedIndex].name === "keyword_enhancement") {
         dispatch(actionCreators.keywords.displayKeywordModal());
         dispatch(actionCreators.keywords.getKeywords(resource, targetToken));
+      }
+      else if (services[selectedIndex].name === "fairshare") {
+        dispatch(actionCreators.fairshare.displayFairshareModal());
       }
     }
   };
@@ -155,7 +159,8 @@ export default function ServicesSplitButton() {
                       disabled={
                         !selectedTarget.supported_actions.keywords ||
                         !selectedTarget.supported_actions.keywords_upload ||
-                        (service.name === 'keyword_enhancement' && searchValue)
+                        (service.name === 'keyword_enhancement' && searchValue && searchValue.length > 0) ||
+                        (service.name === 'fairshare' && !resource.doi)
                       }
                     >
                       <span css={textStyles.buttonText}>

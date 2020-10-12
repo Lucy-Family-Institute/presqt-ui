@@ -21,6 +21,7 @@ import EaasiModal from "./components/modals/EaasiModal";
 import KeywordModal from "./components/modals/KeywordModal";
 import BagitModal from "./components/modals/BagitModal";
 import WarningBar from "./components/WarningBar";
+import FAIRshareModal from "./components/modals/FAIRshareModal";
 import {useDispatch} from "react-redux";
 import { actionCreators } from "./redux/actionCreators";
 
@@ -73,6 +74,7 @@ function App() {
         <BagitModal />
         <EaasiModal />
         <KeywordModal />
+        <FAIRshareModal />
       </div>
     </Fragment>
 

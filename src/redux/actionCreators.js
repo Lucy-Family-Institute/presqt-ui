@@ -165,6 +165,16 @@ export const actionCreators = createActions({
         SUBMIT_BAGIT_FILE_FAILURE: (data, status) => ({data, status}),
         CLEAR_BAGIT_DATA: undefined
     },
+    FAIRSHARE: {
+        DISPLAY_FAIRSHARE_MODAL: undefined,
+        HIDE_FAIRSHARE_MODAL: undefined,
+        SEND_FAIRSHARE_EVALUATION: (doi, testList, email) => ({doi, testList, email}),
+        SEND_FAIRSHARE_EVALUATION_SUCCESS: undefined,
+        SEND_FAIRSHARE_EVALUATION_FAILURE: (data, status) => ({ data, status }),
+        CLEAR_FAIRSHARE_DATA: undefined,
+        LOAD_FAIRSHARE_TESTS: undefined,
+        LOAD_FAIRSHARE_TESTS_SUCCESS: undefined
+    },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,
         GET_ANNOUNCEMENTS_SUCCESS: (data) => ({data})
