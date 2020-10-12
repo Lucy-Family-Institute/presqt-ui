@@ -32,7 +32,7 @@ export default function TestListItem({ message, testInfo, setOpen, open }) {
           primary={
             <Typography component={'span'} variant={'body2'}>
               {message}
-                <span style={{marginLeft: 10, marginTop: "relative"}}>{icon}</span>
+                <span style={{marginLeft: 5, marginTop: "relative"}}>{icon}</span>
             </Typography>
           }
           disableTypography/>
