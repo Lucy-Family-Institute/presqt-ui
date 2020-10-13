@@ -22,13 +22,9 @@ export default function FAIRshareResultsContent({ testInfo }) {
         />
       </List>
       <Collapse in={open}>
-        {testInfo.successes.length > 0 ? (
-          <FAIRshareSuccessMessageList messages={testInfo.successes} />
-        ) : testInfo.failures.length > 0 ? (
-          <FAIRshareFailureMessageList messages={testInfo.failures} />
-        ) : testInfo.warnings.length > 0 ? (
-          <FAIRshareWarningMessageList messages={testInfo.warnings} />
-        ) : null}
+        <FAIRshareSuccessMessageList messages={testInfo.successes} />
+        <FAIRshareFailureMessageList messages={testInfo.failures} />
+        <FAIRshareWarningMessageList messages={testInfo.warnings} />
       </Collapse>
     </Fragment>
   );

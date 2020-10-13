@@ -5,9 +5,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import { jsx } from "@emotion/core";
-import WarningIcon from "@material-ui/icons/Warning";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { GridList } from "@material-ui/core";
 import colors from "../../../styles/colors";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export default function FAIRshareWarningMessageList({ messages }) {
   return (
@@ -19,7 +20,12 @@ export default function FAIRshareWarningMessageList({ messages }) {
             style={{ minHeight: 50, wordBreak: "break-word", paddingLeft: 30 }}
           >
             <ListItemIcon>
-              <WarningIcon style={{ color: colors.warningYellow }} />
+            <Tooltip
+              title="Warning"
+              arrow placement="left"
+            >
+                <ErrorOutlineIcon style={{ color: colors.warningYellow }} />
+                </Tooltip>
             </ListItemIcon>
             <ListItemText primary={message} />
           </ListItem>

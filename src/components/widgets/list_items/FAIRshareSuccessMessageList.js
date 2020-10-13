@@ -8,6 +8,7 @@ import { jsx } from "@emotion/core";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { GridList } from "@material-ui/core";
 import colors from "../../../styles/colors";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export default function FAIRshareSuccessMessageList({ messages }) {
   return (
@@ -21,7 +22,12 @@ export default function FAIRshareSuccessMessageList({ messages }) {
             style={{ minHeight: 50, wordBreak: "break-word", paddingLeft: 30 }}
           >
             <ListItemIcon>
-              <CheckCircleOutlineIcon style={{ color: colors.successGreen }} />
+            <Tooltip
+              title="Success"
+              arrow placement="left"
+            >
+                <CheckCircleOutlineIcon style={{ color: colors.successGreen }} />
+            </Tooltip>
             </ListItemIcon>
             <ListItemText primary={message} />
           </ListItem>
