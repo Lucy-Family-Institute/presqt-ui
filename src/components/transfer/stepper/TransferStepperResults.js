@@ -19,7 +19,7 @@ import FakeSpinner from "../../widgets/spinners/FakeSpinner";
 import FAIRshareTransferButton from "../../action_buttons/FAIRshareTransferButton";
 
 export default function TransferStepperResults(
-  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue }) {
+  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue, selectedFairshareAction }) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -181,6 +181,7 @@ export default function TransferStepperResults(
                 selectedKeywordAction={selectedKeywordAction}
                 keywordList={keywordList}
                 emailValue={emailValue}
+                selectedFairshareAction={selectedFairshareAction}
               />
             </span>
           </div>

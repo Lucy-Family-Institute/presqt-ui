@@ -210,6 +210,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
             setTransferPageNumber={setTransferPageNumber}
             transferPageNumber={transferPageNumber}
             emailValue={emailValue}
+            selectedFairshareAction={selectedFairshareAction}
           />
         )
         }
