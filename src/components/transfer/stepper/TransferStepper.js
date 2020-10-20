@@ -16,6 +16,7 @@ import TransferStepperResults from "./TransferStepperResults";
 import TransferStepperSelectResource from "./TransferStepperSelectResource";
 import DuplicateActionRadioButtons from "../../widgets/buttons/duplicateActionRadioButtons";
 import KeywordActionRadioButton from "../../widgets/buttons/KeywordActionRadioButtons";
+import FAIRshareActionRadioButtons from "../../widgets/buttons/FAIRshareActionRadioButtons";
 import TransferStepperNextButton from "./TransferStepperNextButton";
 import StepperBackButton from "../../widgets/buttons/stepperBackButton";
 import {useDispatch, useSelector} from "react-redux";
@@ -59,6 +60,7 @@ const steps = [
   'Select the action to occur when a duplicate resource is found',
   'Select the keyword action to occur',
   "Keywords",
+  "FAIRshare Evaluator Opt-In",
   'Transfer Agreement',
   'Email Opt-In',
   'Transfer Results'
@@ -81,6 +83,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
   const [selectedKeywordAction, setSelectedKeywordAction] = useState('automatic');
+  const [selectedFairshareAction, setSelectedFairshareAction] = useState('no');
   const [keywordList, setKeywordList] = useState([]);
   const [emailValue, setEmailValue] = useState('');
 
@@ -173,10 +176,18 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
       }
       case 6: {
         return (
+          <FAIRshareActionRadioButtons
+            setSelectedFairshareAction={setSelectedFairshareAction}
+            selectedFairshareAction={selectedFairshareAction}
+          />
+        )
+      }
+      case 7: {
+        return (
           <TransferStepperAgreement selectedKeywordAction={selectedKeywordAction} />
         )
         }
-      case 7: {
+      case 8: {
           return (
             <TransferStepperTransferButton
               handleNext={handleNext}
@@ -185,10 +196,11 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
               keywordList={keywordList}
               emailValue={emailValue}
               setEmailValue={setEmailValue}
+              selectedFairshareAction={selectedFairshareAction}
             />
           )
       }
-      case 8: {
+      case 9: {
         return (
           <TransferStepperResults
             setActiveStep={setActiveStep}
@@ -198,6 +210,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
             setTransferPageNumber={setTransferPageNumber}
             transferPageNumber={transferPageNumber}
             emailValue={emailValue}
+            selectedFairshareAction={selectedFairshareAction}
           />
         )
         }
@@ -227,7 +240,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                 <div className={classes.actionsContainer}>
                   <div>
                     {
-                      index !== 8 && index !== 9
+                      index !== 9 && index !== 10
                       ?
                         <StepperBackButton
                           handleBack={handleBack}
@@ -237,7 +250,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                         null
                     }
                     {
-                      index !== 7 && index !== 8
+                      index !== 8 && index !== 9
                       ?
                         <TransferStepperNextButton
                           handleNext={handleNext}
@@ -251,7 +264,7 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
                     }
 
                     {
-                      index === 7
+                      index === 8
                       ? <TransferStartOverButton
                           setActiveStep={setActiveStep}
                           step={index}

@@ -16,9 +16,10 @@ import SuccessListItem from "../../widgets/list_items/SuccessListItem";
 import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 import FakeSpinner from "../../widgets/spinners/FakeSpinner";
+import FAIRshareTransferButton from "../../action_buttons/FAIRshareTransferButton";
 
 export default function TransferStepperResults(
-  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue }) {
+  { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue, selectedFairshareAction }) {
   const dispatch = useDispatch();
 
   const transferStatus = useSelector(state => state.transferStatus);
@@ -35,6 +36,7 @@ export default function TransferStepperResults(
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
   const [newKeywords, setNewKeywords] = useState([]);
+  
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -94,7 +96,10 @@ export default function TransferStepperResults(
               : null}
             {transferData.enhanced_keywords.length > 0
               ? <KeywordTransferList resources={transferData.enhanced_keywords} header="The following keywords have been added:" />
-              : null}
+            : null}
+          {transferData.fairshare_evaluation_results.length > 1
+            ? <FAIRshareTransferButton disabled={false} />
+        : null}
         </Grid>
       );
     }
@@ -176,6 +181,7 @@ export default function TransferStepperResults(
                 selectedKeywordAction={selectedKeywordAction}
                 keywordList={keywordList}
                 emailValue={emailValue}
+                selectedFairshareAction={selectedFairshareAction}
               />
             </span>
           </div>

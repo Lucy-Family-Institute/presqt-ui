@@ -8,6 +8,7 @@ import { jsx } from "@emotion/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { GridList } from "@material-ui/core";
 import colors from "../../../styles/colors";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export default function FAIRshareFailureMessageList({ messages }) {
   return (
@@ -19,7 +20,12 @@ export default function FAIRshareFailureMessageList({ messages }) {
             style={{ minHeight: 50, wordBreak: "break-word", paddingLeft: 30 }}
           >
             <ListItemIcon>
-              <ErrorOutlineIcon style={{ color: colors.chevelleRed }} />
+            <Tooltip
+              title="Failure"
+              arrow placement="left"
+            >
+                <ErrorOutlineIcon style={{ color: colors.chevelleRed }} />
+            </Tooltip>
             </ListItemIcon>
             <ListItemText primary={message} />
           </ListItem>

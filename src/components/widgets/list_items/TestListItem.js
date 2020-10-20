@@ -6,9 +6,18 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import colors from "../../../styles/colors";
 import ListItemText from "@material-ui/core/ListItemText";
 import { jsx } from "@emotion/core";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import Tooltip from "@material-ui/core/Tooltip";
 
-export default function TestListItem({ message, link, setOpen, open }) {
+export default function TestListItem({ message, testInfo, setOpen, open }) {
+  let icon = <CheckCircleOutlineIcon fontSize='inherit' style={{ color: colors.successGreen,  verticalAlign: 'middle' }} />;
+
+  if (testInfo.failures.length > 0) {
+    icon = <ErrorOutlineIcon fontSize='inherit' style={{ color: colors.chevelleRed, verticalAlign: 'middle' }} />;
+  }
+
   return (
     <ListItem>
       <ListItemIcon>
@@ -20,7 +29,19 @@ export default function TestListItem({ message, link, setOpen, open }) {
           )}
         </IconButton>
       </ListItemIcon>
-      <ListItemText primary={message} />
+      <ListItemText
+          primary={
+          <Typography component={'span'} variant={'body2'}>
+              {message}     
+            <Tooltip
+              title={testInfo.description}
+              arrow placement="right"
+            >
+              <span style={{ marginLeft: 5, marginTop: "relative" }}>{icon}</span>
+            </Tooltip>
+          </Typography>
+          }
+          disableTypography/>
     </ListItem>
   );
 }
