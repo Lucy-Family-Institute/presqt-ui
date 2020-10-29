@@ -17,6 +17,8 @@ import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 import FakeSpinner from "../../widgets/spinners/FakeSpinner";
 import FAIRshareTransferButton from "../../action_buttons/FAIRshareTransferButton";
+import LinkListItem from "../../widgets/list_items/LinkListItem";
+
 
 export default function TransferStepperResults(
   { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue, selectedFairshareAction }) {
@@ -80,7 +82,8 @@ export default function TransferStepperResults(
     else if (transferStatus === 'finished') {
       setStepThreeContent(
         <Grid item md={12}>
-            <List dense={true}>
+          <List dense={true}>
+              <LinkListItem message="Click Here for Transfered Resource" url={transferData.link_to_resource} />
               <SuccessListItem message={transferData.message}/>
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}

@@ -16,6 +16,7 @@ import useDefault from "../../hooks/useDefault";
 import SuccessListItem from "../widgets/list_items/SuccessListItem";
 import WarningList from "../widgets/list_items/WarningList";
 import FakeSpinner from "../widgets/spinners/FakeSpinner";
+import LinkListItem from "../widgets/list_items/LinkListItem";
 
 /**
  * This component watches for the upload state to change and then renders the appropriate
@@ -50,7 +51,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       </div>
     </div>
   );
-
+  console.log(resourceToUploadTo);
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
@@ -87,7 +88,8 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
         >
           <Grid item md>
             <List dense={true}>
-              <SuccessListItem message={uploadData.message}/>
+              <LinkListItem message="Click Here for Uploaded Resource" url={uploadData.link_to_resource} />
+              <SuccessListItem message={uploadData.message} />
               {uploadData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks'/>
                 : null}
