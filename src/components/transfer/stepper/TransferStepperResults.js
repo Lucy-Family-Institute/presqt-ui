@@ -36,8 +36,6 @@ export default function TransferStepperResults(
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
-  const [newKeywords, setNewKeywords] = useState([]);
-  
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -196,7 +194,7 @@ export default function TransferStepperResults(
         </Fragment>
       );
     }
-  }, [transferStatus, apiOperationErrors, newKeywords, transferMessage]);
+  }, [transferStatus, apiOperationErrors, transferMessage]);
 
   return (stepThreeContent);
 }
