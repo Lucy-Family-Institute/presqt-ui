@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransferRetryButton({selectedDuplicate, setStepThreeContent, selectedKeywordAction, keywordList, emailValue}) {
+export default function TransferRetryButton({selectedDuplicate, setStepThreeContent, selectedKeywordAction, keywordList, emailValue, selectedFairshareAction}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -51,7 +51,9 @@ export default function TransferRetryButton({selectedDuplicate, setStepThreeCont
         selectedTransferResource,
         sourceTarget,
         sourceToken,
-        emailValue));
+        emailValue,
+        selectedFairshareAction
+    ));
     
     setStepThreeContent(
       <div>
