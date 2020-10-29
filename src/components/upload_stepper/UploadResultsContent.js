@@ -51,7 +51,7 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
       </div>
     </div>
   );
-  console.log(resourceToUploadTo);
+
   /**
    * Watch for the upload state to change or for an upload error to occur. Once either of these
    * occur, update the state content to the new component that displays the result of the upload.
