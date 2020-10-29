@@ -83,7 +83,7 @@ export default function TransferStepperResults(
       setStepThreeContent(
         <Grid item md={12}>
           <List dense={true}>
-              <LinkListItem message="Click Here for Transfered Resource" url={transferData.link_to_resource} />
+              <LinkListItem message="Click Here for Transferred Resource" url={transferData.link_to_resource} />
               <SuccessListItem message={transferData.message}/>
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}
