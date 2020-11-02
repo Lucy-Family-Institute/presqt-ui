@@ -6,22 +6,12 @@ import { jsx } from "@emotion/core";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 import FAIRshareResultsContent from "../fairshare_stepper/FAIRshareResultsContent";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import colors from "../../styles/colors";
-import { useState } from 'react';
 import List from "@material-ui/core/List";
 import IconListItem from "../widgets/list_items/IconListItem"
 import InfoIcon from '@material-ui/icons/Info';
 
-const useStyles = makeStyles(theme => ({
-  info: {
-    backgroundColor: colors.royalBlue,
-    color: 'white'
-  }
-}));
 
 export default function FAIRshareModal() {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const apiOperationErrors = useSelector(state => state.apiOperationErrors);
