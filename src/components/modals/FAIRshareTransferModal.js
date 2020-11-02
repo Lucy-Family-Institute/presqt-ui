@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actionCreators";
 import FAIRshareResultsContent from "../fairshare_stepper/FAIRshareResultsContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from '@material-ui/icons/Close';
 import colors from "../../styles/colors";
-import {useState} from 'react';
+import { useState } from 'react';
+import List from "@material-ui/core/List";
+import IconListItem from "../widgets/list_items/IconListItem"
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles(theme => ({
   info: {
@@ -27,7 +27,6 @@ export default function FAIRshareModal() {
     const apiOperationErrors = useSelector(state => state.apiOperationErrors);
     const fairshareTransferModalDisplay = useSelector(state => state.fairshareTransferModalDisplay);
     const transferData = useSelector(state => state.transferData);
-    const [snackBarOpen, setSnackBarOpen] = useState(false);
 
     const handleClose = () => {
       dispatch(actionCreators.fairshare.hideFairshareTransferModal());
@@ -50,7 +49,10 @@ export default function FAIRshareModal() {
             >
               FAIRshare Evaluator Service Results
             </DialogTitle>
-            <DialogContent style={{ padding: 20 }}>
+          <DialogContent style={{ padding: 20 }}>
+          <List dense={true} style={{paddingLeft: 12}}>
+              <IconListItem text="Some tests may be failing because the transferred resource url is too new." icon={<InfoIcon />} />
+          </List>
             {transferData.fairshare_evaluation_results.length > 1
                 ? transferData.fairshare_evaluation_results.map((testInfo) => (
                     <FAIRshareResultsContent testInfo={testInfo} />
@@ -58,29 +60,6 @@ export default function FAIRshareModal() {
                 : null}
             </DialogContent>
         </Dialog>
-        <Snackbar
-          ContentProps={{
-            classes: {
-              root: classes.info
-            }
-          }}
-          anchorOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
-          }}
-          message="Some FAIRshare tests will show as failures simply because the url is too new."
-          open={fairshareTransferModalDisplay ? true : snackBarOpen}
-          autoHideDuration={6000}
-          onClose={() => {setSnackBarOpen(false)}}
-          action={
-            <IconButton size="small" aria-label="close" color="inherit" onClick={() =>
-            {setSnackBarOpen(false)}}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          }
-        >
-        </Snackbar>
         </div>
       ) : null;
 }
