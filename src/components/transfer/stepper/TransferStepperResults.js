@@ -17,6 +17,8 @@ import WarningList from "../../widgets/list_items/WarningList";
 import KeywordTransferList from "../../widgets/list_items/KeywordTransferList";
 import FakeSpinner from "../../widgets/spinners/FakeSpinner";
 import FAIRshareTransferButton from "../../action_buttons/FAIRshareTransferButton";
+import LinkListItem from "../../widgets/list_items/LinkListItem";
+
 
 export default function TransferStepperResults(
   { setActiveStep, selectedDuplicate, selectedKeywordAction, keywordList, setTransferPageNumber, transferPageNumber, emailValue, selectedFairshareAction }) {
@@ -31,12 +33,9 @@ export default function TransferStepperResults(
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
-  const transferTargetResourcesPages = useSelector(state => state.transferTargetResourcesPages)
   const transferError = getError(actionCreators.transfer.transferResource);
   const transferJobError = getError(actionCreators.transfer.transferJob);
   const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
-  const [newKeywords, setNewKeywords] = useState([]);
-  
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>
@@ -69,7 +68,13 @@ export default function TransferStepperResults(
       <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
         If you refresh or leave the page the transfer will still continue.
       </div>
-      {transferMessage.includes("processed") ? <FakeSpinner /> : <SpinnerProgress action={"TRANSFER"}/>}
+      {
+        transferMessage.includes("processed")
+        ? <FakeSpinner />
+        : transferMessage.includes("Running FAIRshare Evaluator Service")
+          ? <Spinner />
+        : <SpinnerProgress action={"TRANSFER"}/>
+      }
       <div css={{paddingTop: 15, display: 'flex', justifyContent: 'center'}}>
         <CancelButton actionType='TRANSFER' />
       </div>
@@ -80,7 +85,8 @@ export default function TransferStepperResults(
     else if (transferStatus === 'finished') {
       setStepThreeContent(
         <Grid item md={12}>
-            <List dense={true}>
+          <List dense={true}>
+              <LinkListItem message="Click Here for Transferred Resource" url={transferData.link_to_resource} />
               <SuccessListItem message={transferData.message}/>
               {transferData.failed_fixity.length <= 0
                 ? <SuccessListItem message='All files passed fixity checks' /> : null}
@@ -188,7 +194,7 @@ export default function TransferStepperResults(
         </Fragment>
       );
     }
-  }, [transferStatus, apiOperationErrors, newKeywords, transferMessage]);
+  }, [transferStatus, apiOperationErrors, transferMessage]);
 
   return (stepThreeContent);
 }
