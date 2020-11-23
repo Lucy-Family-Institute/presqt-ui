@@ -13,6 +13,7 @@ import { keywordReducers } from "./keywords";
 import { bagitReducers } from "./bagit";
 import { announcementsReducers } from "./announcements";
 import { fairshareReducers } from "./fairshare";
+import { fairshakeReducers } from "./fairshake";
 
 const initialState = {
   pendingAPIResponse: false,
@@ -33,6 +34,7 @@ const initialState = {
   ...bagitReducers.initialState,
   ...announcementsReducers.initialState,
   ...fairshareReducers.initialState,
+  ...fairshakeReducers.initialState,
 };
 
 export default handleActions(
@@ -51,6 +53,7 @@ export default handleActions(
     ...bagitReducers.reducers,
     ...announcementsReducers.reducers,
     ...fairshareReducers.reducers,
+    ...fairshakeReducers.reducers,
   },
   initialState
 );

@@ -177,6 +177,10 @@ export const actionCreators = createActions({
         LOAD_FAIRSHARE_TESTS: undefined,
         LOAD_FAIRSHARE_TESTS_SUCCESS: undefined
     },
+    FAIRSHAKE: {
+        DISPLAY_FAIRSHAKE_MODAL: undefined,
+        HIDE_FAIRSHAKE_MODAL: undefined
+    },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,
         GET_ANNOUNCEMENTS_SUCCESS: (data) => ({data})

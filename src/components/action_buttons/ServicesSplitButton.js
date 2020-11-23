@@ -91,6 +91,10 @@ export default function ServicesSplitButton() {
       else if (services[selectedIndex].name === "fairshare") {
         dispatch(actionCreators.fairshare.displayFairshareModal());
       }
+      else if (services[selectedIndex].name === "fairshake") {
+        console.log("HIyaaa");
+        dispatch(actionCreators.fairshake.displayFairshakeModal());
+      }
     }
   };
 
