@@ -179,7 +179,10 @@ export const actionCreators = createActions({
     },
     FAIRSHAKE: {
         DISPLAY_FAIRSHAKE_MODAL: undefined,
-        HIDE_FAIRSHAKE_MODAL: undefined
+        HIDE_FAIRSHAKE_MODAL: undefined,
+        GET_FAIRSHAKE_RUBRIC: (rubric_id) => ({ rubric_id }),
+        GET_FAIRSHAKE_RUBRIC_SUCCESS: undefined,
+        GET_FAIRSHAKE_RUBRIC_FAILUREE: (data, status) => ({ data, status })
     },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,

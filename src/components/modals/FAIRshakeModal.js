@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { actionCreators } from "../../redux/actionCreators";
 import getError from "../../utils/getError";
-import FAIRshareStepper from "../fairshare_stepper/FAIRshareStepper";
+import FAIRshakeStepper from "../fairshake_stepper/FAIRshakeStepper";
+import MultipleChoice from "../multiple_choice/MultipleChoice";
 
 export default function FAIRshareModal() {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export default function FAIRshareModal() {
               FAIRshake Manual Assessment Service
             </DialogTitle>
             <DialogContent style={{ padding: 20 }}>
-              And then you do the assessment
+                <FAIRshakeStepper />
             </DialogContent>
           </Dialog>
         </div>
