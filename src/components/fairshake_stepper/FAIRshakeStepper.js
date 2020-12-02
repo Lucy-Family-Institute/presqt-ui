@@ -9,6 +9,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import FAIRshakeRubricButtons from "../widgets/buttons/FAIRshakeRubricButtons";
+import FAIRshakeManualAssessment from "./FAIRshakeManualAssessment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,7 @@ const steps = ["Select Digital Object Type", "Manual Assessment"];
 export default function FAIRshakeStepper({}) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [selectedRubric, setSelectedubric] = useState('7');
+  const [selectedRubric, setSelectedRubric] = useState('7');
 
   /**
    * Decrement the step count when the Back button is pressed
@@ -60,12 +61,15 @@ export default function FAIRshakeStepper({}) {
       case 0: {
         return <FAIRshakeRubricButtons
           selectedRubric={selectedRubric}
-          setSelectedRubric={setSelectedubric}
+          setSelectedRubric={setSelectedRubric}
           setActiveStep={setActiveStep}
         />
       }
       case 1: {
-        return 
+        return <FAIRshakeManualAssessment
+          setActiveStep={setActiveStep}
+
+        />
       }
     }
   }

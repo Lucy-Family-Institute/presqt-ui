@@ -1,5 +1,5 @@
 import { actionCreators } from "../actionCreators";
-import { trackAction, trackError, untrackAction } from "./helpers/tracking";
+import { trackAction, untrackAction } from "./helpers/tracking";
 
 export const fairshakeReducers = {
     initialState: {
@@ -25,7 +25,7 @@ export const fairshakeReducers = {
         // Get the FAIRshake rubric
         [actionCreators.fairshake.getFairshakeRubric]: (state) => ({
             ...state,
-            pendingAPIOperations: true,
+            pendingAPIResponse: true,
             pendingAPIOperations: trackAction(
                 actionCreators.fairshake.getFairshakeRubric,
                 state.pendingAPIOperations

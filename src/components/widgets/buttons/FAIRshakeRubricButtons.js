@@ -10,7 +10,6 @@ import colors from "../../../styles/colors";
 import { actionCreators } from '../../../redux/actionCreators';
 import Button from "@material-ui/core/Button/Button";
 import textStyles from "../../../styles/text";
-import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
