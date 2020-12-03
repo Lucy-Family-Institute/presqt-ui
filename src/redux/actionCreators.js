@@ -182,7 +182,12 @@ export const actionCreators = createActions({
         HIDE_FAIRSHAKE_MODAL: undefined,
         GET_FAIRSHAKE_RUBRIC: (rubric_id) => ({ rubric_id }),
         GET_FAIRSHAKE_RUBRIC_SUCCESS: undefined,
-        GET_FAIRSHAKE_RUBRIC_FAILUREE: (data, status) => ({ data, status })
+        GET_FAIRSHAKE_RUBRIC_FAILURE: (data, status) => ({ data, status }),
+        SUBMIT_FAIRSHAKE_ASSESSMENT: (projectUrl, projectTitle, rubricAnswers, rubric_id) => (
+            { projectUrl, projectTitle, rubricAnswers, rubric_id }),
+        SUBMIT_FAIRSHAKE_ASSESSMENT_SUCCESS: undefined,
+        SUBMIT_FAIRSHAKE_ASSESSMENT_FAILURE: (data, status) => ({ data, status }),
+        CLEAR_FAIRSHAKE_DATA: undefined
     },
     ANNOUNCEMENTS: {
         GET_ANNOUNCEMENTS: undefined,
