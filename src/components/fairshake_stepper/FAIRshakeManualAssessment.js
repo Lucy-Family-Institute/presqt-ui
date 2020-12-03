@@ -57,6 +57,7 @@ export default function FAIRshakeManualAssessment({ setActiveStep }) {
       metricAnswers,
       fairshakeRubric
     ));
+    setActiveStep(2);
   }
 
   /** When the FAIRShakeData first gets added and the metric answer state dictionary has not

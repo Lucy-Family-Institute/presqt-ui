@@ -10,6 +10,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import FAIRshakeRubricButtons from "../widgets/buttons/FAIRshakeRubricButtons";
 import FAIRshakeManualAssessment from "./FAIRshakeManualAssessment";
+import FAIRshakeAssessmentResults from "./FAIRshakeAssessmentResults";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +36,7 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-const steps = ["Select Digital Object Type", "Manual Assessment"];
+const steps = ["Select Digital Object Type", "Manual Assessment", "Manual Assessment Results"];
 
 export default function FAIRshakeStepper({}) {
   const classes = useStyles();
@@ -70,6 +71,9 @@ export default function FAIRshakeStepper({}) {
           setActiveStep={setActiveStep}
 
         />
+      }
+      case 2: {
+        return <FAIRshakeAssessmentResults />
       }
     }
   }
