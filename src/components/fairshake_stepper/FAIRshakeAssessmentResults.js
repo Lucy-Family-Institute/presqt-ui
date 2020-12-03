@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import colors from "../../styles/colors";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import getError from "../../utils/getError";
+import { build_svg_from_score } from 'fairshakeinsignia'
 
 
 export default function FAIRshakeAssessmentResults() {
@@ -47,6 +48,13 @@ export default function FAIRshakeAssessmentResults() {
     }
     
   }, [fairshakeAssessmentResults, fairshakeAssessmentError, fairshakeAssessmentStatus])
+
+  if (fairshakeAssessmentResults) {
+    console.log(build_svg_from_score(document.getElementById('insignia'), {
+      project: 116,
+      target: fairshakeAssessmentResults.digital_object_id
+    }))
+  }
 
   return(
     <Fragment>
