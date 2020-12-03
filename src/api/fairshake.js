@@ -6,3 +6,14 @@ export function getFairshakeRubric(rubric_id) {
         `${apiURLBase}services/fairshake/rubric/${rubric_id}/`
     )
 }
+
+export function sendFairshakeAssessment(projectUrl, projectTitle, rubricAnswers, rubric_id) {
+    return axios.post(
+        `${apiURLBase}services/fairshake/rubric/${rubric_id}/`,
+        {
+            project_url: projectUrl,
+            project_title: projectTitle,
+            rubric_answers: rubricAnswers
+        }
+    )
+}

@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { actionCreators } from "../actionCreators";
-import { getFairshakeRubric } from "../../api/fairshake";
+import { getFairshakeRubric, sendFairshakeAssessment } from "../../api/fairshake";
 
 
 export function* watchGetFairshakeRubric() {
@@ -11,19 +11,16 @@ export function* watchGetFairshakeRubric() {
 }
 
 function* fairshakeRubric(action) {
-    console.log('We here')
     try {
         const response = yield call(
             getFairshakeRubric,
             action.payload.rubric_id
         );
-        console.log('success!')
         yield put(
             actionCreators.fairshake.getFairshakeRubricSuccess(response.data)
         );
     }
     catch (error) {
-        console.log('error!')
         yield put(
             actionCreators.fairshake.getFairshakeRubricFailure(
                 error.response.data,
@@ -32,3 +29,34 @@ function* fairshakeRubric(action) {
         );
     }
 }
+
+
+export function* watchSubmitFairshakeAssessment() {
+    yield takeEvery(
+        actionCreators.fairshake.submitFairshakeAssessment,
+        submitFairshakeAssessment
+    )
+}
+
+function* submitFairshakeAssessment(action) {
+    try {
+        const response = yield call(
+            sendFairshakeAssessment,
+            action.payload.projectUrl,
+            action.payload.projectTitle,
+            action.payload.rubricAnswers,
+            action.payload.rubric_id
+        );
+        yield put(
+            actionCreators.fairshake.submitFairshakeAssessmentSuccess(response.data)
+        );
+    }
+    catch (error) {
+        yield put(
+            actionCreators.fairshake.submitFairshakeAssessmentFailure(
+                error.response.data,
+                error.response.status
+            )
+        );
+    }
+    }
