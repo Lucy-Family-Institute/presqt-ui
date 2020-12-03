@@ -4,21 +4,18 @@ import DialogTitle from "./modalHeader";
 import DialogContent from "@material-ui/core/DialogContent";
 import { jsx } from "@emotion/core";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { actionCreators } from "../../redux/actionCreators";
-import getError from "../../utils/getError";
 import FAIRshakeStepper from "../fairshake_stepper/FAIRshakeStepper";
-import MultipleChoice from "../multiple_choice/MultipleChoice";
 
-export default function FAIRshareModal() {
+export default function FAIRshakeModal() {
     const dispatch = useDispatch();
 
-    const apiOperationErrors = useSelector(state => state.apiOperationErrors);
     const fairshakeModalDisplay = useSelector(state => state.fairshakeModalDisplay);
 
-    const handleClose = () => {
-      dispatch(actionCreators.fairshake.hideFairshakeModal());
-    }
+  const handleClose = () => {
+    dispatch(actionCreators.fairshake.clearFairshakeData());
+    dispatch(actionCreators.fairshake.hideFairshakeModal());
+  }
 
     return fairshakeModalDisplay ? (
         <div css={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
