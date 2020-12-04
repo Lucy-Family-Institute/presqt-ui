@@ -30,7 +30,13 @@ export default function KeywordStepperOptions({ setActiveStep, setNewKeywords, n
   };
 
   return (
-    keywordStatus === 'getSuccess'
+    keywordStatus === 'getSuccess' && keywords.enhanced_keywords.length === 0
+          ? 
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+            Found list of keywords assosciated with {selectedResource.title}, but Scigraph offered no enhancements.
+          </div>
+      : keywordStatus === 'getSuccess'
       ?
         <Fragment>
           <KeywordList
@@ -59,7 +65,13 @@ export default function KeywordStepperOptions({ setActiveStep, setNewKeywords, n
             <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
             {keywords.error}
           </div>
-      :
+        : keywordStatus === 'getSuccess' && keywords.enhanced_keywords.length === 0
+          ? 
+          <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
+            <ErrorOutlineIcon color="error" style={{ minWidth: 56 }} />
+            Found list of keywords for {selectedResource.title}, but Scigraph offered no enhancements.
+          </div>
+        :
         <Fragment>
           <div css={{paddingBottom: 15, display: 'flex', justifyContent: 'center'}}>
             Gathering source keywords and enhanced keywords...
