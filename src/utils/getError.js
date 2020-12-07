@@ -1,6 +1,3 @@
-import {useSelector} from "react-redux";
-
-export default function getError(reducer) {
-  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+export default function getError(reducer, apiOperationErrors) {
   return apiOperationErrors.find(element => element.action === reducer.toString());
 }

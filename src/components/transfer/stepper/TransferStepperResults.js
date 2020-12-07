@@ -33,9 +33,10 @@ export default function TransferStepperResults(
   const selectedTarget = useSelector(state => state.selectedTarget);
   const targetToken = useSelector(state => state.apiTokens[selectedTarget.name]);
   const selectedResource = useSelector(state => state.selectedResource);
-  const transferError = getError(actionCreators.transfer.transferResource);
-  const transferJobError = getError(actionCreators.transfer.transferJob);
-  const transferCancelError = getError(actionCreators.transfer.cancelTransfer);
+
+  const transferError = getError(actionCreators.transfer.transferResource, apiOperationErrors);
+  const transferJobError = getError(actionCreators.transfer.transferJob, apiOperationErrors)
+  const transferCancelError = getError(actionCreators.transfer.cancelTransfer, apiOperationErrors);
 
   const [stepThreeContent, setStepThreeContent] = useState(
     <div>

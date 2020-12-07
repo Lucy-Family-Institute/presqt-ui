@@ -19,7 +19,8 @@ export default function FAIRshakeAssessmentResults() {
 
   const fairshakeAssessmentResults = useSelector(state => state.fairshakeAssessmentResults)
   const fairshakeAssessmentStatus = useSelector(state => state.fairshakeAssessmentStatus)
-  const fairshakeAssessmentError = getError(actionCreators.fairshake.submitFairshakeAssessment)
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
+  const fairshakeAssessmentError = getError(actionCreators.fairshake.submitFairshakeAssessment, apiOperationErrors)
 
   useEffect(() => {
     if (fairshakeAssessmentStatus === 'postPending') {

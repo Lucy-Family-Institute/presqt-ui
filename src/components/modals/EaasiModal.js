@@ -21,8 +21,8 @@ export default function EaasiModal() {
     ? state.apiTokens[state.selectedTarget.name]
     : null);
 
-  const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal);
-  const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal);
+  const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal, apiOperationErrors);
+  const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal, apiOperationErrors);
 
   const handleClose = () => {
     dispatch(actionCreators.eaasi.hideEaasiModal());

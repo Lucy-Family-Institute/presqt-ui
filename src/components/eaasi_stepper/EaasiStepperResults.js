@@ -18,12 +18,13 @@ export default function EaasiStepperResults() {
   const eaasiProposalPostData = useSelector(state => state.eaasiProposalPostData);
   const eaasiProposalGetData = useSelector(state => state.eaasiProposalGetData);
   const downloadForServiceStatus = useSelector(state => state.downloadForServiceStatus);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
   const [modalContentHeader, setModalContentHeader] = useState("");
   const [modalContentBody, setModalContentBody] = useState("");
 
-  const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal);
-  const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal);
+  const eaasiGetError = getError(actionCreators.eaasi.getEaasiProposal, apiOperationErrors);
+  const eaasiPostError = getError(actionCreators.eaasi.sendEaasiProposal, apiOperationErrors);
 
   useEffect(() => {
     if (downloadForService && !downloadForServiceStatus) {

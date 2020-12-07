@@ -119,7 +119,7 @@ export default function KeywordTransferSuggestList({setKeywordList}) {
               size="small"
               label="Add Your Own Keywords Here"
               value={newKeyValue}
-              onKeyDown={(event) => { event.keyCode === 13 && !isSpaces(event.target.value) ? putInList() : null }}
+              onKeyDown={(event) => event.keyCode === 13 && !isSpaces(event.target.value) && putInList()}
               onChange={event => searchKeystroke(event)}
               />
       </List>

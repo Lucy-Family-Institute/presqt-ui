@@ -39,8 +39,9 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
   const transferDestinationToken = useSelector(state => state.transferDestinationToken);
   const transferDestinationTarget = useSelector(state => state.transferDestinationTarget);
   const transferStatus = useSelector(state => state.transferStatus)
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
+  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget, apiOperationErrors);
 
   const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 15 }]);
   const [message, setMessage] = useState("");
@@ -168,11 +169,8 @@ export default function TransferResourceBrowser({setTransferPageNumber, transfer
                 max={transferTargetResourcesPages.total_pages}
                 value={manualTransferPageNumber}
                 onChange={event => setManualTransferPageNumber(event.target.value)}
-                  onKeyDown={(event) => {
-                    event.keyCode === 13 && manualTransferPageNumber !== '' && parseInt(manualTransferPageNumber) <= transferTargetResourcesPages.total_pages
-                      ? handleManualPageChange(event, event.target.value)
-                      : null
-                  }} />
+                onKeyDown={(event) => event.keyCode === 13 && manualTransferPageNumber !== '' && parseInt(manualTransferPageNumber) <= transferTargetResourcesPages.total_pages && handleManualPageChange(event, event.target.value)}
+            />
             </Typography>
           </div>
           <Pagination

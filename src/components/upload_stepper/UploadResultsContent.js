@@ -34,8 +34,8 @@ export default function UploadResultsContent({setActiveStep, setSelectedFile,
   const token = useSelector(state => state.apiTokens)[connection.name];
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const uploadError = getError(actionCreators.upload.uploadToTarget);
-  const uploadJobError = getError(actionCreators.upload.uploadJob);
+  const uploadError = getError(actionCreators.upload.uploadToTarget, apiOperationErrors);
+  const uploadJobError = getError(actionCreators.upload.uploadJob, apiOperationErrors);
 
   const [stepThreeContent, setStepThreeContent] = useDefault(
     <div>
