@@ -43,7 +43,7 @@ const steps = [
   "Updated Keywords",
 ];
 
-export default function KeywordStepper({}) {
+export default function KeywordStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [newKeywords, setNewKeywords] = useState([]);

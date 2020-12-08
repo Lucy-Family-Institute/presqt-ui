@@ -98,7 +98,10 @@ export const fairshakeReducers = {
             fairshakeRubricData: null,
             fairshakeAssessmentStatus: null,
             fairshakeAssessmentResults: null,
-            fairshakeRubric: null
+            fairshakeRubric: null,
+            apiOperationErrors: state.apiOperationErrors.filter(
+              item => item.action !== actionCreators.fairshake.submitFairshakeAssessment.toString()
+            )
           })
     }
 }

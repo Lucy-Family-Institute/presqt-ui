@@ -32,7 +32,7 @@ export default function FAIRshakeAssessmentResults() {
             <div
             css={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexDirection: 'row', alignItems: 'center',  justifyContent: 'center' }}>
             <ErrorOutlineIcon color="error" />
-            <span css={{ marginLeft: 5 }}>FAIRshake Error: {fairshakeAssessmentError.data.message}</span>
+            <span css={{ marginLeft: 5 }}>{fairshakeAssessmentError.data.error}</span>
             </div>);
     setModalContentBody("");
     }

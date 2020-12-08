@@ -58,18 +58,21 @@ export default function FAIRshakeMetricForm({metricAnswers, setMetricAnswers, me
             onAnimationEnd={(event) => {event.stopPropagation()}}
           >
             {
-              FAIRShakeData.answer_options.map((option) => {
-                return(
-                  <div style={{marginLeft: 20}}>
-                    <FormControlLabel
-                      value={option.value}
-                      control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
-                      label={option.value_text}
-                      key={option.value}
-                    />
-                  </div>
-                )
-              })
+              FAIRShakeData
+              ?
+                FAIRShakeData.answer_options.map((option) => {
+                  return(
+                    <div style={{marginLeft: 20}} key={option.value}>
+                      <FormControlLabel
+                        value={option.value}
+                        control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
+                        label={option.value_text}
+                        key={option.value}
+                      />
+                    </div>
+                  )
+                })
+              : null
             }
           </RadioGroup>
         </FormControl>

@@ -9,6 +9,7 @@ import colors from "../../styles/colors";
 import textStyles from "../../styles/text";
 import FAIRshakeMetricForm from "./FAIRshakeMetricForm";
 import { actionCreators } from "../../redux/actionCreators";
+import StepperBackButton from "../widgets/buttons/stepperBackButton";
 
 const CustomFairshakeButton = withStyles({
   root: {
@@ -40,6 +41,16 @@ export default function FAIRshakeManualAssessment({ setActiveStep }) {
     ));
     setActiveStep(2);
   }
+
+  /**
+   * Decrement the step count when the Back button is pressed
+   **/
+  const handleBack = () => {
+    setMetricAnswers(null)
+    setMetricFull(false)
+    setActiveStep(0);
+    dispatch(actionCreators.fairshake.clearFairshakeData());
+  };
 
   /** When the FAIRShakeData first gets added and the metric answer state dictionary has not
    * been created then loop through the FAIRShake data to populate this dictionary
@@ -75,20 +86,24 @@ export default function FAIRshakeManualAssessment({ setActiveStep }) {
    **/
   useEffect(() => {
     if (metricAnswers) {
-      setMetricFull(Object.values(metricAnswers).every(o => o != null))
+      setMetricFull(Object.values(metricAnswers).every(value => value != null))
     }
   }, [metricAnswers])
 
   return (
     <Fragment>
       {metricContent}
+      <StepperBackButton
+        handleBack={handleBack}
+        activeStep={1}
+      />
       <CustomFairshakeButton
         onClick={submitAssessment}
         variant="contained"
         color="primary"
         disabled={!metricFull}
       >
-          <span css={textStyles.buttonText}>Submit Assessment</span>
+        <span css={textStyles.buttonText}>Submit Assessment</span>
       </CustomFairshakeButton>
     </Fragment>
   )

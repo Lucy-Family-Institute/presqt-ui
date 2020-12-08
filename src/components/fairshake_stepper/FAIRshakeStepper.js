@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import FAIRshakeRubricButtons from "../widgets/buttons/FAIRshakeRubricButtons";
 import FAIRshakeManualAssessment from "./FAIRshakeManualAssessment";
 import FAIRshakeAssessmentResults from "./FAIRshakeAssessmentResults";
+import {jsx} from "@emotion/core";
+import StepperBackButton from "../widgets/buttons/stepperBackButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,20 +45,6 @@ export default function FAIRshakeStepper({}) {
   const [activeStep, setActiveStep] = useState(0);
   const [selectedRubric, setSelectedRubric] = useState('7');
 
-  /**
-   * Decrement the step count when the Back button is pressed
-   **/
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
-
-  /**
-   * Increment the step count when the Back button is pressed
-   **/
-  const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  };
-
   function getStepContent(step) {
     switch (step) {
       case 0: {
@@ -80,6 +68,10 @@ export default function FAIRshakeStepper({}) {
 
   return (
     <div>
+      <div style={{margin: 20, display: "flex", justifyContent: "center"}}>
+        Submit a manual assessment for a digital object through FAIRshake. Completing this form will
+        submit the assessment through a pre-logged in PresQT user.
+      </div>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
@@ -92,7 +84,7 @@ export default function FAIRshakeStepper({}) {
                 classes: {
                   active: classes.iconActive,
                   completed: classes.iconCompleted,
-                },
+                }
               }}
             >
               {label}
