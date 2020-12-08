@@ -20,9 +20,10 @@ export default function DownloadStepperResults({emailValue}) {
   const downloadData = useSelector(state => state.downloadData);
   const downloadStatus = useSelector(state => state.downloadStatus);
   const downloadMessage = useSelector(state => state.downloadMessage);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const downloadError = getError(actionCreators.download.downloadResource);
-  const downloadJobError = getError(actionCreators.download.downloadJob);
+  const downloadError = getError(actionCreators.download.downloadResource, apiOperationErrors);
+  const downloadJobError = getError(actionCreators.download.downloadJob, apiOperationErrors);
 
   const [modalContent, setModalContent] = useState(
     <div>

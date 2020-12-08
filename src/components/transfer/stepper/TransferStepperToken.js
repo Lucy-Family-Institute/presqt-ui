@@ -30,7 +30,7 @@ export default function TransferStepperToken({ handleNext, activeStep }) {
       value={transferDestinationToken}
       onChange={event => dispatch(actionCreators.transfer.saveTransferToken(event.target.value))}
       // If the enter button is pressed (code 13), go to the next step.
-      onKeyDown={(event) => { event.keyCode === 13 && transferDestinationToken !== ''  && activeStep === 1 ? handleNext() : null }}
+      onKeyDown={(event) => event.keyCode === 13 && transferDestinationToken !== ''  && activeStep === 1 && handleNext()}
       InputProps={{
         endAdornment: (
           <InputAdornment position='end'>

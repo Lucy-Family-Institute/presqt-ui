@@ -16,7 +16,7 @@ export default function KeywordModal() {
   const keywordModalDisplay = useSelector((state) => state.keywordModalDisplay);
   const keywords = useSelector((state) => state.keywords);
 
-  const keywordPostError = getError(actionCreators.keywords.sendKeywords);
+  const keywordPostError = getError(actionCreators.keywords.sendKeywords, apiOperationErrors);
 
   const handleClose = () => {
     dispatch(actionCreators.keywords.clearKeywordData());

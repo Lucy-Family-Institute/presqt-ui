@@ -8,9 +8,10 @@ import UploadStepConnector from "../upload_stepper/UploadStepConnector";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import KeywordStepperOptions from "./KeywordStepperOptions";
-import KeywordStepperResults from "./KeywordStepperResults";
-import KeywordEnhanceButton from "./KeywordEnhanceButton";
+import FAIRshakeRubricButtons from "../widgets/buttons/FAIRshakeRubricButtons";
+import FAIRshakeManualAssessment from "./FAIRshakeManualAssessment";
+import FAIRshakeAssessmentResults from "./FAIRshakeAssessmentResults";
+import {jsx} from "@emotion/core";
 import StepperBackButton from "../widgets/buttons/stepperBackButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,50 +38,40 @@ const PresQTStepContent = withStyles({
   },
 })(StepContent);
 
-const steps = [
-  "Keywords and Potential Enhancements",
-  "Enhance Keywords",
-  "Updated Keywords",
-];
+const steps = ["Select Digital Object Type", "Manual Assessment", "Manual Assessment Results"];
 
-export default function KeywordStepper() {
+export default function FAIRshakeStepper({}) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [newKeywords, setNewKeywords] = useState([]);
+  const [selectedRubric, setSelectedRubric] = useState('7');
 
-  
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
-
-  // Get appropriate Component
   function getStepContent(step) {
     switch (step) {
       case 0: {
-        return (
-          <KeywordStepperOptions
-            setActiveStep={setActiveStep}
-            setNewKeywords={setNewKeywords}
-            newKeywords={newKeywords}
-          />
-        );
+        return <FAIRshakeRubricButtons
+          selectedRubric={selectedRubric}
+          setSelectedRubric={setSelectedRubric}
+          setActiveStep={setActiveStep}
+        />
       }
       case 1: {
-        return (
-          <KeywordEnhanceButton
-            setActiveStep={setActiveStep}
-            newKeywords={newKeywords}
-          />
-        );
+        return <FAIRshakeManualAssessment
+          setActiveStep={setActiveStep}
+
+        />
       }
       case 2: {
-        return <KeywordStepperResults newKeywords={newKeywords} />;
+        return <FAIRshakeAssessmentResults />
       }
     }
   }
 
   return (
     <div>
+      <div style={{margin: 20, display: "flex", justifyContent: "center"}}>
+        Submit a manual assessment for a digital object through FAIRshake. Completing this form will
+        submit the assessment through a pre-logged in PresQT user.
+      </div>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
@@ -93,23 +84,13 @@ export default function KeywordStepper() {
                 classes: {
                   active: classes.iconActive,
                   completed: classes.iconCompleted,
-                },
+                }
               }}
             >
               {label}
             </StepLabel>
             <PresQTStepContent>
               <Typography component={"div"}>{getStepContent(index)}</Typography>
-              <div className={classes.actionsContainer}>
-                <div>
-                  {steps.indexOf(label) === 1 ? (
-                    <StepperBackButton
-                      handleBack={handleBack}
-                      activeStep={activeStep}
-                    />
-                  ) : null}
-                </div>
-              </div>
             </PresQTStepContent>
           </Step>
         ))}

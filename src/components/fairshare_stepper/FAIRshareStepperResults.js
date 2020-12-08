@@ -9,12 +9,11 @@ import FAIRshareResultsContent from "./FAIRshareResultsContent";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 export default function FAIRshareStepperResults() {
-  const dispatch = useDispatch();
-
   const fairshareEvaluationStatus = useSelector((state) => state.fairshareEvaluationStatus);
   const fairshareResultsData = useSelector((state) => state.fairshareResultsData);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const fairsharePostError = getError(actionCreators.fairshare.sendFairshareEvaluation);
+  const fairsharePostError = getError(actionCreators.fairshare.sendFairshareEvaluation, apiOperationErrors);
 
   const [stepContent, setStepContent] = useState(
     <div>

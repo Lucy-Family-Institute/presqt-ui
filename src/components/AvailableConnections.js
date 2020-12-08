@@ -25,7 +25,7 @@ export default function AvailableConnections() {
   const uploadStatus = useSelector((state) => state.uploadStatus);
   const status_list = useSelector((state) => state.statuses);
 
-  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const collectionError = getError(actionCreators.resources.loadFromTarget, apiOperationErrors);
   const tokenError = collectionError && collectionError.status === 401;
 
 
