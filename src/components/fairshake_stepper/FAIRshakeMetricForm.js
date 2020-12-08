@@ -48,7 +48,7 @@ export default function FAIRshakeMetricForm({metricAnswers, setMetricAnswers, me
       <Grid>
         {metric.metric_value}
       </Grid>
-      <Grid container direction="row">
+      <Grid container direction="row" style={{marginBottom: 20}}>
         <FormControl component="fieldset">
           <RadioGroup
             row
@@ -60,12 +60,14 @@ export default function FAIRshakeMetricForm({metricAnswers, setMetricAnswers, me
             {
               FAIRShakeData.answer_options.map((option) => {
                 return(
-                  <FormControlLabel
-                    value={option.value}
-                    control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
-                    label={option.value_text}
-                    key={option.value}
-                  />
+                  <div style={{marginLeft: 20}}>
+                    <FormControlLabel
+                      value={option.value}
+                      control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
+                      label={option.value_text}
+                      key={option.value}
+                    />
+                  </div>
                 )
               })
             }

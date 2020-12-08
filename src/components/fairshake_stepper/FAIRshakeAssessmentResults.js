@@ -43,6 +43,7 @@ export default function FAIRshakeAssessmentResults() {
                 style={{ color: colors.successGreen, paddingRight:5 }}
               />
               FAIRshake has successfully registered a digital object and created your assessment. It can be found&nbsp;<a href={`https://fairshake.cloud/digital_object/${fairshakeAssessmentResults.digital_object_id}/assessments/`} target="_blank">here.</a>
+              {/*<div style={{width: 40, height: 40}} id="insignia"></div>*/}
             </Fragment>
           );
           setModalContentBody("");
@@ -50,21 +51,36 @@ export default function FAIRshakeAssessmentResults() {
     
   }, [fairshakeAssessmentResults, fairshakeAssessmentError, fairshakeAssessmentStatus])
 
-  if (fairshakeAssessmentResults) {
-    console.log(build_svg_from_score(document.getElementById('insignia'), {
-      project: 116,
-      target: fairshakeAssessmentResults.digital_object_id
-    }))
-  }
+  useEffect(() => {
+    if (fairshakeAssessmentResults) {
+      build_svg_from_score(document.getElementById('insignia'), {
+        project: 116,
+        target: fairshakeAssessmentResults.digital_object_id
+      })
+    }
+  }, [fairshakeAssessmentResults])
 
   return(
     <Fragment>
-      <div css={{ display: "flex", justifyContent: "center", padding: 10 }}>
+      <div style={{ display: "flex", justifyContent: "center", padding: 10 }}>
         {modalContentHeader}
       </div>
-      <div css={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         {modalContentBody}
       </div>
+      {
+        fairshakeAssessmentResults ?
+          <Fragment>
+            <div style={{ display: "flex", justifyContent: "center", width: '100%'}}>
+              The following image represents the results:
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", width: '100%'}}>
+              <div id="insignia" style={{marginTop: 10, width: 100, height: 100}}></div>
+            </div>
+          </Fragment>
+
+        : null
+      }
     </Fragment>
   )
 }
