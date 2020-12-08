@@ -10,25 +10,6 @@ import textStyles from "../../styles/text";
 import FAIRshakeMetricForm from "./FAIRshakeMetricForm";
 import { actionCreators } from "../../redux/actionCreators";
 
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    marginLeft: theme.spacing(1),
-  },
-  checked: {
-  },
-  radio: {
-    '&$checked': {
-      color: colors.presqtBlue,
-      '&:hover': {
-        backgroundColor: colors.presqtTintedBlue
-      }
-    },
-    '&:hover': {
-      backgroundColor: colors.presqtTintedBlue
-    }
-  },
-}));
-
 const CustomFairshakeButton = withStyles({
   root: {
     backgroundColor: colors.presqtBlue,
@@ -39,7 +20,6 @@ const CustomFairshakeButton = withStyles({
 })(Button);
 
 export default function FAIRshakeManualAssessment({ setActiveStep }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const apiOperationErrors = useSelector(state => state.apiOperationErrors);
@@ -49,6 +29,7 @@ export default function FAIRshakeManualAssessment({ setActiveStep }) {
 
   const [metricContent, setMetricContent] = useState(<Spinner />)
   const [metricAnswers, setMetricAnswers] = useState(null);
+  const [metricFull, setMetricFull] = useState(false)
 
   const submitAssessment = () => {
     dispatch(actionCreators.fairshake.submitFairshakeAssessment(
@@ -89,13 +70,24 @@ export default function FAIRshakeManualAssessment({ setActiveStep }) {
     }
   }, [FAIRShakeData, apiOperationErrors, metricAnswers])
 
+  /**
+   * Only make the Submit button clickable if all metrics are filled out
+   **/
+  useEffect(() => {
+    if (metricAnswers) {
+      setMetricFull(Object.values(metricAnswers).every(o => o != null))
+    }
+  }, [metricAnswers])
+
   return (
     <Fragment>
       {metricContent}
       <CustomFairshakeButton
         onClick={submitAssessment}
         variant="contained"
-        color="primary">
+        color="primary"
+        disabled={!metricFull}
+      >
           <span css={textStyles.buttonText}>Submit Assessment</span>
       </CustomFairshakeButton>
     </Fragment>

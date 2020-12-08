@@ -35,7 +35,7 @@ export default function KeywordStepperResults({ newKeywords }) {
   const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
   const updatedKeywords = useSelector((state) => state.updatedKeywords);
   const keywordStatus = useSelector((state) => state.keywordStatus);
-  const keywordPostError = getError(actionCreators.keywords.sendKeywords);
+  const keywordPostError = getError(actionCreators.keywords.sendKeywords, apiOperationErrors);
   const targetToken = useSelector((state) =>
     state.selectedTarget ? state.apiTokens[state.selectedTarget.name] : null
   );

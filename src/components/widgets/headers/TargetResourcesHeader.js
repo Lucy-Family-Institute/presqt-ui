@@ -9,9 +9,11 @@ import { actionCreators } from "../../../redux/actionCreators";
 
 function TargetResourcesHeader() {
   const target = useSelector(state => state.selectedTarget);
-  const collectionError = getError(actionCreators.resources.loadFromTarget);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
   const searchValue = useSelector(state => state.searchValue);
   const targetResources = useSelector(state => state.targetResources);
+
+  const collectionError = getError(actionCreators.resources.loadFromTarget, apiOperationErrors);
 
   let headerMessage = 'Resources';
   if (target) {

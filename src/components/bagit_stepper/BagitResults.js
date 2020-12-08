@@ -13,8 +13,9 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 export default function BagitResults({ selectedFile }) {
   const bagitState = useSelector((state) => state.bagitStatus);
   const bagitData = useSelector((state) => state.bagitData);
+  const apiOperationErrors = useSelector(state => state.apiOperationErrors);
 
-  const bagitError = getError(actionCreators.bagit.submitBagitFile);
+  const bagitError = getError(actionCreators.bagit.submitBagitFile, apiOperationErrors);
 
   const [content, setContent] = useState(
     <Fragment>

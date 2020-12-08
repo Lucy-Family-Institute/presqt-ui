@@ -52,6 +52,8 @@ function* submitFairshakeAssessment(action) {
         );
     }
     catch (error) {
+        console.log(error.response)
+
         yield put(
             actionCreators.fairshake.submitFairshakeAssessmentFailure(
                 error.response.data,

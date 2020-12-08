@@ -1,5 +1,5 @@
 import { actionCreators } from "../actionCreators";
-import { trackAction, untrackAction } from "./helpers/tracking";
+import {trackAction, trackError, untrackAction} from "./helpers/tracking";
 
 export const fairshakeReducers = {
     initialState: {

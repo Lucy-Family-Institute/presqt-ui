@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import modalStyles from "../../styles/modal";
 import textStyles from "../../styles/text";
 import TokenTextField from "../widgets/text_fields/TokenTextField";
-import React, {useState} from "react";
+import {useState} from "react";
 import ModalSubmitButton from "../widgets/buttons/ModalSubmitButton";
 import {actionCreators} from "../../redux/actionCreators";
 import DialogTitle from "./modalHeader";
@@ -27,7 +27,7 @@ export default function TokenModal() {
   const tokenModalDisplay = useSelector(state => state.tokenModalDisplay);
   const connection = useSelector(state => state.selectedTarget);
 
-  const error = getError(actionCreators.resources.loadFromTarget);
+  const error = getError(actionCreators.resources.loadFromTarget, apiOperationErrors);
 
   const [token, setToken] = useState('');
   const [passwordIsMasked, setPasswordIsMasked] = useState(true);
@@ -103,7 +103,7 @@ export default function TokenModal() {
                 onChange={event => setToken(event.target.value)}
                 onAnimationEnd={(event) => { event.stopPropagation() }}
                 // If the enter button is pressed (code 13), submit the modal.
-                onKeyDown={(event) => { event.keyCode === 13 && token !== '' ? modalSubmit() : null }}
+                onKeyDown={(event) => event.keyCode === 13 && token !== '' && modalSubmit() }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>

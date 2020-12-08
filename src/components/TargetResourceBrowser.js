@@ -42,23 +42,16 @@ export default function TargetResourceBrowser() {
   );
 
   const targetResources = useSelector((state) => state.targetResources);
-  const targetResourcesPages = useSelector(
-    (state) => state.targetResourcesPages
-  );
-  const pendingAPIOperations = useSelector(
-    (state) => state.pendingAPIOperations
-  );
+  const targetResourcesPages = useSelector((state) => state.targetResourcesPages);
+  const pendingAPIOperations = useSelector((state) => state.pendingAPIOperations);
   const apiOperationErrors = useSelector((state) => state.apiOperationErrors);
   const selectedTarget = useSelector((state) => state.selectedTarget);
   const searchValue = useSelector((state) => state.searchValue);
 
-  const collectionError = getError(actionCreators.resources.loadFromTarget);
-  const searchError = getError(actionCreators.resources.loadFromTargetSearch);
+  const collectionError = getError(actionCreators.resources.loadFromTarget, apiOperationErrors);
+  const searchError = getError(actionCreators.resources.loadFromTargetSearch, apiOperationErrors);
 
-  const [messageCss, setMessageCss] = useState([
-    textStyles.body,
-    { marginTop: 10 },
-  ]);
+  const [messageCss, setMessageCss] = useState([textStyles.body, { marginTop: 10 }]);
   const [message, setMessage] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [manualPageNumber, setManualPageNumber] = useState("1");
@@ -232,11 +225,7 @@ export default function TargetResourceBrowser() {
                   max={targetResourcesPages.total_pages}
                   value={manualPageNumber}
                   onChange={event => setManualPageNumber(event.target.value)}
-                  onKeyDown={(event) => {
-                    event.keyCode === 13 && manualPageNumber !== '' && parseInt(manualPageNumber) <= targetResourcesPages.total_pages
-                      ? handleManualPageChange(event, event.target.value)
-                      : null
-                  }} />
+                  onKeyDown={(event) => event.keyCode === 13 && manualPageNumber !== '' && parseInt(manualPageNumber) <= targetResourcesPages.total_pages && handleManualPageChange(event, event.target.value)} />
               </Typography>
             </div>
             <Pagination

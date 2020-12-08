@@ -78,7 +78,8 @@ export default function TransferStepper({setTransferPageNumber, transferPageNumb
     ? state.apiTokens[state.selectedTarget.name]
     : null);
   const resource = useSelector(state => state.selectedResource);
-  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget);
+
+  const collectionError = getError(actionCreators.transfer.loadFromTransferTarget, apiOperationErrors);
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedDuplicate, setSelectedDuplicate] = useState('ignore');
