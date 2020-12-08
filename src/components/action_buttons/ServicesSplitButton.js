@@ -163,7 +163,8 @@ export default function ServicesSplitButton() {
                         (service.name === 'keyword_enhancement' && !selectedTarget.supported_actions.keywords) ||
                         (service.name === 'keyword_enhancement' && !selectedTarget.supported_actions.keywords_upload) ||
                         (service.name === 'keyword_enhancement' && searchValue && searchValue.length > 0) ||
-                        (service.name === 'fairshare' && !resource.identifier)
+                        (service.name === 'fairshare' && !resource.identifier) ||
+                        (service.name === 'fairshake' && searchValue && searchValue.length > 0) 
                       }
                     >
                       <span css={textStyles.buttonText}>
