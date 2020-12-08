@@ -39,7 +39,7 @@ const CustomFairshakeButton = withStyles({
   },
 })(Button);
 /**
- * Component for the duplicate action radio buttons in the upload/transfer stepper
+ * Component for the duplicate action radio buttons in the FAIRshake stepper
  **/
 export default function FAIRshakeRubricButtons({selectedRubric, setSelectedRubric, setActiveStep}) {
   const classes = useStyles();

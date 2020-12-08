@@ -62,6 +62,7 @@ export const fairshakeReducers = {
         }),
         [actionCreators.fairshake.submitFairshakeAssessment]: (state) => ({
             ...state,
+            pendingAPIResponse: true,
             pendingAPIOperations: trackAction(
                 actionCreators.fairshake.submitFairshakeAssessment,
                 state.pendingAPIOperations
@@ -101,6 +102,7 @@ export const fairshakeReducers = {
             fairshakeRubric: null,
             apiOperationErrors: state.apiOperationErrors.filter(
               item => item.action !== actionCreators.fairshake.submitFairshakeAssessment.toString()
+              && item.action!== actionCreators.fairshake.getFairshakeRubric.toString()
             )
           })
     }

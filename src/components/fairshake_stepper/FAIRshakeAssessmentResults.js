@@ -43,7 +43,6 @@ export default function FAIRshakeAssessmentResults() {
                 style={{ color: colors.successGreen, paddingRight:5 }}
               />
               FAIRshake has successfully registered a digital object and created your assessment. It can be found&nbsp;<a href={`https://fairshake.cloud/digital_object/${fairshakeAssessmentResults.digital_object_id}/assessments/`} target="_blank">here.</a>
-              {/*<div style={{width: 40, height: 40}} id="insignia"></div>*/}
             </Fragment>
           );
           setModalContentBody("");
