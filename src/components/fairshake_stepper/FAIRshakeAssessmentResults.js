@@ -24,7 +24,7 @@ export default function FAIRshakeAssessmentResults() {
 
   useEffect(() => {
     if (fairshakeAssessmentStatus === 'postPending') {
-        setModalContentHeader("Sending assessment details to FAIRshake...");
+        setModalContentHeader("Sending assessment details to FAIRshake, if you chose automatic assessment this may take a few minutes..");
         setModalContentBody(<Spinner />);
     }
     else if (fairshakeAssessmentStatus === 'postFailure') {

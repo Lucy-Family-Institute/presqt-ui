@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { useDispatch} from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import withStyles from "@material-ui/core/styles/withStyles";
 import Radio from '@material-ui/core/Radio';
@@ -45,10 +45,24 @@ export default function FAIRshakeRubricButtons({selectedRubric, setSelectedRubri
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const selectedResource = useSelector(state => state.selectedResource);
+
   const submitRubric = () => {
-    // Need to load the rubric into the state and jump ahead a step
-    dispatch(actionCreators.fairshake.getFairshakeRubric(selectedRubric));
-    setActiveStep(1);
+    if (selectedRubric != "96") {
+      // Need to load the rubric into the state and jump ahead a step
+      dispatch(actionCreators.fairshake.getFairshakeRubric(selectedRubric));
+      setActiveStep(1);
+    }
+    else {
+      // Dispatch the saga call and jump to results
+      dispatch(actionCreators.fairshake.submitFairshakeAssessment(
+        selectedResource.identifier,
+        selectedResource.title,
+        {},
+        selectedRubric
+      ));
+      setActiveStep(2);
+    }
   }
 
   return (
@@ -61,6 +75,11 @@ export default function FAIRshakeRubricButtons({selectedRubric, setSelectedRubri
           onChange={event => setSelectedRubric(event.target.value)}
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >
+          <FormControlLabel
+            value="96"
+            control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
+            label="Run an Automatic Assessment"
+          />
           <FormControlLabel
             value="95"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
