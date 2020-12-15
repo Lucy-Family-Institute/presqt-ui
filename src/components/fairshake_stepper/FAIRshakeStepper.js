@@ -69,7 +69,7 @@ export default function FAIRshakeStepper({}) {
   return (
     <div>
       <div style={{margin: 20, display: "flex", justifyContent: "center"}}>
-        Submit a manual assessment for a digital object through FAIRshake. Completing this form will
+        Submit a manual or automatic assessment for a digital object through FAIRshake. Completing this form will
         submit the assessment through a pre-logged in PresQT user.
       </div>
       <Stepper
