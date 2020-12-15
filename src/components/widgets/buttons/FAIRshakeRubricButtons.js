@@ -62,17 +62,17 @@ export default function FAIRshakeRubricButtons({selectedRubric, setSelectedRubri
           onAnimationEnd={(event) => {event.stopPropagation()}}
         >
           <FormControlLabel
-            value="7"
+            value="95"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Tool"
           />
           <FormControlLabel
-            value="8"
+            value="94"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Dataset"
                   />
           <FormControlLabel
-            value="9"
+            value="93"
             control={<Radio classes={{root: classes.radio, checked: classes.checked}}/>}
             label="Repository"
           />
