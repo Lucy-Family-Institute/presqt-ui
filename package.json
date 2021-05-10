@@ -17,7 +17,7 @@
     "env-cmd": "^9.0.3",
     "fairshakeinsignia": "^1.0.3",
     "file-saver": "^2.0.2",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "material-ui-dropzone": "^2.4.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
